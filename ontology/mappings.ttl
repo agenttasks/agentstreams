@@ -1,0 +1,143 @@
+@prefix as: <https://agentstreams.dev/ontology#> .
+@prefix map: <https://agentstreams.dev/mapping#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# ═══════════════════════════════════════════════════════════
+# UDA Mappings — Ontology → Neon Postgres (pg_graphql)
+# Maps each ontology class/property to its physical table/column
+# ═══════════════════════════════════════════════════════════
+
+map:Mapping a rdfs:Class ;
+    rdfs:label "Mapping" ;
+    rdfs:comment "Links an ontology concept to a physical storage location." .
+
+map:ontologyClass a rdf:Property ;
+    rdfs:domain map:Mapping ;
+    rdfs:range rdfs:Class .
+
+map:targetTable a rdf:Property ;
+    rdfs:domain map:Mapping ;
+    rdfs:range xsd:string .
+
+map:ontologyProperty a rdf:Property ;
+    rdfs:domain map:Mapping ;
+    rdfs:range rdf:Property .
+
+map:targetColumn a rdf:Property ;
+    rdfs:domain map:Mapping ;
+    rdfs:range xsd:string .
+
+# ── Skill mappings ────────────────────────────────────────
+
+map:skill-table a map:Mapping ;
+    map:ontologyClass as:Skill ;
+    map:targetTable "skills" ;
+    rdfs:label "Skill → skills table" .
+
+map:skill-name a map:Mapping ;
+    map:ontologyProperty as:skillName ;
+    map:targetTable "skills" ;
+    map:targetColumn "name" .
+
+map:skill-description a map:Mapping ;
+    map:ontologyProperty as:description ;
+    map:targetTable "skills" ;
+    map:targetColumn "description" .
+
+map:skill-trigger a map:Mapping ;
+    map:ontologyProperty as:triggerPattern ;
+    map:targetTable "skills" ;
+    map:targetColumn "trigger_pattern" .
+
+# ── Model mappings ────────────────────────────────────────
+
+map:model-table a map:Mapping ;
+    map:ontologyClass as:Model ;
+    map:targetTable "models" ;
+    rdfs:label "Model → models table" .
+
+map:model-id a map:Mapping ;
+    map:ontologyProperty as:modelId ;
+    map:targetTable "models" ;
+    map:targetColumn "model_id" .
+
+map:model-family a map:Mapping ;
+    map:ontologyProperty as:modelFamily ;
+    map:targetTable "models" ;
+    map:targetColumn "family" .
+
+map:model-thinking a map:Mapping ;
+    map:ontologyProperty as:supportsThinking ;
+    map:targetTable "models" ;
+    map:targetColumn "supports_thinking" .
+
+map:model-tools a map:Mapping ;
+    map:ontologyProperty as:supportsToolUse ;
+    map:targetTable "models" ;
+    map:targetColumn "supports_tool_use" .
+
+map:model-vision a map:Mapping ;
+    map:ontologyProperty as:supportsVision ;
+    map:targetTable "models" ;
+    map:targetColumn "supports_vision" .
+
+# ── SDK mappings ──────────────────────────────────────────
+
+map:sdk-table a map:Mapping ;
+    map:ontologyClass as:SDK ;
+    map:targetTable "sdks" ;
+    rdfs:label "SDK → sdks table" .
+
+map:sdk-constructor a map:Mapping ;
+    map:ontologyProperty as:constructorPattern ;
+    map:targetTable "sdks" ;
+    map:targetColumn "constructor_pattern" .
+
+map:sdk-stars a map:Mapping ;
+    map:ontologyProperty as:sdkStars ;
+    map:targetTable "sdks" ;
+    map:targetColumn "github_stars" .
+
+# ── Metric mappings (Atlas dimensional model) ─────────────
+
+map:metric-table a map:Mapping ;
+    map:ontologyClass as:Metric ;
+    map:targetTable "metrics" ;
+    rdfs:label "Metric → metrics table" .
+
+map:metric-name a map:Mapping ;
+    map:ontologyProperty as:metricName ;
+    map:targetTable "metrics" ;
+    map:targetColumn "name" .
+
+map:metric-type a map:Mapping ;
+    map:ontologyProperty as:metricType ;
+    map:targetTable "metrics" ;
+    map:targetColumn "type" .
+
+# ── Metric values (fact table — Kimball grain: one row per observation)
+
+map:metric-values a map:Mapping ;
+    map:ontologyClass as:Metric ;
+    map:targetTable "metric_values" ;
+    rdfs:label "Metric observations → metric_values fact table" ;
+    rdfs:comment "Grain: one row per metric observation. Dimensions stored as JSONB tags." .
+
+# ── Resource mappings ─────────────────────────────────────
+
+map:resource-table a map:Mapping ;
+    map:ontologyClass as:Resource ;
+    map:targetTable "resources" ;
+    rdfs:label "Resource → resources table" .
+
+map:resource-url a map:Mapping ;
+    map:ontologyProperty as:resourceURL ;
+    map:targetTable "resources" ;
+    map:targetColumn "url" .
+
+map:resource-type a map:Mapping ;
+    map:ontologyProperty as:resourceType ;
+    map:targetTable "resources" ;
+    map:targetColumn "type" .

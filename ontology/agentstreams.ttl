@@ -1,0 +1,424 @@
+@prefix as: <https://agentstreams.dev/ontology#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+# ═══════════════════════════════════════════════════════════
+# AgentStreams Ontology — Model Once, Represent Everywhere
+# Inspired by Netflix UDA (Unified Data Architecture)
+# ═══════════════════════════════════════════════════════════
+
+# ── Core Classes ──────────────────────────────────────────
+
+as:Skill a rdfs:Class ;
+    rdfs:label "Skill" ;
+    rdfs:comment "A multi-language capability package providing patterns, code, and configuration for a specific domain." ;
+    skos:example "crawl-ingest, api-client, data-pipeline" .
+
+as:Language a rdfs:Class ;
+    rdfs:label "Language" ;
+    rdfs:comment "A programming language supported by the skill system." .
+
+as:Model a rdfs:Class ;
+    rdfs:label "Model" ;
+    rdfs:comment "A Claude model version with specific capabilities and pricing." .
+
+as:SDK a rdfs:Class ;
+    rdfs:label "SDK" ;
+    rdfs:comment "An official Anthropic SDK for a specific language." .
+
+as:MCPServer a rdfs:Class ;
+    rdfs:label "MCP Server" ;
+    rdfs:comment "A Model Context Protocol server providing tools and resources." .
+
+as:Package a rdfs:Class ;
+    rdfs:label "Package" ;
+    rdfs:comment "A third-party library used within a skill for a specific language." .
+
+as:Pipeline a rdfs:Class ;
+    rdfs:label "Pipeline" ;
+    rdfs:comment "A data processing pipeline instance — ETL, crawl, or API integration." .
+
+as:Metric a rdfs:Class ;
+    rdfs:label "Metric" ;
+    rdfs:comment "A dimensional time-series metric (Atlas/Spectator pattern)." .
+
+as:EvalSuite a rdfs:Class ;
+    rdfs:label "Eval Suite" ;
+    rdfs:comment "A collection of evaluation test cases for a skill or pipeline." .
+
+as:Resource a rdfs:Class ;
+    rdfs:label "Resource" ;
+    rdfs:comment "An external documentation or reference resource (Claude platform, GitHub, etc.)." .
+
+# ── Enumerations ──────────────────────────────────────────
+
+as:LanguageTier a rdfs:Class ;
+    rdfs:label "Language Tier" ;
+    rdfs:comment "Capability tier for a language within a skill." .
+
+as:Tier1 a as:LanguageTier ;
+    rdfs:label "Tier 1" ;
+    rdfs:comment "Full stack: SDK + Agent SDK + MCP + primary framework + bloom/quality + LSP + DSPy + evals." .
+
+as:Tier2 a as:LanguageTier ;
+    rdfs:label "Tier 2" ;
+    rdfs:comment "SDK + MCP + framework + bloom/quality + LSP. No Agent SDK, limited DSPy." .
+
+as:Tier3 a as:LanguageTier ;
+    rdfs:label "Tier 3" ;
+    rdfs:comment "SDK + MCP + basic framework. Minimal tooling." .
+
+as:MetricType a rdfs:Class ;
+    rdfs:label "Metric Type" ;
+    rdfs:comment "Type of dimensional metric (Spectator pattern)." .
+
+as:Counter a as:MetricType ;
+    rdfs:label "Counter" ;
+    rdfs:comment "Monotonically increasing count. Rate is the primary query." .
+
+as:Timer a as:MetricType ;
+    rdfs:label "Timer" ;
+    rdfs:comment "Duration measurement. Reports count, totalTime, max." .
+
+as:Gauge a as:MetricType ;
+    rdfs:label "Gauge" ;
+    rdfs:comment "Instantaneous value snapshot." .
+
+as:DistributionSummary a as:MetricType ;
+    rdfs:label "Distribution Summary" ;
+    rdfs:comment "Value distribution. Reports count, totalAmount, max." .
+
+as:ResourceType a rdfs:Class ;
+    rdfs:label "Resource Type" .
+
+as:ModelCard a as:ResourceType ;
+    rdfs:label "Model Card" .
+
+as:APIPrimer a as:ResourceType ;
+    rdfs:label "API Primer" ;
+    rdfs:comment "Concise API guide optimized for LLM ingestion." .
+
+as:LLMsIndex a as:ResourceType ;
+    rdfs:label "LLMs Index" ;
+    rdfs:comment "Machine-readable documentation index (llms.txt)." .
+
+as:Cookbook a as:ResourceType ;
+    rdfs:label "Cookbook" ;
+    rdfs:comment "Replicable code samples and implementations." .
+
+# ── Properties ────────────────────────────────────────────
+
+# Skill properties
+as:skillName a rdf:Property ;
+    rdfs:domain as:Skill ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Machine-readable skill identifier." .
+
+as:description a rdf:Property ;
+    rdfs:domain as:Skill ;
+    rdfs:range xsd:string .
+
+as:triggerPattern a rdf:Property ;
+    rdfs:domain as:Skill ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Natural language description of when this skill should activate." .
+
+as:supportsLanguage a rdf:Property ;
+    rdfs:domain as:Skill ;
+    rdfs:range as:Language .
+
+as:languageTier a rdf:Property ;
+    rdfs:comment "The tier of a language within a specific skill." ;
+    rdfs:range as:LanguageTier .
+
+# Model properties
+as:modelId a rdf:Property ;
+    rdfs:domain as:Model ;
+    rdfs:range xsd:string ;
+    rdfs:comment "API model identifier, hyphen format (e.g. claude-opus-4-6)." .
+
+as:modelFamily a rdf:Property ;
+    rdfs:domain as:Model ;
+    rdfs:range xsd:string .
+
+as:supportsThinking a rdf:Property ;
+    rdfs:domain as:Model ;
+    rdfs:range xsd:boolean .
+
+as:supportsToolUse a rdf:Property ;
+    rdfs:domain as:Model ;
+    rdfs:range xsd:boolean .
+
+as:supportsVision a rdf:Property ;
+    rdfs:domain as:Model ;
+    rdfs:range xsd:boolean .
+
+# SDK properties
+as:sdkLanguage a rdf:Property ;
+    rdfs:domain as:SDK ;
+    rdfs:range as:Language .
+
+as:sdkRepo a rdf:Property ;
+    rdfs:domain as:SDK ;
+    rdfs:range xsd:anyURI .
+
+as:sdkStars a rdf:Property ;
+    rdfs:domain as:SDK ;
+    rdfs:range xsd:integer .
+
+as:constructorPattern a rdf:Property ;
+    rdfs:domain as:SDK ;
+    rdfs:range xsd:string ;
+    rdfs:comment "The correct constructor call for this SDK (e.g. 'new Anthropic()')." .
+
+# Package properties
+as:packageName a rdf:Property ;
+    rdfs:domain as:Package ;
+    rdfs:range xsd:string .
+
+as:packageVersion a rdf:Property ;
+    rdfs:domain as:Package ;
+    rdfs:range xsd:string .
+
+as:packageLanguage a rdf:Property ;
+    rdfs:domain as:Package ;
+    rdfs:range as:Language .
+
+as:usedBySkill a rdf:Property ;
+    rdfs:domain as:Package ;
+    rdfs:range as:Skill .
+
+# Metric properties (Atlas/Spectator dimensional model)
+as:metricName a rdf:Property ;
+    rdfs:domain as:Metric ;
+    rdfs:range xsd:string .
+
+as:metricType a rdf:Property ;
+    rdfs:domain as:Metric ;
+    rdfs:range as:MetricType .
+
+as:metricUnit a rdf:Property ;
+    rdfs:domain as:Metric ;
+    rdfs:range xsd:string .
+
+as:hasDimension a rdf:Property ;
+    rdfs:domain as:Metric ;
+    rdfs:range xsd:string ;
+    rdfs:comment "A tag key for dimensional slicing (e.g. 'skill', 'language', 'model')." .
+
+# Pipeline properties
+as:pipelineSkill a rdf:Property ;
+    rdfs:domain as:Pipeline ;
+    rdfs:range as:Skill .
+
+as:pipelineModel a rdf:Property ;
+    rdfs:domain as:Pipeline ;
+    rdfs:range as:Model .
+
+as:emitsMetric a rdf:Property ;
+    rdfs:domain as:Pipeline ;
+    rdfs:range as:Metric .
+
+# Resource properties
+as:resourceType a rdf:Property ;
+    rdfs:domain as:Resource ;
+    rdfs:range as:ResourceType .
+
+as:resourceURL a rdf:Property ;
+    rdfs:domain as:Resource ;
+    rdfs:range xsd:anyURI .
+
+as:relatedModel a rdf:Property ;
+    rdfs:domain as:Resource ;
+    rdfs:range as:Model .
+
+# ── Instances: Languages ──────────────────────────────────
+
+as:TypeScript a as:Language ; rdfs:label "TypeScript" .
+as:Python a as:Language ; rdfs:label "Python" .
+as:Java a as:Language ; rdfs:label "Java" .
+as:Go a as:Language ; rdfs:label "Go" .
+as:Ruby a as:Language ; rdfs:label "Ruby" .
+as:CSharp a as:Language ; rdfs:label "C#" .
+as:PHP a as:Language ; rdfs:label "PHP" .
+as:Shell a as:Language ; rdfs:label "Shell/cURL" .
+
+# ── Instances: Models ─────────────────────────────────────
+
+as:claude-opus-4-6 a as:Model ;
+    as:modelId "claude-opus-4-6" ;
+    as:modelFamily "Claude 4.6" ;
+    as:supportsThinking true ;
+    as:supportsToolUse true ;
+    as:supportsVision true ;
+    rdfs:label "Claude Opus 4.6" .
+
+as:claude-sonnet-4-6 a as:Model ;
+    as:modelId "claude-sonnet-4-6" ;
+    as:modelFamily "Claude 4.6" ;
+    as:supportsThinking true ;
+    as:supportsToolUse true ;
+    as:supportsVision true ;
+    rdfs:label "Claude Sonnet 4.6" .
+
+as:claude-haiku-4-5 a as:Model ;
+    as:modelId "claude-haiku-4-5-20251001" ;
+    as:modelFamily "Claude 4.5" ;
+    as:supportsThinking false ;
+    as:supportsToolUse true ;
+    as:supportsVision true ;
+    rdfs:label "Claude Haiku 4.5" .
+
+# ── Instances: SDKs ───────────────────────────────────────
+
+as:sdk-typescript a as:SDK ;
+    as:sdkLanguage as:TypeScript ;
+    as:sdkStars 1800 ;
+    as:constructorPattern "new Anthropic()" ;
+    rdfs:label "anthropic-sdk-typescript" .
+
+as:sdk-python a as:SDK ;
+    as:sdkLanguage as:Python ;
+    as:sdkStars 3100 ;
+    as:constructorPattern "anthropic.Anthropic()" ;
+    rdfs:label "anthropic-sdk-python" .
+
+as:sdk-java a as:SDK ;
+    as:sdkLanguage as:Java ;
+    as:sdkStars 271 ;
+    as:constructorPattern "AnthropicClient.builder().build()" ;
+    rdfs:label "anthropic-sdk-java" .
+
+as:sdk-go a as:SDK ;
+    as:sdkLanguage as:Go ;
+    as:sdkStars 943 ;
+    as:constructorPattern "anthropic.NewClient()" ;
+    rdfs:label "anthropic-sdk-go" .
+
+as:sdk-ruby a as:SDK ;
+    as:sdkLanguage as:Ruby ;
+    as:sdkStars 312 ;
+    as:constructorPattern "Anthropic::Client.new" ;
+    rdfs:label "anthropic-sdk-ruby" .
+
+as:sdk-csharp a as:SDK ;
+    as:sdkLanguage as:CSharp ;
+    as:sdkStars 212 ;
+    as:constructorPattern "new AnthropicClient()" ;
+    rdfs:label "anthropic-sdk-csharp" .
+
+as:sdk-php a as:SDK ;
+    as:sdkLanguage as:PHP ;
+    as:sdkStars 128 ;
+    as:constructorPattern "Anthropic::client()" ;
+    rdfs:label "anthropic-sdk-php" .
+
+# ── Instances: Skills ─────────────────────────────────────
+
+as:crawl-ingest a as:Skill ;
+    as:skillName "crawl-ingest" ;
+    as:description "Web crawling, deduplication, and data ingestion using Anthropic SDKs" ;
+    as:triggerPattern "crawl websites, build scrapers, deduplicate URLs, bloom filters, ingest data" ;
+    as:supportsLanguage as:TypeScript, as:Python, as:Java, as:Go, as:Ruby, as:CSharp, as:PHP, as:Shell ;
+    rdfs:label "Crawl-Ingest" .
+
+as:api-client a as:Skill ;
+    as:skillName "api-client" ;
+    as:description "API client generation, testing, and integration using Anthropic SDKs" ;
+    as:triggerPattern "build API clients, generate SDKs, test REST/GraphQL APIs, OAuth, retry/backoff" ;
+    as:supportsLanguage as:TypeScript, as:Python, as:Java, as:Go, as:Ruby, as:CSharp, as:PHP, as:Shell ;
+    rdfs:label "API Client" .
+
+as:data-pipeline a as:Skill ;
+    as:skillName "data-pipeline" ;
+    as:description "Data pipeline orchestration, ETL/ELT, streaming, and batch processing" ;
+    as:triggerPattern "build data pipelines, ETL/ELT workflows, stream processing, batch jobs, CDC" ;
+    as:supportsLanguage as:TypeScript, as:Python, as:Java, as:Go, as:Ruby, as:CSharp, as:PHP, as:Shell ;
+    rdfs:label "Data Pipeline" .
+
+# ── Instances: Metrics (Atlas/Spectator pattern) ──────────
+
+as:metric-pipeline-duration a as:Metric ;
+    as:metricName "agentstreams.pipeline.duration" ;
+    as:metricType as:Timer ;
+    as:metricUnit "seconds" ;
+    as:hasDimension "skill", "language", "stage" ;
+    rdfs:label "Pipeline Stage Duration" .
+
+as:metric-api-requests a as:Metric ;
+    as:metricName "agentstreams.api.requests" ;
+    as:metricType as:Counter ;
+    as:metricUnit "requests" ;
+    as:hasDimension "model", "skill", "status" ;
+    rdfs:label "Claude API Requests" .
+
+as:metric-api-tokens a as:Metric ;
+    as:metricName "agentstreams.api.tokens" ;
+    as:metricType as:Counter ;
+    as:metricUnit "tokens" ;
+    as:hasDimension "model", "skill", "direction" ;
+    rdfs:label "Token Usage" ;
+    rdfs:comment "direction: input | output" .
+
+as:metric-api-cost a as:Metric ;
+    as:metricName "agentstreams.api.cost" ;
+    as:metricType as:DistributionSummary ;
+    as:metricUnit "USD" ;
+    as:hasDimension "model", "skill" ;
+    rdfs:label "API Cost per Request" .
+
+as:metric-eval-score a as:Metric ;
+    as:metricName "agentstreams.eval.score" ;
+    as:metricType as:Gauge ;
+    as:metricUnit "ratio" ;
+    as:hasDimension "skill", "eval_suite", "assertion_type" ;
+    rdfs:label "Eval Pass Rate" .
+
+as:metric-crawl-pages a as:Metric ;
+    as:metricName "agentstreams.crawl.pages" ;
+    as:metricType as:Counter ;
+    as:metricUnit "pages" ;
+    as:hasDimension "domain", "status", "is_new" ;
+    rdfs:label "Pages Crawled" .
+
+as:metric-crawl-dedup a as:Metric ;
+    as:metricName "agentstreams.crawl.dedup" ;
+    as:metricType as:Gauge ;
+    as:metricUnit "ratio" ;
+    as:hasDimension "method" ;
+    rdfs:label "Bloom Filter False Positive Rate" ;
+    rdfs:comment "method: bloom | simhash | exact" .
+
+# ── Instances: Claude Platform Resources ──────────────────
+
+as:resource-api-primer a as:Resource ;
+    as:resourceType as:APIPrimer ;
+    as:resourceURL "https://platform.claude.com/docs/en/claude_api_primer"^^xsd:anyURI ;
+    rdfs:label "API Primer for Claude Ingestion" ;
+    rdfs:comment "Concise API guide covering models, messages, tools, streaming, extended thinking." .
+
+as:resource-llms-txt a as:Resource ;
+    as:resourceType as:LLMsIndex ;
+    as:resourceURL "https://platform.claude.com/llms.txt"^^xsd:anyURI ;
+    rdfs:label "llms.txt" ;
+    rdfs:comment "Documentation index — 620 pages, organized by category." .
+
+as:resource-llms-full a as:Resource ;
+    as:resourceType as:LLMsIndex ;
+    as:resourceURL "https://platform.claude.com/llms-full.txt"^^xsd:anyURI ;
+    rdfs:label "llms-full.txt" ;
+    rdfs:comment "Complete documentation in single file for full-context ingestion." .
+
+as:resource-opus-46-card a as:Resource ;
+    as:resourceType as:ModelCard ;
+    as:resourceURL "https://www.anthropic.com/claude-opus-4-6-system-card"^^xsd:anyURI ;
+    as:relatedModel as:claude-opus-4-6 ;
+    rdfs:label "Claude Opus 4.6 System Card" .
+
+as:resource-sonnet-46-card a as:Resource ;
+    as:resourceType as:ModelCard ;
+    as:resourceURL "https://www.anthropic.com/claude-sonnet-4-6-system-card"^^xsd:anyURI ;
+    as:relatedModel as:claude-sonnet-4-6 ;
+    rdfs:label "Claude Sonnet 4.6 System Card" .
