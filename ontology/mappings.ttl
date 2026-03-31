@@ -141,3 +141,56 @@ map:resource-type a map:Mapping ;
     map:ontologyProperty as:resourceType ;
     map:targetTable "resources" ;
     map:targetColumn "type" .
+
+# ── Language mappings ─────────────────────────────────────
+
+map:language-table a map:Mapping ;
+    map:ontologyClass as:Language ;
+    map:targetTable "languages" ;
+    rdfs:label "Language → languages table" .
+
+# ── Package mappings ──────────────────────────────────────
+
+map:package-table a map:Mapping ;
+    map:ontologyClass as:Package ;
+    map:targetTable "packages" ;
+    rdfs:label "Package → packages table" .
+
+map:package-name a map:Mapping ;
+    map:ontologyProperty as:packageName ;
+    map:targetTable "packages" ;
+    map:targetColumn "name" .
+
+map:package-language a map:Mapping ;
+    map:ontologyProperty as:packageLanguage ;
+    map:targetTable "packages" ;
+    map:targetColumn "language_id" .
+
+map:package-skill a map:Mapping ;
+    map:ontologyProperty as:usedBySkill ;
+    map:targetTable "packages" ;
+    map:targetColumn "skill_name" .
+
+# ── Pipeline mappings ─────────────────────────────────────
+
+map:pipeline-table a map:Mapping ;
+    map:ontologyClass as:Pipeline ;
+    map:targetTable "pipelines" ;
+    rdfs:label "Pipeline → pipelines table" .
+
+map:pipeline-skill a map:Mapping ;
+    map:ontologyProperty as:pipelineSkill ;
+    map:targetTable "pipelines" ;
+    map:targetColumn "skill_name" .
+
+map:pipeline-model a map:Mapping ;
+    map:ontologyProperty as:pipelineModel ;
+    map:targetTable "pipelines" ;
+    map:targetColumn "model_id" .
+
+# ── EvalSuite mappings ────────────────────────────────────
+
+map:eval-suite-table a map:Mapping ;
+    map:ontologyClass as:EvalSuite ;
+    map:targetTable "eval_suites" ;
+    rdfs:label "EvalSuite → eval_suites table" .
