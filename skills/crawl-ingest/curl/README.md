@@ -51,9 +51,10 @@ sqlite3 ./data/crawl.db "CREATE TABLE IF NOT EXISTS seen_urls (url TEXT PRIMARY 
 # Check and insert
 check_url() {
     local url="$1"
-    local exists=$(sqlite3 ./data/crawl.db "SELECT COUNT(*) FROM seen_urls WHERE url='$url';")
+    local safe_url="${url//\'/\'\'}"  # Escape single quotes for SQL
+    local exists=$(sqlite3 ./data/crawl.db "SELECT COUNT(*) FROM seen_urls WHERE url='${safe_url}';")
     if [ "$exists" -eq "0" ]; then
-        sqlite3 ./data/crawl.db "INSERT INTO seen_urls VALUES ('$url');"
+        sqlite3 ./data/crawl.db "INSERT INTO seen_urls VALUES ('${safe_url}');"
         echo "new"
     else
         echo "seen"
