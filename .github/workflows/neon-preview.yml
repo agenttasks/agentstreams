@@ -5,7 +5,6 @@ on:
     paths:
       - 'ontology/schema.sql'
       - 'scripts/generate-timeseries.py'
-      - 'scripts/timeseries-seed.sql'
   pull_request_target:
     types: [closed]
 
@@ -22,9 +21,21 @@ jobs:
     outputs:
       branch_id: ${{ steps.create.outputs.branch_id }}
     steps:
+      - name: Check secrets
+        id: check
+        run: |
+          if [ -z "${{ secrets.NEON_API_KEY }}" ] || [ -z "${{ secrets.NEON_PROJECT_ID }}" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "⚠️ NEON_API_KEY or NEON_PROJECT_ID not configured — skipping preview branch" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/checkout@v4
+        if: steps.check.outputs.skip != 'true'
 
       - name: Create Neon branch
+        if: steps.check.outputs.skip != 'true'
         id: create
         uses: neondatabase/create-branch-action@v6.3.0
         with:
@@ -35,6 +46,7 @@ jobs:
           database: neondb
 
       - name: Apply schema
+        if: steps.check.outputs.skip != 'true'
         env:
           DATABASE_URL: ${{ steps.create.outputs.db_url_with_pooler }}
         run: |
@@ -45,6 +57,7 @@ jobs:
           echo "- Schema applied successfully" >> $GITHUB_STEP_SUMMARY
 
       - name: Validate pg_graphql
+        if: steps.check.outputs.skip != 'true'
         env:
           DATABASE_URL: ${{ steps.create.outputs.db_url_with_pooler }}
         run: |
@@ -58,7 +71,17 @@ jobs:
     if: github.event.action == 'closed'
     runs-on: ubuntu-latest
     steps:
+      - name: Check secrets
+        id: check
+        run: |
+          if [ -z "${{ secrets.NEON_API_KEY }}" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Delete Neon branch
+        if: steps.check.outputs.skip != 'true'
         uses: neondatabase/delete-branch-action@v3
         with:
           project_id: ${{ secrets.NEON_PROJECT_ID }}
