@@ -195,7 +195,10 @@ INSERT INTO metrics (name, type, unit, dimensions, description) VALUES
     ('agentstreams.api.cost', 'distribution_summary', 'USD', ARRAY['model', 'skill'], 'API cost per request'),
     ('agentstreams.eval.score', 'gauge', 'ratio', ARRAY['skill', 'eval_suite', 'assertion_type'], 'Eval pass rate'),
     ('agentstreams.crawl.pages', 'counter', 'pages', ARRAY['domain', 'status', 'is_new'], 'Pages crawled'),
-    ('agentstreams.crawl.dedup', 'gauge', 'ratio', ARRAY['method'], 'Bloom filter false positive rate');
+    ('agentstreams.crawl.dedup', 'gauge', 'ratio', ARRAY['method'], 'Bloom filter false positive rate'),
+    ('agentstreams.tasks.throughput', 'counter', 'tasks', ARRAY['queue', 'type', 'status'], 'Task completion count'),
+    ('agentstreams.tasks.duration', 'timer', 'seconds', ARRAY['queue', 'type'], 'Task processing duration'),
+    ('agentstreams.tasks.queue_depth', 'gauge', 'tasks', ARRAY['queue', 'type'], 'Current queue depth (queued + processing)');
 
 INSERT INTO resources (type, label, url, description) VALUES
     ('api_primer', 'API Primer for Claude Ingestion', 'https://platform.claude.com/docs/en/claude_api_primer', 'Concise API guide for LLM ingestion'),

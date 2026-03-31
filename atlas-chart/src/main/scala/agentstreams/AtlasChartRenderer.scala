@@ -51,7 +51,10 @@ object AtlasChartRenderer {
     "agentstreams.api.cost"          -> ("API Cost per Request", "USD"),
     "agentstreams.eval.score"        -> ("Eval Pass Rate", "ratio"),
     "agentstreams.crawl.pages"       -> ("Pages Crawled (rate/min)", "pages/min"),
-    "agentstreams.crawl.dedup"       -> ("Bloom Filter False Positive Rate", "ratio")
+    "agentstreams.crawl.dedup"       -> ("Bloom Filter False Positive Rate", "ratio"),
+    "agentstreams.tasks.throughput"  -> ("Task Throughput (rate/min)", "tasks/min"),
+    "agentstreams.tasks.duration"    -> ("Task Processing Duration", "seconds"),
+    "agentstreams.tasks.queue_depth" -> ("Task Queue Depth", "tasks")
   )
 
   case class SeriesData(

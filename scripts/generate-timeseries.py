@@ -99,6 +99,32 @@ METRICS = {
             {"method": "exact"},
         ],
     },
+    "agentstreams.tasks.throughput": {
+        "type": "counter",
+        "tags_combos": [
+            {"queue": "crawl-ingest", "type": "code", "status": "completed"},
+            {"queue": "crawl-ingest", "type": "code", "status": "failed"},
+            {"queue": "api-client", "type": "code", "status": "completed"},
+            {"queue": "data-pipeline", "type": "knowledge_work", "status": "completed"},
+            {"queue": "data-pipeline", "type": "knowledge_work", "status": "failed"},
+        ],
+    },
+    "agentstreams.tasks.duration": {
+        "type": "timer",
+        "tags_combos": [
+            {"queue": "crawl-ingest", "type": "code"},
+            {"queue": "api-client", "type": "code"},
+            {"queue": "data-pipeline", "type": "knowledge_work"},
+        ],
+    },
+    "agentstreams.tasks.queue_depth": {
+        "type": "gauge",
+        "tags_combos": [
+            {"queue": "crawl-ingest", "type": "code"},
+            {"queue": "api-client", "type": "code"},
+            {"queue": "data-pipeline", "type": "knowledge_work"},
+        ],
+    },
 }
 
 
