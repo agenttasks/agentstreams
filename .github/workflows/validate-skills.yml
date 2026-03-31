@@ -1,0 +1,31 @@
+name: Validate Skills
+
+on:
+  pull_request:
+    paths:
+      - 'skills/**'
+      - 'scripts/validate-skills.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Skill Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate all skills
+        run: python scripts/validate-skills.py --check-only
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Skill Validation" >> $GITHUB_STEP_SUMMARY
+          python scripts/validate-skills.py --check-only >> $GITHUB_STEP_SUMMARY 2>&1 || true
