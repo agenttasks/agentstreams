@@ -7,14 +7,67 @@ on:
       - 'evals/**'
       - 'SKILL.md'
   workflow_dispatch:
+    inputs:
+      live:
+        description: 'Run live evals against Anthropic API (requires ANTHROPIC_API_KEY secret)'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
   pull-requests: write
 
 jobs:
-  promptfoo-eval:
-    name: promptfoo Extraction Evals
+  # ── Config validation (always runs) ──────────────────────
+  validate:
+    name: Validate Eval Config
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: evals/crawl-ingest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install promptfoo
+        run: npm install -g promptfoo@0.121.3
+
+      - name: Validate config
+        run: |
+          echo "## Eval Config Validation" >> $GITHUB_STEP_SUMMARY
+
+          # Check YAML parses
+          promptfoo eval --dry-run 2>&1 && echo "- ✅ Config parses" >> $GITHUB_STEP_SUMMARY || {
+            echo "- ❌ Config parse error" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          }
+
+          # Check test data files exist
+          MISSING=0
+          for f in test_data/*.html; do
+            if [ ! -f "$f" ]; then
+              echo "- ❌ Missing: $f" >> $GITHUB_STEP_SUMMARY
+              MISSING=$((MISSING + 1))
+            fi
+          done
+          if [ "$MISSING" -eq 0 ]; then
+            echo "- ✅ All test data files present ($(ls test_data/*.html | wc -l) files)" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Count tests and assertions
+          TESTS=$(grep -c '^\s*- description:' promptfooconfig.yaml || echo 0)
+          ASSERTS=$(grep -c '^\s*- type:' promptfooconfig.yaml || echo 0)
+          echo "- ✅ ${TESTS} test cases, ${ASSERTS} assertions" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "To run live evals: trigger workflow_dispatch with live=true (requires ANTHROPIC_API_KEY secret)" >> $GITHUB_STEP_SUMMARY
+
+  # ── Live evals (workflow_dispatch only) ──────────────────
+  live-eval:
+    name: Live Extraction Evals
+    if: github.event_name == 'workflow_dispatch' && inputs.live
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -35,9 +88,9 @@ jobs:
           npm install -g promptfoo@0.121.3
           pip install anthropic
 
-      - name: Run evals
+      - name: Run live evals
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           promptfoo eval --no-cache -o results.json
           promptfoo eval --no-cache -o results.txt --output-format text
@@ -47,7 +100,7 @@ jobs:
           PASS=$(jq '.results.stats.successes' results.json)
           FAIL=$(jq '.results.stats.failures' results.json)
           TOTAL=$((PASS + FAIL))
-          echo "## Eval Results: ${PASS}/${TOTAL} passed" >> $GITHUB_STEP_SUMMARY
+          echo "## Live Eval Results: ${PASS}/${TOTAL} passed" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ "$FAIL" -gt 0 ]; then
             echo "### Failures" >> $GITHUB_STEP_SUMMARY
