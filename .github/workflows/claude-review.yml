@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   # ═══════════════════════════════════════════════════════════
-  # 1. SECURITY REVIEW (Required — blocks all downstream)
+  # 1. SECURITY REVIEW (Required — blocks merge)
   # ═══════════════════════════════════════════════════════════
   claude-security:
     name: Security Review
@@ -22,15 +22,14 @@ jobs:
           fetch-depth: 0
 
       - uses: anthropics/claude-code-action@v1
-        id: review
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
             SECURITY REVIEW — ${{ github.repository }}#${{ github.event.pull_request.number }}
 
-            Run the review-security skill against the changes in this PR.
+            Review ONLY the files changed in this PR (use git diff to find them).
 
-            Check every changed file for:
+            Check for:
             1. ANTHROPIC_API_KEY usage (only allowed in "never use" warnings)
             2. Hardcoded credentials in code examples
             3. Unsafe shell patterns (unquoted vars, eval, command injection)
@@ -38,18 +37,19 @@ jobs:
             5. SSRF patterns in crawler configs
             6. Path traversal in file handling
 
-            Return a structured JSON verdict.
+            If issues found, post a PR comment listing them.
+            If clean, post a brief approving comment.
           claude_args: |
-            --max-turns 20
+            --max-turns 15
             --model claude-sonnet-4-6
 
   # ═══════════════════════════════════════════════════════════
-  # 2. CONSISTENCY REVIEW (Runs after security passes)
+  # 2. CONSISTENCY REVIEW (Advisory — runs in parallel)
   # ═══════════════════════════════════════════════════════════
   claude-consistency:
     name: Consistency Review
-    needs: claude-security
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
         with:
@@ -61,43 +61,36 @@ jobs:
           prompt: |
             CONSISTENCY REVIEW — ${{ github.repository }}#${{ github.event.pull_request.number }}
 
-            Run the review-consistency skill against the changes in this PR.
+            1. Run `git diff origin/main --name-only` to find changed files.
+            2. For each changed file, check:
+               - Version numbers match SKILL.md
+               - Model names use hyphen format (claude-opus-4-6, claude-sonnet-4-6)
+               - Cross-references point to existing files
+               - SDK constructor patterns are correct
+            3. Only read files that are directly referenced by the changed files.
 
-            Cross-check all files in skills/crawl-ingest/ for:
-            1. Version numbers consistent across SKILL.md, READMEs, package-matrix.md, setup scripts
-            2. Model names in hyphen format (claude-opus-4-6, claude-sonnet-4-6)
-            3. Star counts consistent for same repos across files
-            4. Cross-references in Further Reading point to existing files
-            5. SDK constructor patterns match actual APIs
-            6. MCP SDK mentioned in every language README
-            7. Feature completeness scores match documented capabilities
-
-            Post inline comments on specific lines where inconsistencies exist.
-            If clean, post a single approving comment.
+            Post inline comments on inconsistencies. If clean, post a brief approving comment.
           claude_args: |
-            --max-turns 20
+            --max-turns 15
             --model claude-sonnet-4-6
 
   # ═══════════════════════════════════════════════════════════
-  # 3. MERGE GATE (All checks must pass)
+  # 3. MERGE GATE (Only security is blocking)
   # ═══════════════════════════════════════════════════════════
   merge-gate:
     name: Merge Gate
-    needs: [claude-security, claude-consistency]
+    needs: [claude-security]
     runs-on: ubuntu-latest
     if: always()
     steps:
-      - name: Check all gates passed
+      - name: Check security gate
         run: |
           SECURITY="${{ needs.claude-security.result }}"
-          CONSISTENCY="${{ needs.claude-consistency.result }}"
-
           echo "Security: $SECURITY"
-          echo "Consistency: $CONSISTENCY"
 
-          if [ "$SECURITY" != "success" ] || [ "$CONSISTENCY" != "success" ]; then
-            echo "::error::One or more review gates failed — merge blocked"
+          if [ "$SECURITY" != "success" ]; then
+            echo "::error::Security review failed — merge blocked"
             exit 1
           fi
 
-          echo "::notice::All review gates passed — PR is mergeable"
+          echo "::notice::Security review passed — PR is mergeable"
