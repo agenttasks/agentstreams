@@ -1,0 +1,20 @@
+{
+  "data": [
+    {"id": "1", "name": "Rex", "status": "available"},
+    {"id": "2", "name": "Fluffy", "status": "sold"},
+    {"id": "3", "name": "Buddy", "status": "available"}
+  ],
+  "pagination": {
+    "total": 47,
+    "page": 1,
+    "per_page": 3,
+    "total_pages": 16,
+    "next_cursor": "eyJpZCI6M30=",
+    "has_more": true
+  },
+  "links": {
+    "self": "/api/v1/pets?page=1&per_page=3",
+    "next": "/api/v1/pets?page=2&per_page=3",
+    "last": "/api/v1/pets?page=16&per_page=3"
+  }
+}
