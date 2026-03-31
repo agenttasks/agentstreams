@@ -67,9 +67,7 @@ def find_skills() -> list[str]:
     if not SKILLS_DIR.exists():
         return []
     return [
-        d.name
-        for d in sorted(SKILLS_DIR.iterdir())
-        if d.is_dir() and (d / "SKILL.md").exists()
+        d.name for d in sorted(SKILLS_DIR.iterdir()) if d.is_dir() and (d / "SKILL.md").exists()
     ]
 
 
@@ -77,8 +75,8 @@ def check_cross_references(skill_dir: Path, content: str, file_path: Path) -> li
     """Check that cross-referenced files exist."""
     errors = []
     # Match markdown links and backtick references to .md files
-    refs = re.findall(r'`([^`]+\.md)`', content)
-    refs += re.findall(r'\[.*?\]\(([^)]+\.md)\)', content)
+    refs = re.findall(r"`([^`]+\.md)`", content)
+    refs += re.findall(r"\[.*?\]\(([^)]+\.md)\)", content)
 
     for ref in refs:
         if ref.startswith("http"):
@@ -120,9 +118,7 @@ def check_model_names(content: str, file_path: Path) -> list[str]:
     """Check model names use hyphen format."""
     warnings = []
     if MODEL_PATTERN.search(content):
-        warnings.append(
-            f"{file_path.name}: model name uses dots/underscores instead of hyphens"
-        )
+        warnings.append(f"{file_path.name}: model name uses dots/underscores instead of hyphens")
     return warnings
 
 

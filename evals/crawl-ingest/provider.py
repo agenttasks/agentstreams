@@ -39,6 +39,8 @@ def call_api(prompt, options, context):
         }
         return {"output": output, "tokenUsage": token_usage}
     except anthropic.AuthenticationError:
-        return {"error": "Authentication failed. CLAUDE_CODE_OAUTH_TOKEN may not be a valid API key. Add a standard ANTHROPIC_API_KEY secret for evals."}
+        return {
+            "error": "Authentication failed. CLAUDE_CODE_OAUTH_TOKEN may not be a valid API key. Add a standard ANTHROPIC_API_KEY secret for evals."
+        }
     except Exception as e:
         return {"error": str(e)}

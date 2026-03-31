@@ -11,10 +11,10 @@ Output: SQL INSERT statements for Neon metric_values table.
 Usage: python scripts/generate-timeseries.py > scripts/timeseries-seed.sql
 """
 
+import json
 import math
 import random
-import json
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 # ── Config ────────────────────────────────────────────────────
 
@@ -23,7 +23,7 @@ DAYS = 14
 TOTAL_STEPS = DAYS * 24 * 60  # 20_160
 
 # End = midnight UTC today, Start = 14 days ago
-END = datetime(2026, 3, 31, 0, 0, 0, tzinfo=timezone.utc)
+END = datetime(2026, 3, 31, 0, 0, 0, tzinfo=UTC)
 START = END - timedelta(days=DAYS)
 
 random.seed(42)  # Reproducible
@@ -76,9 +76,21 @@ METRICS = {
     "agentstreams.eval.score": {
         "type": "gauge",
         "tags_combos": [
-            {"skill": "crawl-ingest", "eval_suite": "crawl-ingest-extraction", "assertion_type": "contains"},
-            {"skill": "crawl-ingest", "eval_suite": "crawl-ingest-extraction", "assertion_type": "cost"},
-            {"skill": "crawl-ingest", "eval_suite": "crawl-ingest-extraction", "assertion_type": "is-json"},
+            {
+                "skill": "crawl-ingest",
+                "eval_suite": "crawl-ingest-extraction",
+                "assertion_type": "contains",
+            },
+            {
+                "skill": "crawl-ingest",
+                "eval_suite": "crawl-ingest-extraction",
+                "assertion_type": "cost",
+            },
+            {
+                "skill": "crawl-ingest",
+                "eval_suite": "crawl-ingest-extraction",
+                "assertion_type": "is-json",
+            },
         ],
     },
     "agentstreams.crawl.pages": {
@@ -246,7 +258,7 @@ def main():
 
     print("-- ═══════════════════════════════════════════════════════════")
     print("-- AgentStreams — 2-week time-series seed data")
-    print(f"-- Generated: {datetime.now(timezone.utc).isoformat()}")
+    print(f"-- Generated: {datetime.now(UTC).isoformat()}")
     print(f"-- Range: {START.isoformat()} → {END.isoformat()}")
     print(f"-- Step: {STEP_SECONDS * SAMPLE_INTERVAL}s ({SAMPLE_INTERVAL}-minute intervals)")
     print("-- Atlas alignment: ArrayTimeSeq(DsType, startMillis=..., stepMillis=300000)")
@@ -279,25 +291,20 @@ def main():
                 value = gen(step, tags)
                 ts_str = ts.strftime("%Y-%m-%d %H:%M:%S+00")
                 batch.append(
-                    f"('{escape_sql(metric_name)}', {value}, "
-                    f"'{escape_sql(tags_json)}', '{ts_str}')"
+                    f"('{escape_sql(metric_name)}', {value}, '{escape_sql(tags_json)}', '{ts_str}')"
                 )
                 total_rows += 1
 
                 if len(batch) >= batch_size:
                     print(
-                        "INSERT INTO metric_values "
-                        "(metric_name, value, tags, recorded_at) VALUES"
+                        "INSERT INTO metric_values (metric_name, value, tags, recorded_at) VALUES"
                     )
                     print(",\n".join(batch) + ";")
                     print()
                     batch = []
 
             if batch:
-                print(
-                    "INSERT INTO metric_values "
-                    "(metric_name, value, tags, recorded_at) VALUES"
-                )
+                print("INSERT INTO metric_values (metric_name, value, tags, recorded_at) VALUES")
                 print(",\n".join(batch) + ";")
                 print()
 
