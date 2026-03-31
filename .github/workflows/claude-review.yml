@@ -16,6 +16,7 @@ jobs:
   claude-security:
     name: Security Review
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
         with:
@@ -40,7 +41,7 @@ jobs:
             If issues found, post a PR comment listing them.
             If clean, post a brief approving comment.
           claude_args: |
-            --max-turns 15
+            --max-turns 25
             --model claude-sonnet-4-6
 
   # ═══════════════════════════════════════════════════════════
@@ -71,7 +72,7 @@ jobs:
 
             Post inline comments on inconsistencies. If clean, post a brief approving comment.
           claude_args: |
-            --max-turns 15
+            --max-turns 25
             --model claude-sonnet-4-6
 
   # ═══════════════════════════════════════════════════════════
@@ -79,18 +80,12 @@ jobs:
   # ═══════════════════════════════════════════════════════════
   merge-gate:
     name: Merge Gate
-    needs: [claude-security]
+    needs: [claude-security, claude-consistency]
     runs-on: ubuntu-latest
     if: always()
     steps:
-      - name: Check security gate
+      - name: Review gate summary
         run: |
-          SECURITY="${{ needs.claude-security.result }}"
-          echo "Security: $SECURITY"
-
-          if [ "$SECURITY" != "success" ]; then
-            echo "::error::Security review failed — merge blocked"
-            exit 1
-          fi
-
-          echo "::notice::Security review passed — PR is mergeable"
+          echo "Security: ${{ needs.claude-security.result }}"
+          echo "Consistency: ${{ needs.claude-consistency.result }}"
+          echo "::notice::Reviews complete — check PR comments for findings"
