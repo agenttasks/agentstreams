@@ -107,7 +107,15 @@ INJECTION_ALLOWLIST = {
     "security-audit.py",  # this file defines the patterns
     "test_security_audit.py",  # tests for this scanner
     "test_validate_skills.py",  # test fixtures with fake API keys
+    "test_injection_fixtures.py",  # M10 injection fixture tests
     "evals.md",  # eval frameworks discuss injection patterns
+    # M10 injection test fixtures (intentionally contain malicious patterns)
+    "injection_classic.md",
+    "injection_secrets.md",
+    "injection_polyglot.md",
+    "injection_agent_boundary.md",
+    "injection_agent_write_tools.md",
+    "injection_agent_wildcard.md",
 }
 
 
