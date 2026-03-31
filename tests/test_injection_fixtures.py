@@ -68,13 +68,23 @@ class TestClassicInjectionDetection:
     def test_detects_fake_system_message(self):
         content = read_fixture("injection_classic.md")
         findings = check_prompt_injection(Path("test_fixture_classic.md"), content)
-        system_findings = [f for f in findings if "system message" in f.message.lower() or "Fake system" in f.message]
+        system_findings = [
+            f
+            for f in findings
+            if "system message" in f.message.lower() or "Fake system" in f.message
+        ]
         assert len(system_findings) >= 1
 
     def test_all_findings_are_high_severity(self):
         content = read_fixture("injection_classic.md")
         findings = check_prompt_injection(Path("test_fixture_classic.md"), content)
-        injection_findings = [f for f in findings if f.category == "prompt-injection" and "API_KEY" not in f.message and "secret" not in f.message.lower()]
+        injection_findings = [
+            f
+            for f in findings
+            if f.category == "prompt-injection"
+            and "API_KEY" not in f.message
+            and "secret" not in f.message.lower()
+        ]
         for f in injection_findings:
             assert f.severity == Finding.HIGH, f"Expected HIGH, got {f.severity}: {f.message}"
 
@@ -94,7 +104,9 @@ class TestSecretLeakageDetection:
     def test_detects_anthropic_api_key(self):
         content = read_fixture("injection_secrets.md")
         findings = check_secret_leakage(Path("test_fixture_secrets.md"), content)
-        anthropic_keys = [f for f in findings if "Anthropic" in f.message or "Generic API key" in f.message]
+        anthropic_keys = [
+            f for f in findings if "Anthropic" in f.message or "Generic API key" in f.message
+        ]
         assert len(anthropic_keys) >= 1
 
     def test_detects_github_pat(self):
@@ -156,7 +168,9 @@ class TestPolyglotDetection:
         content = read_fixture("injection_polyglot.md")
         findings = check_prompt_injection(Path("test_fixture_polyglot.md"), content)
         # HTML comments with "ignore all previous instructions"
-        ignore = [f for f in findings if "injection" in f.message.lower() or "ignore" in f.message.lower()]
+        ignore = [
+            f for f in findings if "injection" in f.message.lower() or "ignore" in f.message.lower()
+        ]
         assert len(ignore) >= 1
 
     def test_detects_hardcoded_secrets_in_polyglot(self):
