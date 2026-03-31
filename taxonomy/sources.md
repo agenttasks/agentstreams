@@ -12,7 +12,7 @@ page_count: 11
 
 ### programmatic-tool-calling-fetched-from-platform-claude-com
 
-URL: https://local.taxonomy/live-sources/programmatic-tool-calling-fetched-from-platform-claude-com
+URL: https://local.taxonomy/sources/programmatic-tool-calling-fetched-from-platform-claude-com
 Hash: 86998970ecc0
 
 ```
@@ -100,7 +100,7 @@ Programmatic Tool Calling
 
 ### tool-search-tool-fetched-from-platform-claude-com
 
-URL: https://local.taxonomy/live-sources/tool-search-tool-fetched-from-platform-claude-com
+URL: https://local.taxonomy/sources/tool-search-tool-fetched-from-platform-claude-com
 Hash: bd2c840d2335
 
 ```
@@ -179,7 +179,7 @@ Tool Search Tool
 
 ### citations-fetched-from-platform-claude-com
 
-URL: https://local.taxonomy/live-sources/citations-fetched-from-platform-claude-com
+URL: https://local.taxonomy/sources/citations-fetched-from-platform-claude-com
 Hash: de25052b215f
 
 ```
@@ -252,7 +252,7 @@ Citations
 
 ### context-windows-fetched-from-platform-claude-com
 
-URL: https://local.taxonomy/live-sources/context-windows-fetched-from-platform-claude-com
+URL: https://local.taxonomy/sources/context-windows-fetched-from-platform-claude-com
 Hash: e1f50d451fcc
 
 ```
@@ -304,7 +304,7 @@ Context Windows
 
 ### rate-limits-fetched-from-platform-claude-com
 
-URL: https://local.taxonomy/live-sources/rate-limits-fetched-from-platform-claude-com
+URL: https://local.taxonomy/sources/rate-limits-fetched-from-platform-claude-com
 Hash: bf99ad2e0796
 
 ```
@@ -379,7 +379,7 @@ Rate Limits
 
 ### memory-tool-fetched-from-platform-claude-com
 
-URL: https://local.taxonomy/live-sources/memory-tool-fetched-from-platform-claude-com
+URL: https://local.taxonomy/sources/memory-tool-fetched-from-platform-claude-com
 Hash: d1b34d99e7ef
 
 ```
@@ -462,7 +462,7 @@ Memory Tool (memory_20250818)
 
 ### compaction-fetched-from-platform-claude-com
 
-URL: https://local.taxonomy/live-sources/compaction-fetched-from-platform-claude-com
+URL: https://local.taxonomy/sources/compaction-fetched-from-platform-claude-com
 Hash: a123721297b3
 
 ```
@@ -532,7 +532,7 @@ Compaction (Beta: compact-2026-01-12)
 
 ### structured-outputs-fetched-from-platform-claude-com
 
-URL: https://local.taxonomy/live-sources/structured-outputs-fetched-from-platform-claude-com
+URL: https://local.taxonomy/sources/structured-outputs-fetched-from-platform-claude-com
 Hash: b2e336239088
 
 ```
@@ -607,7 +607,7 @@ Structured Outputs
 
 ### computer-use-404-url-not-accessible-via-webfetch
 
-URL: https://local.taxonomy/live-sources/computer-use-404-url-not-accessible-via-webfetch
+URL: https://local.taxonomy/sources/computer-use-404-url-not-accessible-via-webfetch
 Hash: 8ddd55d295ee
 
 ```
@@ -622,7 +622,7 @@ Computer Use (from inlined skill docs)
 
 ### updated-feature-coverage-matrix-with-live-fetched-topics
 
-URL: https://local.taxonomy/live-sources/updated-feature-coverage-matrix-with-live-fetched-topics
+URL: https://local.taxonomy/sources/updated-feature-coverage-matrix-with-live-fetched-topics
 Hash: 0111a3cb5aa5
 
 ```
@@ -662,7 +662,7 @@ Notes:
 
 ### summary-of-what-was-fetched
 
-URL: https://local.taxonomy/live-sources/summary-of-what-was-fetched
+URL: https://local.taxonomy/sources/summary-of-what-was-fetched
 Hash: 5f6d70ad33fc
 
 ```

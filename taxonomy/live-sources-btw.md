@@ -1,3 +1,21 @@
+---
+source: inline text or file_id
+domain: local
+crawled_at: 2026-03-31T21:40:37Z
+index_hash: 0eb640236f2b
+page_count: 1
+---
+
+# live-sources-btw
+
+## Pages
+
+### live-sources-btw
+
+URL: https://local.taxonomy/live-sources-btw/live-sources-btw
+Hash: 0eb640236f2b
+
+```
 /btw how do i preserve our conversation so that your memory persists as i don't want to risk you 
        compacting in 8% until i get a chance to understand how to digest this as a human           
                                                                                                    
@@ -1436,3 +1454,4 @@ Feature Coverage Matrix
 └────────────────────┴─────┴─────┴──────┴─────┴──────┴─────┴─────┴──────┘
 
 ✻ Sautéed for 1m 26s
+```
