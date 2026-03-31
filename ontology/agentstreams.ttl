@@ -52,6 +52,26 @@ as:Resource a rdfs:Class ;
     rdfs:label "Resource" ;
     rdfs:comment "An external documentation or reference resource (Claude platform, GitHub, etc.)." .
 
+as:Task a rdfs:Class ;
+    rdfs:label "Task" ;
+    rdfs:comment "A queued unit of work — code task (Claude Code) or knowledge-work task (plugin). Processed via pgqueuer." .
+
+as:TaskType a rdfs:Class ;
+    rdfs:label "Task Type" ;
+    rdfs:comment "Classification of task origin and processing pathway." .
+
+as:CodeTask a as:TaskType ;
+    rdfs:label "Code Task" ;
+    rdfs:comment "Task executed via Claude Code CLI/SDK/API." .
+
+as:KnowledgeWorkTask a as:TaskType ;
+    rdfs:label "Knowledge Work Task" ;
+    rdfs:comment "Task executed via knowledge-work-plugins (cowork)." .
+
+as:FinancialTask a as:TaskType ;
+    rdfs:label "Financial Task" ;
+    rdfs:comment "Task executed via financial-services-plugins." .
+
 # ── Enumerations ──────────────────────────────────────────
 
 as:LanguageTier a rdfs:Class ;
@@ -233,6 +253,46 @@ as:resourceURL a rdf:Property ;
 as:relatedModel a rdf:Property ;
     rdfs:domain as:Resource ;
     rdfs:range as:Model .
+
+# Task properties
+as:taskType a rdf:Property ;
+    rdfs:domain as:Task ;
+    rdfs:range as:TaskType .
+
+as:taskSkill a rdf:Property ;
+    rdfs:domain as:Task ;
+    rdfs:range as:Skill ;
+    rdfs:comment "The skill this task invokes." .
+
+as:taskModel a rdf:Property ;
+    rdfs:domain as:Task ;
+    rdfs:range as:Model ;
+    rdfs:comment "The model used to process this task." .
+
+as:taskPlugin a rdf:Property ;
+    rdfs:domain as:Task ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Plugin identifier (e.g. 'sales-development', 'financial-analysis')." .
+
+as:taskStatus a rdf:Property ;
+    rdfs:domain as:Task ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Task lifecycle: queued → processing → completed | failed | cancelled." .
+
+as:taskInput a rdf:Property ;
+    rdfs:domain as:Task ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Task input payload (JSONB in physical layer)." .
+
+as:taskOutput a rdf:Property ;
+    rdfs:domain as:Task ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Task output/result payload (JSONB in physical layer)." .
+
+as:taskConfig a rdf:Property ;
+    rdfs:domain as:Task ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Task configuration/parameters (JSONB in physical layer)." .
 
 # ── Instances: Languages ──────────────────────────────────
 

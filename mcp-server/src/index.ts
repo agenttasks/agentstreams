@@ -263,6 +263,122 @@ server.tool(
   }
 );
 
+// ── Tool: create_task ─────────────────────────────────────────
+
+server.tool(
+  "create_task",
+  "Create a new task in the queue for processing",
+  {
+    queue_name: z.string().describe("Queue/entrypoint name (e.g. 'crawl-ingest', 'api-client')"),
+    type: z.enum(["code", "knowledge_work", "financial"]).describe("Task type"),
+    input: z.record(z.string(), z.unknown()).describe("Task input payload"),
+    config: z.record(z.string(), z.unknown()).optional().describe("Task configuration"),
+    skill_name: z.string().optional().describe("Associated skill name"),
+    model_id: z.string().optional().describe("Model to use (e.g. claude-opus-4-6)"),
+    plugin: z.string().optional().describe("Plugin identifier for knowledge-work tasks"),
+    priority: z.number().default(0).describe("Priority (higher = sooner, default: 0)"),
+  },
+  async ({ queue_name, type, input, config, skill_name, model_id, plugin, priority }) => {
+    const client = await getPool().connect();
+    try {
+      const result = await client.query(
+        `INSERT INTO tasks (queue_name, type, input, config, skill_name, model_id, plugin, priority)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+         RETURNING id, queue_name, type, status, priority, created_at`,
+        [queue_name, type, JSON.stringify(input), JSON.stringify(config || {}),
+         skill_name || null, model_id || null, plugin || null, priority]
+      );
+      return {
+        content: [{
+          type: "text" as const,
+          text: JSON.stringify({ created: result.rows[0] }, null, 2),
+        }],
+      };
+    } finally {
+      client.release();
+    }
+  }
+);
+
+// ── Tool: list_tasks ─────────────────────────────────────────
+
+server.tool(
+  "list_tasks",
+  "List tasks filtered by status, type, or queue",
+  {
+    status: z.enum(["queued", "processing", "completed", "failed", "cancelled"]).optional(),
+    type: z.enum(["code", "knowledge_work", "financial"]).optional(),
+    queue_name: z.string().optional(),
+    limit: z.number().default(20).describe("Max results (default: 20)"),
+  },
+  async ({ status, type, queue_name, limit }) => {
+    const client = await getPool().connect();
+    try {
+      const conditions: string[] = [];
+      const params: (string | number)[] = [];
+
+      if (status) { params.push(status); conditions.push(`status = $${params.length}`); }
+      if (type) { params.push(type); conditions.push(`type = $${params.length}`); }
+      if (queue_name) { params.push(queue_name); conditions.push(`queue_name = $${params.length}`); }
+
+      params.push(limit);
+      const where = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+      const result = await client.query(
+        `SELECT id, queue_name, type, status, priority, skill_name, model_id, plugin,
+                attempts, created_at, started_at, completed_at
+         FROM tasks ${where}
+         ORDER BY created_at DESC
+         LIMIT $${params.length}`,
+        params
+      );
+      return {
+        content: [{
+          type: "text" as const,
+          text: JSON.stringify({ count: result.rows.length, tasks: result.rows }, null, 2),
+        }],
+      };
+    } finally {
+      client.release();
+    }
+  }
+);
+
+// ── Tool: task_stats ─────────────────────────────────────────
+
+server.tool(
+  "task_stats",
+  "Get task queue statistics — counts by status, type, and queue",
+  {
+    hours: z.number().default(24).describe("Time window in hours (default: 24)"),
+  },
+  async ({ hours }) => {
+    const client = await getPool().connect();
+    try {
+      const result = await client.query(
+        `SELECT
+           status,
+           type,
+           queue_name,
+           COUNT(*) as count,
+           ROUND(AVG(EXTRACT(EPOCH FROM (completed_at - started_at)))::numeric, 2) as avg_duration_s
+         FROM tasks
+         WHERE created_at > now() - interval '1 hour' * $1
+         GROUP BY status, type, queue_name
+         ORDER BY count DESC`,
+        [hours]
+      );
+      return {
+        content: [{
+          type: "text" as const,
+          text: JSON.stringify({ hours, stats: result.rows }, null, 2),
+        }],
+      };
+    } finally {
+      client.release();
+    }
+  }
+);
+
 // ── Resource: metric catalog ─────────────────────────────────
 
 server.resource("metrics-catalog", "agentstreams://metrics", async (uri) => {
