@@ -1,0 +1,89 @@
+name: Neon Preview Branch
+
+on:
+  pull_request:
+    paths:
+      - 'ontology/schema.sql'
+      - 'scripts/generate-timeseries.py'
+  pull_request_target:
+    types: [closed]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  # ── Create preview branch on PR open/update ────────────────
+  create-branch:
+    name: Create Neon Preview Branch
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    outputs:
+      branch_id: ${{ steps.create.outputs.branch_id }}
+    steps:
+      - name: Check secrets
+        id: check
+        run: |
+          if [ -z "${{ secrets.NEON_API_KEY }}" ] || [ -z "${{ secrets.NEON_PROJECT_ID }}" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "⚠️ NEON_API_KEY or NEON_PROJECT_ID not configured — skipping preview branch" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.check.outputs.skip != 'true'
+
+      - name: Create Neon branch
+        if: steps.check.outputs.skip != 'true'
+        id: create
+        uses: neondatabase/create-branch-action@v6.3.0
+        with:
+          project_id: ${{ secrets.NEON_PROJECT_ID }}
+          branch_name: preview/pr-${{ github.event.number }}
+          api_key: ${{ secrets.NEON_API_KEY }}
+          role: neondb_owner
+          database: neondb
+
+      - name: Apply schema
+        if: steps.check.outputs.skip != 'true'
+        env:
+          DATABASE_URL: ${{ steps.create.outputs.db_url_with_pooler }}
+        run: |
+          psql "$DATABASE_URL" -f ontology/schema.sql
+          echo "## Neon Preview Branch" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch: \`preview/pr-${{ github.event.number }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch ID: \`${{ steps.create.outputs.branch_id }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Schema applied successfully" >> $GITHUB_STEP_SUMMARY
+
+      - name: Validate pg_graphql
+        if: steps.check.outputs.skip != 'true'
+        env:
+          DATABASE_URL: ${{ steps.create.outputs.db_url_with_pooler }}
+        run: |
+          RESULT=$(psql "$DATABASE_URL" -t -c "SELECT graphql.resolve('{ skillCollection { edges { node { name } } } }');")
+          echo "$RESULT" | python3 -c "import sys,json; d=json.loads(sys.stdin.read()); edges=d['data']['skillCollection']['edges']; print(f'pg_graphql: {len(edges)} skills'); assert len(edges)==3"
+          echo "- pg_graphql verified: 3 skills returned" >> $GITHUB_STEP_SUMMARY
+
+  # ── Delete preview branch on PR close ──────────────────────
+  delete-branch:
+    name: Delete Neon Preview Branch
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check secrets
+        id: check
+        run: |
+          if [ -z "${{ secrets.NEON_API_KEY }}" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Delete Neon branch
+        if: steps.check.outputs.skip != 'true'
+        uses: neondatabase/delete-branch-action@v3
+        with:
+          project_id: ${{ secrets.NEON_PROJECT_ID }}
+          branch: preview/pr-${{ github.event.number }}
+          api_key: ${{ secrets.NEON_API_KEY }}

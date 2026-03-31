@@ -9,7 +9,7 @@ agentstreams.ttl          ← Canonical ontology (Model Once)
        │
        ├── schema.sql     ← Neon Postgres DDL (Represent: relational + pg_graphql)
        ├── mappings.ttl   ← Ontology → physical table/column mappings
-       └── (future)       ← Avro schemas, GraphQL SDL (auto-generated)
+       └── atlas-chart/   ← Atlas PNG renderer (Represent: time-series visualization)
 ```
 
 ## Files
@@ -77,6 +77,22 @@ Metrics follow Netflix Atlas dimensional model:
 - **Type**: counter, timer, gauge, distribution_summary
 - **Dimensions**: tag key-value pairs for slicing (`model=claude-opus-4-6`, `skill=crawl-ingest`)
 - **Values**: stored in `metric_values` fact table with JSONB tags
+
+## Atlas Chart Rendering
+
+The `atlas-chart/` project reads `metric_values` from Neon and renders PNG charts:
+
+```
+metric_values (Neon) → JDBC → ArrayTimeSeq → TimeSeries → GraphDef → PNG
+```
+
+- Uses Netflix `atlas-chart` library (`DefaultGraphEngine.write()`)
+- No Atlas server needed — standalone JVM rendering
+- 7 metrics × 33 series, trailing 2 weeks at 5-minute step intervals
+
+```bash
+cd atlas-chart && ./render-charts.sh
+```
 
 ## Claude Platform Resources
 
