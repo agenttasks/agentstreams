@@ -1,7 +1,11 @@
+import { createServer } from "node:http";
+import { randomUUID } from "node:crypto";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { z } from "zod";
 import pg from "pg";
+import { renderSvgChart } from "./charts.js";
 
 const NEON_URL = process.env.NEON_DATABASE_URL;
 
@@ -379,6 +383,96 @@ server.tool(
   }
 );
 
+// ── Tool: render_chart ──────────────────────────────────────
+
+server.tool(
+  "render_chart",
+  "Render an inline SVG chart for a metric over a time range. Returns an SVG image.",
+  {
+    metric_name: z.string().describe("Metric name (e.g. agentstreams.api.requests)"),
+    hours: z.number().default(168).describe("Hours of data to chart (default: 168 = 1 week)"),
+    tags_filter: z
+      .record(z.string(), z.string())
+      .optional()
+      .describe("Filter by tag values"),
+    width: z.number().default(900).describe("Chart width in pixels"),
+    height: z.number().default(400).describe("Chart height in pixels"),
+  },
+  async ({ metric_name, hours, tags_filter, width, height }) => {
+    const client = await getPool().connect();
+    try {
+      // Look up metric metadata
+      const metaResult = await client.query(
+        "SELECT type, unit, description FROM metrics WHERE name = $1",
+        [metric_name]
+      );
+      const meta = metaResult.rows[0];
+      if (!meta) {
+        return {
+          content: [{ type: "text" as const, text: `Unknown metric: ${metric_name}` }],
+          isError: true,
+        };
+      }
+
+      // Fetch data
+      const params: (string | number)[] = [metric_name, hours];
+      let tagClause = "";
+      if (tags_filter && Object.keys(tags_filter).length > 0) {
+        const conditions = Object.entries(tags_filter).map(([key, value]) => {
+          params.push(String(value));
+          return `tags->>'${key}' = $${params.length}`;
+        });
+        tagClause = `AND ${conditions.join(" AND ")}`;
+      }
+
+      const dataResult = await client.query(
+        `SELECT recorded_at, value, tags
+         FROM metric_values
+         WHERE metric_name = $1
+           AND recorded_at > now() - interval '1 hour' * $2
+           ${tagClause}
+         ORDER BY recorded_at`,
+        params
+      );
+
+      const title =
+        METRIC_TITLES[metric_name] || meta.description || metric_name;
+      const ylabel = meta.unit || "";
+
+      const svg = renderSvgChart(dataResult.rows, { title, ylabel, width, height });
+
+      return {
+        content: [
+          {
+            type: "text" as const,
+            text: `SVG chart rendered: ${metric_name} (${dataResult.rows.length} points, ${hours}h window)`,
+          },
+          {
+            type: "image" as const,
+            data: Buffer.from(svg).toString("base64"),
+            mimeType: "image/svg+xml",
+          },
+        ],
+      };
+    } finally {
+      client.release();
+    }
+  }
+);
+
+const METRIC_TITLES: Record<string, string> = {
+  "agentstreams.pipeline.duration": "Pipeline Stage Duration",
+  "agentstreams.api.requests": "Claude API Requests (rate/min)",
+  "agentstreams.api.tokens": "Token Usage (rate/min)",
+  "agentstreams.api.cost": "API Cost per Request",
+  "agentstreams.eval.score": "Eval Pass Rate",
+  "agentstreams.crawl.pages": "Pages Crawled (rate/min)",
+  "agentstreams.crawl.dedup": "Bloom Filter False Positive Rate",
+  "agentstreams.tasks.throughput": "Task Throughput (rate/min)",
+  "agentstreams.tasks.duration": "Task Processing Duration",
+  "agentstreams.tasks.queue_depth": "Task Queue Depth",
+};
+
 // ── Resource: metric catalog ─────────────────────────────────
 
 server.resource("metrics-catalog", "agentstreams://metrics", async (uri) => {
@@ -404,9 +498,41 @@ server.resource("metrics-catalog", "agentstreams://metrics", async (uri) => {
 // ── Start ────────────────────────────────────────────────────
 
 async function main() {
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
-  console.error("AgentStreams MCP server running on stdio");
+  const mode = process.env.MCP_TRANSPORT || "stdio";
+
+  if (mode === "http") {
+    const port = parseInt(process.env.MCP_PORT || "3001", 10);
+
+    const httpServer = createServer(async (req, res) => {
+      // Health check
+      if (req.method === "GET" && req.url === "/health") {
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ status: "ok", server: "agentstreams", version: "0.2.0" }));
+        return;
+      }
+
+      // MCP endpoint
+      if (req.url === "/mcp") {
+        const transport = new StreamableHTTPServerTransport({
+          sessionIdGenerator: () => randomUUID(),
+        });
+        await server.connect(transport);
+        await transport.handleRequest(req, res);
+        return;
+      }
+
+      res.writeHead(404);
+      res.end("Not found");
+    });
+
+    httpServer.listen(port, () => {
+      console.error(`AgentStreams MCP server running on http://localhost:${port}/mcp`);
+    });
+  } else {
+    const transport = new StdioServerTransport();
+    await server.connect(transport);
+    console.error("AgentStreams MCP server running on stdio");
+  }
 }
 
 main().catch((err) => {
