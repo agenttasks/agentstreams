@@ -1,5 +1,22 @@
-                                                                                                 
-  /btw how do i preserve our conversation so that your memory persists as i don't want to risk you 
+---
+source: file://004-btw-slim.md
+domain: local
+crawled_at: 2026-03-31T21:40:37Z
+index_hash: 721ff89f4d0b
+page_count: 1
+---
+
+# 004-btw-slim
+
+## Pages
+
+### 004-btw-slim
+
+URL: https://local.taxonomy/004-btw-slim/004-btw-slim
+Hash: 721ff89f4d0b
+
+```
+/btw how do i preserve our conversation so that your memory persists as i don't want to risk you 
        compacting in 8% until i get a chance to understand how to digest this as a human           
                                                                                                    
                                                                                                    
@@ -20,3 +37,4 @@
     Practical advice: The file on disk is the real value here. The conversation context was mostly
     a vehicle to produce it. Even if compaction summarizes our chat, the taxonomy in
     live-sources.md is complete and won't be affected. You can read it at your own pace.
+```
