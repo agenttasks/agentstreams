@@ -1,0 +1,68 @@
+type Query {
+  user(id: ID!): User
+  users(filter: UserFilter, limit: Int = 10, offset: Int = 0): UserConnection!
+  post(id: ID!): Post
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): User!
+  updateUser(id: ID!, input: UpdateUserInput!): User!
+  deleteUser(id: ID!): Boolean!
+}
+
+type User {
+  id: ID!
+  email: String!
+  name: String!
+  role: Role!
+  posts: [Post!]!
+  createdAt: DateTime!
+}
+
+type Post {
+  id: ID!
+  title: String!
+  content: String
+  author: User!
+  published: Boolean!
+}
+
+type UserConnection {
+  edges: [UserEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type UserEdge {
+  node: User!
+  cursor: String!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  endCursor: String
+}
+
+input UserFilter {
+  role: Role
+  nameLike: String
+}
+
+input CreateUserInput {
+  email: String!
+  name: String!
+  role: Role = USER
+}
+
+input UpdateUserInput {
+  name: String
+  role: Role
+}
+
+enum Role {
+  ADMIN
+  USER
+  MODERATOR
+}
+
+scalar DateTime

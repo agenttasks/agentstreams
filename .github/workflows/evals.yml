@@ -1,11 +1,10 @@
-name: Extraction Evals
+name: Skill Evals
 
 on:
   pull_request:
     paths:
-      - 'skills/crawl-ingest/**'
+      - 'skills/**'
       - 'evals/**'
-      - 'SKILL.md'
   workflow_dispatch:
     inputs:
       live:

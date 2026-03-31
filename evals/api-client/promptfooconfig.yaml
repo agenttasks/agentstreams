@@ -1,0 +1,143 @@
+description: "api-client code generation and error handling evals"
+
+providers:
+  - id: python:provider.py
+    label: claude-sonnet-4-6
+    config:
+      model: claude-sonnet-4-6
+      temperature: 0
+      max_tokens: 2048
+
+prompts:
+  - id: generate-client
+    raw: |
+      Generate a TypeScript API client function for this OpenAPI spec.
+      Use fetch() with proper error handling, types, and retry logic.
+      Return ONLY the TypeScript code, no explanation.
+
+      OpenAPI Spec:
+      {{spec}}
+
+  - id: handle-error
+    raw: |
+      Given this API error response, write the error handling code
+      that extracts the retry delay and implements exponential backoff.
+      Return ONLY valid JSON with these fields:
+      - error_type: the error classification
+      - retry_after_seconds: parsed retry delay (number or null)
+      - strategy: recommended retry strategy description
+      - code_snippet: TypeScript code implementing the strategy
+
+      Error Response:
+      {{error}}
+
+  - id: generate-graphql-query
+    raw: |
+      Given this GraphQL schema, generate a TypeScript function that
+      queries for users with pagination support.
+      Include proper typing and error handling.
+      Return ONLY the TypeScript code, no explanation.
+
+      GraphQL Schema:
+      {{schema}}
+
+  - id: parse-pagination
+    raw: |
+      Given this paginated API response, extract pagination metadata
+      and determine how to fetch all remaining pages.
+      Return ONLY valid JSON with these fields:
+      - total_items: total count
+      - current_page: current page number
+      - total_pages: total number of pages
+      - has_next: boolean
+      - next_url: URL for next page (or null)
+      - fetch_strategy: description of optimal fetching strategy
+
+      API Response:
+      {{response}}
+
+tests:
+  # ── OpenAPI client generation ────────────────────────────
+  - description: "REST client — generates typed functions from OpenAPI"
+    prompts:
+      - generate-client
+    vars:
+      spec: file://test_data/openapi_spec.json
+    assert:
+      - type: contains
+        value: "async"
+      - type: contains
+        value: "fetch"
+      - type: javascript
+        value: "output.includes('Pet') || output.includes('pet')"
+      - type: javascript
+        value: "output.includes('listPets') || output.includes('list_pets') || output.includes('getPets')"
+      - type: not-contains
+        value: "ANTHROPIC_API_KEY"
+
+  - description: "REST client — includes error handling"
+    prompts:
+      - generate-client
+    vars:
+      spec: file://test_data/openapi_spec.json
+    assert:
+      - type: javascript
+        value: "output.includes('catch') || output.includes('try') || output.includes('Error')"
+      - type: javascript
+        value: "output.includes('status') || output.includes('ok') || output.includes('response')"
+
+  # ── Error handling ───────────────────────────────────────
+  - description: "Rate limit — extracts retry-after and suggests backoff"
+    prompts:
+      - handle-error
+    vars:
+      error: file://test_data/error_response_429.json
+    assert:
+      - type: is-json
+      - type: javascript
+        value: "JSON.parse(output).retry_after_seconds === 30"
+      - type: javascript
+        value: "JSON.parse(output).error_type.toLowerCase().includes('rate') || JSON.parse(output).error_type.toLowerCase().includes('limit')"
+      - type: javascript
+        value: "JSON.parse(output).strategy.toLowerCase().includes('backoff') || JSON.parse(output).strategy.toLowerCase().includes('retry')"
+
+  # ── GraphQL client generation ────────────────────────────
+  - description: "GraphQL — generates typed query with pagination"
+    prompts:
+      - generate-graphql-query
+    vars:
+      schema: file://test_data/graphql_schema.graphql
+    assert:
+      - type: contains
+        value: "async"
+      - type: javascript
+        value: "output.includes('User') || output.includes('user')"
+      - type: javascript
+        value: "output.includes('pageInfo') || output.includes('cursor') || output.includes('offset')"
+
+  # ── Pagination parsing ──────────────────────────────────
+  - description: "Pagination — correctly extracts metadata"
+    prompts:
+      - parse-pagination
+    vars:
+      response: file://test_data/api_response_paginated.json
+    assert:
+      - type: is-json
+      - type: javascript
+        value: "JSON.parse(output).total_items === 47"
+      - type: javascript
+        value: "JSON.parse(output).current_page === 1"
+      - type: javascript
+        value: "JSON.parse(output).has_next === true"
+      - type: javascript
+        value: "JSON.parse(output).total_pages === 16"
+
+  # ── Cost guard ──────────────────────────────────────────
+  - description: "Token cost per generation stays reasonable"
+    prompts:
+      - generate-client
+    vars:
+      spec: file://test_data/openapi_spec.json
+    assert:
+      - type: cost
+        threshold: 0.02

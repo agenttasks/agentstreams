@@ -178,4 +178,5 @@ INSERT INTO resources (type, label, url, related_model_id, description) VALUES
     ('model_card', 'Claude Sonnet 4.6 System Card', 'https://www.anthropic.com/claude-sonnet-4-6-system-card', 'claude-sonnet-4-6', 'Safety and capability documentation');
 
 INSERT INTO eval_suites (name, skill_name, config_path, test_count, assertion_count) VALUES
-    ('crawl-ingest-extraction', 'crawl-ingest', 'evals/crawl-ingest/promptfooconfig.yaml', 6, 16);
+    ('crawl-ingest-extraction', 'crawl-ingest', 'evals/crawl-ingest/promptfooconfig.yaml', 6, 16),
+    ('api-client-generation', 'api-client', 'evals/api-client/promptfooconfig.yaml', 6, 18);
