@@ -26,8 +26,14 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install promptfoo
-        run: npm install -g promptfoo@0.121.3
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          npm install -g promptfoo@0.121.3
+          pip install anthropic
 
       - name: Run evals
         env:
