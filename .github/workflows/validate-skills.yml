@@ -1,17 +1,19 @@
-name: Validate Skills
+name: Validate Skills & Ontology
 
 on:
   pull_request:
     paths:
       - 'skills/**'
+      - 'ontology/**'
       - 'scripts/validate-skills.py'
+      - 'scripts/validate-ontology.py'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  validate:
+  validate-skills:
     name: Skill Validation
     runs-on: ubuntu-latest
     steps:
@@ -29,3 +31,22 @@ jobs:
         run: |
           echo "## Skill Validation" >> $GITHUB_STEP_SUMMARY
           python scripts/validate-skills.py --check-only >> $GITHUB_STEP_SUMMARY 2>&1 || true
+
+  validate-ontology:
+    name: UDA Ontology Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate ontology ↔ schema alignment
+        run: python scripts/validate-ontology.py
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## UDA Ontology Validation" >> $GITHUB_STEP_SUMMARY
+          python scripts/validate-ontology.py >> $GITHUB_STEP_SUMMARY 2>&1 || true
