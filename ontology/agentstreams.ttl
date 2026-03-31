@@ -451,6 +451,27 @@ as:metric-crawl-dedup a as:Metric ;
     rdfs:label "Bloom Filter False Positive Rate" ;
     rdfs:comment "method: bloom | simhash | exact" .
 
+as:metric-tasks-throughput a as:Metric ;
+    as:metricName "agentstreams.tasks.throughput" ;
+    as:metricType as:Counter ;
+    as:metricUnit "tasks" ;
+    as:hasDimension "queue", "type", "status" ;
+    rdfs:label "Task Throughput" .
+
+as:metric-tasks-duration a as:Metric ;
+    as:metricName "agentstreams.tasks.duration" ;
+    as:metricType as:Timer ;
+    as:metricUnit "seconds" ;
+    as:hasDimension "queue", "type" ;
+    rdfs:label "Task Processing Duration" .
+
+as:metric-tasks-queue-depth a as:Metric ;
+    as:metricName "agentstreams.tasks.queue_depth" ;
+    as:metricType as:Gauge ;
+    as:metricUnit "tasks" ;
+    as:hasDimension "queue", "type" ;
+    rdfs:label "Task Queue Depth" .
+
 # ── Instances: Claude Platform Resources ──────────────────
 
 as:resource-api-primer a as:Resource ;
