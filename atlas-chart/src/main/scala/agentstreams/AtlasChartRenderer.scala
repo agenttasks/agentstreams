@@ -63,8 +63,8 @@ object AtlasChartRenderer {
 
   def main(args: Array[String]): Unit = {
     val jdbcUrl = sys.env.getOrElse("NEON_JDBC_URL",
-      "jdbc:postgresql://ep-noisy-surf-aju7f7eb-pooler.c-3.us-east-2.aws.neon.tech/neondb" +
-      "?user=neondb_owner&password=npg_h15YMtbzqkBj&sslmode=require&channelBinding=require"
+      sys.error("NEON_JDBC_URL environment variable is required. " +
+        "Format: jdbc:postgresql://host/db?user=...&password=...&sslmode=require")
     )
     val outputDir = if (args.length > 0) args(0) else "charts"
 

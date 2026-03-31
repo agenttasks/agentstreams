@@ -5,7 +5,8 @@ set -euo pipefail
 # Usage: ./render-charts.sh [output-dir]
 #
 # Requires: Java 17+, Neon database with metric_values populated.
-# Set NEON_JDBC_URL to override the default connection string.
+# Set NEON_JDBC_URL env var with your Neon JDBC connection string.
+# Example: export NEON_JDBC_URL="jdbc:postgresql://host/db?user=...&password=...&sslmode=require"
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 OUTPUT_DIR="${1:-$SCRIPT_DIR/charts}"
