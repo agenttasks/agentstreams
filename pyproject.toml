@@ -3,7 +3,10 @@ name = "agentstreams"
 version = "0.1.0"
 description = "Multi-language skill system for Claude Code"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "aiohttp>=3.10",
+    "psycopg[binary]>=3.2",
+]
 
 [dependency-groups]
 dev = [
