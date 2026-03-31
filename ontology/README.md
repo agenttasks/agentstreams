@@ -27,14 +27,47 @@ agentstreams.ttl          ← Canonical ontology (Model Once)
 3. **pg_graphql** (Postgres extension) introspects the schema and auto-generates a GraphQL API
 4. **Mappings** (`mappings.ttl`) trace lineage from concept → table → column
 
-## Setup (Neon)
+## Neon Project
+
+| Property | Value |
+|----------|-------|
+| **Project** | `agentstreams` |
+| **Project ID** | `calm-paper-82059121` |
+| **Branch** | `main` (ID: `br-shiny-haze-ajzux7we`) |
+| **Database** | `neondb` |
+| **Region** | `us-east-2` |
+
+### Setup
+
+Schema is deployed. To re-deploy or update:
 
 ```sql
 -- Run via Neon MCP or psql
 \i ontology/schema.sql
+```
 
--- Verify pg_graphql works
-SELECT graphql.resolve('{ skillCollection { edges { node { name description } } } }');
+### pg_graphql Queries
+
+```sql
+-- List all skills
+SELECT graphql.resolve($$ {
+  skillsCollection { edges { node { name description trigger_pattern } } }
+} $$);
+
+-- List models with capabilities
+SELECT graphql.resolve($$ {
+  modelsCollection { edges { node { model_id family supports_thinking supports_tool_use } } }
+} $$);
+
+-- List SDKs with constructor patterns
+SELECT graphql.resolve($$ {
+  sdksCollection { edges { node { label language_id constructor_pattern github_stars } } }
+} $$);
+
+-- List metrics
+SELECT graphql.resolve($$ {
+  metricsCollection { edges { node { name type unit dimensions } } }
+} $$);
 ```
 
 ## Metrics (Atlas/Spectator Pattern)
