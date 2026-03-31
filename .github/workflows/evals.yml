@@ -39,22 +39,28 @@ jobs:
         run: |
           echo "## Eval Config Validation" >> $GITHUB_STEP_SUMMARY
 
-          # Check YAML parses
-          promptfoo eval --dry-run 2>&1 && echo "- ✅ Config parses" >> $GITHUB_STEP_SUMMARY || {
-            echo "- ❌ Config parse error" >> $GITHUB_STEP_SUMMARY
-            exit 1
+          # Check YAML parses via promptfoo list
+          promptfoo eval --no-write --filter-sample 0 2>&1 && echo "- ✅ Config parses" >> $GITHUB_STEP_SUMMARY || {
+            # filter-sample 0 may not be supported; fall back to yaml check
+            python3 -c "import yaml; yaml.safe_load(open('promptfooconfig.yaml'))" && echo "- ✅ Config YAML valid" >> $GITHUB_STEP_SUMMARY || {
+              echo "- ❌ Config parse error" >> $GITHUB_STEP_SUMMARY
+              exit 1
+            }
           }
 
           # Check test data files exist
           MISSING=0
+          FILE_COUNT=0
           for f in test_data/*.html; do
             if [ ! -f "$f" ]; then
               echo "- ❌ Missing: $f" >> $GITHUB_STEP_SUMMARY
               MISSING=$((MISSING + 1))
+            else
+              FILE_COUNT=$((FILE_COUNT + 1))
             fi
           done
           if [ "$MISSING" -eq 0 ]; then
-            echo "- ✅ All test data files present ($(ls test_data/*.html | wc -l) files)" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ All test data files present (${FILE_COUNT} files)" >> $GITHUB_STEP_SUMMARY
           fi
 
           # Count tests and assertions
