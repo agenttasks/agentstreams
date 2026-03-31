@@ -194,3 +194,50 @@ map:eval-suite-table a map:Mapping ;
     map:ontologyClass as:EvalSuite ;
     map:targetTable "eval_suites" ;
     rdfs:label "EvalSuite → eval_suites table" .
+
+# ── Task mappings ─────────────────────────────────────────
+
+map:task-table a map:Mapping ;
+    map:ontologyClass as:Task ;
+    map:targetTable "tasks" ;
+    rdfs:label "Task → tasks table" .
+
+map:task-type a map:Mapping ;
+    map:ontologyProperty as:taskType ;
+    map:targetTable "tasks" ;
+    map:targetColumn "type" .
+
+map:task-skill a map:Mapping ;
+    map:ontologyProperty as:taskSkill ;
+    map:targetTable "tasks" ;
+    map:targetColumn "skill_name" .
+
+map:task-model a map:Mapping ;
+    map:ontologyProperty as:taskModel ;
+    map:targetTable "tasks" ;
+    map:targetColumn "model_id" .
+
+map:task-plugin a map:Mapping ;
+    map:ontologyProperty as:taskPlugin ;
+    map:targetTable "tasks" ;
+    map:targetColumn "plugin" .
+
+map:task-status a map:Mapping ;
+    map:ontologyProperty as:taskStatus ;
+    map:targetTable "tasks" ;
+    map:targetColumn "status" .
+
+map:task-input a map:Mapping ;
+    map:ontologyProperty as:taskInput ;
+    map:targetTable "tasks" ;
+    map:targetColumn "input" .
+
+map:task-output a map:Mapping ;
+    map:ontologyProperty as:taskOutput ;
+    map:targetTable "tasks" ;
+    map:targetColumn "output" .
+
+map:task-config a map:Mapping ;
+    map:ontologyProperty as:taskConfig ;
+    map:targetTable "tasks" ;
+    map:targetColumn "config" .

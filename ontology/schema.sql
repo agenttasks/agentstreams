@@ -128,6 +128,35 @@ CREATE TABLE eval_suites (
     last_run_pass_rate DOUBLE PRECISION
 );
 
+-- ── Tasks (pgqueuer-compatible) ──────────────────────────
+
+CREATE TABLE tasks (
+    id BIGSERIAL PRIMARY KEY,
+    queue_name TEXT NOT NULL,          -- pgqueuer entrypoint name
+    type TEXT NOT NULL CHECK (type IN ('code', 'knowledge_work', 'financial')),
+    status TEXT NOT NULL DEFAULT 'queued'
+        CHECK (status IN ('queued', 'processing', 'completed', 'failed', 'cancelled')),
+    priority INTEGER NOT NULL DEFAULT 0,
+    skill_name TEXT REFERENCES skills(name),
+    model_id TEXT REFERENCES models(model_id),
+    plugin TEXT,                       -- knowledge-work plugin identifier
+    input JSONB NOT NULL DEFAULT '{}',
+    config JSONB NOT NULL DEFAULT '{}',
+    output JSONB,
+    error TEXT,
+    attempts INTEGER NOT NULL DEFAULT 0,
+    max_attempts INTEGER NOT NULL DEFAULT 3,
+    execute_after TIMESTAMPTZ,         -- deferred execution (pgqueuer)
+    created_at TIMESTAMPTZ DEFAULT now(),
+    started_at TIMESTAMPTZ,
+    completed_at TIMESTAMPTZ
+);
+
+CREATE INDEX idx_tasks_status ON tasks(status) WHERE status IN ('queued', 'processing');
+CREATE INDEX idx_tasks_queue ON tasks(queue_name, status, priority DESC);
+CREATE INDEX idx_tasks_created ON tasks(created_at);
+CREATE INDEX idx_tasks_type ON tasks(type);
+
 -- ── Seed data ────────────────────────────────────────────
 
 INSERT INTO languages (id, label) VALUES
