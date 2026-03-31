@@ -79,10 +79,14 @@ jobs:
       - name: Tests (pytest)
         run: uv run pytest tests/ -v --tb=short
 
+      - name: Security audit
+        run: uv run scripts/security-audit.py --check-only --paths scripts/ .claude/
+
       - name: Summary
         if: always()
         run: |
           echo "## Python Quality" >> $GITHUB_STEP_SUMMARY
           echo "- Lint: ruff check" >> $GITHUB_STEP_SUMMARY
           echo "- Format: ruff format" >> $GITHUB_STEP_SUMMARY
-          echo "- Tests: 59 tests across 4 test files" >> $GITHUB_STEP_SUMMARY
+          echo "- Tests: pytest" >> $GITHUB_STEP_SUMMARY
+          echo "- Security: security-audit.py" >> $GITHUB_STEP_SUMMARY
