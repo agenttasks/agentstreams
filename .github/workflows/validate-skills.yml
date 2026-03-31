@@ -5,8 +5,10 @@ on:
     paths:
       - 'skills/**'
       - 'ontology/**'
-      - 'scripts/validate-skills.py'
-      - 'scripts/validate-ontology.py'
+      - 'scripts/**'
+      - 'tests/**'
+      - 'evals/**'
+      - 'pyproject.toml'
   workflow_dispatch:
 
 permissions:
@@ -50,3 +52,37 @@ jobs:
         run: |
           echo "## UDA Ontology Validation" >> $GITHUB_STEP_SUMMARY
           python scripts/validate-ontology.py >> $GITHUB_STEP_SUMMARY 2>&1 || true
+
+  python-quality:
+    name: Python Tests & Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "latest"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Lint (ruff check)
+        run: uv run ruff check scripts/ tests/ evals/
+
+      - name: Format check (ruff format)
+        run: uv run ruff format --check scripts/ tests/ evals/
+
+      - name: Tests (pytest)
+        run: uv run pytest tests/ -v --tb=short
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Python Quality" >> $GITHUB_STEP_SUMMARY
+          echo "- Lint: ruff check" >> $GITHUB_STEP_SUMMARY
+          echo "- Format: ruff format" >> $GITHUB_STEP_SUMMARY
+          echo "- Tests: 59 tests across 4 test files" >> $GITHUB_STEP_SUMMARY

@@ -20,9 +20,9 @@ import argparse
 import hashlib
 import re
 import sys
-import urllib.request
 import urllib.error
-from datetime import datetime, timezone
+import urllib.request
+from datetime import UTC, datetime
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -90,6 +90,7 @@ def extract_urls(text: str, base_url: str) -> list[str]:
             elif url.startswith("/"):
                 # Resolve relative URL
                 from urllib.parse import urlparse
+
                 parsed = urlparse(base_url)
                 urls.append(f"{parsed.scheme}://{parsed.netloc}{url}")
         # Also match bare .md URLs
@@ -98,6 +99,7 @@ def extract_urls(text: str, base_url: str) -> list[str]:
                 urls.append(line)
             elif line.startswith("/"):
                 from urllib.parse import urlparse
+
                 parsed = urlparse(base_url)
                 urls.append(f"{parsed.scheme}://{parsed.netloc}{line}")
         # Match lines that are just URLs
@@ -117,11 +119,14 @@ def main():
     parser.add_argument("llms_txt_url", help="URL of the llms.txt file")
     parser.add_argument("output_file", help="Output markdown file path")
     parser.add_argument("--pages", nargs="*", help="Specific page URLs to crawl (instead of all)")
-    parser.add_argument("--max-pages", type=int, default=100, help="Max pages to crawl (default: 100)")
+    parser.add_argument(
+        "--max-pages", type=int, default=100, help="Max pages to crawl (default: 100)"
+    )
     args = parser.parse_args()
 
-    now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    now = datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
     from urllib.parse import urlparse
+
     source_domain = urlparse(args.llms_txt_url).netloc
 
     print(f"Fetching index: {args.llms_txt_url}")
@@ -174,7 +179,7 @@ def main():
         errors = 0
         for i, url in enumerate(page_urls):
             slug = urlparse(url).path.rstrip("/").split("/")[-1] or "index"
-            print(f"  [{i+1}/{len(page_urls)}] {slug}...")
+            print(f"  [{i + 1}/{len(page_urls)}] {slug}...")
 
             try:
                 content = fetch_url(url)

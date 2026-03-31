@@ -14,9 +14,11 @@ from pathlib import Path
 
 ONTOLOGY_DIR = Path(__file__).parent.parent / "ontology"
 
+
 def parse_ontology_classes(ttl: str) -> set[str]:
     """Extract class names from ontology (as:Foo a rdfs:Class)."""
     return set(re.findall(r"as:(\w+)\s+a\s+rdfs:Class", ttl))
+
 
 def parse_ontology_instances(ttl: str) -> dict[str, list[str]]:
     """Extract instances grouped by class (as:foo a as:Bar)."""
@@ -25,65 +27,62 @@ def parse_ontology_instances(ttl: str) -> dict[str, list[str]]:
         instances.setdefault(cls, []).append(name)
     return instances
 
+
 def parse_mapping_tables(ttl: str) -> dict[str, str]:
     """Extract class → table mappings."""
     mappings = {}
     # Find blocks like: map:X a map:Mapping ; map:ontologyClass as:Y ; map:targetTable "z"
-    blocks = re.split(r'\n(?=map:\S+\s+a\s+map:Mapping)', ttl)
+    blocks = re.split(r"\n(?=map:\S+\s+a\s+map:Mapping)", ttl)
     for block in blocks:
-        cls_match = re.search(r'map:ontologyClass\s+as:(\w+)', block)
+        cls_match = re.search(r"map:ontologyClass\s+as:(\w+)", block)
         table_match = re.search(r'map:targetTable\s+"(\w+)"', block)
         if cls_match and table_match:
             mappings[cls_match.group(1)] = table_match.group(1)
     return mappings
 
+
 def parse_mapping_columns(ttl: str) -> list[tuple[str, str, str]]:
     """Extract (property, table, column) triples."""
     columns = []
-    blocks = re.split(r'\n(?=map:\S+\s+a\s+map:Mapping)', ttl)
+    blocks = re.split(r"\n(?=map:\S+\s+a\s+map:Mapping)", ttl)
     for block in blocks:
-        prop_match = re.search(r'map:ontologyProperty\s+as:(\w+)', block)
+        prop_match = re.search(r"map:ontologyProperty\s+as:(\w+)", block)
         table_match = re.search(r'map:targetTable\s+"(\w+)"', block)
         col_match = re.search(r'map:targetColumn\s+"(\w+)"', block)
         if prop_match and table_match and col_match:
             columns.append((prop_match.group(1), table_match.group(1), col_match.group(1)))
     return columns
 
+
 def parse_schema_tables(sql: str) -> dict[str, list[str]]:
     """Extract table → columns from CREATE TABLE statements."""
     tables: dict[str, list[str]] = {}
-    for match in re.finditer(
-        r'CREATE TABLE (\w+)\s*\((.*?)\);',
-        sql,
-        re.DOTALL
-    ):
+    for match in re.finditer(r"CREATE TABLE (\w+)\s*\((.*?)\);", sql, re.DOTALL):
         table_name = match.group(1)
         body = match.group(2)
         cols = []
-        for line in body.split('\n'):
-            line = line.strip().rstrip(',')
-            col_match = re.match(r'^(\w+)\s+', line)
+        for line in body.split("\n"):
+            line = line.strip().rstrip(",")
+            col_match = re.match(r"^(\w+)\s+", line)
             if col_match:
                 col = col_match.group(1)
                 # Skip constraints
-                if col.upper() not in ('PRIMARY', 'UNIQUE', 'CHECK', 'FOREIGN', 'CONSTRAINT'):
+                if col.upper() not in ("PRIMARY", "UNIQUE", "CHECK", "FOREIGN", "CONSTRAINT"):
                     cols.append(col)
         tables[table_name] = cols
     return tables
 
+
 def parse_seed_counts(sql: str) -> dict[str, int]:
     """Count seed data rows per table."""
     counts: dict[str, int] = {}
-    for match in re.finditer(
-        r'INSERT INTO (\w+)\s.*?VALUES\s*(.*?);',
-        sql,
-        re.DOTALL
-    ):
+    for match in re.finditer(r"INSERT INTO (\w+)\s.*?VALUES\s*(.*?);", sql, re.DOTALL):
         table = match.group(1)
         values_block = match.group(2)
         # Count rows by lines starting with whitespace + open paren
         row_count = sum(
-            1 for line in values_block.strip().split('\n')
+            1
+            for line in values_block.strip().split("\n")
             if line.strip().startswith("('") or line.strip().startswith("(")
         )
         counts[table] = counts.get(table, 0) + row_count
@@ -108,10 +107,22 @@ def main():
     # Check 1: Every ontology class should have a mapping
     mapped_classes = set(class_table_map.keys())
     # Skip enum/type classes
-    skip_classes = {"LanguageTier", "MetricType", "ResourceType",
-                    "Tier1", "Tier2", "Tier3",
-                    "Counter", "Timer", "Gauge", "DistributionSummary",
-                    "ModelCard", "APIPrimer", "LLMsIndex", "Cookbook"}
+    skip_classes = {
+        "LanguageTier",
+        "MetricType",
+        "ResourceType",
+        "Tier1",
+        "Tier2",
+        "Tier3",
+        "Counter",
+        "Timer",
+        "Gauge",
+        "DistributionSummary",
+        "ModelCard",
+        "APIPrimer",
+        "LLMsIndex",
+        "Cookbook",
+    }
     unmapped = classes - mapped_classes - skip_classes
     for cls in sorted(unmapped):
         warnings.append(f"Ontology class as:{cls} has no mapping to a table")
@@ -140,8 +151,7 @@ def main():
         seed_count = seed_counts.get(table, 0)
         if ont_count != seed_count and ont_count > 0:
             warnings.append(
-                f"{cls}: ontology has {ont_count} instances, "
-                f"schema has {seed_count} seed rows"
+                f"{cls}: ontology has {ont_count} instances, schema has {seed_count} seed rows"
             )
 
     # Report
