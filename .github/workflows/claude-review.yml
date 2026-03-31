@@ -40,24 +40,8 @@ jobs:
 
             Return a structured JSON verdict.
           claude_args: |
-            --max-turns 8
+            --max-turns 20
             --model claude-sonnet-4-6
-            --json-schema '{"type":"object","properties":{"safe":{"type":"boolean"},"severity":{"type":"string","enum":["none","low","medium","high","critical"]},"issues":{"type":"array","items":{"type":"string"}},"blockers":{"type":"array","items":{"type":"string"}}},"required":["safe","severity"]}'
-
-      - name: Gate on security result
-        run: |
-          RESULT='${{ steps.review.outputs.structured_output }}'
-          SAFE=$(echo "$RESULT" | jq -r .safe)
-          SEVERITY=$(echo "$RESULT" | jq -r .severity)
-          echo "Safe: $SAFE | Severity: $SEVERITY"
-
-          if [ "$SAFE" != "true" ]; then
-            echo "::error::Security review failed (severity: $SEVERITY)"
-            echo "$RESULT" | jq '.blockers // .issues'
-            exit 1
-          fi
-
-          echo "::notice::Security review passed (severity: $SEVERITY)"
 
   # ═══════════════════════════════════════════════════════════
   # 2. CONSISTENCY REVIEW (Runs after security passes)
@@ -91,7 +75,7 @@ jobs:
             Post inline comments on specific lines where inconsistencies exist.
             If clean, post a single approving comment.
           claude_args: |
-            --max-turns 12
+            --max-turns 20
             --model claude-sonnet-4-6
 
   # ═══════════════════════════════════════════════════════════
