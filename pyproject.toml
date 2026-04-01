@@ -12,7 +12,9 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest>=8.0",
+    "pytest-asyncio>=1.0",
     "pytest-cov>=6.0",
+    "aioresponses>=0.7",
     "ruff>=0.9",
 ]
 
@@ -30,3 +32,4 @@ quote-style = "double"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["scripts"]
+asyncio_mode = "auto"
