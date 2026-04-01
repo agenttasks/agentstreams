@@ -142,6 +142,13 @@ map:resource-type a map:Mapping ;
     map:targetTable "resources" ;
     map:targetColumn "type" .
 
+# ── MCP Server mappings ──────────────────────────────────
+
+map:mcp-server-table a map:Mapping ;
+    map:ontologyClass as:MCPServer ;
+    map:targetTable "mcp_servers" ;
+    rdfs:label "MCPServer → mcp_servers table" .
+
 # ── Language mappings ─────────────────────────────────────
 
 map:language-table a map:Mapping ;

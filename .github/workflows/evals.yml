@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       live:
-        description: 'Run live evals against Anthropic API (requires ANTHROPIC_API_KEY secret)'
+        description: 'Run live evals against Anthropic API (requires CLAUDE_CODE_OAUTH_TOKEN secret)'
         type: boolean
         default: false
 
@@ -67,7 +67,7 @@ jobs:
           ASSERTS=$(grep -c '^\s*- type:' promptfooconfig.yaml || echo 0)
           echo "- ✅ ${TESTS} test cases, ${ASSERTS} assertions" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "To run live evals: trigger workflow_dispatch with live=true (requires ANTHROPIC_API_KEY secret)" >> $GITHUB_STEP_SUMMARY
+          echo "To run live evals: trigger workflow_dispatch with live=true (requires CLAUDE_CODE_OAUTH_TOKEN secret)" >> $GITHUB_STEP_SUMMARY
 
   # ── Live evals (workflow_dispatch only) ──────────────────
   live-eval:
@@ -95,7 +95,7 @@ jobs:
 
       - name: Run live evals
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: |
           promptfoo eval --no-cache -o results.json
           promptfoo eval --no-cache -o results.txt --output-format text

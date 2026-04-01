@@ -8,6 +8,7 @@ on:
       - 'scripts/**'
       - 'tests/**'
       - 'evals/**'
+      - 'mcp-server/**'
       - 'pyproject.toml'
   workflow_dispatch:
 
@@ -90,3 +91,28 @@ jobs:
           echo "- Format: ruff format" >> $GITHUB_STEP_SUMMARY
           echo "- Tests: pytest" >> $GITHUB_STEP_SUMMARY
           echo "- Security: security-audit.py" >> $GITHUB_STEP_SUMMARY
+
+  mcp-server-quality:
+    name: MCP Server Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mcp-server
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Tests (vitest)
+        run: npx vitest run
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## MCP Server Quality" >> $GITHUB_STEP_SUMMARY
+          echo "- Tests: vitest" >> $GITHUB_STEP_SUMMARY

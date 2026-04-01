@@ -111,6 +111,7 @@ def main():
         "LanguageTier",
         "MetricType",
         "ResourceType",
+        "TaskType",
         "Tier1",
         "Tier2",
         "Tier3",
@@ -178,7 +179,11 @@ def main():
     if not errors and not warnings:
         print("✅ All checks passed — ontology, mappings, and schema are aligned.")
 
-    return 1 if errors else 0
+    if errors:
+        return 1
+    if warnings:
+        return 2
+    return 0
 
 
 if __name__ == "__main__":
