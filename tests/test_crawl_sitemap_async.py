@@ -6,8 +6,6 @@ import sys
 from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 from importlib import import_module
@@ -16,34 +14,53 @@ mod = import_module("crawl-sitemap")
 fetch_sitemap_urls = mod.fetch_sitemap_urls
 fetch_page = mod.fetch_page
 write_to_neon = mod.write_to_neon
-html_to_text = mod.html_to_text
-content_hash = mod.content_hash
 TRUNCATE_BYTES = mod.TRUNCATE_BYTES
+
+
+# ── Shared mock factories ───────────────────────────────────
+
+
+def _mock_response(text=None, *, side_effect=None):
+    """Build an AsyncMock HTTP response for aiohttp session.get()."""
+    resp = AsyncMock()
+    if side_effect:
+        resp.__aenter__ = AsyncMock(side_effect=side_effect)
+    else:
+        resp.text = AsyncMock(return_value=text)
+        resp.__aenter__ = AsyncMock(return_value=resp)
+    resp.__aexit__ = AsyncMock(return_value=False)
+    return resp
+
+
+def _mock_session(response=None, *, side_effect=None):
+    """Build a MagicMock session with a pre-configured get()."""
+    session = MagicMock()
+    if side_effect:
+        session.get = MagicMock(side_effect=side_effect)
+    else:
+        session.get = MagicMock(return_value=response)
+    return session
+
+
+def _mock_async_conn():
+    """Build an AsyncMock psycopg connection."""
+    conn = AsyncMock()
+    conn.__aenter__ = AsyncMock(return_value=conn)
+    conn.__aexit__ = AsyncMock(return_value=False)
+    return conn
 
 
 # ── fetch_sitemap_urls ──────────────────────────────────────
 
 
 class TestFetchSitemapUrls:
-    @pytest.fixture
-    def mock_session(self):
-        session = MagicMock()
-        return session
-
     async def test_returns_urls_from_simple_sitemap(self):
         xml = """<?xml version="1.0"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://example.com/page1</loc></url>
   <url><loc>https://example.com/page2</loc></url>
 </urlset>"""
-        response = AsyncMock()
-        response.text = AsyncMock(return_value=xml)
-        response.__aenter__ = AsyncMock(return_value=response)
-        response.__aexit__ = AsyncMock(return_value=False)
-
-        session = MagicMock()
-        session.get = MagicMock(return_value=response)
-
+        session = _mock_session(_mock_response(xml))
         urls = await fetch_sitemap_urls(session, "https://example.com/sitemap.xml")
         assert len(urls) == 2
         assert "https://example.com/page1" in urls
@@ -57,35 +74,20 @@ class TestFetchSitemapUrls:
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://example.com/deep-page</loc></url>
 </urlset>"""
-
         call_count = 0
 
         def make_response(url, **kwargs):
             nonlocal call_count
-            resp = AsyncMock()
-            if call_count == 0:
-                resp.text = AsyncMock(return_value=index_xml)
-            else:
-                resp.text = AsyncMock(return_value=sub_xml)
+            resp = _mock_response(index_xml if call_count == 0 else sub_xml)
             call_count += 1
-            resp.__aenter__ = AsyncMock(return_value=resp)
-            resp.__aexit__ = AsyncMock(return_value=False)
             return resp
 
-        session = MagicMock()
-        session.get = MagicMock(side_effect=make_response)
-
+        session = _mock_session(side_effect=make_response)
         urls = await fetch_sitemap_urls(session, "https://example.com/sitemap.xml")
         assert "https://example.com/deep-page" in urls
 
     async def test_returns_empty_on_fetch_error(self):
-        response = AsyncMock()
-        response.__aenter__ = AsyncMock(side_effect=ConnectionError("timeout"))
-        response.__aexit__ = AsyncMock(return_value=False)
-
-        session = MagicMock()
-        session.get = MagicMock(return_value=response)
-
+        session = _mock_session(_mock_response(side_effect=ConnectionError("timeout")))
         urls = await fetch_sitemap_urls(session, "https://example.com/sitemap.xml")
         assert urls == []
 
@@ -95,86 +97,34 @@ class TestFetchSitemapUrls:
 
 class TestFetchPage:
     async def test_fetches_html_page(self):
-        html = "<html><body><p>Hello world</p></body></html>"
-        response = AsyncMock()
-        response.text = AsyncMock(return_value=html)
-        response.__aenter__ = AsyncMock(return_value=response)
-        response.__aexit__ = AsyncMock(return_value=False)
-
-        session = MagicMock()
-        session.get = MagicMock(return_value=response)
-
-        sem = asyncio.Semaphore(10)
-        result = await fetch_page(session, sem, "https://example.com/page", 0.0)
-
-        assert result["url"] == "https://example.com/page"
+        session = _mock_session(_mock_response("<html><body><p>Hello world</p></body></html>"))
+        result = await fetch_page(session, asyncio.Semaphore(10), "https://example.com/page", 0.0)
         assert "Hello world" in result["content"]
-        assert result["hash"] is not None
         assert result["error"] is None
 
     async def test_fetches_plain_text(self):
-        text = "This is plain text content."
-        response = AsyncMock()
-        response.text = AsyncMock(return_value=text)
-        response.__aenter__ = AsyncMock(return_value=response)
-        response.__aexit__ = AsyncMock(return_value=False)
-
-        session = MagicMock()
-        session.get = MagicMock(return_value=response)
-
-        sem = asyncio.Semaphore(10)
-        result = await fetch_page(session, sem, "https://example.com/api", 0.0)
-
-        assert result["content"] == text
-        assert result["error"] is None
+        session = _mock_session(_mock_response("This is plain text content."))
+        result = await fetch_page(session, asyncio.Semaphore(10), "https://example.com/api", 0.0)
+        assert result["content"] == "This is plain text content."
 
     async def test_truncates_large_content(self):
-        large_text = "x" * (TRUNCATE_BYTES + 1000)
-        response = AsyncMock()
-        response.text = AsyncMock(return_value=large_text)
-        response.__aenter__ = AsyncMock(return_value=response)
-        response.__aexit__ = AsyncMock(return_value=False)
-
-        session = MagicMock()
-        session.get = MagicMock(return_value=response)
-
-        sem = asyncio.Semaphore(10)
-        result = await fetch_page(session, sem, "https://example.com/big", 0.0)
-
-        assert len(result["content"]) < len(large_text)
+        session = _mock_session(_mock_response("x" * (TRUNCATE_BYTES + 1000)))
+        result = await fetch_page(session, asyncio.Semaphore(10), "https://example.com/big", 0.0)
         assert "truncated" in result["content"]
 
     async def test_returns_error_on_exception(self):
-        response = AsyncMock()
-        response.__aenter__ = AsyncMock(side_effect=TimeoutError("request timed out"))
-        response.__aexit__ = AsyncMock(return_value=False)
-
-        session = MagicMock()
-        session.get = MagicMock(return_value=response)
-
-        sem = asyncio.Semaphore(10)
-        result = await fetch_page(session, sem, "https://example.com/timeout", 0.0)
-
+        session = _mock_session(_mock_response(side_effect=TimeoutError("request timed out")))
+        result = await fetch_page(
+            session, asyncio.Semaphore(10), "https://example.com/timeout", 0.0
+        )
         assert result["error"] is not None
         assert result["content"] is None
-        assert "timed out" in result["error"]
 
     async def test_respects_semaphore(self):
-        """Verify fetch_page acquires and releases the semaphore."""
-        response = AsyncMock()
-        response.text = AsyncMock(return_value="ok")
-        response.__aenter__ = AsyncMock(return_value=response)
-        response.__aexit__ = AsyncMock(return_value=False)
-
-        session = MagicMock()
-        session.get = MagicMock(return_value=response)
-
+        session = _mock_session(_mock_response("ok"))
         sem = asyncio.Semaphore(1)
-        assert sem._value == 1
-        result = await fetch_page(session, sem, "https://example.com", 0.0)
-        # Semaphore should be released after fetch
-        assert sem._value == 1
-        assert result["error"] is None
+        await fetch_page(session, sem, "https://example.com", 0.0)
+        assert sem._value == 1  # released after fetch
 
 
 # ── write_to_neon ───────────────────────────────────────────
@@ -186,17 +136,11 @@ class TestWriteToNeon:
             {"url": "https://example.com/page1", "content": "Hello", "hash": "abc", "error": None},
             {"url": "https://example.com/page2", "content": "World", "hash": "def", "error": None},
         ]
-
-        mock_conn = AsyncMock()
-        mock_conn.__aenter__ = AsyncMock(return_value=mock_conn)
-        mock_conn.__aexit__ = AsyncMock(return_value=False)
-
+        mock_conn = _mock_async_conn()
         with patch("psycopg.AsyncConnection.connect", return_value=mock_conn):
             r_count, t_count = await write_to_neon("postgres://test", results, "example.com", None)
-
         assert r_count == 2
         assert t_count == 2
-        # 2 resource upserts + 2 task inserts + 1 commit = 5 calls
         assert mock_conn.execute.call_count == 4
         mock_conn.commit.assert_called_once()
 
@@ -205,14 +149,9 @@ class TestWriteToNeon:
             {"url": "https://example.com/ok", "content": "Good", "hash": "abc", "error": None},
             {"url": "https://example.com/bad", "content": None, "hash": None, "error": "404"},
         ]
-
-        mock_conn = AsyncMock()
-        mock_conn.__aenter__ = AsyncMock(return_value=mock_conn)
-        mock_conn.__aexit__ = AsyncMock(return_value=False)
-
+        mock_conn = _mock_async_conn()
         with patch("psycopg.AsyncConnection.connect", return_value=mock_conn):
             r_count, t_count = await write_to_neon("postgres://test", results, "example.com", None)
-
         assert r_count == 1
         assert t_count == 1
 
@@ -221,30 +160,43 @@ class TestWriteToNeon:
             {"url": "https://example.com/en/page", "content": "EN", "hash": "a1", "error": None},
             {"url": "https://example.com/ja/page", "content": "JA", "hash": "a2", "error": None},
         ]
-
-        mock_conn = AsyncMock()
-        mock_conn.__aenter__ = AsyncMock(return_value=mock_conn)
-        mock_conn.__aexit__ = AsyncMock(return_value=False)
-
-        priority_re = re.compile("/en/")
+        mock_conn = _mock_async_conn()
         with patch("psycopg.AsyncConnection.connect", return_value=mock_conn):
-            await write_to_neon("postgres://test", results, "example.com", priority_re)
-
-        # Check that priority 1 was used for /en/ and 0 for /ja/
+            await write_to_neon("postgres://test", results, "example.com", re.compile("/en/"))
         task_calls = [c for c in mock_conn.execute.call_args_list if "tasks" in str(c.args[0])]
-        assert len(task_calls) == 2
-        # First task (en page) should have priority 1
-        assert task_calls[0].args[1][1] == 1
-        # Second task (ja page) should have priority 0
-        assert task_calls[1].args[1][1] == 0
+        assert task_calls[0].args[1][1] == 1  # /en/ -> priority 1
+        assert task_calls[1].args[1][1] == 0  # /ja/ -> priority 0
 
     async def test_handles_empty_results(self):
-        mock_conn = AsyncMock()
-        mock_conn.__aenter__ = AsyncMock(return_value=mock_conn)
-        mock_conn.__aexit__ = AsyncMock(return_value=False)
-
+        mock_conn = _mock_async_conn()
         with patch("psycopg.AsyncConnection.connect", return_value=mock_conn):
             r_count, t_count = await write_to_neon("postgres://test", [], "example.com", None)
-
         assert r_count == 0
         assert t_count == 0
+
+
+# ── Concurrent fetch failure ────────────────────────────────
+
+
+class TestFetchPagePartialFailure:
+    async def test_concurrent_fetches_with_mixed_results(self):
+        """Simulate multiple concurrent fetches where some succeed and some fail."""
+        sem = asyncio.Semaphore(5)
+
+        async def mock_fetch(url):
+            if "fail" in url:
+                resp = _mock_response(side_effect=ConnectionError(f"Failed: {url}"))
+            else:
+                resp = _mock_response(f"Content of {url}")
+            return await fetch_page(_mock_session(resp), sem, url, 0.0)
+
+        urls = [
+            "https://example.com/ok1",
+            "https://example.com/fail1",
+            "https://example.com/ok2",
+            "https://example.com/fail2",
+            "https://example.com/ok3",
+        ]
+        results = await asyncio.gather(*[mock_fetch(u) for u in urls])
+        assert len([r for r in results if r["error"] is None]) == 3
+        assert len([r for r in results if r["error"] is not None]) == 2

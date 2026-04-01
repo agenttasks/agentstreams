@@ -1,5 +1,6 @@
 """Tests for run-pipeline.py — stage integration, caching, and reporting."""
 
+import os
 import sys
 import time
 from pathlib import Path
@@ -96,8 +97,6 @@ class TestIsFreshEdgeCases:
         f = tmp_path / "boundary.txt"
         f.write_text("data")
         # Set mtime to exactly max_age_hours ago
-        import os
-
         boundary_time = time.time() - 24 * 3600
         os.utime(f, (boundary_time, boundary_time))
         # At exactly the boundary, should be stale
@@ -106,8 +105,6 @@ class TestIsFreshEdgeCases:
     def test_just_under_boundary(self, tmp_path):
         f = tmp_path / "almost.txt"
         f.write_text("data")
-        import os
-
         # 23 hours ago — still fresh
         recent_time = time.time() - 23 * 3600
         os.utime(f, (recent_time, recent_time))
@@ -116,8 +113,6 @@ class TestIsFreshEdgeCases:
     def test_custom_max_age(self, tmp_path):
         f = tmp_path / "custom.txt"
         f.write_text("data")
-        import os
-
         old_time = time.time() - 2 * 3600
         os.utime(f, (old_time, old_time))
         assert is_fresh(f, max_age_hours=1) is False

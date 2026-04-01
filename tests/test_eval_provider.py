@@ -2,6 +2,7 @@
 
 import importlib
 import sys
+from contextlib import contextmanager
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -24,105 +25,79 @@ def _make_mock_anthropic(response_text="ok", input_tokens=10, output_tokens=20):
     return mock, mock_client
 
 
+@contextmanager
+def _with_anthropic(response_text="ok", input_tokens=10, output_tokens=20, env=None, **kw):
+    """Patch anthropic module, set env, reload provider, yield (mock, client)."""
+    mock, client = _make_mock_anthropic(response_text, input_tokens, output_tokens)
+    with (
+        patch.dict("sys.modules", {"anthropic": mock}),
+        patch.dict("os.environ", env or {}, clear=kw.get("clear_env", False)),
+    ):
+        importlib.reload(provider)
+        yield mock, client
+
+
 class TestCallApiMissingKey:
     def test_returns_error_when_no_key(self):
-        mock_anthropic, _ = _make_mock_anthropic()
-        with (
-            patch.dict("sys.modules", {"anthropic": mock_anthropic}),
-            patch.dict("os.environ", {}, clear=True),
-        ):
-            importlib.reload(provider)
+        with _with_anthropic(env={}, clear_env=True) as (_, __):
             result = provider.call_api("hello", {"config": {}}, None)
         assert "error" in result
         assert "No API key" in result["error"]
 
     def test_returns_error_when_anthropic_not_installed(self):
-        original_import = __import__
+        original = __import__
 
         def mock_import(name, *args, **kwargs):
             if name == "anthropic":
                 raise ImportError("No module named 'anthropic'")
-            return original_import(name, *args, **kwargs)
+            return original(name, *args, **kwargs)
 
         with patch("builtins.__import__", side_effect=mock_import):
             result = provider.call_api("hello", {"config": {}}, None)
-        assert "error" in result
         assert "not installed" in result["error"]
 
 
 class TestCallApiKeyFallback:
     def test_uses_anthropic_api_key_first(self):
-        mock_anthropic, _ = _make_mock_anthropic("response text")
-        with (
-            patch.dict("sys.modules", {"anthropic": mock_anthropic}),
-            patch.dict(
-                "os.environ",
-                {"ANTHROPIC_API_KEY": "key-1", "CLAUDE_CODE_OAUTH_TOKEN": "key-2"},
-            ),
-        ):
-            importlib.reload(provider)
+        env = {"ANTHROPIC_API_KEY": "key-1", "CLAUDE_CODE_OAUTH_TOKEN": "key-2"}
+        with _with_anthropic("response text", env=env) as (mock, _):
             result = provider.call_api("hello", {"config": {}}, None)
-
-        mock_anthropic.Anthropic.assert_called_once_with(api_key="key-1")
+        mock.Anthropic.assert_called_once_with(api_key="key-1")
         assert result["output"] == "response text"
 
     def test_falls_back_to_oauth_token(self):
-        mock_anthropic, _ = _make_mock_anthropic()
-        with (
-            patch.dict("sys.modules", {"anthropic": mock_anthropic}),
-            patch.dict("os.environ", {"CLAUDE_CODE_OAUTH_TOKEN": "oauth-tok"}, clear=True),
+        with _with_anthropic(env={"CLAUDE_CODE_OAUTH_TOKEN": "oauth-tok"}, clear_env=True) as (
+            mock,
+            _,
         ):
-            importlib.reload(provider)
             provider.call_api("hello", {"config": {}}, None)
-
-        mock_anthropic.Anthropic.assert_called_once_with(api_key="oauth-tok")
+        mock.Anthropic.assert_called_once_with(api_key="oauth-tok")
 
 
 class TestCallApiConfig:
     def test_passes_config_to_api(self):
-        mock_anthropic, mock_client = _make_mock_anthropic()
         config = {"model": "claude-opus-4-6", "max_tokens": 2048, "temperature": 0.5}
-
-        with (
-            patch.dict("sys.modules", {"anthropic": mock_anthropic}),
-            patch.dict("os.environ", {"ANTHROPIC_API_KEY": "test-key"}),
-        ):
-            importlib.reload(provider)
-            provider.call_api("test prompt", {"config": config}, None)
-
-        call_kwargs = mock_client.messages.create.call_args
-        assert call_kwargs.kwargs["model"] == "claude-opus-4-6"
-        assert call_kwargs.kwargs["max_tokens"] == 2048
-        assert call_kwargs.kwargs["temperature"] == 0.5
+        with _with_anthropic(env={"ANTHROPIC_API_KEY": "k"}) as (_, client):
+            provider.call_api("test", {"config": config}, None)
+        kw = client.messages.create.call_args.kwargs
+        assert kw["model"] == "claude-opus-4-6"
+        assert kw["max_tokens"] == 2048
+        assert kw["temperature"] == 0.5
 
     def test_default_config_values(self):
-        mock_anthropic, mock_client = _make_mock_anthropic()
-        with (
-            patch.dict("sys.modules", {"anthropic": mock_anthropic}),
-            patch.dict("os.environ", {"ANTHROPIC_API_KEY": "test-key"}),
-        ):
-            importlib.reload(provider)
+        with _with_anthropic(env={"ANTHROPIC_API_KEY": "k"}) as (_, client):
             provider.call_api("test", {"config": {}}, None)
-
-        call_kwargs = mock_client.messages.create.call_args
-        assert call_kwargs.kwargs["model"] == "claude-sonnet-4-6"
-        assert call_kwargs.kwargs["max_tokens"] == 1024
-        assert call_kwargs.kwargs["temperature"] == 0
+        kw = client.messages.create.call_args.kwargs
+        assert kw["model"] == "claude-sonnet-4-6"
+        assert kw["max_tokens"] == 1024
+        assert kw["temperature"] == 0
 
 
 class TestCallApiTokenUsage:
     def test_returns_token_usage(self):
-        mock_anthropic, _ = _make_mock_anthropic("hi", 100, 50)
-        with (
-            patch.dict("sys.modules", {"anthropic": mock_anthropic}),
-            patch.dict("os.environ", {"ANTHROPIC_API_KEY": "test-key"}),
-        ):
-            importlib.reload(provider)
+        with _with_anthropic("hi", 100, 50, env={"ANTHROPIC_API_KEY": "k"}) as (_, __):
             result = provider.call_api("test", {"config": {}}, None)
-
-        assert result["tokenUsage"]["total"] == 150
-        assert result["tokenUsage"]["prompt"] == 100
-        assert result["tokenUsage"]["completion"] == 50
+        assert result["tokenUsage"] == {"total": 150, "prompt": 100, "completion": 50}
 
 
 class TestCallApiErrorHandling:
@@ -143,8 +118,6 @@ class TestCallApiErrorHandling:
         ):
             importlib.reload(provider)
             result = provider.call_api("test", {"config": {}}, None)
-
-        assert "error" in result
         assert "Authentication failed" in result["error"]
 
     def test_handles_generic_exception(self):
@@ -156,10 +129,8 @@ class TestCallApiErrorHandling:
 
         with (
             patch.dict("sys.modules", {"anthropic": mock_anthropic}),
-            patch.dict("os.environ", {"ANTHROPIC_API_KEY": "test-key"}),
+            patch.dict("os.environ", {"ANTHROPIC_API_KEY": "k"}),
         ):
             importlib.reload(provider)
             result = provider.call_api("test", {"config": {}}, None)
-
-        assert "error" in result
         assert "network down" in result["error"]
