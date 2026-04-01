@@ -1,6 +1,9 @@
 # Python bytecode
 __pycache__/
 
+# Virtual environment
+.venv/
+
 # Generated files
 scripts/timeseries-seed.sql
 
