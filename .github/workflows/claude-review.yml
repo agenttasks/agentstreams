@@ -41,7 +41,7 @@ jobs:
             If issues found, post a PR comment listing them.
             If clean, post a brief approving comment.
           claude_args: |
-            --max-turns 25
+            --max-turns 50
             --model claude-sonnet-4-6
 
   # ═══════════════════════════════════════════════════════════
@@ -72,7 +72,7 @@ jobs:
 
             Post inline comments on inconsistencies. If clean, post a brief approving comment.
           claude_args: |
-            --max-turns 25
+            --max-turns 50
             --model claude-sonnet-4-6
 
   # ═══════════════════════════════════════════════════════════
