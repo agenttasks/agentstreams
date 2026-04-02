@@ -216,3 +216,132 @@ class TestValidateMemoryDir:
         errors, warnings = validate_memory_dir(tmp_path)
         assert len(errors) >= 2  # broken link + missing frontmatter
         assert len(warnings) >= 1  # orphan
+
+
+class TestPrintReport:
+    """Cover print_report (lines 245-281)."""
+
+    def test_report_with_errors_and_warnings(self, tmp_path, capsys):
+        (tmp_path / "MEMORY.md").write_text("- [A](a.md) — desc")
+        (tmp_path / "a.md").write_text("content")
+        errors = ["error 1", "error 2"]
+        warnings = ["warning 1"]
+        mod.print_report(tmp_path, errors, warnings)
+        captured = capsys.readouterr()
+        assert "Errors (2)" in captured.err
+        assert "Warnings (1)" in captured.err
+        assert "2 error(s), 1 warning(s)" in captured.err
+
+    def test_report_clean(self, tmp_path, capsys):
+        (tmp_path / "MEMORY.md").write_text("- [A](a.md) — desc")
+        (tmp_path / "a.md").write_text("content")
+        mod.print_report(tmp_path, [], [])
+        captured = capsys.readouterr()
+        assert "All checks passed" in captured.err
+
+    def test_report_warnings_only(self, tmp_path, capsys):
+        (tmp_path / "MEMORY.md").write_text("- [A](a.md) — desc")
+        (tmp_path / "a.md").write_text("content")
+        mod.print_report(tmp_path, [], ["minor warning"])
+        captured = capsys.readouterr()
+        assert "No errors" in captured.err
+        assert "1 warnings" in captured.err
+
+    def test_report_no_index(self, tmp_path, capsys):
+        """Reports when MEMORY.md doesn't exist."""
+        mod.print_report(tmp_path, ["MEMORY.md not found"], [])
+        captured = capsys.readouterr()
+        assert "Topic files:" in captured.err
+
+
+class TestFixMemory:
+    """Cover fix_memory (lines 313-365)."""
+
+    def test_removes_broken_links(self, tmp_path):
+        (tmp_path / "MEMORY.md").write_text(
+            "- [Good](good.md) — exists\n"
+            "- [Bad](missing.md) — does not exist\n"
+        )
+        (tmp_path / "good.md").write_text("---\nname: good\ndescription: g\ntype: project\n---\n")
+
+        errors = ["Line 2: broken link — 'missing.md' does not exist"]
+        mod.fix_memory(tmp_path, errors)
+
+        content = (tmp_path / "MEMORY.md").read_text()
+        assert "good.md" in content
+        assert "missing.md" not in content
+
+    def test_adds_orphans_to_index(self, tmp_path):
+        (tmp_path / "MEMORY.md").write_text("- [A](a.md) — desc\n")
+        (tmp_path / "a.md").write_text("content")
+        (tmp_path / "orphan.md").write_text(
+            "---\nname: Orphan\ndescription: an orphan\ntype: project\n---\ncontent"
+        )
+
+        errors = []  # No errors but orphans exist
+        mod.fix_memory(tmp_path, errors)
+
+        content = (tmp_path / "MEMORY.md").read_text()
+        assert "Orphan" in content
+        assert "orphan.md" in content
+
+    def test_no_index_returns_early(self, tmp_path):
+        """fix_memory returns when MEMORY.md doesn't exist."""
+        mod.fix_memory(tmp_path, ["some error"])
+        # No crash, no files created
+
+    def test_adds_orphan_without_frontmatter(self, tmp_path):
+        (tmp_path / "MEMORY.md").write_text("# Index\n")
+        (tmp_path / "orphan.md").write_text("# No frontmatter")
+
+        errors = []
+        mod.fix_memory(tmp_path, errors)
+
+        content = (tmp_path / "MEMORY.md").read_text()
+        assert "orphan" in content
+        assert "needs description" in content
+
+
+class TestMainFunction:
+    """Cover main() (lines 287-310)."""
+
+    def test_main_valid_dir(self, tmp_path, monkeypatch, capsys):
+        (tmp_path / "MEMORY.md").write_text("- [A](a.md) — desc")
+        (tmp_path / "a.md").write_text(
+            "---\nname: A\ndescription: test\ntype: project\n---\ncontent"
+        )
+        monkeypatch.setattr("sys.argv", ["validate-memory.py", str(tmp_path)])
+        mod.main()
+        captured = capsys.readouterr()
+        assert "Memory Validation" in captured.err
+
+    def test_main_check_only_exits(self, tmp_path, monkeypatch, capsys):
+        import pytest
+
+        (tmp_path / "MEMORY.md").write_text("- [Missing](missing.md) — broken")
+        monkeypatch.setattr(
+            "sys.argv", ["validate-memory.py", str(tmp_path), "--check-only"]
+        )
+        with pytest.raises(SystemExit) as exc_info:
+            mod.main()
+        assert exc_info.value.code == 1
+
+    def test_main_nonexistent_dir(self, tmp_path, monkeypatch, capsys):
+        import pytest
+
+        monkeypatch.setattr(
+            "sys.argv", ["validate-memory.py", str(tmp_path / "nonexistent")]
+        )
+        with pytest.raises(SystemExit) as exc_info:
+            mod.main()
+        assert exc_info.value.code == 1
+
+    def test_main_fix_mode(self, tmp_path, monkeypatch, capsys):
+        (tmp_path / "MEMORY.md").write_text("- [Missing](missing.md) — broken\n")
+        monkeypatch.setattr(
+            "sys.argv", ["validate-memory.py", str(tmp_path), "--fix"]
+        )
+        mod.main()
+        # After fix, broken link should be removed
+        content = (tmp_path / "MEMORY.md").read_text()
+        assert "missing.md" not in content

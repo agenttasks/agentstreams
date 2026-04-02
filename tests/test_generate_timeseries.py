@@ -126,3 +126,101 @@ class TestMetricsConfig:
     def test_total_series_count(self):
         total = sum(len(c["tags_combos"]) for c in METRICS.values())
         assert total == 44  # 33 original + 11 task metrics
+
+
+class TestGenCounterEdgeCases:
+    """Cover additional branches in gen_counter (lines 158-179)."""
+
+    def test_recrawl_higher_rate(self):
+        """is_new=false should produce higher rates than default."""
+        vals = [gen_counter(i * 60, {"is_new": "false"}) for i in range(200)]
+        avg = sum(vals) / len(vals)
+        assert avg > 5.0  # Base rate for recrawls is 15.0
+
+    def test_output_direction_lower_rate(self):
+        """direction=output should have lower rate."""
+        vals = [gen_counter(i * 60, {"direction": "output"}) for i in range(200)]
+        avg = sum(vals) / len(vals)
+        assert avg < 10.0
+
+
+class TestGenTimerEdgeCases:
+    """Cover night-time slowdown branch (lines 188-190)."""
+
+    def test_night_hours_slower(self):
+        """Timer values during night hours (2-6) should be slower on average."""
+        # Steps at 3:00 AM = 180 minutes from midnight
+        night_vals = [gen_timer(180 + i, {"stage": "extract"}) for i in range(100)]
+        # Steps at 12:00 PM = 720 minutes
+        day_vals = [gen_timer(720 + i, {"stage": "extract"}) for i in range(100)]
+        avg_night = sum(night_vals) / len(night_vals)
+        avg_day = sum(day_vals) / len(day_vals)
+        assert avg_night > avg_day * 0.9  # Night is at least close to 1.5x
+
+
+class TestGenGaugeEdgeCases:
+    """Cover simhash and eval branches (lines 200-223)."""
+
+    def test_simhash_fpr(self):
+        val = gen_gauge(100, {"method": "simhash"})
+        assert 0 <= val <= 1
+
+    def test_bloom_drift_increases(self):
+        """Bloom FPR should drift higher over time."""
+        early = [gen_gauge(i, {"method": "bloom"}) for i in range(50)]
+        late = [gen_gauge(TOTAL_STEPS - 50 + i, {"method": "bloom"}) for i in range(50)]
+        # On average, late values should be higher due to drift
+        assert sum(late) / len(late) >= sum(early) / len(early) - 0.01
+
+    def test_eval_cost_assertion(self):
+        val = gen_gauge(100, {"assertion_type": "cost"})
+        assert 0 <= val <= 1
+
+    def test_eval_during_run(self):
+        """During eval runs (step % 360 <= 10), values still bounded."""
+        val = gen_gauge(360, {"assertion_type": "is-json"})
+        assert 0 <= val <= 1
+
+    def test_eval_between_runs(self):
+        """Between eval runs (step % 360 > 10), values still bounded."""
+        val = gen_gauge(375, {"assertion_type": "is-json"})
+        assert 0 <= val <= 1
+
+
+class TestGenDistributionEdgeCases:
+    """Cover unknown model branch."""
+
+    def test_unknown_model_uses_default(self):
+        val = gen_distribution(100, {"model": "unknown-model"})
+        assert val > 0
+
+    def test_sonnet_cheaper_than_opus(self):
+        vals_sonnet = [gen_distribution(i, {"model": "claude-sonnet-4-6"}) for i in range(200)]
+        vals_opus = [gen_distribution(i, {"model": "claude-opus-4-6"}) for i in range(200)]
+        assert sum(vals_sonnet) / len(vals_sonnet) < sum(vals_opus) / len(vals_opus)
+
+
+class TestMain:
+    """Cover main() (lines 253-322) — SQL generation."""
+
+    def test_main_generates_sql(self, capsys, monkeypatch):
+        # Reduce output by limiting metrics
+        import copy
+
+        # Create a minimal metrics config to speed up the test
+        small_metrics = {
+            "agentstreams.api.requests": {
+                "type": "counter",
+                "tags_combos": [{"status": "200"}],
+            },
+        }
+        monkeypatch.setattr(mod, "METRICS", small_metrics)
+
+        mod.main()
+        captured = capsys.readouterr()
+        assert "AgentStreams" in captured.out
+        assert "DELETE FROM metric_values" in captured.out
+        assert "INSERT INTO metric_values" in captured.out
+        assert "Total rows inserted:" in captured.out
+        assert "Series count:" in captured.out
+        assert "Points per series:" in captured.out

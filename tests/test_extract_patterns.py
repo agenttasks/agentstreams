@@ -227,3 +227,120 @@ class TestAnalyzePage:
         assert "tool-use" in result["topics"]
         assert isinstance(result["api_surface"], list)
         assert isinstance(result["code_langs"], list)
+
+
+class TestMainFunction:
+    """Cover main() (lines 249-319) — the CLI orchestrator."""
+
+    def test_main_stdout(self, tmp_path, monkeypatch, capsys):
+        """Main writes JSONL to stdout when no -o given."""
+        taxonomy = tmp_path / "taxonomy.md"
+        taxonomy.write_text(
+            "---\nsource: https://example.com/sitemap.xml\ndomain: example.com\n---\n\n"
+            "## Pages\n\n"
+            "### page-one\n\n"
+            "URL: https://example.com/page-one\n"
+            "Hash: abc123\n\n"
+            "```\nSome content about tool use and claude-opus-4-6\n```\n\n"
+        )
+        monkeypatch.setattr("sys.argv", ["extract-patterns.py", str(taxonomy)])
+        mod.main()
+        captured = capsys.readouterr()
+        assert "page-one" in captured.out
+        assert "Processing" in captured.err
+
+    def test_main_output_file(self, tmp_path, monkeypatch, capsys):
+        """Main writes JSONL to file and prints summary."""
+        taxonomy = tmp_path / "taxonomy.md"
+        taxonomy.write_text(
+            "---\nsource: https://example.com/sitemap.xml\ndomain: example.com\n---\n\n"
+            "## Pages\n\n"
+            "### page-one\n\n"
+            "URL: https://example.com/page-one\n"
+            "Hash: abc123\n\n"
+            "```\nimport anthropic\nclient.messages.create using claude-sonnet-4-6\n```\n\n"
+            "### page-two\n\n"
+            "URL: https://example.com/page-two\n"
+            "Hash: def456\n\n"
+            "```\nStreaming with tool use example\n```\n\n"
+        )
+        output = tmp_path / "output.jsonl"
+        monkeypatch.setattr(
+            "sys.argv",
+            ["extract-patterns.py", str(taxonomy), "-o", str(output)],
+        )
+        mod.main()
+        content = output.read_text()
+        assert "page-one" in content
+        assert "page-two" in content
+        captured = capsys.readouterr()
+        assert "Pattern Extraction Summary" in captured.err
+        assert "Pages analyzed:" in captured.err
+        assert "Page types:" in captured.err
+        assert "Top topics:" in captured.err
+        assert "Code languages:" in captured.err
+        assert "API surface entries:" in captured.err
+        assert "SDK patterns:" in captured.err
+        assert "Cross-references:" in captured.err
+
+    def test_main_en_only(self, tmp_path, monkeypatch, capsys):
+        """--en-only filters to English pages."""
+        taxonomy = tmp_path / "taxonomy.md"
+        taxonomy.write_text(
+            "---\nsource: https://example.com/sitemap.xml\ndomain: example.com\n---\n\n"
+            "## Pages\n\n"
+            "### en-page\n\n"
+            "URL: https://example.com/en/page\n"
+            "Hash: abc123\n\n"
+            "```\nEnglish content\n```\n\n"
+            "### ja-page\n\n"
+            "URL: https://example.com/ja/page\n"
+            "Hash: def456\n\n"
+            "```\nJapanese content\n```\n\n"
+        )
+        monkeypatch.setattr(
+            "sys.argv",
+            ["extract-patterns.py", str(taxonomy), "--en-only"],
+        )
+        mod.main()
+        captured = capsys.readouterr()
+        assert "Processing 1 pages" in captured.err
+
+    def test_main_max_pages(self, tmp_path, monkeypatch, capsys):
+        """--max-pages limits the number of pages processed."""
+        taxonomy = tmp_path / "taxonomy.md"
+        pages_text = "---\nsource: https://example.com/sitemap.xml\ndomain: example.com\n---\n\n## Pages\n\n"
+        for i in range(5):
+            pages_text += (
+                f"### page-{i}\n\n"
+                f"URL: https://example.com/page-{i}\n"
+                f"Hash: hash{i}\n\n"
+                f"```\nContent {i}\n```\n\n"
+            )
+        taxonomy.write_text(pages_text)
+        monkeypatch.setattr(
+            "sys.argv",
+            ["extract-patterns.py", str(taxonomy), "--max-pages", "2"],
+        )
+        mod.main()
+        captured = capsys.readouterr()
+        assert "Processing 2 pages" in captured.err
+
+    def test_main_summary_flag(self, tmp_path, monkeypatch, capsys):
+        """--summary prints summary even without -o."""
+        taxonomy = tmp_path / "taxonomy.md"
+        taxonomy.write_text(
+            "---\nsource: https://example.com/sitemap.xml\ndomain: example.com\n---\n\n"
+            "## Pages\n\n"
+            "### test-page\n\n"
+            "URL: https://example.com/test\n"
+            "Hash: abc123\n\n"
+            "```\nSome content\n```\n\n"
+        )
+        monkeypatch.setattr(
+            "sys.argv",
+            ["extract-patterns.py", str(taxonomy), "--summary"],
+        )
+        mod.main()
+        captured = capsys.readouterr()
+        assert "Pattern Extraction Summary" in captured.err

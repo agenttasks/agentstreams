@@ -142,3 +142,161 @@ class TestCheckCrossReferences:
             content = "See the `README.md` for details"
             errors = check_cross_references(skill_dir, content, skill_dir / "test.md")
             assert len(errors) == 0
+
+    def test_skips_repo_root_refs(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            skill_dir = Path(tmpdir)
+            content = "See `agentstreams/README.md` and `taxonomy/data.md`"
+            errors = check_cross_references(skill_dir, content, skill_dir / "test.md")
+            assert len(errors) == 0
+
+    def test_resolves_relative_to_file_parent(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            skill_dir = Path(tmpdir)
+            subdir = skill_dir / "sub"
+            subdir.mkdir()
+            (subdir / "sibling.md").write_text("# Sibling")
+            content = "See `sibling.md` for more"
+            errors = check_cross_references(skill_dir, content, subdir / "test.md")
+            assert len(errors) == 0
+
+    def test_markdown_link_format(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            skill_dir = Path(tmpdir)
+            content = "See [the guide](missing-guide.md) for details"
+            errors = check_cross_references(skill_dir, content, skill_dir / "test.md")
+            assert len(errors) == 1
+            assert "missing-guide.md" in errors[0]
+
+
+class TestFindSkills:
+    def test_finds_skills_with_skill_md(self, monkeypatch):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            skills_dir = Path(tmpdir) / "skills"
+            skills_dir.mkdir()
+            (skills_dir / "crawl-ingest").mkdir()
+            (skills_dir / "crawl-ingest" / "SKILL.md").write_text("---\nname: crawl\ndescription: x\n---\n")
+            (skills_dir / "no-skill-md").mkdir()
+            monkeypatch.setattr(mod, "SKILLS_DIR", skills_dir)
+            result = mod.find_skills()
+            assert "crawl-ingest" in result
+            assert "no-skill-md" not in result
+
+    def test_no_skills_dir(self, monkeypatch):
+        monkeypatch.setattr(mod, "SKILLS_DIR", Path("/nonexistent/path"))
+        result = mod.find_skills()
+        assert result == []
+
+
+class TestValidateSkill:
+    def test_valid_skill(self, monkeypatch):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            skills_dir = Path(tmpdir)
+            skill_dir = skills_dir / "test-skill"
+            skill_dir.mkdir()
+            (skill_dir / "SKILL.md").write_text(
+                "---\nname: test-skill\ndescription: A test skill\n---\n# Test\n"
+                "Use claude-opus-4-6 with CLAUDE_CODE_OAUTH_TOKEN\n"
+            )
+            (skill_dir / "guide.md").write_text("# Guide for test-skill")
+            monkeypatch.setattr(mod, "SKILLS_DIR", skills_dir)
+            result = mod.validate_skill("test-skill")
+            assert result.passed is True
+            assert result.files_checked == 2
+
+    def test_missing_skill_dir(self, monkeypatch):
+        monkeypatch.setattr(mod, "SKILLS_DIR", Path("/nonexistent"))
+        result = mod.validate_skill("no-such-skill")
+        assert result.passed is False
+        assert any("not found" in e for e in result.errors)
+
+    def test_skill_with_forbidden_pattern(self, monkeypatch):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            skills_dir = Path(tmpdir)
+            skill_dir = skills_dir / "bad-skill"
+            skill_dir.mkdir()
+            (skill_dir / "SKILL.md").write_text(
+                "---\nname: bad-skill\ndescription: Bad\n---\n"
+                'export ANTHROPIC_API_KEY="sk-abc"\n'
+            )
+            monkeypatch.setattr(mod, "SKILLS_DIR", skills_dir)
+            result = mod.validate_skill("bad-skill")
+            assert result.passed is False
+            assert any("ANTHROPIC_API_KEY" in e for e in result.errors)
+
+    def test_skill_with_bad_model_name(self, monkeypatch):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            skills_dir = Path(tmpdir)
+            skill_dir = skills_dir / "model-skill"
+            skill_dir.mkdir()
+            (skill_dir / "SKILL.md").write_text(
+                "---\nname: model-skill\ndescription: Test\n---\n"
+                "Use claude.opus.4 for generation\n"
+            )
+            monkeypatch.setattr(mod, "SKILLS_DIR", skills_dir)
+            result = mod.validate_skill("model-skill")
+            assert len(result.warnings) >= 1
+
+
+class TestMainFunction:
+    """Cover main() (lines 173-219)."""
+
+    def test_main_with_skills(self, monkeypatch, capsys):
+        import pytest
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            skills_dir = Path(tmpdir)
+            skill_dir = skills_dir / "test-skill"
+            skill_dir.mkdir()
+            (skill_dir / "SKILL.md").write_text(
+                "---\nname: test-skill\ndescription: A test\n---\n# Test\n"
+            )
+            monkeypatch.setattr(mod, "SKILLS_DIR", skills_dir)
+            monkeypatch.setattr("sys.argv", ["validate-skills.py", "--check-only"])
+            with pytest.raises(SystemExit) as exc_info:
+                mod.main()
+            assert exc_info.value.code == 0
+            captured = capsys.readouterr()
+            assert "Validating 1 skill(s)" in captured.out
+            assert "Results: 1/1" in captured.out
+
+    def test_main_specific_skill(self, monkeypatch, capsys):
+        import pytest
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            skills_dir = Path(tmpdir)
+            skill_dir = skills_dir / "my-skill"
+            skill_dir.mkdir()
+            (skill_dir / "SKILL.md").write_text(
+                "---\nname: my-skill\ndescription: Mine\n---\n"
+            )
+            monkeypatch.setattr(mod, "SKILLS_DIR", skills_dir)
+            monkeypatch.setattr("sys.argv", ["validate-skills.py", "my-skill"])
+            with pytest.raises(SystemExit) as exc_info:
+                mod.main()
+            assert exc_info.value.code == 0
+            captured = capsys.readouterr()
+            assert "Validating 1 skill(s)" in captured.out
+
+    def test_main_no_skills_exits(self, monkeypatch, capsys):
+        import pytest
+
+        monkeypatch.setattr(mod, "SKILLS_DIR", Path("/nonexistent"))
+        monkeypatch.setattr("sys.argv", ["validate-skills.py"])
+        with pytest.raises(SystemExit) as exc_info:
+            mod.main()
+        assert exc_info.value.code == 1
+
+    def test_main_failing_skill_exits_nonzero(self, monkeypatch, capsys):
+        import pytest
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            skills_dir = Path(tmpdir)
+            skill_dir = skills_dir / "bad"
+            skill_dir.mkdir()
+            (skill_dir / "SKILL.md").write_text("# No frontmatter")
+            monkeypatch.setattr(mod, "SKILLS_DIR", skills_dir)
+            monkeypatch.setattr("sys.argv", ["validate-skills.py", "--check-only"])
+            with pytest.raises(SystemExit) as exc_info:
+                mod.main()
+            assert exc_info.value.code == 1

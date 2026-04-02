@@ -157,3 +157,129 @@ class TestCheckLanguageCoverage:
         skill_langs = {"python"}
         findings = check_language_coverage(doc_langs, skill_langs)
         assert len(findings) == 0
+
+
+class TestScanSkillFiles:
+    def test_extracts_model_ids(self, tmp_path):
+        skills = tmp_path / "skills"
+        skills.mkdir()
+        (skills / "test.md").write_text("Use claude-opus-4-6 for generation")
+        result = scan_skill_files(skills)
+        assert "claude-opus-4-6" in result["model_ids"]
+
+    def test_extracts_sdk_patterns(self, tmp_path):
+        skills = tmp_path / "skills"
+        skills.mkdir()
+        (skills / "test.md").write_text("client = anthropic.Anthropic()\nresponse = client.messages")
+        result = scan_skill_files(skills)
+        assert "anthropic.Anthropic()" in result["sdk_patterns"]
+
+    def test_extracts_api_refs(self, tmp_path):
+        skills = tmp_path / "skills"
+        skills.mkdir()
+        (skills / "test.md").write_text("Call client.messages.create to send")
+        result = scan_skill_files(skills)
+        assert "client.messages.create" in result["api_refs"]
+
+    def test_detects_language_dirs(self, tmp_path):
+        skills = tmp_path / "skills"
+        (skills / "topic" / "python").mkdir(parents=True)
+        (skills / "topic" / "python" / "guide.md").write_text("# Python Guide")
+        result = scan_skill_files(skills)
+        assert "python" in result["languages"]
+
+    def test_skips_unreadable_files(self, tmp_path):
+        skills = tmp_path / "skills"
+        skills.mkdir()
+        # Binary content that causes UnicodeDecodeError is handled
+        (skills / "binary.md").write_bytes(b"\x80\x81\x82\x83")
+        result = scan_skill_files(skills)
+        assert isinstance(result["model_ids"], set)
+
+    def test_empty_dir(self, tmp_path):
+        skills = tmp_path / "skills"
+        skills.mkdir()
+        result = scan_skill_files(skills)
+        assert result["model_ids"] == set()
+        assert result["sdk_patterns"] == set()
+        assert result["api_refs"] == set()
+        assert result["languages"] == set()
+
+
+class TestPrintReport:
+    """Test print_report covers lines 268-308."""
+
+    def test_no_findings(self, capsys):
+        doc = {"model_ids": {"a"}, "sdk_patterns": {"b"}, "api_methods": {"c"},
+               "topics": {"t": 1}, "code_langs": {"python": 5}}
+        skill = {"model_ids": {"a"}, "sdk_patterns": {"b"}, "api_refs": {"c"},
+                 "languages": {"python"}}
+        mod.print_report(doc, skill, [])
+        captured = capsys.readouterr()
+        assert "No issues found" in captured.err
+
+    def test_with_findings(self, capsys):
+        doc = {"model_ids": set(), "sdk_patterns": set(), "api_methods": set(),
+               "topics": {}, "code_langs": {}}
+        skill = {"model_ids": set(), "sdk_patterns": set(), "api_refs": set(),
+                 "languages": set()}
+        findings = [
+            {"severity": "high", "category": "test", "message": "high issue"},
+            {"severity": "medium", "category": "test", "message": "medium issue"},
+            {"severity": "low", "category": "test", "message": "low issue"},
+            {"severity": "info", "category": "test", "message": "info issue"},
+        ]
+        mod.print_report(doc, skill, findings)
+        captured = capsys.readouterr()
+        assert "HIGH (1)" in captured.err
+        assert "MEDIUM (1)" in captured.err
+        assert "LOW (1)" in captured.err
+        assert "INFO (1)" in captured.err
+        assert "4 findings (2 actionable)" in captured.err
+
+
+class TestMain:
+    """Test the main() function (lines 314-347)."""
+
+    def test_main_with_patterns_and_skills(self, tmp_path, monkeypatch, capsys):
+        # Create a patterns JSONL file
+        patterns_file = tmp_path / "patterns.jsonl"
+        patterns_file.write_text(
+            '{"api_surface": ["claude-opus-4-6"], "sdk_patterns": [], "topics": ["mcp"], "code_langs": ["python"]}\n'
+        )
+        # Create a skills dir
+        skills_dir = tmp_path / "skills"
+        skills_dir.mkdir()
+        (skills_dir / "test.md").write_text("# MCP skill using claude-opus-4-6\nanthropic.Anthropic()")
+
+        monkeypatch.setattr("sys.argv", [
+            "validate-patterns.py",
+            str(patterns_file),
+            str(skills_dir),
+        ])
+        # main() doesn't sys.exit unless --check-only, so it returns None
+        mod.main()
+        captured = capsys.readouterr()
+        assert "Pattern-Driven Skill Validation" in captured.err
+
+    def test_main_check_only_exits_on_medium(self, tmp_path, monkeypatch, capsys):
+        import pytest
+
+        patterns_file = tmp_path / "patterns.jsonl"
+        patterns_file.write_text(
+            '{"api_surface": ["claude-opus-4-6"], "sdk_patterns": [], "topics": [], "code_langs": []}\n'
+        )
+        skills_dir = tmp_path / "skills"
+        skills_dir.mkdir()
+        # Skill references a model not in docs — triggers medium finding
+        (skills_dir / "test.md").write_text("Use claude-haiku-99-obsolete for best results")
+
+        monkeypatch.setattr("sys.argv", [
+            "validate-patterns.py",
+            str(patterns_file),
+            str(skills_dir),
+            "--check-only",
+        ])
+        with pytest.raises(SystemExit) as exc_info:
+            mod.main()
+        assert exc_info.value.code == 1
