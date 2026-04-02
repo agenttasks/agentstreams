@@ -2,6 +2,10 @@
 __pycache__/
 *.pyc
 
+# Coverage artifacts
+.coverage
+htmlcov/
+
 # Generated files
 scripts/timeseries-seed.sql
 
