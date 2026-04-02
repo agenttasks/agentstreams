@@ -54,6 +54,17 @@ CREATE TABLE sdks (
     repo_url TEXT
 );
 
+-- ── MCP Servers ─────────────────────────────────────────
+
+CREATE TABLE mcp_servers (
+    id TEXT PRIMARY KEY,             -- 'agentstreams'
+    name TEXT NOT NULL,
+    version TEXT,
+    transport TEXT CHECK (transport IN ('stdio', 'http')),
+    description TEXT,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
 -- ── Packages ─────────────────────────────────────────────
 
 CREATE TABLE packages (

@@ -136,3 +136,41 @@ class TestWriteTaxonomy:
         write_taxonomy([], output, "https://example.com/sitemap.xml", "example.com")
         content = Path(output).read_text()
         assert "page_count: 0" in content
+
+
+class TestHtmlToTextEdgeCases:
+    def test_nested_script_tags(self):
+        html = "<div><script>var x = '<script>nested</script>';</script><p>Keep</p></div>"
+        assert "Keep" in html_to_text(html)
+
+    def test_malformed_html(self):
+        assert "Unclosed paragraph" in html_to_text("<p>Unclosed paragraph<div>Overlapping<p>tags")
+
+    def test_empty_html(self):
+        assert html_to_text("").strip() == ""
+
+    def test_html_entities(self):
+        assert "Fish & Chips <3" in html_to_text("<p>Fish &amp; Chips &lt;3</p>")
+
+    def test_strips_nav_footer_header(self):
+        html = "<nav>Skip</nav><header>Header</header><main><p>Main</p></main><footer>Foot</footer>"
+        text = html_to_text(html)
+        assert "Main" in text
+        assert "Skip" not in text
+        assert "Foot" not in text
+
+    def test_preserves_semantic_newlines(self):
+        text = html_to_text("<h1>Title</h1><p>Paragraph 1</p><p>Paragraph 2</p>")
+        lines = [line.strip() for line in text.strip().split("\n") if line.strip()]
+        assert len(lines) >= 3
+
+
+class TestContentHashEdgeCases:
+    def test_unicode_content(self):
+        assert len(content_hash("日本語テスト")) == 12
+
+    def test_empty_string(self):
+        assert len(content_hash("")) == 12
+
+    def test_very_long_content(self):
+        assert len(content_hash("x" * 1_000_000)) == 12

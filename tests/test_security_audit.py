@@ -16,6 +16,7 @@ check_secret_leakage = mod.check_secret_leakage
 check_dependency_risks = mod.check_dependency_risks
 check_crawled_content_handling = mod.check_crawled_content_handling
 scan_file = mod.scan_file
+scan_directory = mod.scan_directory
 
 
 class TestFinding:
@@ -218,3 +219,27 @@ class TestCrawledContentHandling:
         code = "result = eval(expression)"
         findings = check_crawled_content_handling(Path("test.py"), code)
         assert len(findings) == 0
+
+
+class TestScanFileEdgeCases:
+    def test_binary_like_content(self, tmp_path):
+        f = tmp_path / "weird.py"
+        f.write_text("# Normal header\n\x00\x01\x02 os.system(cmd)")
+        findings = scan_file(f)
+        assert any(finding.category == "shell-injection" for finding in findings)
+
+    def test_very_large_file(self, tmp_path):
+        f = tmp_path / "large.py"
+        f.write_text("import json\n" * 10000 + "os.system(cmd)\n")
+        findings = scan_file(f)
+        assert any(finding.category == "shell-injection" for finding in findings)
+
+    def test_file_with_only_comments(self, tmp_path):
+        f = tmp_path / "comments.py"
+        f.write_text("# os.system(cmd)\n# eval(x)\n# import pickle\n")
+        assert not any(finding.category == "shell-injection" for finding in scan_file(f))
+
+    def test_multiline_string_context(self, tmp_path):
+        f = tmp_path / "docstring.py"
+        f.write_text('"""\nWarning: never use os.system(cmd)\n"""\nprint("clean")\n')
+        assert not any(finding.category == "shell-injection" for finding in scan_file(f))

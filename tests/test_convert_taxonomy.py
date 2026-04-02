@@ -214,6 +214,25 @@ class TestIsPipelineCompatible:
         assert not is_pipeline_compatible(PLAIN_INPUT)
 
 
+class TestSlugifyEdgeCases:
+    def test_unicode_heading(self):
+        assert slugify("Über die API-Nutzung") == "ber-die-api-nutzung"
+
+    def test_special_characters(self):
+        assert slugify("Hello! @World #2024") == "hello-world-2024"
+
+    def test_long_heading_truncated(self):
+        assert len(slugify("A" * 100)) <= 60
+
+    def test_leading_trailing_dashes(self):
+        slug = slugify("---test---")
+        assert not slug.startswith("-")
+        assert not slug.endswith("-")
+
+    def test_empty_string(self):
+        assert slugify("") == ""
+
+
 class TestRealFixtures:
     """Test against actual taxonomy fixtures if available."""
 

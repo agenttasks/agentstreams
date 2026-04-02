@@ -17,6 +17,9 @@ validate_memory_dir = mod.validate_memory_dir
 
 
 class TestParseIndexEntries:
+    def test_empty_input(self):
+        assert parse_index_entries("") == []
+
     def test_parses_markdown_links(self):
         text = "- [My Memory](memory.md) — some description"
         entries = parse_index_entries(text)
@@ -84,6 +87,23 @@ class TestValidateIndex:
         (tmp_path / "a.md").write_text("---\nname: x\n---\n")
         errors, warnings = validate_index(text, tmp_path)
         assert any("content in index" in w for w in warnings)
+
+
+class TestValidateIndexBoundary:
+    def test_line_count_limit(self, tmp_path):
+        """MEMORY.md should not exceed 200 lines."""
+        topics = tmp_path / "topics"
+        topics.mkdir()
+        lines = ["# Memory Index\n\n"]
+        for i in range(199):
+            (topics / f"topic-{i}.md").write_text(
+                f"---\nname: Topic {i}\ndescription: Test\ntype: knowledge\n---\nContent {i}\n"
+            )
+            lines.append(f"- [Topic {i}](topics/topic-{i}.md) — Test\n")
+        index_text = "".join(lines)
+        errors, warnings = validate_index(index_text, tmp_path)
+        all_findings = errors + warnings
+        assert any("line" in f.lower() or "200" in f for f in all_findings) or len(all_findings) > 0
 
 
 class TestParseFrontmatter:
