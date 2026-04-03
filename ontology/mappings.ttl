@@ -248,3 +248,26 @@ map:task-config a map:Mapping ;
     map:ontologyProperty as:taskConfig ;
     map:targetTable "tasks" ;
     map:targetColumn "config" .
+
+# ── Bloom Filter mappings ────────────────────────────────
+
+map:bloom-filter-table a map:Mapping ;
+    map:ontologyClass as:BloomFilter ;
+    map:targetTable "bloom_filters" ;
+    rdfs:label "BloomFilter → bloom_filters table" .
+
+# ── CrawledPage mappings (stored in resources table) ─────
+
+map:crawled-page-table a map:Mapping ;
+    map:ontologyClass as:CrawledPage ;
+    map:targetTable "resources" ;
+    rdfs:label "CrawledPage → resources table (type=crawled_page)" ;
+    rdfs:comment "CrawledPage metadata stored in resources.description as JSON." .
+
+# ── DSPySignature mappings (runtime only, no table) ──────
+
+map:dspy-signature a map:Mapping ;
+    map:ontologyClass as:DSPySignature ;
+    map:targetTable "_runtime" ;
+    rdfs:label "DSPySignature → Python dataclass (no physical table)" ;
+    rdfs:comment "DSPy signatures exist only as Python dataclasses in src/agentstreams/dspy_prompts/signatures.py." .

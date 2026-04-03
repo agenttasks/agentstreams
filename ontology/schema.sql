@@ -168,6 +168,29 @@ CREATE INDEX idx_tasks_queue ON tasks(queue_name, status, priority DESC);
 CREATE INDEX idx_tasks_created ON tasks(created_at);
 CREATE INDEX idx_tasks_type ON tasks(type);
 
+-- ── Bloom Filters (cross-session dedup persistence) ──────
+
+CREATE TABLE bloom_filters (
+    name TEXT PRIMARY KEY,
+    data BYTEA NOT NULL,
+    capacity INTEGER NOT NULL,
+    item_count INTEGER NOT NULL,
+    fp_rate DOUBLE PRECISION NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- ── Unique constraint for resource URLs ─────────────────
+
+-- Enable upsert by URL for crawled pages
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_constraint WHERE conname = 'resources_url_key'
+    ) THEN
+        ALTER TABLE resources ADD CONSTRAINT resources_url_key UNIQUE (url);
+    END IF;
+END $$;
+
 -- ── Seed data ────────────────────────────────────────────
 
 INSERT INTO languages (id, label) VALUES

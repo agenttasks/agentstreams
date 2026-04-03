@@ -72,6 +72,18 @@ as:FinancialTask a as:TaskType ;
     rdfs:label "Financial Task" ;
     rdfs:comment "Task executed via financial-services-plugins." .
 
+as:BloomFilter a rdfs:Class ;
+    rdfs:label "Bloom Filter" ;
+    rdfs:comment "Probabilistic set for URL deduplication — persisted to Neon for cross-session state." .
+
+as:CrawledPage a rdfs:Class ;
+    rdfs:label "Crawled Page" ;
+    rdfs:comment "A web page fetched by a crawler — extends Resource with crawl metadata (page_type, topics, bloom dedup state)." .
+
+as:DSPySignature a rdfs:Class ;
+    rdfs:label "DSPy Signature" ;
+    rdfs:comment "Typed input/output contract for a programmatic prompt module. Composes into pipelines." .
+
 # ── Enumerations ──────────────────────────────────────────
 
 as:LanguageTier a rdfs:Class ;
