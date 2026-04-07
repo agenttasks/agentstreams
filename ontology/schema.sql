@@ -271,6 +271,27 @@ CREATE TABLE data_containers (
     updated_at TIMESTAMPTZ DEFAULT now()
 );
 
+-- ── Embeddings (pgvector: semantic search) ──────────────
+
+CREATE EXTENSION IF NOT EXISTS vector;
+
+CREATE TABLE embeddings (
+    id TEXT PRIMARY KEY,
+    text TEXT NOT NULL,
+    embedding vector(384) NOT NULL,     -- 384-dim (MiniLM / hash_embedding)
+    wing TEXT NOT NULL DEFAULT '',       -- mempalace domain: ontology, skills, docs
+    room TEXT NOT NULL DEFAULT '',       -- mempalace topic: tool-use, streaming, mcp
+    source_url TEXT NOT NULL DEFAULT '',
+    content_hash TEXT NOT NULL DEFAULT '',
+    metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX idx_embeddings_vector ON embeddings
+    USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100);
+CREATE INDEX idx_embeddings_wing ON embeddings(wing);
+CREATE INDEX idx_embeddings_room ON embeddings(room);
+
 -- ── Seed data ────────────────────────────────────────────
 
 INSERT INTO languages (id, label) VALUES

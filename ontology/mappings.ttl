@@ -440,3 +440,20 @@ map:data-container-class a map:Mapping ;
     map:ontologyProperty as:projectsClass ;
     map:targetTable "data_containers" ;
     map:targetColumn "class_name" .
+
+# ── Embedding mappings (pgvector + LanceDB) ─────────────
+
+map:embedding-table a map:Mapping ;
+    map:ontologyClass as:Embedding ;
+    map:targetTable "embeddings" ;
+    rdfs:label "Embedding → embeddings table (pgvector)" .
+
+map:embedding-wing a map:Mapping ;
+    map:ontologyProperty as:embeddingWing ;
+    map:targetTable "embeddings" ;
+    map:targetColumn "wing" .
+
+map:embedding-room a map:Mapping ;
+    map:ontologyProperty as:embeddingRoom ;
+    map:targetTable "embeddings" ;
+    map:targetColumn "room" .

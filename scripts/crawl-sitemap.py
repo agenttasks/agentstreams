@@ -33,6 +33,16 @@ from urllib.parse import urlparse
 import aiohttp
 from spiders import HTMLToText, content_hash, html_to_text  # shared base module
 
+# UDA integration: import src/ modules when available
+_src_available = False
+try:
+    from src.neon_db import connection_pool as _neon_pool  # noqa: F401
+    from src.neon_db import enqueue_task, upsert_resource  # noqa: F401
+
+    _src_available = True
+except ImportError:
+    pass
+
 __all__ = ["HTMLToText", "content_hash", "html_to_text"]  # re-export for tests
 
 # ── Constants ────────────────────────────────────────────────
@@ -147,38 +157,66 @@ async def write_to_neon(
     domain: str,
     priority_pattern: re.Pattern | None,
 ) -> tuple[int, int]:
-    """Upsert resources and create analysis tasks in Neon. Returns (resources, tasks) counts."""
-    import psycopg
+    """Upsert resources and create analysis tasks in Neon. Returns (resources, tasks) counts.
 
+    Uses src/neon_db.py typed data access functions when available,
+    falling back to inline psycopg for backwards compatibility.
+    """
     resources_count = 0
     tasks_count = 0
 
-    async with await psycopg.AsyncConnection.connect(neon_url) as conn:
-        for r in results:
-            if r["error"] or not r["content"]:
-                continue
+    if _src_available:
+        # UDA path: use src/neon_db.py typed functions
+        async with _neon_pool(neon_url) as conn:
+            for r in results:
+                if r["error"] or not r["content"]:
+                    continue
+                await upsert_resource(
+                    conn,
+                    resource_type="crawled_page",
+                    label=slug_from_url(r["url"]),
+                    url=r["url"],
+                    content_hash=r["hash"],
+                )
+                resources_count += 1
 
-            # Upsert resource
-            await conn.execute(
-                """INSERT INTO resources (type, label, url, content_hash, fetched_at)
-                   VALUES ('crawled_page', %s, %s, %s, now())
-                   ON CONFLICT (url) DO UPDATE
-                   SET content_hash = EXCLUDED.content_hash,
-                       fetched_at = now()""",
-                (slug_from_url(r["url"]), r["url"], r["hash"]),
-            )
-            resources_count += 1
+                priority = 1 if (priority_pattern and priority_pattern.search(r["url"])) else 0
+                await enqueue_task(
+                    conn,
+                    queue_name="crawl-analyze",
+                    task_type="knowledge_work",
+                    skill_name="crawl-ingest",
+                    task_input={"url": r["url"], "domain": domain},
+                    priority=priority,
+                )
+                tasks_count += 1
+            await conn.commit()
+    else:
+        # Legacy path: inline psycopg
+        import psycopg
 
-            # Create analysis task
-            priority = 1 if (priority_pattern and priority_pattern.search(r["url"])) else 0
-            await conn.execute(
-                """INSERT INTO tasks (queue_name, type, status, input, priority)
-                   VALUES ('crawl-analyze', 'knowledge_work', 'queued', %s, %s)""",
-                (json.dumps({"url": r["url"], "domain": domain}), priority),
-            )
-            tasks_count += 1
+        async with await psycopg.AsyncConnection.connect(neon_url) as conn:
+            for r in results:
+                if r["error"] or not r["content"]:
+                    continue
+                await conn.execute(
+                    """INSERT INTO resources (type, label, url, content_hash, fetched_at)
+                       VALUES ('crawled_page', %s, %s, %s, now())
+                       ON CONFLICT (url) DO UPDATE
+                       SET content_hash = EXCLUDED.content_hash,
+                           fetched_at = now()""",
+                    (slug_from_url(r["url"]), r["url"], r["hash"]),
+                )
+                resources_count += 1
 
-        await conn.commit()
+                priority = 1 if (priority_pattern and priority_pattern.search(r["url"])) else 0
+                await conn.execute(
+                    """INSERT INTO tasks (queue_name, type, status, input, priority)
+                       VALUES ('crawl-analyze', 'knowledge_work', 'queued', %s, %s)""",
+                    (json.dumps({"url": r["url"], "domain": domain}), priority),
+                )
+                tasks_count += 1
+            await conn.commit()
 
     return resources_count, tasks_count
 

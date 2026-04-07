@@ -9,6 +9,12 @@ dependencies = [
     "pymupdf>=1.27.2.2",
 ]
 
+[project.optional-dependencies]
+vector = [
+    "lancedb>=0.6",
+    "pyarrow>=15.0",
+]
+
 [dependency-groups]
 dev = [
     "pytest>=8.0",

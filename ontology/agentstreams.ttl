@@ -54,6 +54,21 @@ as:Subagent a rdfs:Class ;
     rdfs:label "Subagent" ;
     rdfs:comment "A headless DSPy subagent that runs extraction pipelines autonomously with Neon persistence." .
 
+as:Embedding a rdfs:Class ;
+    rdfs:label "Embedding" ;
+    rdfs:comment "A vector embedding of text content stored in LanceDB (local) or Neon pgvector (remote). Follows mempalace drawer pattern with wing/room taxonomy." .
+
+as:EmbeddingBackend a rdfs:Class ;
+    rdfs:label "Embedding Backend" .
+
+as:LanceDBBackend a as:EmbeddingBackend ;
+    rdfs:label "LanceDB" ;
+    rdfs:comment "Local columnar vector store — millisecond queries, no server." .
+
+as:PgVectorBackend a as:EmbeddingBackend ;
+    rdfs:label "pgvector" ;
+    rdfs:comment "Neon Postgres vector extension — SQL-native similarity search." .
+
 # ── Core Classes ──────────────────────────────────────────
 
 as:Skill a rdfs:Class ;
@@ -502,6 +517,25 @@ as:subagentPipeline a rdf:Property ;
     rdfs:domain as:Subagent ;
     rdfs:range xsd:string ;
     rdfs:comment "Ordered list of DSPy module names in the pipeline." .
+
+as:embeddingWing a rdf:Property ;
+    rdfs:domain as:Embedding ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Mempalace wing (domain): ontology, skills, docs, code." .
+
+as:embeddingRoom a rdf:Property ;
+    rdfs:domain as:Embedding ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Mempalace room (topic): tool-use, streaming, agents, mcp." .
+
+as:embeddingBackend a rdf:Property ;
+    rdfs:domain as:Embedding ;
+    rdfs:range as:EmbeddingBackend .
+
+as:embeddingDim a rdf:Property ;
+    rdfs:domain as:Embedding ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "Embedding vector dimension (default 384)." .
 
 # ── Instances: Languages ──────────────────────────────────
 
