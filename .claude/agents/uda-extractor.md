@@ -1,7 +1,8 @@
 ---
 name: uda-extractor
-description: DSPy structured extraction agent that runs headless subagent pipelines for entity extraction, content classification, and ontology alignment. Use when processing crawled content into structured data.
+description: DSPy structured subagent pipeline runner for entity classification, content categorization, and ontology alignment. Use when processing crawled content into structured data.
 tools: Read, Glob, Grep, Bash
+disallowedTools: Edit, Write, Agent, NotebookEdit
 model: inherit
 color: magenta
 memory: project

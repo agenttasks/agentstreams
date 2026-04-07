@@ -5,6 +5,7 @@ description = "Multi-language skill system for Claude Code"
 requires-python = ">=3.12"
 dependencies = [
     "aiohttp>=3.10",
+    "anthropic>=0.42",
     "psycopg[binary]>=3.2",
     "pymupdf>=1.27.2.2",
 ]
@@ -37,5 +38,5 @@ quote-style = "double"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["scripts", "."]
+pythonpath = ["scripts", ".", "src"]
 asyncio_mode = "auto"

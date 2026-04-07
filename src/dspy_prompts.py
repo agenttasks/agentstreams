@@ -385,7 +385,7 @@ class Pipeline:
 
     async def __call__(self, **inputs: Any) -> Prediction:
         current_inputs = inputs
-        last_prediction = None
+        last_prediction: Prediction | None = None
         total_in_tokens = 0
         total_out_tokens = 0
 
@@ -396,6 +396,8 @@ class Pipeline:
             # Feed outputs as inputs to next module
             current_inputs = {**current_inputs, **last_prediction.outputs}
 
+        if last_prediction is None:
+            return Prediction(outputs={})
         last_prediction.input_tokens = total_in_tokens
         last_prediction.output_tokens = total_out_tokens
         return last_prediction

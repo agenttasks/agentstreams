@@ -157,6 +157,7 @@ class LanceStore:
     def _ensure_table(self):
         """Ensure the vector table exists."""
         self._ensure_db()
+        assert self._db is not None
         if self._table is None:
             try:
                 self._table = self._db.open_table(self.table_name)
@@ -182,6 +183,7 @@ class LanceStore:
     def add(self, records: list[EmbeddingRecord]) -> int:
         """Add embedding records to the store. Returns count added."""
         self._ensure_table()
+        assert self._table is not None
         rows = [
             {
                 "id": r.id,
@@ -218,6 +220,7 @@ class LanceStore:
             List of result dicts with text, score, and metadata.
         """
         self._ensure_table()
+        assert self._table is not None
         query = self._table.search(query_vector).limit(limit)
 
         if wing:
@@ -243,11 +246,13 @@ class LanceStore:
     def count(self) -> int:
         """Return total number of records in the store."""
         self._ensure_table()
+        assert self._table is not None
         return self._table.count_rows()
 
     def delete(self, ids: list[str]) -> None:
         """Delete records by ID."""
         self._ensure_table()
+        assert self._table is not None
         id_list = ", ".join(f"'{i}'" for i in ids)
         self._table.delete(f"id IN ({id_list})")
 
