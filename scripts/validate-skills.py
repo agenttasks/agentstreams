@@ -92,7 +92,9 @@ def check_cross_references(skill_dir: Path, content: str, file_path: Path) -> li
         ):
             continue
         # Skip repo-root relative refs (outside skill dir)
-        if ref.startswith(("agentstreams/", "taxonomy/", "vendors/", "~/", ".claude/", "src/", "scripts/")):
+        if ref.startswith(
+            ("agentstreams/", "taxonomy/", "vendors/", "~/", ".claude/", "src/", "scripts/")
+        ):
             continue
         # Try relative to skill dir and file parent
         candidates = [
