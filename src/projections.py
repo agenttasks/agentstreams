@@ -62,8 +62,10 @@ class OntologyParser:
     """
 
     def __init__(self, ttl_path: str | Path | None = None):
-        self.ttl_path = Path(ttl_path) if ttl_path else (
-            Path(__file__).parent.parent / "ontology" / "agentstreams.ttl"
+        self.ttl_path = (
+            Path(ttl_path)
+            if ttl_path
+            else (Path(__file__).parent.parent / "ontology" / "agentstreams.ttl")
         )
         self.classes: dict[str, OntologyClass] = {}
         self.properties: dict[str, OntologyProperty] = {}
@@ -75,7 +77,7 @@ class OntologyParser:
 
         # Extract classes
         for match in re.finditer(
-            r'as:(\w+)\s+a\s+rdfs:Class\s*;(.*?)(?=\n\nas:|\Z)',
+            r"as:(\w+)\s+a\s+rdfs:Class\s*;(.*?)(?=\n\nas:|\Z)",
             text,
             re.DOTALL,
         ):
@@ -95,7 +97,7 @@ class OntologyParser:
 
         # Extract properties
         for match in re.finditer(
-            r'as:(\w+)\s+a\s+rdf:Property\s*;(.*?)(?=\n\nas:|\Z)',
+            r"as:(\w+)\s+a\s+rdf:Property\s*;(.*?)(?=\n\nas:|\Z)",
             text,
             re.DOTALL,
         ):
@@ -103,11 +105,11 @@ class OntologyParser:
             body = match.group(2)
             prop = OntologyProperty(name=name)
 
-            domain_m = re.search(r'rdfs:domain\s+as:(\w+)', body)
+            domain_m = re.search(r"rdfs:domain\s+as:(\w+)", body)
             if domain_m:
                 prop.domain = domain_m.group(1)
 
-            range_m = re.search(r'rdfs:range\s+(xsd:\w+|as:\w+)', body)
+            range_m = re.search(r"rdfs:range\s+(xsd:\w+|as:\w+)", body)
             if range_m:
                 prop.range_type = range_m.group(1)
                 prop.is_relationship = prop.range_type.startswith("as:")
@@ -124,7 +126,7 @@ class OntologyParser:
 
         # Extract enums (instances of enum classes)
         for match in re.finditer(
-            r'as:(\w+)\s+a\s+as:(\w+)\s*;',
+            r"as:(\w+)\s+a\s+as:(\w+)\s*;",
             text,
         ):
             instance = match.group(1)
@@ -185,11 +187,14 @@ class AvroProjection:
             ref_class = prop.range_type.replace("as:", "")
             return {
                 "name": f"AS_{prop.name}",
-                "type": ["null", {
-                    "type": "record",
-                    "name": f"AS_{ref_class}_Reference",
-                    "fields": [{"name": "id", "type": "string"}],
-                }],
+                "type": [
+                    "null",
+                    {
+                        "type": "record",
+                        "name": f"AS_{ref_class}_Reference",
+                        "fields": [{"name": "id", "type": "string"}],
+                    },
+                ],
                 "default": None,
                 "udaUri": f"https://agentstreams.dev/ontology#{prop.name}",
             }
@@ -280,8 +285,8 @@ class GraphQLProjection:
             '"""AgentStreams UDA GraphQL Schema"""',
             '"""Auto-generated from ontology/agentstreams.ttl"""',
             "",
-            'directive @key(fields: String!) on OBJECT',
-            'directive @udaUri(uri: String!) on OBJECT | FIELD_DEFINITION',
+            "directive @key(fields: String!) on OBJECT",
+            "directive @udaUri(uri: String!) on OBJECT | FIELD_DEFINITION",
             "",
         ]
 
@@ -328,7 +333,7 @@ class DataContainerProjection:
             "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .",
             "",
             f"# DataContainer for as:{class_name}",
-            '# Auto-generated from ontology — source of truth: ontology/agentstreams.ttl',
+            "# Auto-generated from ontology — source of truth: ontology/agentstreams.ttl",
             "",
             f"dc:{class_name}_source a datamesh:Source ;",
             '    datamesh:sourceType "APPLICATION_PRODUCER" ;',
@@ -342,21 +347,25 @@ class DataContainerProjection:
         for prop in cls.properties:
             if prop.is_relationship:
                 ref_class = prop.range_type.replace("as:", "")
-                lines.extend([
-                    f"dc:{class_name}_{prop.name}_field a datamesh:Field ;",
-                    f'    datamesh:fieldName "AS_{prop.name}" ;',
-                    f"    datamesh:referencesClass as:{ref_class} ;",
-                    f"    datamesh:sourceField dc:{class_name}_source .",
-                    "",
-                ])
+                lines.extend(
+                    [
+                        f"dc:{class_name}_{prop.name}_field a datamesh:Field ;",
+                        f'    datamesh:fieldName "AS_{prop.name}" ;',
+                        f"    datamesh:referencesClass as:{ref_class} ;",
+                        f"    datamesh:sourceField dc:{class_name}_source .",
+                        "",
+                    ]
+                )
             else:
-                lines.extend([
-                    f"dc:{class_name}_{prop.name}_field a datamesh:Field ;",
-                    f'    datamesh:fieldName "AS_{prop.name}" ;',
-                    f'    datamesh:fieldType "{prop.range_type}" ;',
-                    f"    datamesh:sourceField dc:{class_name}_source .",
-                    "",
-                ])
+                lines.extend(
+                    [
+                        f"dc:{class_name}_{prop.name}_field a datamesh:Field ;",
+                        f'    datamesh:fieldName "AS_{prop.name}" ;',
+                        f'    datamesh:fieldType "{prop.range_type}" ;',
+                        f"    datamesh:sourceField dc:{class_name}_source .",
+                        "",
+                    ]
+                )
 
         return "\n".join(lines)
 
@@ -402,13 +411,15 @@ class MappingProjection:
 
         for prop in cls.properties:
             col_name = self._property_to_column(prop.name)
-            lines.extend([
-                f"map:{class_name.lower()}-{prop.name} a map:Mapping ;",
-                f"    map:ontologyProperty as:{prop.name} ;",
-                f'    map:targetTable "{target_table}" ;',
-                f'    map:targetColumn "{col_name}" .',
-                "",
-            ])
+            lines.extend(
+                [
+                    f"map:{class_name.lower()}-{prop.name} a map:Mapping ;",
+                    f"    map:ontologyProperty as:{prop.name} ;",
+                    f'    map:targetTable "{target_table}" ;',
+                    f'    map:targetColumn "{col_name}" .',
+                    "",
+                ]
+            )
 
         return "\n".join(lines)
 

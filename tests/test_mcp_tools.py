@@ -78,12 +78,16 @@ class TestMCPToolHandler:
     @pytest.mark.asyncio
     async def test_bloom_check_without_neon(self):
         handler = MCPToolHandler()
-        result = await handler.call_tool("bloom_check", {
-            "filter_name": "test",
-            "item": "hello",
-        })
+        result = await handler.call_tool(
+            "bloom_check",
+            {
+                "filter_name": "test",
+                "item": "hello",
+            },
+        )
         assert result.is_error is False
         import json
+
         data = json.loads(result.content[0]["text"])
         assert data["filter"] == "test"
         assert data["item"] == "hello"

@@ -95,7 +95,6 @@ def trace_span(
     span_ctx: dict[str, Any] = {"start_time": time.monotonic()}
 
     if tracer is not None:
-
         with tracer.start_as_current_span(name) as span:
             if attributes:
                 for k, v in attributes.items():

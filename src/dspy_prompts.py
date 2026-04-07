@@ -76,9 +76,7 @@ class Signature:
 
     def to_prompt_instructions(self) -> str:
         """Generate structured prompt instructions from signature."""
-        input_desc = "\n".join(
-            f"- {f.name} ({f.field_type}): {f.description}" for f in self.inputs
-        )
+        input_desc = "\n".join(f"- {f.name} ({f.field_type}): {f.description}" for f in self.inputs)
         output_desc = "\n".join(
             f"- {f.name} ({f.field_type}): {f.description}" for f in self.outputs
         )

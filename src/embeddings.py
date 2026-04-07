@@ -56,12 +56,14 @@ def chunk_text(
         end = min(start + chunk_size, len(text))
         chunk = text[start:end]
         if chunk.strip():
-            chunks.append({
-                "text": chunk.strip(),
-                "start": start,
-                "end": end,
-                "index": idx,
-            })
+            chunks.append(
+                {
+                    "text": chunk.strip(),
+                    "start": start,
+                    "end": end,
+                    "index": idx,
+                }
+            )
             idx += 1
         start += chunk_size - overlap
     return chunks
@@ -113,8 +115,8 @@ class EmbeddingRecord:
     metadata: dict[str, Any] = field(default_factory=dict)
 
     # Mempalace taxonomy
-    wing: str = ""      # Domain: ontology, skills, docs, code
-    room: str = ""      # Topic: tool-use, streaming, agents, mcp
+    wing: str = ""  # Domain: ontology, skills, docs, code
+    room: str = ""  # Topic: tool-use, streaming, agents, mcp
     source_url: str = ""
     content_hash: str = ""
 
@@ -165,16 +167,18 @@ class LanceStore:
                 # Create with schema on first use
                 import pyarrow as pa
 
-                schema = pa.schema([
-                    pa.field("id", pa.string()),
-                    pa.field("text", pa.string()),
-                    pa.field("vector", pa.list_(pa.float32(), self.dim)),
-                    pa.field("wing", pa.string()),
-                    pa.field("room", pa.string()),
-                    pa.field("source_url", pa.string()),
-                    pa.field("content_hash", pa.string()),
-                    pa.field("metadata", pa.string()),
-                ])
+                schema = pa.schema(
+                    [
+                        pa.field("id", pa.string()),
+                        pa.field("text", pa.string()),
+                        pa.field("vector", pa.list_(pa.float32(), self.dim)),
+                        pa.field("wing", pa.string()),
+                        pa.field("room", pa.string()),
+                        pa.field("source_url", pa.string()),
+                        pa.field("content_hash", pa.string()),
+                        pa.field("metadata", pa.string()),
+                    ]
+                )
                 self._table = self._db.create_table(
                     self.table_name,
                     schema=schema,
@@ -433,25 +437,25 @@ class EmbeddingPipeline:
         records = []
 
         for chunk in chunks:
-            chunk_id = hashlib.sha256(
-                f"{url}:{chunk['index']}".encode()
-            ).hexdigest()[:16]
+            chunk_id = hashlib.sha256(f"{url}:{chunk['index']}".encode()).hexdigest()[:16]
 
-            records.append(EmbeddingRecord(
-                id=chunk_id,
-                text=chunk["text"],
-                vector=hash_embedding(chunk["text"], dim=self.dim),
-                wing=wing,
-                room=room,
-                source_url=url,
-                content_hash=content_hash,
-                metadata={
-                    **(metadata or {}),
-                    "chunk_index": chunk["index"],
-                    "char_start": chunk["start"],
-                    "char_end": chunk["end"],
-                },
-            ))
+            records.append(
+                EmbeddingRecord(
+                    id=chunk_id,
+                    text=chunk["text"],
+                    vector=hash_embedding(chunk["text"], dim=self.dim),
+                    wing=wing,
+                    room=room,
+                    source_url=url,
+                    content_hash=content_hash,
+                    metadata={
+                        **(metadata or {}),
+                        "chunk_index": chunk["index"],
+                        "char_start": chunk["start"],
+                        "char_end": chunk["end"],
+                    },
+                )
+            )
 
         return records
 
@@ -479,9 +483,7 @@ class EmbeddingPipeline:
         if not self.lance_store:
             return []
         query_vec = hash_embedding(query, dim=self.dim)
-        return self.lance_store.search(
-            query_vec, limit=limit, wing=wing, room=room
-        )
+        return self.lance_store.search(query_vec, limit=limit, wing=wing, room=room)
 
     async def search_neon(
         self,
@@ -496,6 +498,4 @@ class EmbeddingPipeline:
         if not self.neon_store:
             return []
         query_vec = hash_embedding(query, dim=self.dim)
-        return await self.neon_store.search(
-            conn, query_vec, limit=limit, wing=wing, room=room
-        )
+        return await self.neon_store.search(conn, query_vec, limit=limit, wing=wing, room=room)

@@ -176,9 +176,7 @@ class UDACrawler:
 
         return urls
 
-    async def _fetch_page(
-        self, session: aiohttp.ClientSession, url: str
-    ) -> CrawlResult:
+    async def _fetch_page(self, session: aiohttp.ClientSession, url: str) -> CrawlResult:
         """Fetch a single page with rate limiting and error handling."""
         domain = urlparse(url).netloc
         result = CrawlResult(url=url, domain=domain)
@@ -303,11 +301,7 @@ class UDACrawler:
 
                 # Enqueue analysis task
                 if self.config.enqueue_analysis:
-                    priority = (
-                        1
-                        if priority_re and priority_re.search(result.url)
-                        else 0
-                    )
+                    priority = 1 if priority_re and priority_re.search(result.url) else 0
                     await enqueue_task(
                         conn,
                         queue_name="crawl-analyze",
@@ -325,14 +319,20 @@ class UDACrawler:
                 conn,
                 metric_name="agentstreams.crawl.pages",
                 value=success_count,
-                tags={"domain": self.config.domains[0] if self.config.domains else "", "status": "success"},
+                tags={
+                    "domain": self.config.domains[0] if self.config.domains else "",
+                    "status": "success",
+                },
             )
             if error_count:
                 await record_metric(
                     conn,
                     metric_name="agentstreams.crawl.pages",
                     value=error_count,
-                    tags={"domain": self.config.domains[0] if self.config.domains else "", "status": "error"},
+                    tags={
+                        "domain": self.config.domains[0] if self.config.domains else "",
+                        "status": "error",
+                    },
                 )
             await record_metric(
                 conn,
@@ -438,11 +438,13 @@ class ChangelogCrawler(UDACrawler):
             bullets = []
             for match in self.BULLET_RE.finditer(body):
                 bullet_text = match.group(1).strip()
-                bullets.append({
-                    "text": bullet_text,
-                    "category": self._classify(bullet_text),
-                    "hash": content_hash(f"{version}:{bullet_text}"),
-                })
+                bullets.append(
+                    {
+                        "text": bullet_text,
+                        "category": self._classify(bullet_text),
+                        "hash": content_hash(f"{version}:{bullet_text}"),
+                    }
+                )
 
             if bullets:
                 entries.append({"version": version, "date": date, "bullets": bullets})

@@ -28,9 +28,7 @@ async def get_connection(url: str | None = None):
 
     neon_url = url or os.environ.get("NEON_DATABASE_URL", "")
     if not neon_url:
-        raise ValueError(
-            "No database URL provided. Set NEON_DATABASE_URL or pass url parameter."
-        )
+        raise ValueError("No database URL provided. Set NEON_DATABASE_URL or pass url parameter.")
     return await psycopg.AsyncConnection.connect(neon_url)
 
 
@@ -359,8 +357,16 @@ async def record_thinking_trace(
                    thinking_tokens, input_tokens, output_tokens, model, duration_ms)
                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                RETURNING id""",
-            (task_id, thinking_type, budget_tokens, thinking_tokens,
-             input_tokens, output_tokens, model, duration_ms),
+            (
+                task_id,
+                thinking_type,
+                budget_tokens,
+                thinking_tokens,
+                input_tokens,
+                output_tokens,
+                model,
+                duration_ms,
+            ),
         )
     ).fetchone()
     return row[0]

@@ -309,17 +309,23 @@ class MCPToolHandler:
             if add_if_new:
                 bloom.add(item)
 
-        return ToolResult(content=[{
-            "type": "text",
-            "text": json.dumps({
-                "filter": filter_name,
-                "item": item,
-                "exists": exists,
-                "added": add_if_new and not exists,
-                "filter_size": len(bloom),
-                "estimated_fp_rate": bloom.estimated_fp_rate,
-            }),
-        }])
+        return ToolResult(
+            content=[
+                {
+                    "type": "text",
+                    "text": json.dumps(
+                        {
+                            "filter": filter_name,
+                            "item": item,
+                            "exists": exists,
+                            "added": add_if_new and not exists,
+                            "filter_size": len(bloom),
+                            "estimated_fp_rate": bloom.estimated_fp_rate,
+                        }
+                    ),
+                }
+            ]
+        )
 
     async def _handle_crawl_urls(self, args: dict) -> ToolResult:
         from src.crawlers import CrawlConfig, UDACrawler
@@ -340,15 +346,21 @@ class MCPToolHandler:
         if self.neon_url:
             counts = await crawler.persist()
 
-        return ToolResult(content=[{
-            "type": "text",
-            "text": json.dumps({
-                "crawled": len(results),
-                "success": sum(1 for r in results if r.is_success),
-                "errors": sum(1 for r in results if r.error),
-                "persisted": counts,
-            }),
-        }])
+        return ToolResult(
+            content=[
+                {
+                    "type": "text",
+                    "text": json.dumps(
+                        {
+                            "crawled": len(results),
+                            "success": sum(1 for r in results if r.is_success),
+                            "errors": sum(1 for r in results if r.error),
+                            "persisted": counts,
+                        }
+                    ),
+                }
+            ]
+        )
 
     async def _handle_dspy_extract(self, args: dict) -> ToolResult:
         from src.dspy_prompts import (
@@ -377,17 +389,23 @@ class MCPToolHandler:
         module = Module(sig, model=model)
         prediction = await module(**args["inputs"])
 
-        return ToolResult(content=[{
-            "type": "text",
-            "text": json.dumps({
-                "outputs": prediction.outputs,
-                "model": prediction.model,
-                "tokens": {
-                    "input": prediction.input_tokens,
-                    "output": prediction.output_tokens,
-                },
-            }),
-        }])
+        return ToolResult(
+            content=[
+                {
+                    "type": "text",
+                    "text": json.dumps(
+                        {
+                            "outputs": prediction.outputs,
+                            "model": prediction.model,
+                            "tokens": {
+                                "input": prediction.input_tokens,
+                                "output": prediction.output_tokens,
+                            },
+                        }
+                    ),
+                }
+            ]
+        )
 
     async def _handle_project_ontology(self, args: dict) -> ToolResult:
         from src.projections import (
@@ -405,10 +423,14 @@ class MCPToolHandler:
 
         if class_name == "all":
             results = generate_all_projections(output_dir=output_dir)
-            return ToolResult(content=[{
-                "type": "text",
-                "text": json.dumps({"files_generated": list(results.keys())}),
-            }])
+            return ToolResult(
+                content=[
+                    {
+                        "type": "text",
+                        "text": json.dumps({"files_generated": list(results.keys())}),
+                    }
+                ]
+            )
 
         parser = OntologyParser()
         parser.parse()
@@ -423,10 +445,14 @@ class MCPToolHandler:
         if fmt in ("mapping", "all"):
             output["mapping"] = MappingProjection(parser).generate(class_name)
 
-        return ToolResult(content=[{
-            "type": "text",
-            "text": json.dumps(output, default=str),
-        }])
+        return ToolResult(
+            content=[
+                {
+                    "type": "text",
+                    "text": json.dumps(output, default=str),
+                }
+            ]
+        )
 
     async def _handle_query_metrics(self, args: dict) -> ToolResult:
         from src.neon_db import connection_pool
@@ -439,9 +465,7 @@ class MCPToolHandler:
 
         async with connection_pool(self.neon_url) as conn:
             tag_filters = args.get("tags", {})
-            tag_clause = " AND ".join(
-                f"tags->>'{k}' = '{v}'" for k, v in tag_filters.items()
-            )
+            tag_clause = " AND ".join(f"tags->>'{k}' = '{v}'" for k, v in tag_filters.items())
             where = "WHERE metric_name = %s"
             if tag_clause:
                 where += f" AND {tag_clause}"
@@ -455,18 +479,24 @@ class MCPToolHandler:
                 )
             ).fetchall()
 
-        return ToolResult(content=[{
-            "type": "text",
-            "text": json.dumps([
+        return ToolResult(
+            content=[
                 {
-                    "metric": r[0],
-                    "value": r[1],
-                    "tags": r[2],
-                    "recorded_at": r[3].isoformat() if r[3] else None,
+                    "type": "text",
+                    "text": json.dumps(
+                        [
+                            {
+                                "metric": r[0],
+                                "value": r[1],
+                                "tags": r[2],
+                                "recorded_at": r[3].isoformat() if r[3] else None,
+                            }
+                            for r in rows
+                        ]
+                    ),
                 }
-                for r in rows
-            ]),
-        }])
+            ]
+        )
 
     async def _handle_enqueue_task(self, args: dict) -> ToolResult:
         from src.neon_db import connection_pool, enqueue_task
@@ -488,7 +518,11 @@ class MCPToolHandler:
             )
             await conn.commit()
 
-        return ToolResult(content=[{
-            "type": "text",
-            "text": json.dumps({"task_id": task_id, "status": "queued"}),
-        }])
+        return ToolResult(
+            content=[
+                {
+                    "type": "text",
+                    "text": json.dumps({"task_id": task_id, "status": "queued"}),
+                }
+            ]
+        )

@@ -215,12 +215,14 @@ class AgentRunner:
                 for block in response.content:
                     if block.type == "tool_use":
                         result = await mcp_handler.call_tool(block.name, block.input)
-                        tool_results.append({
-                            "type": "tool_result",
-                            "tool_use_id": block.id,
-                            "content": result.content[0]["text"] if result.content else "",
-                            "is_error": result.is_error,
-                        })
+                        tool_results.append(
+                            {
+                                "type": "tool_result",
+                                "tool_use_id": block.id,
+                                "content": result.content[0]["text"] if result.content else "",
+                                "is_error": result.is_error,
+                            }
+                        )
 
                 messages.append({"role": "user", "content": tool_results})
 
