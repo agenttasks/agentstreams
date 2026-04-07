@@ -214,3 +214,121 @@ class TestCLI:
     def test_invalid_id(self):
         result = self._run("--id", "99")
         assert result.returncode == 1
+
+
+class TestApplyPromptsCLI:
+    """Test the apply_prompts.py CLI."""
+
+    def _run(self, *args: str) -> subprocess.CompletedProcess:
+        return subprocess.run(
+            [sys.executable, "scripts/apply_prompts.py", *args],
+            capture_output=True,
+            text=True,
+            cwd=Path(__file__).parent.parent,
+        )
+
+    def test_check_integrations(self):
+        result = self._run("--check")
+        assert result.returncode == 0
+        assert "OK" in result.stdout
+
+    def test_summary(self):
+        result = self._run("--summary")
+        assert result.returncode == 0
+        assert "[01]" in result.stdout
+        assert "[30]" in result.stdout
+
+    def test_xml_output(self):
+        result = self._run("--xml")
+        assert result.returncode == 0
+        assert "<prompt-tasks>" in result.stdout
+
+    def test_default_manifest(self):
+        result = self._run()
+        assert result.returncode == 0
+        assert "INTEGRATION MANIFEST" in result.stdout
+        assert "Total prompts: 30" in result.stdout
+
+
+class TestAgentManifests:
+    """Verify all expected agent manifests exist."""
+
+    EXPECTED_AGENTS = [
+        "coordinator",
+        "verification",
+        "agent-architect",
+        "crawl-analyzer",
+        "memory-validator",
+        "default-agent",
+        "explore",
+        "statusline-setup",
+        "proactive",
+        "browser-automation",
+    ]
+
+    def test_all_agent_manifests_exist(self):
+        agents_dir = Path(__file__).parent.parent / ".claude" / "agents"
+        for name in self.EXPECTED_AGENTS:
+            path = agents_dir / f"{name}.md"
+            assert path.exists(), f"Missing agent manifest: {name}.md"
+
+    def test_agent_manifests_have_frontmatter(self):
+        agents_dir = Path(__file__).parent.parent / ".claude" / "agents"
+        for name in self.EXPECTED_AGENTS:
+            content = (agents_dir / f"{name}.md").read_text()
+            assert content.startswith("---"), f"{name}.md missing YAML frontmatter"
+            assert "name:" in content, f"{name}.md missing name field"
+            assert "description:" in content, f"{name}.md missing description field"
+
+
+class TestSkillManifests:
+    """Verify all expected skill manifests exist."""
+
+    EXPECTED_SKILLS = [
+        "api-client",
+        "crawl-ingest",
+        "data-pipeline",
+        "review-consistency",
+        "review-security",
+        "simplify-review",
+        "skillify",
+        "prompt-suggest",
+        "remember",
+        "update-config",
+        "stuck-diagnostic",
+        "away-summary",
+        "auto-mode-critique",
+    ]
+
+    def test_all_skill_manifests_exist(self):
+        skills_dir = Path(__file__).parent.parent / ".claude" / "skills"
+        for name in self.EXPECTED_SKILLS:
+            path = skills_dir / f"{name}.md"
+            assert path.exists(), f"Missing skill manifest: {name}.md"
+
+    def test_skill_manifests_have_frontmatter(self):
+        skills_dir = Path(__file__).parent.parent / ".claude" / "skills"
+        for name in self.EXPECTED_SKILLS:
+            content = (skills_dir / f"{name}.md").read_text()
+            assert content.startswith("---"), f"{name}.md missing YAML frontmatter"
+            assert "name:" in content, f"{name}.md missing name field"
+
+
+class TestSharedDocs:
+    """Verify all shared documentation files exist."""
+
+    EXPECTED_DOCS = [
+        "prompt-patterns.md",
+        "xml-task-schema.md",
+        "security-boundaries.md",
+        "compaction-patterns.md",
+        "team-communication.md",
+        "tool-best-practices.md",
+    ]
+
+    def test_all_shared_docs_exist(self):
+        shared_dir = Path(__file__).parent.parent / "skills" / "agentic-prompts" / "shared"
+        for name in self.EXPECTED_DOCS:
+            path = shared_dir / name
+            assert path.exists(), f"Missing shared doc: {name}"
+            assert path.stat().st_size > 100, f"Shared doc too small: {name}"

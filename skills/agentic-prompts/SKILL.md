@@ -97,10 +97,11 @@ All prompts can be rendered as structured XML tasks via `scripts/render_prompts.
 
 ## Integration Points
 
-- **Agent manifests**: `.claude/agents/` — coordinator, verification, explore, agent-architect
-- **Skill manifests**: `.claude/skills/` — simplify-review, skillify, prompt-suggest
+- **Agent manifests**: `.claude/agents/` — coordinator, verification, explore, agent-architect, default-agent, statusline-setup, proactive, browser-automation
+- **Skill manifests**: `.claude/skills/` — simplify-review, skillify, prompt-suggest, remember, update-config, stuck-diagnostic, away-summary, auto-mode-critique
 - **Prompt registry**: `scripts/prompt_registry.py` — catalog with metadata
 - **Prompt renderer**: `scripts/render_prompts.py` — XML task emission
+- **Apply runner**: `scripts/apply_prompts.py` — loop through all 30 with integration manifest
 - **Validation**: `tests/test_render_prompts.py` — schema and rendering tests
 
 ## Key Patterns
@@ -120,5 +121,9 @@ See `shared/prompt-patterns.md` for the full pattern catalog:
 
 - `shared/prompt-patterns.md` — Full pattern catalog with examples
 - `shared/xml-task-schema.md` — XML task format specification
+- `shared/security-boundaries.md` — Security control matrix from prompt 04
+- `shared/compaction-patterns.md` — Context window summarization from prompt 21
+- `shared/team-communication.md` — Inter-agent communication from prompt 06
+- `shared/tool-best-practices.md` — Canonical tool usage guidance from prompt 13
 - `references/prompt-catalog.md` — Quick-reference table of all 30 prompts
 - `vendors/agentic-ai-prompt-research/README.md` — Source research repository
