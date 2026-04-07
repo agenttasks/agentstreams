@@ -484,6 +484,18 @@ as:data-pipeline a as:Skill ;
     as:supportsLanguage as:TypeScript, as:Python, as:Java, as:Go, as:Ruby, as:CSharp, as:PHP, as:Shell ;
     rdfs:label "Data Pipeline" .
 
+as:video-generation a as:Skill ;
+    as:skillName "video-generation" ;
+    as:description "Video generation with Google Veo models via the Gemini Cloud API" ;
+    as:triggerPattern "generate video, Veo, Gemini video, YouTube content, TikTok content, video pipeline" ;
+    as:supportsLanguage as:Python, as:Shell ;
+    rdfs:label "Video Generation" .
+
+as:manifest-video-generator a as:AgentManifest ;
+    as:manifestName "video-generator" ;
+    as:allowedTool "Read", "Glob", "Grep", "Bash", "Write" ;
+    rdfs:label "Video Generator Agent Manifest" .
+
 as:agentic-prompts a as:Skill ;
     as:skillName "agentic-prompts" ;
     as:description "Structured prompt engineering patterns from multi-agent AI system architectures" ;

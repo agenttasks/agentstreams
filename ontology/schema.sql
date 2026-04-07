@@ -214,7 +214,8 @@ INSERT INTO skills (name, description, trigger_pattern) VALUES
     ('crawl-ingest', 'Web crawling, deduplication, and data ingestion using Anthropic SDKs', 'crawl websites, build scrapers, deduplicate URLs, bloom filters, ingest data'),
     ('api-client', 'API client generation, testing, and integration using Anthropic SDKs', 'build API clients, generate SDKs, test REST/GraphQL APIs, OAuth, retry/backoff'),
     ('data-pipeline', 'Data pipeline orchestration, ETL/ELT, streaming, and batch processing', 'build data pipelines, ETL/ELT workflows, stream processing, batch jobs, CDC'),
-    ('agentic-prompts', 'Structured prompt engineering patterns from multi-agent AI architectures', 'prompt patterns, agent design, XML tasks, verification, coordination');
+    ('agentic-prompts', 'Structured prompt engineering patterns from multi-agent AI architectures', 'prompt patterns, agent design, XML tasks, verification, coordination'),
+    ('video-generation', 'Video generation with Google Veo models via the Gemini Cloud API', 'generate video, Veo, Gemini video, YouTube content, TikTok content, video pipeline');
 
 INSERT INTO sdks (id, language_id, label, github_stars, constructor_pattern) VALUES
     ('sdk-typescript', 'typescript', 'anthropic-sdk-typescript', 1800, 'new Anthropic()'),
@@ -265,4 +266,5 @@ INSERT INTO prompts (id, name, prompt_type, purpose, source_file, skill_name, ta
 INSERT INTO agent_manifests (name, model_override, allowed_tools, denied_tools, derived_from_prompt, manifest_path) VALUES
     ('coordinator', NULL, ARRAY['Agent', 'SendMessage', 'TaskStop', 'Read', 'Glob', 'Grep', 'Bash'], NULL, '05', '.claude/agents/coordinator.md'),
     ('verification', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash'], ARRAY['Edit', 'Write', 'Agent', 'NotebookEdit'], '07', '.claude/agents/verification.md'),
-    ('explore', 'haiku', ARRAY['Read', 'Glob', 'Grep', 'Bash'], ARRAY['Edit', 'Write', 'Agent', 'NotebookEdit'], '08', '.claude/agents/explore.md');
+    ('explore', 'haiku', ARRAY['Read', 'Glob', 'Grep', 'Bash'], ARRAY['Edit', 'Write', 'Agent', 'NotebookEdit'], '08', '.claude/agents/explore.md'),
+    ('video-generator', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash', 'Write'], NULL, NULL, '.claude/agents/video-generator.md');
