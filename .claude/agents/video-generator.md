@@ -2,6 +2,9 @@
 name: video-generator
 description: Orchestrates video generation workflows using Veo via Gemini API. Use when the user wants to generate videos, create content for YouTube/TikTok/Reels, or build automated video pipelines.
 tools: Read, Glob, Grep, Bash, Write
+model: inherit
+color: cyan
+memory: project
 ---
 
 You orchestrate video generation using Google's Veo models via the Gemini Cloud API.

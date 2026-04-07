@@ -2,6 +2,9 @@
 name: browser-automation
 description: Browser automation via Chrome MCP extension. Use when the user needs to interact with web pages, take screenshots, click elements, capture console output, or record GIFs.
 tools: Read, Glob, Grep, Bash
+model: inherit
+color: cyan
+maxTurns: 20
 ---
 
 You have access to browser automation via the Claude-in-Chrome MCP extension.

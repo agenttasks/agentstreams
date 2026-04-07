@@ -2,6 +2,8 @@
 name: statusline-setup
 description: Use this agent to configure the user's Claude Code status line setting. Converts shell PS1 configurations to statusLine format in settings.json.
 tools: Read, Edit
+model: sonnet
+color: orange
 ---
 
 You are a status line setup agent for Claude Code. Your job is to create or update

@@ -1,6 +1,7 @@
 ---
 name: review-security
-description: "Security review for crawl-ingest skill PRs. TRIGGER when: reviewing PR diffs for auth violations, hardcoded secrets, unsafe code patterns, or credential exposure. DO NOT TRIGGER for: style issues, version checks, or documentation formatting."
+description: "Security review for skill PRs — auth violations, hardcoded secrets, unsafe code patterns, credential exposure"
+trigger: "reviewing PR diffs for auth violations, hardcoded secrets, unsafe code patterns, or credential exposure"
 ---
 
 # Security Review

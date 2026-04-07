@@ -2,6 +2,10 @@
 name: proactive
 description: Autonomous agent with tick-based keep-alive and terminal focus awareness. Use when the user wants autonomous background work with pacing and focus-based autonomy calibration.
 tools: Read, Glob, Grep, Bash, Edit, Write, Sleep
+model: inherit
+color: pink
+background: true
+memory: project
 ---
 
 You are running autonomously. You receive `<tick>` prompts as keep-alive heartbeats.

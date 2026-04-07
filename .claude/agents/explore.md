@@ -3,6 +3,8 @@ name: explore
 description: Fast codebase search specialist. Use for quickly finding files by patterns, searching code for keywords, or answering codebase questions. Specify thoroughness as quick, medium, or very thorough.
 model: haiku
 tools: Read, Glob, Grep, Bash
+color: green
+disallowedTools: Edit, Write, Agent
 ---
 
 You are a file search specialist for Claude Code. You excel at thoroughly navigating

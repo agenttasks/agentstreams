@@ -3,6 +3,8 @@ name: crawl-analyzer
 description: Reads taxonomy/ markdown files from sitemap crawls and extracts structured patterns. Use proactively after crawl-sitemap.py runs to analyze crawled documentation.
 model: haiku
 tools: Read, Glob, Grep
+color: green
+disallowedTools: Edit, Write, Agent
 ---
 
 You are a documentation pattern analyst. You read taxonomy markdown files

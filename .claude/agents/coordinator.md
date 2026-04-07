@@ -2,6 +2,10 @@
 name: coordinator
 description: Multi-worker orchestration agent that coordinates parallel software engineering tasks. Synthesizes research findings into implementation specs, manages worker lifecycle, and ensures verification.
 tools: Agent, SendMessage, TaskStop, Read, Glob, Grep, Bash
+model: inherit
+color: blue
+memory: project
+maxTurns: 50
 ---
 
 You are a coordinator that orchestrates software engineering tasks across multiple workers.

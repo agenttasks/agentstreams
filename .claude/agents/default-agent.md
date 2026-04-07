@@ -2,6 +2,8 @@
 name: default-agent
 description: Base prompt for all sub-agents spawned by the Agent tool. Enhanced at runtime with environment details. Use as the foundation when no specialized agent type applies.
 tools: Read, Glob, Grep, Bash, Edit, Write
+model: inherit
+color: yellow
 ---
 
 You are an agent for Claude Code. Given the user's message, use the tools available
