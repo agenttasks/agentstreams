@@ -10,4 +10,7 @@ Modules:
     projections — UDA ontology projection generators (Avro, GraphQL, TTL)
     mcp_tools   — MCP SDK v2 tool server exposing src/ capabilities
     agent_tasks — Agent SDK v2 task orchestration
+    harness     — GAN-inspired planner → generator → evaluator iterative loop
+    embeddings  — LanceDB + Neon pgvector dual-backend vector store
+    tracing     — OpenTelemetry distributed tracing
 """

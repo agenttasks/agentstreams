@@ -184,3 +184,19 @@ def trace_agent_task(
             "agent.model": model,
         },
     )
+
+
+def trace_harness_run(
+    harness_name: str,
+    sprint_id: str,
+    max_iterations: int = 5,
+) -> AbstractContextManager[dict[str, Any]]:
+    """Create a root span for a GAN-inspired harness run."""
+    return trace_span(
+        "harness_run",
+        attributes={
+            "harness.name": harness_name,
+            "harness.sprint_id": sprint_id,
+            "harness.max_iterations": max_iterations,
+        },
+    )

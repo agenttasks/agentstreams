@@ -145,6 +145,10 @@ def main():
         "ThinkingMode",
         "EnabledThinking",
         "AdaptiveThinking",
+        # Harness abstract classes
+        "EvaluationCriteria",
+        "SprintContract",
+        "FrontendDesign",
     }
     unmapped = classes - mapped_classes - skip_classes
     for cls in sorted(unmapped):

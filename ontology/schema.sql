@@ -352,6 +352,43 @@ CREATE INDEX idx_thinking_task ON thinking_traces(task_id);
 --   $$SELECT net.http_post(...)$$);
 -- Jobs are stored in cron.job (managed by pg_cron extension).
 
+-- ── Harness Runs (GAN-inspired iterative evaluation) ────
+
+CREATE TABLE harness_runs (
+    id BIGSERIAL PRIMARY KEY,
+    harness_name TEXT NOT NULL,
+    sprint_id TEXT NOT NULL UNIQUE,
+    objective TEXT NOT NULL,
+    criteria JSONB NOT NULL DEFAULT '[]',
+    max_iterations INTEGER NOT NULL DEFAULT 5,
+    acceptance_threshold DOUBLE PRECISION NOT NULL DEFAULT 0.7,
+    final_status TEXT NOT NULL DEFAULT 'running'
+        CHECK (final_status IN ('running', 'accepted', 'max_iterations', 'failed')),
+    total_iterations INTEGER NOT NULL DEFAULT 0,
+    total_tokens INTEGER NOT NULL DEFAULT 0,
+    created_at TIMESTAMPTZ DEFAULT now(),
+    completed_at TIMESTAMPTZ
+);
+
+CREATE INDEX idx_harness_runs_status ON harness_runs(final_status);
+CREATE INDEX idx_harness_runs_name ON harness_runs(harness_name);
+
+-- ── Evaluation Results (per-iteration grades) ───────────
+
+CREATE TABLE evaluation_results (
+    id BIGSERIAL PRIMARY KEY,
+    harness_run_id BIGINT REFERENCES harness_runs(id),
+    iteration INTEGER NOT NULL,
+    scores JSONB NOT NULL DEFAULT '[]',
+    overall_score DOUBLE PRECISION NOT NULL,
+    passed BOOLEAN NOT NULL DEFAULT false,
+    summary TEXT NOT NULL DEFAULT '',
+    strategy_recommendation TEXT DEFAULT '',
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX idx_eval_results_run ON evaluation_results(harness_run_id);
+
 -- ── Seed data ────────────────────────────────────────────
 
 INSERT INTO languages (id, label) VALUES
@@ -374,7 +411,8 @@ INSERT INTO skills (name, description, trigger_pattern) VALUES
     ('api-client', 'API client generation, testing, and integration using Anthropic SDKs', 'build API clients, generate SDKs, test REST/GraphQL APIs, OAuth, retry/backoff'),
     ('data-pipeline', 'Data pipeline orchestration, ETL/ELT, streaming, and batch processing', 'build data pipelines, ETL/ELT workflows, stream processing, batch jobs, CDC'),
     ('agentic-prompts', 'Structured prompt engineering patterns from multi-agent AI architectures', 'prompt patterns, agent design, XML tasks, verification, coordination'),
-    ('video-generation', 'Video generation with Google Veo models via the Gemini Cloud API', 'generate video, Veo, Gemini video, YouTube content, TikTok content, video pipeline');
+    ('video-generation', 'Video generation with Google Veo models via the Gemini Cloud API', 'generate video, Veo, Gemini video, YouTube content, TikTok content, video pipeline'),
+    ('frontend-design', 'Frontend design with React/Vite/Tailwind using GAN-inspired iterative evaluation', 'frontend design, React component, UI design, Tailwind, Vite, design system');
 
 INSERT INTO sdks (id, language_id, label, github_stars, constructor_pattern) VALUES
     ('sdk-typescript', 'typescript', 'anthropic-sdk-typescript', 1800, 'new Anthropic()'),
@@ -429,7 +467,9 @@ INSERT INTO agent_manifests (name, model_override, allowed_tools, denied_tools, 
     ('video-generator', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash', 'Write'], NULL, NULL, '.claude/agents/video-generator.md'),
     ('uda-crawler', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash', 'Write'], NULL, NULL, '.claude/agents/uda-crawler.md'),
     ('uda-extractor', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash'], NULL, NULL, '.claude/agents/uda-extractor.md'),
-    ('uda-thinker', 'opus', ARRAY['Read', 'Glob', 'Grep', 'Bash'], NULL, NULL, '.claude/agents/uda-thinker.md');
+    ('uda-thinker', 'opus', ARRAY['Read', 'Glob', 'Grep', 'Bash'], NULL, NULL, '.claude/agents/uda-thinker.md'),
+    ('frontend-generator', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash', 'Write'], NULL, NULL, '.claude/agents/frontend-generator.md'),
+    ('frontend-evaluator', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash'], ARRAY['Edit', 'Write', 'Agent'], NULL, '.claude/agents/frontend-evaluator.md');
 
 -- ── Seed: DSPy Signatures ───────────────────────────────
 

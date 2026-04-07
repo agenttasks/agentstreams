@@ -533,3 +533,36 @@ ALIGN_TO_ONTOLOGY = Signature(
         Field("property_mappings", "Property-to-column mappings", "list"),
     ],
 )
+
+# Evaluate a design artifact against sprint contract criteria
+EVALUATE_DESIGN = Signature(
+    name="EvaluateDesign",
+    doc="Grade a frontend design artifact against sprint contract criteria.",
+    inputs=[
+        Field("artifact_description", "Description of the generated artifact"),
+        Field("criteria", "List of evaluation criteria with descriptions", "list"),
+        Field("contract_objective", "The sprint contract objective"),
+    ],
+    outputs=[
+        Field("scores", "List of criterion scores with name, score 0-1, feedback", "list"),
+        Field("overall_score", "Composite score 0.0-1.0", "float"),
+        Field("passed", "Whether the artifact passes all threshold criteria", "bool"),
+        Field("summary", "1-paragraph evaluation summary"),
+        Field("strategy_recommendation", "Either 'refine' or 'pivot'"),
+    ],
+)
+
+# Negotiate sprint contract criteria
+NEGOTIATE_CONTRACT = Signature(
+    name="NegotiateContract",
+    doc="Negotiate sprint contract criteria between generator and evaluator.",
+    inputs=[
+        Field("request", "Original user request"),
+        Field("proposed_criteria", "Planner's proposed criteria", "list"),
+    ],
+    outputs=[
+        Field("accepted_criteria", "Finalized criteria with thresholds", "list"),
+        Field("max_iterations", "Agreed maximum iterations", "int"),
+        Field("acceptance_threshold", "Overall passing threshold", "float"),
+    ],
+)

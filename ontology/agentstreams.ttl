@@ -84,6 +84,22 @@ as:HLLSketch a rdfs:Class ;
     rdfs:label "HyperLogLog Sketch" ;
     rdfs:comment "Approximate distinct count sketch from hll extension. Complements bloom filters for cardinality estimation." .
 
+as:HarnessRun a rdfs:Class ;
+    rdfs:label "Harness Run" ;
+    rdfs:comment "A GAN-inspired iterative evaluation run. Planner → Generator → Evaluator loop with sprint contract negotiation." .
+
+as:SprintContract a rdfs:Class ;
+    rdfs:label "Sprint Contract" ;
+    rdfs:comment "Negotiated agreement between generator and evaluator defining done criteria, max iterations, and acceptance threshold." .
+
+as:EvaluationCriteria a rdfs:Class ;
+    rdfs:label "Evaluation Criteria" ;
+    rdfs:comment "A grading criterion with name, description, weight, and threshold for evaluator scoring." .
+
+as:EvaluationResultClass a rdfs:Class ;
+    rdfs:label "Evaluation Result" ;
+    rdfs:comment "Per-iteration graded output from evaluator with scores, feedback, and strategy recommendation." .
+
 as:LanceDBBackend a as:EmbeddingBackend ;
     rdfs:label "LanceDB" ;
     rdfs:comment "Local columnar vector store — millisecond queries, no server." .
@@ -595,6 +611,32 @@ as:hllCardinality a rdf:Property ;
     rdfs:range xsd:integer ;
     rdfs:comment "Approximate distinct count from the sketch." .
 
+# Properties: Harness architecture
+as:harnessName a rdf:Property ;
+    rdfs:domain as:HarnessRun ;
+    rdfs:range xsd:string .
+
+as:sprintId a rdf:Property ;
+    rdfs:domain as:HarnessRun ;
+    rdfs:range xsd:string .
+
+as:harnessStatus a rdf:Property ;
+    rdfs:domain as:HarnessRun ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Lifecycle: running → accepted | max_iterations | failed." .
+
+as:contractObjective a rdf:Property ;
+    rdfs:domain as:SprintContract ;
+    rdfs:range xsd:string .
+
+as:evaluationScore a rdf:Property ;
+    rdfs:domain as:EvaluationResultClass ;
+    rdfs:range xsd:float .
+
+as:evaluationIteration a rdf:Property ;
+    rdfs:domain as:EvaluationResultClass ;
+    rdfs:range xsd:integer .
+
 # ── Instances: Languages ──────────────────────────────────
 
 as:TypeScript a as:Language ; rdfs:label "TypeScript" .
@@ -950,3 +992,21 @@ as:subagent-thinker a as:Subagent ;
     as:subagentPipeline "ExtendedThinking → AdaptiveThinking → record_thinking_trace" ;
     rdfs:label "UDA Thinker Subagent" ;
     rdfs:comment "Deep reasoning with extended/adaptive thinking and Neon extension integration." .
+
+as:frontend-design a as:Skill ;
+    as:skillName "frontend-design" ;
+    as:description "Frontend design with React/Vite/Tailwind using GAN-inspired iterative evaluation" ;
+    as:triggerPattern "frontend design, React component, UI design, Tailwind, Vite, design system" ;
+    as:supportsLanguage as:Python ;
+    rdfs:label "Frontend Design" .
+
+as:manifest-frontend-generator a as:AgentManifest ;
+    as:manifestName "frontend-generator" ;
+    as:allowedTool "Read", "Glob", "Grep", "Bash", "Write" ;
+    rdfs:label "Frontend Generator Agent Manifest" .
+
+as:manifest-frontend-evaluator a as:AgentManifest ;
+    as:manifestName "frontend-evaluator" ;
+    as:allowedTool "Read", "Glob", "Grep", "Bash" ;
+    as:deniedTool "Edit", "Write", "Agent" ;
+    rdfs:label "Frontend Evaluator Agent Manifest" .

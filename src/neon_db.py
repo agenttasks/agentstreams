@@ -370,3 +370,85 @@ async def record_thinking_trace(
         )
     ).fetchone()
     return row[0]
+
+
+# ── Harness run operations ───────────────────────────────
+
+
+async def create_harness_run(
+    conn,
+    *,
+    harness_name: str,
+    sprint_id: str,
+    objective: str,
+    criteria: list[dict],
+    max_iterations: int = 5,
+    acceptance_threshold: float = 0.7,
+) -> int:
+    """Create a harness run record. Returns the run ID."""
+    row = await (
+        await conn.execute(
+            """INSERT INTO harness_runs (harness_name, sprint_id, objective,
+                   criteria, max_iterations, acceptance_threshold)
+               VALUES (%s, %s, %s, %s, %s, %s)
+               RETURNING id""",
+            (
+                harness_name,
+                sprint_id,
+                objective,
+                json.dumps(criteria),
+                max_iterations,
+                acceptance_threshold,
+            ),
+        )
+    ).fetchone()
+    return row[0]
+
+
+async def record_evaluation_result(
+    conn,
+    *,
+    harness_run_id: int,
+    iteration: int,
+    scores: list[dict],
+    overall_score: float,
+    passed: bool,
+    summary: str,
+    strategy_recommendation: str = "",
+) -> int:
+    """Record an evaluation iteration result. Returns the result ID."""
+    row = await (
+        await conn.execute(
+            """INSERT INTO evaluation_results (harness_run_id, iteration, scores,
+                   overall_score, passed, summary, strategy_recommendation)
+               VALUES (%s, %s, %s, %s, %s, %s, %s)
+               RETURNING id""",
+            (
+                harness_run_id,
+                iteration,
+                json.dumps(scores),
+                overall_score,
+                passed,
+                summary,
+                strategy_recommendation,
+            ),
+        )
+    ).fetchone()
+    return row[0]
+
+
+async def complete_harness_run(
+    conn,
+    run_id: int,
+    *,
+    final_status: str,
+    total_iterations: int,
+    total_tokens: int,
+) -> None:
+    """Mark a harness run as completed."""
+    await conn.execute(
+        """UPDATE harness_runs SET final_status = %s, total_iterations = %s,
+               total_tokens = %s, completed_at = now()
+           WHERE id = %s""",
+        (final_status, total_iterations, total_tokens, run_id),
+    )

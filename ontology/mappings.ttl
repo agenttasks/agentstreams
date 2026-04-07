@@ -508,3 +508,42 @@ map:hll-name a map:Mapping ;
     map:ontologyProperty as:hllName ;
     map:targetTable "hll_sketches" ;
     map:targetColumn "name" .
+
+# ── Harness run mappings ─────────────────────────────────
+
+map:harness-run-table a map:Mapping ;
+    map:ontologyClass as:HarnessRun ;
+    map:targetTable "harness_runs" ;
+    rdfs:label "HarnessRun → harness_runs table" .
+
+map:harness-name a map:Mapping ;
+    map:ontologyProperty as:harnessName ;
+    map:targetTable "harness_runs" ;
+    map:targetColumn "harness_name" .
+
+map:harness-sprint a map:Mapping ;
+    map:ontologyProperty as:sprintId ;
+    map:targetTable "harness_runs" ;
+    map:targetColumn "sprint_id" .
+
+map:harness-status a map:Mapping ;
+    map:ontologyProperty as:harnessStatus ;
+    map:targetTable "harness_runs" ;
+    map:targetColumn "final_status" .
+
+# ── Evaluation result mappings ───────────────────────────
+
+map:eval-result-table a map:Mapping ;
+    map:ontologyClass as:EvaluationResultClass ;
+    map:targetTable "evaluation_results" ;
+    rdfs:label "EvaluationResult → evaluation_results table" .
+
+map:eval-score a map:Mapping ;
+    map:ontologyProperty as:evaluationScore ;
+    map:targetTable "evaluation_results" ;
+    map:targetColumn "overall_score" .
+
+map:eval-iteration a map:Mapping ;
+    map:ontologyProperty as:evaluationIteration ;
+    map:targetTable "evaluation_results" ;
+    map:targetColumn "iteration" .
