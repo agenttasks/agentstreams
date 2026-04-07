@@ -23,74 +23,34 @@ from __future__ import annotations
 
 import argparse
 import asyncio
-import hashlib
 import json
 import re
 import sys
 from dataclasses import dataclass, field
-from html.parser import HTMLParser
 from pathlib import Path
 
 import aiohttp
+from spiders import BloomDedup, html_to_text  # shared base module
+from spiders import content_hash as _base_hash
 
 # ── Constants ────────────────────────────────────────────────
 
 CHANGELOG_URL = "https://code.claude.com/docs/en/changelog"
 USER_AGENT = "agentstreams-crawler/2.0 (changelog spider)"
-DEDUP_SEEN: set[str] = set()
-
-
-# ── HTML to Text (reused from crawl-sitemap.py) ─────────────
-
-
-class HTMLToText(HTMLParser):
-    """Strip HTML tags, extract text content."""
-
-    def __init__(self):
-        super().__init__()
-        self._text: list[str] = []
-        self._skip = False
-        self._skip_tags = {"script", "style", "nav", "footer", "header"}
-
-    def handle_starttag(self, tag, attrs):
-        if tag in self._skip_tags:
-            self._skip = True
-        if tag in ("br", "p", "div", "h1", "h2", "h3", "h4", "h5", "h6", "li", "tr"):
-            self._text.append("\n")
-
-    def handle_endtag(self, tag):
-        if tag in self._skip_tags:
-            self._skip = False
-
-    def handle_data(self, data):
-        if not self._skip:
-            self._text.append(data)
-
-    def get_text(self) -> str:
-        return "".join(self._text)
-
-
-def html_to_text(html: str) -> str:
-    parser = HTMLToText()
-    parser.feed(html)
-    return parser.get_text()
+DEDUP_SEEN = BloomDedup(hash_length=16)
 
 
 # ── Content hashing / bloom filter dedup ─────────────────────
 
 
 def content_hash(text: str) -> str:
-    """SHA-256 content hash for bloom-filter-style deduplication."""
-    return hashlib.sha256(text.encode()).hexdigest()[:16]
+    """SHA-256 content hash (16 chars) for bloom-filter-style deduplication."""
+    return _base_hash(text, length=16)
 
 
 def is_new(text: str) -> bool:
     """Check if content is new (not seen before). Bloom filter pattern."""
-    h = content_hash(text)
-    if h in DEDUP_SEEN:
-        return False
-    DEDUP_SEEN.add(h)
-    return True
+    return DEDUP_SEEN.is_new(text)
 
 
 # ── Data models ──────────────────────────────────────────────
