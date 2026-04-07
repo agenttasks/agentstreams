@@ -185,6 +185,7 @@ def main() -> int:
 
     if args.xml:
         from prompt_registry import render_all_xml
+
         print(render_all_xml())
         return 0
 

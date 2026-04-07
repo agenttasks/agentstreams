@@ -1,3 +1,8 @@
+---
+name: agentic-prompts
+description: "Structured prompt engineering patterns from multi-agent AI system architectures — 30 prompt types with XML task rendering"
+---
+
 # Agentic Prompts Skill
 
 ## Overview

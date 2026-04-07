@@ -2,10 +2,7 @@
 
 from __future__ import annotations
 
-from xml.etree import ElementTree
-
 import pytest
-
 from spiders import (
     BaseSpider,
     BloomDedup,
@@ -252,7 +249,7 @@ class TestChangelogSpider:
 
     def test_deduplicates(self):
         spider = ChangelogSpider()
-        entries1 = spider.parse_changelog(self.SAMPLE)
+        spider.parse_changelog(self.SAMPLE)
         # Second parse with same spider should dedup
         entries2 = spider.parse_changelog(self.SAMPLE)
         assert entries2 == []  # all bullets already seen

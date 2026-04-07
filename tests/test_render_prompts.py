@@ -8,8 +8,6 @@ import sys
 from pathlib import Path
 from xml.etree import ElementTree
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 from prompt_registry import (
@@ -99,8 +97,8 @@ class TestXmlRendering:
         assert "<purpose>" in xml
         assert "<constraints>" in xml
         assert "<constraint>" in xml
-        assert '<tools allowed=' in xml
-        assert '<tools' in xml and 'denied=' in xml
+        assert "<tools allowed=" in xml
+        assert "<tools" in xml and "denied=" in xml
 
     def test_single_entry_parses(self):
         entry = get_by_id("07")

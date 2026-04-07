@@ -93,16 +93,19 @@ def render_table(entries: list[PromptEntry]) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Render agentic prompt patterns as XML tasks")
-    parser.add_argument("--type", choices=["system", "agent", "tool", "skill"],
-                        help="Filter by prompt type")
+    parser.add_argument(
+        "--type", choices=["system", "agent", "tool", "skill"], help="Filter by prompt type"
+    )
     parser.add_argument("--id", help="Render a single prompt by ID (e.g., 07)")
     parser.add_argument("--tag", help="Filter by tag (e.g., security, parallel)")
-    parser.add_argument("--format", choices=["xml", "json", "table"],
-                        default="xml", help="Output format (default: xml)")
-    parser.add_argument("--body", action="store_true",
-                        help="Include prompt body in JSON output")
-    parser.add_argument("--validate", action="store_true",
-                        help="Validate all source files exist")
+    parser.add_argument(
+        "--format",
+        choices=["xml", "json", "table"],
+        default="xml",
+        help="Output format (default: xml)",
+    )
+    parser.add_argument("--body", action="store_true", help="Include prompt body in JSON output")
+    parser.add_argument("--validate", action="store_true", help="Validate all source files exist")
     args = parser.parse_args()
 
     if args.validate:

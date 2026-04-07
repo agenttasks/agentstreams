@@ -8,15 +8,12 @@ import sys
 from pathlib import Path
 from xml.etree import ElementTree
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).parent.parent / "skills" / "video-generation" / "scripts"))
 
 from generate_videos import (
     VideoTask,
-    PromptVerdict,
-    validate_prompt,
     render_task_notification,
+    validate_prompt,
 )
 
 
@@ -72,19 +69,25 @@ class TestVideoTask:
         assert "&quot;" in xml
 
     def test_from_dict_youtube(self):
-        task = VideoTask.from_dict({
-            "prompt": "Drone shot of city",
-            "aspect_ratio": "16:9",
-            "output_file": "city.mp4",
-        }, task_id="05")
+        task = VideoTask.from_dict(
+            {
+                "prompt": "Drone shot of city",
+                "aspect_ratio": "16:9",
+                "output_file": "city.mp4",
+            },
+            task_id="05",
+        )
         assert task.platform == "youtube"
         assert task.aspect_ratio == "16:9"
 
     def test_from_dict_tiktok(self):
-        task = VideoTask.from_dict({
-            "prompt": "Vertical tracking shot",
-            "aspect_ratio": "9:16",
-        }, task_id="06")
+        task = VideoTask.from_dict(
+            {
+                "prompt": "Vertical tracking shot",
+                "aspect_ratio": "9:16",
+            },
+            task_id="06",
+        )
         assert task.platform == "tiktok"
 
     def test_from_dict_defaults(self):
@@ -195,7 +198,13 @@ class TestTaskNotification:
 class TestCLI:
     """Test the generate_videos.py CLI."""
 
-    SCRIPT = str(Path(__file__).parent.parent / "skills" / "video-generation" / "scripts" / "generate_videos.py")
+    SCRIPT = str(
+        Path(__file__).parent.parent
+        / "skills"
+        / "video-generation"
+        / "scripts"
+        / "generate_videos.py"
+    )
 
     def _run(self, *args: str) -> subprocess.CompletedProcess:
         return subprocess.run(
@@ -206,7 +215,10 @@ class TestCLI:
 
     def test_validate_good_prompts(self, tmp_path):
         batch = [
-            {"prompt": "A cinematic drone shot of mountains at sunrise, golden hour, 4K.", "aspect_ratio": "16:9"},
+            {
+                "prompt": "A cinematic drone shot of mountains at sunrise, golden hour, 4K.",
+                "aspect_ratio": "16:9",
+            },
         ]
         batch_file = tmp_path / "good.json"
         batch_file.write_text(json.dumps(batch))
@@ -228,7 +240,8 @@ class TestCLI:
         result = self._run(
             "--prompt",
             "A cinematic drone shot of mountains, 4K, highly detailed.",
-            "--aspect-ratio", "16:9",
+            "--aspect-ratio",
+            "16:9",
         )
         assert result.returncode == 0
         assert "<video-generation-plan>" in result.stdout
@@ -255,6 +268,12 @@ class TestAgentManifest:
         assert "tools:" in content
 
     def test_shared_agentic_patterns_exists(self):
-        path = Path(__file__).parent.parent / "skills" / "video-generation" / "shared" / "agentic-patterns.md"
+        path = (
+            Path(__file__).parent.parent
+            / "skills"
+            / "video-generation"
+            / "shared"
+            / "agentic-patterns.md"
+        )
         assert path.exists()
         assert path.stat().st_size > 100

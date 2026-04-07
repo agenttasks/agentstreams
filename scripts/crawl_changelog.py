@@ -98,8 +98,7 @@ class XMLTask:
         lines = [
             f'<task id="{_esc(self.task_id)}" category="{_esc(self.category)}" '
             f'priority="{self.priority}">',
-            f"  <source version=\"{_esc(self.source_version)}\" "
-            f"date=\"{_esc(self.source_date)}\"/>",
+            f'  <source version="{_esc(self.source_version)}" date="{_esc(self.source_date)}"/>',
             f"  <title>{_esc(self.title)}</title>",
             f"  <description>{_esc(self.description)}</description>",
         ]
@@ -217,12 +216,14 @@ def parse_changelog_text(text: str) -> list[ChangelogEntry]:
         for match in BULLET_RE.finditer(body):
             bullet_text = match.group(1).strip()
             if is_new(f"{version}:{bullet_text}"):
-                entry.bullets.append(ChangelogBullet(
-                    version=version,
-                    date=date,
-                    text=bullet_text,
-                    category=classify_bullet(bullet_text),
-                ))
+                entry.bullets.append(
+                    ChangelogBullet(
+                        version=version,
+                        date=date,
+                        text=bullet_text,
+                        category=classify_bullet(bullet_text),
+                    )
+                )
         if entry.bullets:
             entries.append(entry)
         i += 3
@@ -235,9 +236,10 @@ def parse_changelog_text(text: str) -> list[ChangelogEntry]:
 
 async def fetch_changelog(url: str) -> str:
     """Fetch changelog HTML and convert to text."""
-    async with aiohttp.ClientSession(
-        headers={"User-Agent": USER_AGENT}
-    ) as session, session.get(url, timeout=aiohttp.ClientTimeout(total=30)) as resp:
+    async with (
+        aiohttp.ClientSession(headers={"User-Agent": USER_AGENT}) as session,
+        session.get(url, timeout=aiohttp.ClientTimeout(total=30)) as resp,
+    ):
         if resp.status != 200:
             raise RuntimeError(f"HTTP {resp.status} fetching {url}")
         html = await resp.text()
@@ -266,17 +268,19 @@ def bullets_to_tasks(
 
             subtasks = decompose_bullet(bullet) if decompose else []
 
-            tasks.append(XMLTask(
-                task_id=task_id,
-                source_version=entry.version,
-                source_date=entry.date,
-                category=bullet.category,
-                title=bullet.text[:120],
-                description=bullet.text,
-                subtasks=subtasks,
-                priority=priority_from_bullet(bullet.text),
-                hash=bullet.hash,
-            ))
+            tasks.append(
+                XMLTask(
+                    task_id=task_id,
+                    source_version=entry.version,
+                    source_date=entry.date,
+                    category=bullet.category,
+                    title=bullet.text[:120],
+                    description=bullet.text,
+                    subtasks=subtasks,
+                    priority=priority_from_bullet(bullet.text),
+                    hash=bullet.hash,
+                )
+            )
 
     return tasks
 
@@ -296,19 +300,23 @@ def render_rss(entries: list[ChangelogEntry]) -> str:
     ]
     for entry in entries:
         desc_bullets = "\n".join(f"- {b.text}" for b in entry.bullets)
-        lines.extend([
-            "    <item>",
-            f"      <title>Claude Code {_esc(entry.version)} - {_esc(entry.date)}</title>",
-            "      <link>https://code.claude.com/docs/en/changelog</link>",
-            f"      <guid>claude-code-{_esc(entry.version)}</guid>",
-            f"      <pubDate>{_esc(entry.date)}</pubDate>",
-            f"      <description>{_esc(desc_bullets)}</description>",
-            "    </item>",
-        ])
-    lines.extend([
-        "  </channel>",
-        "</rss>",
-    ])
+        lines.extend(
+            [
+                "    <item>",
+                f"      <title>Claude Code {_esc(entry.version)} - {_esc(entry.date)}</title>",
+                "      <link>https://code.claude.com/docs/en/changelog</link>",
+                f"      <guid>claude-code-{_esc(entry.version)}</guid>",
+                f"      <pubDate>{_esc(entry.date)}</pubDate>",
+                f"      <description>{_esc(desc_bullets)}</description>",
+                "    </item>",
+            ]
+        )
+    lines.extend(
+        [
+            "  </channel>",
+            "</rss>",
+        ]
+    )
     return "\n".join(lines)
 
 
@@ -336,20 +344,26 @@ def render_json_tasks(tasks: list[XMLTask]) -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="RSS XML spider crawler for Claude Code changelog"
-    )
+    parser = argparse.ArgumentParser(description="RSS XML spider crawler for Claude Code changelog")
     parser.add_argument("--cached", help="Use a cached markdown file instead of fetching")
-    parser.add_argument("--format", choices=["xml", "json", "rss"], default="xml",
-                        help="Output format (default: xml)")
-    parser.add_argument("--filter", choices=["feat", "fix", "improve", "remove", "other"],
-                        help="Filter by category")
-    parser.add_argument("--decompose", action="store_true",
-                        help="Decompose bullets into subtasks")
+    parser.add_argument(
+        "--format",
+        choices=["xml", "json", "rss"],
+        default="xml",
+        help="Output format (default: xml)",
+    )
+    parser.add_argument(
+        "--filter", choices=["feat", "fix", "improve", "remove", "other"], help="Filter by category"
+    )
+    parser.add_argument("--decompose", action="store_true", help="Decompose bullets into subtasks")
     parser.add_argument("--rss", action="store_true", help="Emit RSS 2.0 feed")
     parser.add_argument("--save-taxonomy", help="Save fetched changelog to taxonomy file")
-    parser.add_argument("--max-entries", type=int, default=10,
-                        help="Maximum changelog entries to process (default: 10)")
+    parser.add_argument(
+        "--max-entries",
+        type=int,
+        default=10,
+        help="Maximum changelog entries to process (default: 10)",
+    )
     args = parser.parse_args()
 
     # Fetch or load changelog
@@ -369,7 +383,7 @@ def main() -> int:
         print(f"Saved to {args.save_taxonomy}", file=sys.stderr)
 
     # Parse
-    entries = parse_changelog_text(text)[:args.max_entries]
+    entries = parse_changelog_text(text)[: args.max_entries]
 
     if not entries:
         print("No changelog entries found.", file=sys.stderr)

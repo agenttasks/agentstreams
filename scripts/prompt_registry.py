@@ -50,7 +50,7 @@ class PromptEntry:
             lines.append(f"  <tools {' '.join(attrs)}/>")
 
         if self.output_format:
-            lines.append(f"  <output format=\"{_escape_xml(self.output_format)}\"/>")
+            lines.append(f'  <output format="{_escape_xml(self.output_format)}"/>')
 
         if self.tags:
             lines.append(f"  <tags>{','.join(self.tags)}</tags>")
@@ -70,10 +70,7 @@ class PromptEntry:
 def _escape_xml(text: str) -> str:
     """Escape XML special characters."""
     return (
-        text.replace("&", "&amp;")
-        .replace("<", "&lt;")
-        .replace(">", "&gt;")
-        .replace('"', "&quot;")
+        text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
     )
 
 

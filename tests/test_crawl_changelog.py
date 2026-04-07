@@ -13,9 +13,10 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 from crawl_changelog import (
+    DEDUP_SEEN,
     ChangelogBullet,
-    ChangelogEntry,
     XMLTask,
+    bullets_to_tasks,
     classify_bullet,
     content_hash,
     decompose_bullet,
@@ -24,10 +25,7 @@ from crawl_changelog import (
     priority_from_bullet,
     render_rss,
     render_xml_tasks,
-    bullets_to_tasks,
-    DEDUP_SEEN,
 )
-
 
 SAMPLE_CHANGELOG = """# Changelog
 
@@ -331,6 +329,4 @@ class TestAgentFrontmatter:
             frontmatter_end = content.find("---", 3)
             frontmatter = content[3:frontmatter_end]
             for key in self.REQUIRED_NEW_KEYS:
-                assert f"{key}:" in frontmatter, (
-                    f"{agent_file.name} missing '{key}' in frontmatter"
-                )
+                assert f"{key}:" in frontmatter, f"{agent_file.name} missing '{key}' in frontmatter"

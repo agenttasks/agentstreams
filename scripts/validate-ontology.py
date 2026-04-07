@@ -112,6 +112,7 @@ def main():
         "MetricType",
         "ResourceType",
         "TaskType",
+        "PromptType",
         "Tier1",
         "Tier2",
         "Tier3",
@@ -123,6 +124,13 @@ def main():
         "APIPrimer",
         "LLMsIndex",
         "Cookbook",
+        "SystemPrompt",
+        "AgentPrompt",
+        "ToolPrompt",
+        "SkillPrompt",
+        "CodeTask",
+        "KnowledgeWorkTask",
+        "FinancialTask",
     }
     unmapped = classes - mapped_classes - skip_classes
     for cls in sorted(unmapped):
