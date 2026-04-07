@@ -1,0 +1,5 @@
+<task id="99" type="system" name="missing-fields">
+  <constraints>
+    <constraint>This task is missing a purpose element</constraint>
+  </constraints>
+</task>

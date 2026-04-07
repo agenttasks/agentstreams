@@ -1,6 +1,6 @@
 ---
 name: explore
-description: Fast read-only codebase search specialist. Use for quickly finding files by patterns, searching code for keywords, or answering codebase questions. Specify thoroughness as quick, medium, or very thorough.
+description: Fast codebase search specialist. Use for quickly finding files by patterns, searching code for keywords, or answering codebase questions. Specify thoroughness as quick, medium, or very thorough.
 model: haiku
 tools: Read, Glob, Grep, Bash
 ---

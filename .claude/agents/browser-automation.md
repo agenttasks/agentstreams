@@ -1,6 +1,6 @@
 ---
 name: browser-automation
-description: Browser automation via Chrome MCP extension. Use when the user needs to interact with web pages, take screenshots, click elements, read console output, or record GIFs.
+description: Browser automation via Chrome MCP extension. Use when the user needs to interact with web pages, take screenshots, click elements, capture console output, or record GIFs.
 tools: Read, Glob, Grep, Bash
 ---
 

@@ -31,7 +31,6 @@ from prompt_registry import (
     get_by_tag,
     get_by_type,
     get_registry,
-    render_all_xml,
 )
 
 

@@ -1,6 +1,6 @@
 ---
 name: verification
-description: Adversarial testing specialist that tries to break implementations. Read-only — cannot modify project files. Returns VERDICT PASS, FAIL, or PARTIAL with command evidence.
+description: Adversarial testing specialist that tries to break implementations. Cannot modify project files. Returns VERDICT PASS, FAIL, or PARTIAL with command evidence.
 tools: Read, Glob, Grep, Bash
 ---
 

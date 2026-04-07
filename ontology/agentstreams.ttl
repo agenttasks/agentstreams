@@ -52,6 +52,36 @@ as:Resource a rdfs:Class ;
     rdfs:label "Resource" ;
     rdfs:comment "An external documentation or reference resource (Claude platform, GitHub, etc.)." .
 
+as:Prompt a rdfs:Class ;
+    rdfs:label "Prompt" ;
+    rdfs:comment "An agentic prompt pattern — system, agent, tool, or skill prompt with structured XML representation." ;
+    skos:example "verification-agent, coordinator, auto-mode-classifier" .
+
+as:PromptType a rdfs:Class ;
+    rdfs:label "Prompt Type" ;
+    rdfs:comment "Classification of prompt role in the agent system." .
+
+as:SystemPrompt a as:PromptType ;
+    rdfs:label "System Prompt" ;
+    rdfs:comment "Core behavioral instructions defining agent identity and boundaries." .
+
+as:AgentPrompt a as:PromptType ;
+    rdfs:label "Agent Prompt" ;
+    rdfs:comment "Specialized agent configuration for delegated task execution." .
+
+as:ToolPrompt a as:PromptType ;
+    rdfs:label "Tool Prompt" ;
+    rdfs:comment "Guidance embedded in tool schemas for specific tool behaviors." .
+
+as:SkillPrompt a as:PromptType ;
+    rdfs:label "Skill Prompt" ;
+    rdfs:comment "Reusable workflow definition invoked via slash commands." .
+
+as:AgentManifest a rdfs:Class ;
+    rdfs:label "Agent Manifest" ;
+    rdfs:comment "A .claude/agents/ configuration file defining a specialized agent with tools, model, and system prompt." ;
+    skos:example "coordinator, verification, explore" .
+
 as:Task a rdfs:Class ;
     rdfs:label "Task" ;
     rdfs:comment "A queued unit of work — code task (Claude Code) or knowledge-work task (plugin). Processed via pgqueuer." .
@@ -254,6 +284,62 @@ as:relatedModel a rdf:Property ;
     rdfs:domain as:Resource ;
     rdfs:range as:Model .
 
+# Prompt properties
+as:promptId a rdf:Property ;
+    rdfs:domain as:Prompt ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Two-digit zero-padded identifier (e.g. '07')." .
+
+as:promptName a rdf:Property ;
+    rdfs:domain as:Prompt ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Kebab-case name (e.g. 'verification-agent')." .
+
+as:promptType a rdf:Property ;
+    rdfs:domain as:Prompt ;
+    rdfs:range as:PromptType .
+
+as:promptPurpose a rdf:Property ;
+    rdfs:domain as:Prompt ;
+    rdfs:range xsd:string .
+
+as:promptSourceFile a rdf:Property ;
+    rdfs:domain as:Prompt ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Path to source markdown file in vendors/." .
+
+as:promptTag a rdf:Property ;
+    rdfs:domain as:Prompt ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Classification tag (e.g. 'security', 'verification', 'parallel')." .
+
+as:belongsToSkill a rdf:Property ;
+    rdfs:domain as:Prompt ;
+    rdfs:range as:Skill .
+
+# Agent manifest properties
+as:manifestName a rdf:Property ;
+    rdfs:domain as:AgentManifest ;
+    rdfs:range xsd:string .
+
+as:manifestModel a rdf:Property ;
+    rdfs:domain as:AgentManifest ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Model override (e.g. 'haiku')." .
+
+as:allowedTool a rdf:Property ;
+    rdfs:domain as:AgentManifest ;
+    rdfs:range xsd:string .
+
+as:deniedTool a rdf:Property ;
+    rdfs:domain as:AgentManifest ;
+    rdfs:range xsd:string .
+
+as:derivedFromPrompt a rdf:Property ;
+    rdfs:domain as:AgentManifest ;
+    rdfs:range as:Prompt ;
+    rdfs:comment "The source prompt pattern this manifest was derived from." .
+
 # Task properties
 as:taskType a rdf:Property ;
     rdfs:domain as:Task ;
@@ -397,6 +483,77 @@ as:data-pipeline a as:Skill ;
     as:triggerPattern "build data pipelines, ETL/ELT workflows, stream processing, batch jobs, CDC" ;
     as:supportsLanguage as:TypeScript, as:Python, as:Java, as:Go, as:Ruby, as:CSharp, as:PHP, as:Shell ;
     rdfs:label "Data Pipeline" .
+
+as:agentic-prompts a as:Skill ;
+    as:skillName "agentic-prompts" ;
+    as:description "Structured prompt engineering patterns from multi-agent AI system architectures" ;
+    as:triggerPattern "prompt patterns, agent design, XML tasks, verification, coordination" ;
+    as:supportsLanguage as:Python, as:Shell ;
+    rdfs:label "Agentic Prompts" .
+
+# ── Instances: Prompts (representative subset) ───────────
+
+as:prompt-05 a as:Prompt ;
+    as:promptId "05" ;
+    as:promptName "coordinator" ;
+    as:promptType as:AgentPrompt ;
+    as:promptPurpose "Multi-worker orchestration with synthesis phases" ;
+    as:promptSourceFile "vendors/agentic-ai-prompt-research/prompts/05_coordinator_system_prompt.md" ;
+    as:promptTag "orchestration", "parallel", "synthesis" ;
+    as:belongsToSkill as:agentic-prompts ;
+    rdfs:label "Coordinator Prompt" .
+
+as:prompt-07 a as:Prompt ;
+    as:promptId "07" ;
+    as:promptName "verification-agent" ;
+    as:promptType as:AgentPrompt ;
+    as:promptPurpose "Adversarial testing specialist that tries to break implementations" ;
+    as:promptSourceFile "vendors/agentic-ai-prompt-research/prompts/07_verification_agent.md" ;
+    as:promptTag "verification", "adversarial", "read-only" ;
+    as:belongsToSkill as:agentic-prompts ;
+    rdfs:label "Verification Agent Prompt" .
+
+as:prompt-12 a as:Prompt ;
+    as:promptId "12" ;
+    as:promptName "auto-mode-classifier" ;
+    as:promptType as:SystemPrompt ;
+    as:promptPurpose "2-stage security classification for tool auto-approval" ;
+    as:promptSourceFile "vendors/agentic-ai-prompt-research/prompts/12_yolo_auto_mode_classifier.md" ;
+    as:promptTag "security", "classifier", "auto-mode" ;
+    as:belongsToSkill as:agentic-prompts ;
+    rdfs:label "Auto-Mode Classifier Prompt" .
+
+as:prompt-19 a as:Prompt ;
+    as:promptId "19" ;
+    as:promptName "simplify-skill" ;
+    as:promptType as:SkillPrompt ;
+    as:promptPurpose "3-agent parallel code review on recent changes" ;
+    as:promptSourceFile "vendors/agentic-ai-prompt-research/prompts/19_simplify_skill.md" ;
+    as:promptTag "review", "parallel", "cleanup" ;
+    as:belongsToSkill as:agentic-prompts ;
+    rdfs:label "Simplify Skill Prompt" .
+
+# ── Instances: Agent Manifests ───────────────────────────
+
+as:manifest-coordinator a as:AgentManifest ;
+    as:manifestName "coordinator" ;
+    as:allowedTool "Agent", "SendMessage", "TaskStop", "Read", "Glob", "Grep", "Bash" ;
+    as:derivedFromPrompt as:prompt-05 ;
+    rdfs:label "Coordinator Agent Manifest" .
+
+as:manifest-verification a as:AgentManifest ;
+    as:manifestName "verification" ;
+    as:allowedTool "Read", "Glob", "Grep", "Bash" ;
+    as:deniedTool "Edit", "Write", "Agent", "NotebookEdit" ;
+    as:derivedFromPrompt as:prompt-07 ;
+    rdfs:label "Verification Agent Manifest" .
+
+as:manifest-explore a as:AgentManifest ;
+    as:manifestName "explore" ;
+    as:manifestModel "haiku" ;
+    as:allowedTool "Read", "Glob", "Grep", "Bash" ;
+    as:deniedTool "Edit", "Write", "Agent", "NotebookEdit" ;
+    rdfs:label "Explore Agent Manifest" .
 
 # ── Instances: Metrics (Atlas/Spectator pattern) ──────────
 

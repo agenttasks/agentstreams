@@ -20,7 +20,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from prompt_registry import get_registry, PromptEntry
+from prompt_registry import PromptEntry, get_registry
 
 # Map each prompt ID to its codebase integration point(s)
 INTEGRATION_MAP: dict[str, list[str]] = {
