@@ -322,3 +322,121 @@ map:agent-manifest-prompt a map:Mapping ;
     map:ontologyProperty as:derivedFromPrompt ;
     map:targetTable "agent_manifests" ;
     map:targetColumn "derived_from_prompt" .
+
+# ── UDA Architecture Mappings ────────────────────────────
+
+# Bloom filter state mappings
+map:bloom-filter-table a map:Mapping ;
+    map:ontologyClass as:BloomFilterState ;
+    map:targetTable "bloom_filters" ;
+    rdfs:label "BloomFilterState → bloom_filters table" .
+
+map:bloom-name a map:Mapping ;
+    map:ontologyProperty as:bloomName ;
+    map:targetTable "bloom_filters" ;
+    map:targetColumn "name" .
+
+map:bloom-domain a map:Mapping ;
+    map:ontologyProperty as:bloomDomain ;
+    map:targetTable "bloom_filters" ;
+    map:targetColumn "domain" .
+
+map:bloom-expected a map:Mapping ;
+    map:ontologyProperty as:bloomExpectedItems ;
+    map:targetTable "bloom_filters" ;
+    map:targetColumn "expected_items" .
+
+map:bloom-fp-rate a map:Mapping ;
+    map:ontologyProperty as:bloomFpRate ;
+    map:targetTable "bloom_filters" ;
+    map:targetColumn "fp_rate" .
+
+# Crawl page mappings
+map:crawl-page-table a map:Mapping ;
+    map:ontologyClass as:CrawlPage ;
+    map:targetTable "crawl_pages" ;
+    rdfs:label "CrawlPage → crawl_pages table" .
+
+map:crawl-url a map:Mapping ;
+    map:ontologyProperty as:crawlURL ;
+    map:targetTable "crawl_pages" ;
+    map:targetColumn "url" .
+
+map:crawl-domain a map:Mapping ;
+    map:ontologyProperty as:crawlDomain ;
+    map:targetTable "crawl_pages" ;
+    map:targetColumn "domain" .
+
+map:crawl-content-hash a map:Mapping ;
+    map:ontologyProperty as:crawlContentHash ;
+    map:targetTable "crawl_pages" ;
+    map:targetColumn "content_hash" .
+
+map:crawl-title a map:Mapping ;
+    map:ontologyProperty as:crawlTitle ;
+    map:targetTable "crawl_pages" ;
+    map:targetColumn "title" .
+
+# DSPy signature mappings
+map:dspy-signature-table a map:Mapping ;
+    map:ontologyClass as:DSPySignature ;
+    map:targetTable "dspy_signatures" ;
+    rdfs:label "DSPySignature → dspy_signatures table" .
+
+map:dspy-sig-name a map:Mapping ;
+    map:ontologyProperty as:signatureName ;
+    map:targetTable "dspy_signatures" ;
+    map:targetColumn "name" .
+
+map:dspy-sig-doc a map:Mapping ;
+    map:ontologyProperty as:signatureDoc ;
+    map:targetTable "dspy_signatures" ;
+    map:targetColumn "doc" .
+
+# DSPy module mappings
+map:dspy-module-table a map:Mapping ;
+    map:ontologyClass as:DSPyModule ;
+    map:targetTable "dspy_modules" ;
+    rdfs:label "DSPyModule → dspy_modules table" .
+
+map:dspy-module-sig a map:Mapping ;
+    map:ontologyProperty as:moduleSigRef ;
+    map:targetTable "dspy_modules" ;
+    map:targetColumn "signature_name" .
+
+map:dspy-module-model a map:Mapping ;
+    map:ontologyProperty as:moduleModel ;
+    map:targetTable "dspy_modules" ;
+    map:targetColumn "model_id" .
+
+# Subagent mappings
+map:subagent-table a map:Mapping ;
+    map:ontologyClass as:Subagent ;
+    map:targetTable "subagents" ;
+    rdfs:label "Subagent → subagents table" .
+
+map:subagent-name a map:Mapping ;
+    map:ontologyProperty as:subagentName ;
+    map:targetTable "subagents" ;
+    map:targetColumn "name" .
+
+map:subagent-pipeline a map:Mapping ;
+    map:ontologyProperty as:subagentPipeline ;
+    map:targetTable "subagents" ;
+    map:targetColumn "pipeline_modules" .
+
+# DataContainer mappings
+map:data-container-table a map:Mapping ;
+    map:ontologyClass as:DataContainer ;
+    map:targetTable "data_containers" ;
+    rdfs:label "DataContainer → data_containers table" .
+
+map:data-container-source a map:Mapping ;
+    map:ontologyProperty as:containerSource ;
+    map:targetTable "data_containers" ;
+    map:targetColumn "source_id" .
+
+map:data-container-class a map:Mapping ;
+    map:ontologyProperty as:projectsClass ;
+    map:targetTable "data_containers" ;
+    map:targetColumn "class_name" .

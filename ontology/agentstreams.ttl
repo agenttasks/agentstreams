@@ -9,6 +9,51 @@
 # Inspired by Netflix UDA (Unified Data Architecture)
 # ═══════════════════════════════════════════════════════════
 
+# ── UDA Core Classes ─────────────────────────────────────
+# Following Netflix UDA: ontology is source of truth,
+# all physical/API representations are projections.
+
+as:DataContainer a rdfs:Class ;
+    rdfs:label "Data Container" ;
+    rdfs:comment "A data mesh source registration — the projected Avro/GraphQL schema for an ontology class. UDA pattern from Netflix." ;
+    skos:example "Skill_source, Model_source, CrawlPage_source" .
+
+as:OntologyMapping a rdfs:Class ;
+    rdfs:label "Ontology Mapping" ;
+    rdfs:comment "Links an ontology concept to a physical storage location (table/column). Bridges semantic and physical layers." .
+
+as:Projection a rdfs:Class ;
+    rdfs:label "Projection" ;
+    rdfs:comment "A format-specific representation generated from the ontology: Avro, GraphQL, DataContainer TTL, or Mapping TTL." .
+
+as:ProjectionFormat a rdfs:Class ;
+    rdfs:label "Projection Format" .
+
+as:AvroFormat a as:ProjectionFormat ; rdfs:label "Avro" .
+as:GraphQLFormat a as:ProjectionFormat ; rdfs:label "GraphQL" .
+as:DataContainerTTL a as:ProjectionFormat ; rdfs:label "DataContainer TTL" .
+as:MappingTTL a as:ProjectionFormat ; rdfs:label "Mapping TTL" .
+
+as:BloomFilterState a rdfs:Class ;
+    rdfs:label "Bloom Filter State" ;
+    rdfs:comment "Persistent bloom filter for cross-session deduplication. Stored as bit array in Neon Postgres." .
+
+as:CrawlPage a rdfs:Class ;
+    rdfs:label "Crawl Page" ;
+    rdfs:comment "A web page fetched by UDACrawler with content, hash, and metadata. DataContainer in the crawl pipeline." .
+
+as:DSPySignature a rdfs:Class ;
+    rdfs:label "DSPy Signature" ;
+    rdfs:comment "A typed I/O contract for DSPy modules — defines input and output fields for structured extraction." .
+
+as:DSPyModule a rdfs:Class ;
+    rdfs:label "DSPy Module" ;
+    rdfs:comment "A prompt module wrapping a Signature with execution logic. Composable into Pipelines." .
+
+as:Subagent a rdfs:Class ;
+    rdfs:label "Subagent" ;
+    rdfs:comment "A headless DSPy subagent that runs extraction pipelines autonomously with Neon persistence." .
+
 # ── Core Classes ──────────────────────────────────────────
 
 as:Skill a rdfs:Class ;
@@ -380,6 +425,84 @@ as:taskConfig a rdf:Property ;
     rdfs:range xsd:string ;
     rdfs:comment "Task configuration/parameters (JSONB in physical layer)." .
 
+# ── Properties: UDA Architecture ─────────────────────────
+
+as:containerSource a rdf:Property ;
+    rdfs:domain as:DataContainer ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Data mesh source identifier." .
+
+as:projectsClass a rdf:Property ;
+    rdfs:domain as:DataContainer ;
+    rdfs:range rdfs:Class ;
+    rdfs:comment "The ontology class this container projects." .
+
+as:projectionFormat a rdf:Property ;
+    rdfs:domain as:Projection ;
+    rdfs:range as:ProjectionFormat .
+
+as:projectionSource a rdf:Property ;
+    rdfs:domain as:Projection ;
+    rdfs:range rdfs:Class ;
+    rdfs:comment "Ontology class the projection is generated from." .
+
+as:bloomName a rdf:Property ;
+    rdfs:domain as:BloomFilterState ;
+    rdfs:range xsd:string .
+
+as:bloomDomain a rdf:Property ;
+    rdfs:domain as:BloomFilterState ;
+    rdfs:range xsd:string .
+
+as:bloomExpectedItems a rdf:Property ;
+    rdfs:domain as:BloomFilterState ;
+    rdfs:range xsd:integer .
+
+as:bloomFpRate a rdf:Property ;
+    rdfs:domain as:BloomFilterState ;
+    rdfs:range xsd:float .
+
+as:crawlURL a rdf:Property ;
+    rdfs:domain as:CrawlPage ;
+    rdfs:range xsd:anyURI .
+
+as:crawlDomain a rdf:Property ;
+    rdfs:domain as:CrawlPage ;
+    rdfs:range xsd:string .
+
+as:crawlContentHash a rdf:Property ;
+    rdfs:domain as:CrawlPage ;
+    rdfs:range xsd:string .
+
+as:crawlTitle a rdf:Property ;
+    rdfs:domain as:CrawlPage ;
+    rdfs:range xsd:string .
+
+as:signatureName a rdf:Property ;
+    rdfs:domain as:DSPySignature ;
+    rdfs:range xsd:string .
+
+as:signatureDoc a rdf:Property ;
+    rdfs:domain as:DSPySignature ;
+    rdfs:range xsd:string .
+
+as:moduleSigRef a rdf:Property ;
+    rdfs:domain as:DSPyModule ;
+    rdfs:range as:DSPySignature .
+
+as:moduleModel a rdf:Property ;
+    rdfs:domain as:DSPyModule ;
+    rdfs:range as:Model .
+
+as:subagentName a rdf:Property ;
+    rdfs:domain as:Subagent ;
+    rdfs:range xsd:string .
+
+as:subagentPipeline a rdf:Property ;
+    rdfs:domain as:Subagent ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Ordered list of DSPy module names in the pipeline." .
+
 # ── Instances: Languages ──────────────────────────────────
 
 as:TypeScript a as:Language ; rdfs:label "TypeScript" .
@@ -672,3 +795,54 @@ as:resource-sonnet-46-card a as:Resource ;
     as:resourceURL "https://www.anthropic.com/claude-sonnet-4-6-system-card"^^xsd:anyURI ;
     as:relatedModel as:claude-sonnet-4-6 ;
     rdfs:label "Claude Sonnet 4.6 System Card" .
+
+# ── Instances: UDA Architecture ──────────────────────────
+
+# DSPy Signatures (pre-built in src/dspy_prompts.py)
+as:sig-extract-entities a as:DSPySignature ;
+    as:signatureName "ExtractEntities" ;
+    as:signatureDoc "Extract structured entities from crawled documentation page content." ;
+    rdfs:label "Extract Entities Signature" .
+
+as:sig-classify-content a as:DSPySignature ;
+    as:signatureName "ClassifyContent" ;
+    as:signatureDoc "Classify crawled content into skill-relevant categories." ;
+    rdfs:label "Classify Content Signature" .
+
+as:sig-extract-api-patterns a as:DSPySignature ;
+    as:signatureName "ExtractAPIPatterns" ;
+    as:signatureDoc "Extract API usage patterns, code samples, and SDK constructor calls." ;
+    rdfs:label "Extract API Patterns Signature" .
+
+as:sig-align-to-ontology a as:DSPySignature ;
+    as:signatureName "AlignToOntology" ;
+    as:signatureDoc "Map extracted entities to AgentStreams ontology classes and properties." ;
+    rdfs:label "Align to Ontology Signature" .
+
+# Subagents (headless DSPy pipeline runners)
+as:subagent-crawler a as:Subagent ;
+    as:subagentName "uda-crawler" ;
+    rdfs:label "UDA Crawler Subagent" ;
+    rdfs:comment "Web crawling with bloom filter dedup and Neon persistence." .
+
+as:subagent-extractor a as:Subagent ;
+    as:subagentName "uda-extractor" ;
+    as:subagentPipeline "ExtractEntities → ClassifyContent → AlignToOntology" ;
+    rdfs:label "UDA Extractor Subagent" ;
+    rdfs:comment "DSPy structured extraction with ontology alignment." .
+
+as:subagent-projector a as:Subagent ;
+    as:subagentName "uda-projector" ;
+    rdfs:label "UDA Projector Subagent" ;
+    rdfs:comment "Ontology projection generator: Avro, GraphQL, DataContainer, Mapping." .
+
+# Agent Manifests for UDA agents
+as:manifest-uda-crawler a as:AgentManifest ;
+    as:manifestName "uda-crawler" ;
+    as:allowedTool "Read", "Glob", "Grep", "Bash", "Write" ;
+    rdfs:label "UDA Crawler Agent Manifest" .
+
+as:manifest-uda-extractor a as:AgentManifest ;
+    as:manifestName "uda-extractor" ;
+    as:allowedTool "Read", "Glob", "Grep", "Bash" ;
+    rdfs:label "UDA Extractor Agent Manifest" .

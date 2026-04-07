@@ -193,6 +193,84 @@ CREATE INDEX idx_tasks_queue ON tasks(queue_name, status, priority DESC);
 CREATE INDEX idx_tasks_created ON tasks(created_at);
 CREATE INDEX idx_tasks_type ON tasks(type);
 
+-- ── Bloom Filters (UDA: persistent deduplication) ────────
+
+CREATE TABLE bloom_filters (
+    name TEXT PRIMARY KEY,              -- 'crawler:docs', 'crawler:blog'
+    domain TEXT NOT NULL DEFAULT '',
+    bit_array BYTEA NOT NULL,           -- serialized bloom filter bit array
+    expected_items INTEGER NOT NULL DEFAULT 100000,
+    fp_rate DOUBLE PRECISION NOT NULL DEFAULT 0.01,
+    num_hashes INTEGER NOT NULL,
+    item_count INTEGER NOT NULL DEFAULT 0,
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- ── Crawl Pages (UDA DataContainer: crawled web content) ─
+
+CREATE TABLE crawl_pages (
+    id BIGSERIAL PRIMARY KEY,
+    url TEXT NOT NULL UNIQUE,
+    domain TEXT NOT NULL,
+    content_hash TEXT NOT NULL,
+    title TEXT NOT NULL DEFAULT '',
+    content TEXT NOT NULL DEFAULT '',
+    status_code INTEGER NOT NULL DEFAULT 200,
+    crawled_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX idx_crawl_pages_domain ON crawl_pages(domain);
+CREATE INDEX idx_crawl_pages_hash ON crawl_pages(content_hash);
+CREATE INDEX idx_crawl_pages_crawled ON crawl_pages(crawled_at);
+
+-- ── DSPy Signatures (UDA: typed I/O contracts) ──────────
+
+CREATE TABLE dspy_signatures (
+    name TEXT PRIMARY KEY,              -- 'ExtractEntities'
+    doc TEXT NOT NULL,
+    input_fields JSONB NOT NULL DEFAULT '[]',
+    output_fields JSONB NOT NULL DEFAULT '[]',
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- ── DSPy Modules (UDA: prompt modules with execution) ───
+
+CREATE TABLE dspy_modules (
+    name TEXT PRIMARY KEY,              -- 'extract-entities'
+    signature_name TEXT REFERENCES dspy_signatures(name),
+    model_id TEXT REFERENCES models(model_id),
+    module_type TEXT NOT NULL CHECK (module_type IN ('module', 'chain_of_thought')),
+    system_prompt TEXT,
+    temperature DOUBLE PRECISION DEFAULT 0.0,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- ── Subagents (UDA: headless pipeline runners) ──────────
+
+CREATE TABLE subagents (
+    name TEXT PRIMARY KEY,              -- 'uda-crawler'
+    description TEXT,
+    pipeline_modules TEXT[],            -- ordered module names
+    neon_persist BOOLEAN DEFAULT true,
+    manifest_path TEXT,                 -- '.claude/subagents/uda-crawler.md'
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- ── Data Containers (UDA: data mesh source registrations)
+
+CREATE TABLE data_containers (
+    id SERIAL PRIMARY KEY,
+    class_name TEXT NOT NULL UNIQUE,    -- ontology class name
+    source_type TEXT NOT NULL DEFAULT 'APPLICATION_PRODUCER',
+    source_id TEXT,
+    projection_avro JSONB,             -- generated Avro schema
+    projection_graphql TEXT,           -- generated GraphQL type
+    projection_ttl TEXT,               -- generated TTL DataContainer
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now()
+);
+
 -- ── Seed data ────────────────────────────────────────────
 
 INSERT INTO languages (id, label) VALUES
@@ -267,4 +345,35 @@ INSERT INTO agent_manifests (name, model_override, allowed_tools, denied_tools, 
     ('coordinator', NULL, ARRAY['Agent', 'SendMessage', 'TaskStop', 'Read', 'Glob', 'Grep', 'Bash'], NULL, '05', '.claude/agents/coordinator.md'),
     ('verification', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash'], ARRAY['Edit', 'Write', 'Agent', 'NotebookEdit'], '07', '.claude/agents/verification.md'),
     ('explore', 'haiku', ARRAY['Read', 'Glob', 'Grep', 'Bash'], ARRAY['Edit', 'Write', 'Agent', 'NotebookEdit'], '08', '.claude/agents/explore.md'),
-    ('video-generator', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash', 'Write'], NULL, NULL, '.claude/agents/video-generator.md');
+    ('video-generator', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash', 'Write'], NULL, NULL, '.claude/agents/video-generator.md'),
+    ('uda-crawler', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash', 'Write'], NULL, NULL, '.claude/agents/uda-crawler.md'),
+    ('uda-extractor', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash'], NULL, NULL, '.claude/agents/uda-extractor.md');
+
+-- ── Seed: DSPy Signatures ───────────────────────────────
+
+INSERT INTO dspy_signatures (name, doc, input_fields, output_fields) VALUES
+    ('ExtractEntities', 'Extract structured entities from crawled documentation page content.',
+     '[{"name":"url","type":"str"},{"name":"content","type":"str"},{"name":"domain","type":"str"}]'::jsonb,
+     '[{"name":"entities","type":"list"},{"name":"relationships","type":"list"},{"name":"summary","type":"str"}]'::jsonb),
+    ('ClassifyContent', 'Classify crawled content into skill-relevant categories.',
+     '[{"name":"content","type":"str"},{"name":"title","type":"str"}]'::jsonb,
+     '[{"name":"primary_category","type":"str"},{"name":"skills","type":"list"},{"name":"languages","type":"list"},{"name":"confidence","type":"float"}]'::jsonb),
+    ('ExtractAPIPatterns', 'Extract API usage patterns, code samples, and SDK constructor calls.',
+     '[{"name":"content","type":"str"},{"name":"language","type":"str"}]'::jsonb,
+     '[{"name":"patterns","type":"list"},{"name":"sdk_constructor","type":"str"},{"name":"auth_method","type":"str"},{"name":"models_referenced","type":"list"}]'::jsonb),
+    ('AlignToOntology', 'Map extracted entities to AgentStreams ontology classes and properties.',
+     '[{"name":"entities","type":"list"},{"name":"relationships","type":"list"},{"name":"ontology_classes","type":"list"}]'::jsonb,
+     '[{"name":"mappings","type":"list"},{"name":"new_classes","type":"list"},{"name":"property_mappings","type":"list"}]'::jsonb);
+
+-- ── Seed: Subagents ─────────────────────────────────────
+
+INSERT INTO subagents (name, description, pipeline_modules, manifest_path) VALUES
+    ('uda-crawler', 'Web crawling with bloom filter dedup and Neon persistence',
+     ARRAY['UDACrawler', 'BloomFilter', 'NeonBloomStore'],
+     '.claude/subagents/uda-crawler.md'),
+    ('uda-extractor', 'DSPy structured extraction with ontology alignment',
+     ARRAY['ExtractEntities', 'ClassifyContent', 'AlignToOntology'],
+     '.claude/subagents/uda-extractor.md'),
+    ('uda-projector', 'Ontology projection generator: Avro, GraphQL, DataContainer, Mapping',
+     ARRAY['AvroProjection', 'GraphQLProjection', 'DataContainerProjection', 'MappingProjection'],
+     '.claude/subagents/uda-projector.md');
