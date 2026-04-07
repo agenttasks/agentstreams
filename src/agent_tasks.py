@@ -219,7 +219,12 @@ class AgentRunner:
                             {
                                 "type": "tool_result",
                                 "tool_use_id": block.id,
-                                "content": result.content[0]["text"] if result.content else "",
+                                "content": [
+                                    {"type": "text", "text": c["text"]}
+                                    for c in result.content
+                                    if c.get("text")
+                                ]
+                                or [{"type": "text", "text": ""}],
                                 "is_error": result.is_error,
                             }
                         )

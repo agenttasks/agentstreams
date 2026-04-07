@@ -127,7 +127,7 @@ CREATE TABLE resources (
     id SERIAL PRIMARY KEY,
     type TEXT NOT NULL,             -- 'model_card', 'api_primer', 'llms_index', 'cookbook'
     label TEXT NOT NULL,
-    url TEXT NOT NULL,
+    url TEXT NOT NULL UNIQUE,       -- ON CONFLICT (url) requires unique constraint
     related_model_id TEXT REFERENCES models(model_id),
     description TEXT,
     fetched_at TIMESTAMPTZ,

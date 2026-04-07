@@ -465,17 +465,22 @@ class MCPToolHandler:
 
         async with connection_pool(self.neon_url) as conn:
             tag_filters = args.get("tags", {})
-            tag_clause = " AND ".join(f"tags->>'{k}' = '{v}'" for k, v in tag_filters.items())
-            where = "WHERE metric_name = %s"
-            if tag_clause:
-                where += f" AND {tag_clause}"
+            params: list = [args["metric_name"]]
+            where_parts = ["metric_name = %s"]
+
+            for k, v in tag_filters.items():
+                where_parts.append("tags->>%s = %s")
+                params.extend([k, v])
+
+            params.append(args.get("limit", 100))
+            where = "WHERE " + " AND ".join(where_parts)
 
             rows = await (
                 await conn.execute(
                     f"""SELECT metric_name, value, tags, recorded_at
                         FROM metric_values {where}
                         ORDER BY recorded_at DESC LIMIT %s""",
-                    (args["metric_name"], args.get("limit", 100)),
+                    tuple(params),
                 )
             ).fetchall()
 

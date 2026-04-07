@@ -344,20 +344,21 @@ class NeonVectorStore:
         """Search for similar vectors using pgvector cosine distance."""
         vec_str = "[" + ",".join(str(v) for v in query_vector) + "]"
         where_clauses = []
-        params: list = [vec_str]
+        filter_params: list = []
 
         if wing:
             where_clauses.append("wing = %s")
-            params.append(wing)
+            filter_params.append(wing)
         if room:
             where_clauses.append("room = %s")
-            params.append(room)
+            filter_params.append(room)
 
         where = ""
         if where_clauses:
             where = "WHERE " + " AND ".join(where_clauses)
 
-        params.append(limit)
+        # Explicit param order: score calc, filters, ORDER BY, LIMIT
+        query_params = [vec_str, *filter_params, vec_str, limit]
         rows = await (
             await conn.execute(
                 f"""SELECT id, text, 1 - (embedding <=> %s::vector) AS score,
@@ -365,7 +366,7 @@ class NeonVectorStore:
                     FROM embeddings {where}
                     ORDER BY embedding <=> %s::vector
                     LIMIT %s""",
-                (*params[:1], *params),
+                tuple(query_params),
             )
         ).fetchall()
 

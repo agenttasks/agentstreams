@@ -28,7 +28,7 @@ from __future__ import annotations
 import os
 import time
 from collections.abc import Generator
-from contextlib import contextmanager
+from contextlib import AbstractContextManager, contextmanager
 from typing import Any
 
 # Lazy imports to avoid hard dependency
@@ -123,7 +123,7 @@ def trace_span(
 def trace_crawl_pipeline(
     pipeline_name: str,
     domains: list[str],
-) -> contextmanager:
+) -> AbstractContextManager[dict[str, Any]]:
     """Create a root span for a crawl pipeline."""
     return trace_span(
         "crawl_pipeline",
@@ -140,7 +140,7 @@ def trace_dspy_module(
     signature_name: str,
     model: str,
     thinking_type: str = "",
-) -> contextmanager:
+) -> AbstractContextManager[dict[str, Any]]:
     """Create a span for a DSPy module execution."""
     attrs = {
         "dspy.module": module_name,
@@ -157,7 +157,7 @@ def trace_embedding(
     wing: str = "",
     room: str = "",
     chunk_count: int = 0,
-) -> contextmanager:
+) -> AbstractContextManager[dict[str, Any]]:
     """Create a span for an embedding operation."""
     return trace_span(
         "embedding",
@@ -174,7 +174,7 @@ def trace_agent_task(
     task_id: str,
     task_type: str,
     model: str,
-) -> contextmanager:
+) -> AbstractContextManager[dict[str, Any]]:
     """Create a span for an Agent SDK task execution."""
     return trace_span(
         "agent_task",
