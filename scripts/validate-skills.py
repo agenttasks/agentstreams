@@ -82,10 +82,17 @@ def check_cross_references(skill_dir: Path, content: str, file_path: Path) -> li
         if ref.startswith("http"):
             continue
         # Skip generic language-relative refs (e.g. "the language-specific README.md")
-        if ref in ("README.md", "sdk-integration.md", "lsp-config.md"):
+        if ref in (
+            "README.md",
+            "sdk-integration.md",
+            "lsp-config.md",
+            "CLAUDE.md",
+            "CLAUDE.local.md",
+            "MEMORY.md",
+        ):
             continue
         # Skip repo-root relative refs (outside skill dir)
-        if ref.startswith(("agentstreams/", "taxonomy/")):
+        if ref.startswith(("agentstreams/", "taxonomy/", "vendors/", "~/")):
             continue
         # Try relative to skill dir and file parent
         candidates = [

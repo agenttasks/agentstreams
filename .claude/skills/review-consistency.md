@@ -1,6 +1,7 @@
 ---
 name: review-consistency
-description: "Cross-file consistency check for crawl-ingest skill PRs. TRIGGER when: reviewing documentation PRs for version mismatches, broken cross-references, inconsistent package names, or missing MCP SDK mentions. DO NOT TRIGGER for: security issues, code logic, or formatting preferences."
+description: "Cross-file consistency check for crawl-ingest skill PRs"
+trigger: "reviewing documentation PRs for version mismatches, broken cross-references, inconsistent package names, or missing MCP SDK mentions"
 ---
 
 # Consistency Review

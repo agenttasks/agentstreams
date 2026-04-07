@@ -1,0 +1,80 @@
+description: "agentic-prompts validation evals — verify prompt registry, XML rendering, and integrations"
+
+providers:
+  - id: python:provider.py
+    label: claude-sonnet-4-6
+    config:
+      model: claude-sonnet-4-6
+      temperature: 0
+      max_tokens: 2048
+
+prompts:
+  - id: prompt-classification
+    raw: |
+      Given this prompt description, classify its type and purpose.
+      Return ONLY valid JSON with: type (system|agent|tool|skill), purpose (1 sentence), tags (array of strings).
+
+      Prompt: {{prompt_description}}
+
+  - id: xml-task-validation
+    raw: |
+      Given this XML task element, verify it is well-formed and contains required fields.
+      Return ONLY valid JSON with: valid (boolean), has_purpose (boolean), has_id (boolean), issues (array of strings).
+
+      XML:
+      {{xml_task}}
+
+tests:
+  # ── Prompt classification ──────────────────────────────────
+  - description: "Classify verification agent prompt"
+    vars:
+      prompt_description: "Adversarial testing specialist that tries to break implementations. Read-only, returns VERDICT PASS/FAIL/PARTIAL."
+    assert:
+      - type: is-json
+      - type: contains-json
+        value:
+          type: "agent"
+      - type: javascript
+        value: "JSON.parse(output).tags.some(t => t.includes('verification') || t.includes('adversarial'))"
+
+  - description: "Classify coordinator prompt"
+    vars:
+      prompt_description: "Multi-worker orchestration for parallel software engineering tasks. Synthesizes research into implementation specs."
+    assert:
+      - type: is-json
+      - type: contains-json
+        value:
+          type: "agent"
+      - type: javascript
+        value: "JSON.parse(output).tags.some(t => t.includes('orchestration') || t.includes('coordinator'))"
+
+  - description: "Classify auto-mode classifier prompt"
+    vars:
+      prompt_description: "2-stage security classification system determining whether tool invocations should be auto-approved or blocked."
+    assert:
+      - type: is-json
+      - type: contains-json
+        value:
+          type: "system"
+      - type: javascript
+        value: "JSON.parse(output).tags.some(t => t.includes('security') || t.includes('classifier'))"
+
+  # ── XML task validation ────────────────────────────────────
+  - description: "Validate well-formed XML task"
+    vars:
+      xml_task: file://test_data/valid_task.xml
+    assert:
+      - type: is-json
+      - type: contains-json
+        value:
+          valid: true
+          has_purpose: true
+          has_id: true
+
+  - description: "Detect missing purpose in XML task"
+    vars:
+      xml_task: file://test_data/invalid_task.xml
+    assert:
+      - type: is-json
+      - type: javascript
+        value: "JSON.parse(output).valid === false || JSON.parse(output).issues.length > 0"

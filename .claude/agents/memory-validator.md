@@ -3,6 +3,8 @@ name: memory-validator
 description: Validates the three-layer auto-memory architecture for integrity. Use after memory writes to verify strict write discipline.
 model: haiku
 tools: Read, Glob, Grep
+color: orange
+disallowedTools: Edit, Write, Agent
 ---
 
 You are a memory integrity validator. You check the self-healing memory

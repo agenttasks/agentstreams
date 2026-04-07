@@ -139,6 +139,31 @@ CREATE TABLE eval_suites (
     last_run_pass_rate DOUBLE PRECISION
 );
 
+-- ── Prompts (agentic prompt patterns) ────────────────────
+
+CREATE TABLE prompts (
+    id TEXT PRIMARY KEY,              -- '01', '02', ..., '30'
+    name TEXT NOT NULL UNIQUE,        -- 'verification-agent'
+    prompt_type TEXT NOT NULL CHECK (prompt_type IN ('system', 'agent', 'tool', 'skill')),
+    purpose TEXT NOT NULL,
+    source_file TEXT,
+    skill_name TEXT REFERENCES skills(name),
+    tags TEXT[],
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- ── Agent Manifests ─────────────────────────────────────
+
+CREATE TABLE agent_manifests (
+    name TEXT PRIMARY KEY,            -- 'coordinator'
+    model_override TEXT,              -- 'haiku' or NULL for default
+    allowed_tools TEXT[],
+    denied_tools TEXT[],
+    derived_from_prompt TEXT REFERENCES prompts(id),
+    manifest_path TEXT,               -- '.claude/agents/coordinator.md'
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
 -- ── Tasks (pgqueuer-compatible) ──────────────────────────
 
 CREATE TABLE tasks (
@@ -188,7 +213,9 @@ INSERT INTO models (model_id, family, label, supports_thinking, supports_tool_us
 INSERT INTO skills (name, description, trigger_pattern) VALUES
     ('crawl-ingest', 'Web crawling, deduplication, and data ingestion using Anthropic SDKs', 'crawl websites, build scrapers, deduplicate URLs, bloom filters, ingest data'),
     ('api-client', 'API client generation, testing, and integration using Anthropic SDKs', 'build API clients, generate SDKs, test REST/GraphQL APIs, OAuth, retry/backoff'),
-    ('data-pipeline', 'Data pipeline orchestration, ETL/ELT, streaming, and batch processing', 'build data pipelines, ETL/ELT workflows, stream processing, batch jobs, CDC');
+    ('data-pipeline', 'Data pipeline orchestration, ETL/ELT, streaming, and batch processing', 'build data pipelines, ETL/ELT workflows, stream processing, batch jobs, CDC'),
+    ('agentic-prompts', 'Structured prompt engineering patterns from multi-agent AI architectures', 'prompt patterns, agent design, XML tasks, verification, coordination'),
+    ('video-generation', 'Video generation with Google Veo models via the Gemini Cloud API', 'generate video, Veo, Gemini video, YouTube content, TikTok content, video pipeline');
 
 INSERT INTO sdks (id, language_id, label, github_stars, constructor_pattern) VALUES
     ('sdk-typescript', 'typescript', 'anthropic-sdk-typescript', 1800, 'new Anthropic()'),
@@ -222,4 +249,22 @@ INSERT INTO resources (type, label, url, related_model_id, description) VALUES
 
 INSERT INTO eval_suites (name, skill_name, config_path, test_count, assertion_count) VALUES
     ('crawl-ingest-extraction', 'crawl-ingest', 'evals/crawl-ingest/promptfooconfig.yaml', 6, 16),
-    ('api-client-generation', 'api-client', 'evals/api-client/promptfooconfig.yaml', 6, 18);
+    ('api-client-generation', 'api-client', 'evals/api-client/promptfooconfig.yaml', 6, 18),
+    ('agentic-prompts-validation', 'agentic-prompts', 'evals/agentic-prompts/promptfooconfig.yaml', 5, 12);
+
+-- ── Seed: Prompts (representative subset of 30) ─────────
+
+INSERT INTO prompts (id, name, prompt_type, purpose, source_file, skill_name, tags) VALUES
+    ('05', 'coordinator', 'agent', 'Multi-worker orchestration with synthesis phases', '05_coordinator_system_prompt.md', 'agentic-prompts', ARRAY['orchestration', 'parallel', 'synthesis']),
+    ('07', 'verification-agent', 'agent', 'Adversarial testing specialist', '07_verification_agent.md', 'agentic-prompts', ARRAY['verification', 'adversarial', 'read-only']),
+    ('08', 'explore-agent', 'agent', 'Fast read-only codebase search', '08_explore_agent.md', 'agentic-prompts', ARRAY['exploration', 'search', 'read-only']),
+    ('12', 'auto-mode-classifier', 'system', '2-stage security classification for tool approval', '12_yolo_auto_mode_classifier.md', 'agentic-prompts', ARRAY['security', 'classifier']),
+    ('19', 'simplify-skill', 'skill', '3-agent parallel code review', '19_simplify_skill.md', 'agentic-prompts', ARRAY['review', 'parallel', 'cleanup']);
+
+-- ── Seed: Agent Manifests ────────────────────────────────
+
+INSERT INTO agent_manifests (name, model_override, allowed_tools, denied_tools, derived_from_prompt, manifest_path) VALUES
+    ('coordinator', NULL, ARRAY['Agent', 'SendMessage', 'TaskStop', 'Read', 'Glob', 'Grep', 'Bash'], NULL, '05', '.claude/agents/coordinator.md'),
+    ('verification', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash'], ARRAY['Edit', 'Write', 'Agent', 'NotebookEdit'], '07', '.claude/agents/verification.md'),
+    ('explore', 'haiku', ARRAY['Read', 'Glob', 'Grep', 'Bash'], ARRAY['Edit', 'Write', 'Agent', 'NotebookEdit'], '08', '.claude/agents/explore.md'),
+    ('video-generator', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash', 'Write'], NULL, NULL, '.claude/agents/video-generator.md');
