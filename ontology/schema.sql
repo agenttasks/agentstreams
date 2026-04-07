@@ -1,10 +1,18 @@
 -- ═══════════════════════════════════════════════════════════
--- AgentStreams — Neon Postgres Schema (pg_graphql auto-exposes)
+-- AgentStreams — Neon Postgres 18 Schema
 -- UDA physical layer: each table maps to an ontology class
+-- Extensions: pgvector, pgrag, pg_tiktoken, hll, bloom,
+--   pg_trgm, pg_graphql, pg_cron, pg_stat_statements
 -- ═══════════════════════════════════════════════════════════
 
--- Enable pg_graphql
-CREATE EXTENSION IF NOT EXISTS pg_graphql;
+-- ── Extensions (Neon Postgres 18) ───────────────────────
+CREATE EXTENSION IF NOT EXISTS pg_graphql;       -- GraphQL API layer
+CREATE EXTENSION IF NOT EXISTS vector;           -- pgvector: embeddings + similarity search
+CREATE EXTENSION IF NOT EXISTS pg_tiktoken;      -- tokenize text using OpenAI tiktoken
+CREATE EXTENSION IF NOT EXISTS hll;              -- HyperLogLog: approximate distinct counting
+CREATE EXTENSION IF NOT EXISTS pg_trgm;          -- trigram similarity search
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements; -- query performance monitoring
+CREATE EXTENSION IF NOT EXISTS pg_cron;          -- scheduled jobs for pipeline automation
 
 -- ── Languages ────────────────────────────────────────────
 
@@ -273,8 +281,6 @@ CREATE TABLE data_containers (
 
 -- ── Embeddings (pgvector: semantic search) ──────────────
 
-CREATE EXTENSION IF NOT EXISTS vector;
-
 CREATE TABLE embeddings (
     id TEXT PRIMARY KEY,
     text TEXT NOT NULL,
@@ -291,6 +297,60 @@ CREATE INDEX idx_embeddings_vector ON embeddings
     USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100);
 CREATE INDEX idx_embeddings_wing ON embeddings(wing);
 CREATE INDEX idx_embeddings_room ON embeddings(room);
+-- pg_trgm index for fuzzy text search on embedded chunks
+CREATE INDEX idx_embeddings_text_trgm ON embeddings
+    USING gin (text gin_trgm_ops);
+
+-- ── Token Counts (pg_tiktoken: tokenization tracking) ───
+
+CREATE TABLE token_counts (
+    id BIGSERIAL PRIMARY KEY,
+    source_type TEXT NOT NULL,           -- 'crawl_page', 'dspy_input', 'dspy_output', 'embedding'
+    source_id TEXT NOT NULL,             -- URL, task ID, or embedding ID
+    model TEXT NOT NULL DEFAULT 'cl100k_base',  -- tiktoken encoding name
+    token_count INTEGER NOT NULL,
+    char_count INTEGER NOT NULL,
+    token_ratio DOUBLE PRECISION GENERATED ALWAYS AS (
+        CASE WHEN char_count > 0 THEN token_count::double precision / char_count ELSE 0 END
+    ) STORED,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX idx_token_counts_source ON token_counts(source_type, source_id);
+
+-- ── HyperLogLog Sketches (hll: approximate distinct counts) ─
+
+CREATE TABLE hll_sketches (
+    name TEXT PRIMARY KEY,               -- 'crawl:urls:example.com', 'embeddings:docs'
+    domain TEXT NOT NULL DEFAULT '',
+    sketch hll NOT NULL DEFAULT hll_empty(),
+    description TEXT,
+    updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- ── Thinking Traces (extended-thinking audit log) ───────
+
+CREATE TABLE thinking_traces (
+    id BIGSERIAL PRIMARY KEY,
+    task_id BIGINT REFERENCES tasks(id),
+    thinking_type TEXT NOT NULL CHECK (thinking_type IN ('enabled', 'adaptive')),
+    budget_tokens INTEGER,               -- requested budget
+    thinking_tokens INTEGER,             -- actual tokens used
+    input_tokens INTEGER,
+    output_tokens INTEGER,
+    model TEXT NOT NULL,
+    duration_ms INTEGER,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX idx_thinking_model ON thinking_traces(model);
+CREATE INDEX idx_thinking_task ON thinking_traces(task_id);
+
+-- ── Scheduled Pipelines (pg_cron: automated jobs) ───────
+-- NOTE: pg_cron jobs are registered via SQL, not DDL.
+-- Example: SELECT cron.schedule('nightly-crawl', '0 2 * * *',
+--   $$SELECT net.http_post(...)$$);
+-- Jobs are stored in cron.job (managed by pg_cron extension).
 
 -- ── Seed data ────────────────────────────────────────────
 
@@ -368,7 +428,8 @@ INSERT INTO agent_manifests (name, model_override, allowed_tools, denied_tools, 
     ('explore', 'haiku', ARRAY['Read', 'Glob', 'Grep', 'Bash'], ARRAY['Edit', 'Write', 'Agent', 'NotebookEdit'], '08', '.claude/agents/explore.md'),
     ('video-generator', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash', 'Write'], NULL, NULL, '.claude/agents/video-generator.md'),
     ('uda-crawler', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash', 'Write'], NULL, NULL, '.claude/agents/uda-crawler.md'),
-    ('uda-extractor', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash'], NULL, NULL, '.claude/agents/uda-extractor.md');
+    ('uda-extractor', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash'], NULL, NULL, '.claude/agents/uda-extractor.md'),
+    ('uda-thinker', 'opus', ARRAY['Read', 'Glob', 'Grep', 'Bash'], NULL, NULL, '.claude/agents/uda-thinker.md');
 
 -- ── Seed: DSPy Signatures ───────────────────────────────
 
@@ -397,4 +458,7 @@ INSERT INTO subagents (name, description, pipeline_modules, manifest_path) VALUE
      '.claude/subagents/uda-extractor.md'),
     ('uda-projector', 'Ontology projection generator: Avro, GraphQL, DataContainer, Mapping',
      ARRAY['AvroProjection', 'GraphQLProjection', 'DataContainerProjection', 'MappingProjection'],
-     '.claude/subagents/uda-projector.md');
+     '.claude/subagents/uda-projector.md'),
+    ('uda-thinker', 'Deep reasoning with extended/adaptive thinking and Neon extensions',
+     ARRAY['ExtendedThinking', 'AdaptiveThinking', 'record_thinking_trace'],
+     '.claude/subagents/uda-thinker.md');

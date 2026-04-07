@@ -61,6 +61,29 @@ as:Embedding a rdfs:Class ;
 as:EmbeddingBackend a rdfs:Class ;
     rdfs:label "Embedding Backend" .
 
+as:ThinkingTrace a rdfs:Class ;
+    rdfs:label "Thinking Trace" ;
+    rdfs:comment "Audit record for extended-thinking or adaptive-thinking API calls. Tracks budget, actual tokens, model, and duration." .
+
+as:ThinkingMode a rdfs:Class ;
+    rdfs:label "Thinking Mode" .
+
+as:EnabledThinking a as:ThinkingMode ;
+    rdfs:label "Extended Thinking" ;
+    rdfs:comment "Fixed budget deep reasoning: thinking={type: enabled, budget_tokens: N}." .
+
+as:AdaptiveThinking a as:ThinkingMode ;
+    rdfs:label "Adaptive Thinking" ;
+    rdfs:comment "Self-calibrating reasoning: thinking={type: adaptive}. Claude 4.6 feature." .
+
+as:TokenCount a rdfs:Class ;
+    rdfs:label "Token Count" ;
+    rdfs:comment "Token count record from pg_tiktoken extension. Tracks tokenization of crawled content, DSPy I/O, and embeddings." .
+
+as:HLLSketch a rdfs:Class ;
+    rdfs:label "HyperLogLog Sketch" ;
+    rdfs:comment "Approximate distinct count sketch from hll extension. Complements bloom filters for cardinality estimation." .
+
 as:LanceDBBackend a as:EmbeddingBackend ;
     rdfs:label "LanceDB" ;
     rdfs:comment "Local columnar vector store — millisecond queries, no server." .
@@ -537,6 +560,41 @@ as:embeddingDim a rdf:Property ;
     rdfs:range xsd:integer ;
     rdfs:comment "Embedding vector dimension (default 384)." .
 
+# Properties: Thinking traces
+as:thinkingMode a rdf:Property ;
+    rdfs:domain as:ThinkingTrace ;
+    rdfs:range as:ThinkingMode .
+
+as:thinkingBudget a rdf:Property ;
+    rdfs:domain as:ThinkingTrace ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "Requested thinking token budget." .
+
+as:thinkingTokens a rdf:Property ;
+    rdfs:domain as:ThinkingTrace ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "Actual thinking tokens consumed." .
+
+# Properties: Token counts
+as:tokenModel a rdf:Property ;
+    rdfs:domain as:TokenCount ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Tiktoken encoding: cl100k_base, p50k_base, r50k_base." .
+
+as:tokenCount a rdf:Property ;
+    rdfs:domain as:TokenCount ;
+    rdfs:range xsd:integer .
+
+# Properties: HLL sketches
+as:hllName a rdf:Property ;
+    rdfs:domain as:HLLSketch ;
+    rdfs:range xsd:string .
+
+as:hllCardinality a rdf:Property ;
+    rdfs:domain as:HLLSketch ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "Approximate distinct count from the sketch." .
+
 # ── Instances: Languages ──────────────────────────────────
 
 as:TypeScript a as:Language ; rdfs:label "TypeScript" .
@@ -880,3 +938,15 @@ as:manifest-uda-extractor a as:AgentManifest ;
     as:manifestName "uda-extractor" ;
     as:allowedTool "Read", "Glob", "Grep", "Bash" ;
     rdfs:label "UDA Extractor Agent Manifest" .
+
+as:manifest-uda-thinker a as:AgentManifest ;
+    as:manifestName "uda-thinker" ;
+    as:manifestModel "opus" ;
+    as:allowedTool "Read", "Glob", "Grep", "Bash" ;
+    rdfs:label "UDA Thinker Agent Manifest" .
+
+as:subagent-thinker a as:Subagent ;
+    as:subagentName "uda-thinker" ;
+    as:subagentPipeline "ExtendedThinking → AdaptiveThinking → record_thinking_trace" ;
+    rdfs:label "UDA Thinker Subagent" ;
+    rdfs:comment "Deep reasoning with extended/adaptive thinking and Neon extension integration." .

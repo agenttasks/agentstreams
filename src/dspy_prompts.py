@@ -102,6 +102,8 @@ class Prediction:
     model: str = ""
     input_tokens: int = 0
     output_tokens: int = 0
+    thinking_tokens: int = 0
+    thinking_text: str = ""
 
     def __getattr__(self, name: str) -> Any:
         if name in self.outputs:
@@ -207,6 +209,165 @@ class ChainOfThought(Module):
             "Think step-by-step in a `reasoning` field, then provide the output fields."
         )
         return [{"role": "user", "content": user_content}]
+
+
+class ExtendedThinking(Module):
+    """DSPy module using Claude's extended thinking (budget_tokens).
+
+    Enables a dedicated thinking budget for complex reasoning before
+    generating structured output. The thinking is visible in the response
+    and tracked in Prediction.thinking_tokens / thinking_text.
+
+    Budget guidelines (from skills/context-window/shared/extended-thinking.md):
+        Simple: 2,000-5,000 | Medium: 5,000-15,000
+        Complex: 15,000-50,000 | Maximum: 50,000-128,000
+
+    Args:
+        signature: Typed I/O contract.
+        budget_tokens: Thinking token budget.
+        model: Must be claude-opus-4-6 or claude-sonnet-4-6.
+    """
+
+    def __init__(
+        self,
+        signature: Signature,
+        *,
+        budget_tokens: int = 10_000,
+        model: str = "claude-opus-4-6",
+        system_prompt: str = "",
+        max_tokens: int = 16_384,
+    ):
+        super().__init__(
+            signature,
+            model=model,
+            system_prompt=system_prompt,
+            temperature=1.0,  # required for extended thinking
+            max_tokens=max_tokens,
+        )
+        self.budget_tokens = budget_tokens
+
+    async def __call__(self, **inputs: Any) -> Prediction:
+        """Execute with extended thinking enabled."""
+        import anthropic
+
+        client = anthropic.Anthropic()
+        messages = self._build_messages(inputs)
+        system = self.system_prompt or (
+            "You are a structured extraction agent with deep reasoning capability. "
+            "Think carefully through each step. "
+            "After thinking, respond ONLY with valid JSON matching the output schema."
+        )
+
+        response = client.messages.create(
+            model=self.model,
+            max_tokens=self.max_tokens,
+            temperature=1.0,
+            thinking={
+                "type": "enabled",
+                "budget_tokens": self.budget_tokens,
+            },
+            system=system,
+            messages=messages,
+        )
+
+        # Extract thinking and text blocks separately
+        thinking_text = ""
+        raw_text = ""
+        for block in response.content:
+            if block.type == "thinking":
+                thinking_text = block.thinking
+            elif block.type == "text":
+                raw_text = block.text
+
+        outputs = self._parse_json_output(raw_text)
+        thinking_tokens = getattr(response.usage, "thinking_tokens", 0) or 0
+
+        return Prediction(
+            outputs=outputs,
+            raw_response=raw_text,
+            model=self.model,
+            input_tokens=response.usage.input_tokens,
+            output_tokens=response.usage.output_tokens,
+            thinking_tokens=thinking_tokens,
+            thinking_text=thinking_text,
+        )
+
+
+class AdaptiveThinking(Module):
+    """DSPy module using Claude's adaptive thinking mode.
+
+    Adaptive thinking (Claude 4.6) automatically decides how much
+    reasoning to apply based on task complexity. Unlike ExtendedThinking
+    with a fixed budget, adaptive mode self-calibrates.
+
+    Use for:
+    - Architecture decisions where complexity varies
+    - Ontology alignment where some entities are trivial, others complex
+    - Pipeline design where the model should decide when to think deeply
+
+    Args:
+        signature: Typed I/O contract.
+        model: Must support adaptive thinking (claude-opus-4-6, claude-sonnet-4-6).
+    """
+
+    def __init__(
+        self,
+        signature: Signature,
+        *,
+        model: str = "claude-opus-4-6",
+        system_prompt: str = "",
+        max_tokens: int = 16_384,
+    ):
+        super().__init__(
+            signature,
+            model=model,
+            system_prompt=system_prompt,
+            temperature=1.0,  # required for thinking modes
+            max_tokens=max_tokens,
+        )
+
+    async def __call__(self, **inputs: Any) -> Prediction:
+        """Execute with adaptive thinking."""
+        import anthropic
+
+        client = anthropic.Anthropic()
+        messages = self._build_messages(inputs)
+        system = self.system_prompt or (
+            "You are a structured extraction agent with adaptive reasoning. "
+            "Apply as much reasoning as the task requires — simple lookups need none, "
+            "complex ontology alignment needs deep analysis. "
+            "Respond with valid JSON matching the output schema."
+        )
+
+        response = client.messages.create(
+            model=self.model,
+            max_tokens=self.max_tokens,
+            temperature=1.0,
+            thinking={"type": "adaptive"},
+            system=system,
+            messages=messages,
+        )
+
+        thinking_text = ""
+        raw_text = ""
+        for block in response.content:
+            if block.type == "thinking":
+                thinking_text = block.thinking
+            elif block.type == "text":
+                raw_text = block.text
+
+        outputs = self._parse_json_output(raw_text)
+        thinking_tokens = getattr(response.usage, "thinking_tokens", 0) or 0
+
+        return Prediction(
+            outputs=outputs,
+            raw_response=raw_text,
+            model=self.model,
+            input_tokens=response.usage.input_tokens,
+            output_tokens=response.usage.output_tokens,
+            thinking_tokens=thinking_tokens,
+            thinking_text=thinking_text,
+        )
 
 
 class Pipeline:

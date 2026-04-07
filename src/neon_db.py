@@ -244,3 +244,123 @@ async def get_crawl_stats(conn, domain: str | None = None) -> dict[str, Any]:
         "domains": row[1],
         "last_crawl": row[2].isoformat() if row[2] else None,
     }
+
+
+# ── HyperLogLog operations (hll extension) ───────────────
+
+
+async def hll_add(conn, *, sketch_name: str, value: str, domain: str = "") -> None:
+    """Add a value to a HyperLogLog sketch for approximate distinct counting.
+
+    HLL sketches complement bloom filters: bloom tells you "seen before?",
+    HLL tells you "how many distinct items total?"
+    """
+    await conn.execute(
+        """INSERT INTO hll_sketches (name, domain, sketch, updated_at)
+           VALUES (%s, %s, hll_add(hll_empty(), hll_hash_text(%s)), now())
+           ON CONFLICT (name) DO UPDATE SET
+               sketch = hll_add(hll_sketches.sketch, hll_hash_text(%s)),
+               updated_at = now()""",
+        (sketch_name, domain, value, value),
+    )
+
+
+async def hll_count(conn, sketch_name: str) -> int:
+    """Get approximate distinct count from an HLL sketch."""
+    row = await (
+        await conn.execute(
+            "SELECT hll_cardinality(sketch)::bigint FROM hll_sketches WHERE name = %s",
+            (sketch_name,),
+        )
+    ).fetchone()
+    return row[0] if row else 0
+
+
+# ── Token counting (pg_tiktoken extension) ───────────────
+
+
+async def count_tokens(conn, *, text: str, model: str = "cl100k_base") -> int:
+    """Count tokens using pg_tiktoken (runs inside Postgres, no Python dep).
+
+    Uses tiktoken_count() function from the pg_tiktoken extension.
+    """
+    row = await (
+        await conn.execute(
+            "SELECT tiktoken_count(%s, %s)",
+            (model, text),
+        )
+    ).fetchone()
+    return row[0]
+
+
+async def record_token_count(
+    conn,
+    *,
+    source_type: str,
+    source_id: str,
+    text: str,
+    model: str = "cl100k_base",
+) -> dict[str, int]:
+    """Count tokens and persist to token_counts table."""
+    row = await (
+        await conn.execute(
+            """INSERT INTO token_counts (source_type, source_id, model,
+                   token_count, char_count)
+               VALUES (%s, %s, %s, tiktoken_count(%s, %s), length(%s))
+               RETURNING token_count, char_count""",
+            (source_type, source_id, model, model, text, text),
+        )
+    ).fetchone()
+    return {"token_count": row[0], "char_count": row[1]}
+
+
+# ── Trigram similarity search (pg_trgm extension) ────────
+
+
+async def fuzzy_search(
+    conn, *, table: str, column: str, query: str, threshold: float = 0.3, limit: int = 10
+) -> list[dict]:
+    """Fuzzy text search using pg_trgm trigram similarity.
+
+    Returns rows where similarity(column, query) >= threshold,
+    ordered by similarity descending.
+    """
+    rows = await (
+        await conn.execute(
+            f"""SELECT *, similarity({column}, %s) AS sim
+                FROM {table}
+                WHERE similarity({column}, %s) >= %s
+                ORDER BY sim DESC LIMIT %s""",
+            (query, query, threshold, limit),
+        )
+    ).fetchall()
+    return [dict(r._mapping) if hasattr(r, "_mapping") else r for r in rows]
+
+
+# ── Thinking trace operations ────────────────────────────
+
+
+async def record_thinking_trace(
+    conn,
+    *,
+    task_id: int | None = None,
+    thinking_type: str,
+    budget_tokens: int | None = None,
+    thinking_tokens: int = 0,
+    input_tokens: int = 0,
+    output_tokens: int = 0,
+    model: str,
+    duration_ms: int | None = None,
+) -> int:
+    """Record an extended/adaptive thinking trace for audit and optimization."""
+    row = await (
+        await conn.execute(
+            """INSERT INTO thinking_traces (task_id, thinking_type, budget_tokens,
+                   thinking_tokens, input_tokens, output_tokens, model, duration_ms)
+               VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+               RETURNING id""",
+            (task_id, thinking_type, budget_tokens, thinking_tokens,
+             input_tokens, output_tokens, model, duration_ms),
+        )
+    ).fetchone()
+    return row[0]
