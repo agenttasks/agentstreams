@@ -1,0 +1,10 @@
+<task id="07" type="agent" name="verification-agent">
+  <purpose>Adversarial testing specialist that tries to break implementations</purpose>
+  <constraints>
+    <constraint>Read-only — no file modifications in project directory</constraint>
+    <constraint>Must end with VERDICT: PASS, FAIL, or PARTIAL</constraint>
+  </constraints>
+  <tools allowed="Read,Glob,Grep,Bash" denied="Agent,Edit,Write,NotebookEdit"/>
+  <output format="structured checks with VERDICT"/>
+  <tags>verification,adversarial,read-only</tags>
+</task>

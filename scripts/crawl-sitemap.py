@@ -22,17 +22,18 @@ Examples:
 
 import argparse
 import asyncio
-import hashlib
 import json
 import re
 import sys
 import xml.etree.ElementTree as ET
 from datetime import UTC, datetime
-from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlparse
 
 import aiohttp
+from spiders import HTMLToText, content_hash, html_to_text  # shared base module
+
+__all__ = ["HTMLToText", "content_hash", "html_to_text"]  # re-export for tests
 
 # ── Constants ────────────────────────────────────────────────
 
@@ -40,51 +41,6 @@ DEFAULT_CONCURRENCY = 20
 DEFAULT_RATE_DELAY = 0.05  # 50ms between requests
 TRUNCATE_BYTES = 50_000
 USER_AGENT = "agentstreams-crawler/2.0 (async sitemap crawler)"
-
-
-# ── HTML parser (reused from crawl-llms-txt.py) ─────────────
-
-
-class HTMLToText(HTMLParser):
-    """Strip HTML tags, extract text content."""
-
-    def __init__(self):
-        super().__init__()
-        self._text: list[str] = []
-        self._skip = False
-        self._skip_tags = {"script", "style", "nav", "footer", "header"}
-
-    def handle_starttag(self, tag, attrs):
-        if tag in self._skip_tags:
-            self._skip = True
-        if tag in ("br", "p", "div", "h1", "h2", "h3", "h4", "h5", "h6", "li", "tr"):
-            self._text.append("\n")
-
-    def handle_endtag(self, tag):
-        if tag in self._skip_tags:
-            self._skip = False
-        if tag in ("p", "div", "h1", "h2", "h3", "h4", "h5", "h6", "table"):
-            self._text.append("\n")
-
-    def handle_data(self, data):
-        if not self._skip:
-            self._text.append(data)
-
-    def get_text(self) -> str:
-        return "".join(self._text)
-
-
-# ── Utilities ────────────────────────────────────────────────
-
-
-def content_hash(text: str) -> str:
-    return hashlib.sha256(text.encode()).hexdigest()[:12]
-
-
-def html_to_text(html: str) -> str:
-    parser = HTMLToText()
-    parser.feed(html)
-    return parser.get_text()
 
 
 def slug_from_url(url: str) -> str:

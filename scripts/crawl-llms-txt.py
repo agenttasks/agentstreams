@@ -17,47 +17,22 @@ Output format:
 """
 
 import argparse
-import hashlib
 import re
 import sys
 import urllib.error
 import urllib.request
 from datetime import UTC, datetime
-from html.parser import HTMLParser
 from pathlib import Path
 
+from spiders import HTMLToText as _BaseHTMLToText  # shared base module
+from spiders import content_hash
 
-class HTMLToText(HTMLParser):
-    """Minimal HTML-to-text converter that strips tags and extracts text content."""
+
+class HTMLToText(_BaseHTMLToText):
+    """HTML-to-text converter with link extraction (default on)."""
 
     def __init__(self):
-        super().__init__()
-        self._text = []
-        self._skip = False
-        self._skip_tags = {"script", "style", "nav", "footer", "header"}
-
-    def handle_starttag(self, tag, attrs):
-        if tag in self._skip_tags:
-            self._skip = True
-        if tag in ("br", "p", "div", "h1", "h2", "h3", "h4", "h5", "h6", "li", "tr"):
-            self._text.append("\n")
-        if tag == "a":
-            for name, value in attrs:
-                if name == "href" and value:
-                    self._text.append(f" [{value}] ")
-
-    def handle_endtag(self, tag):
-        if tag in self._skip_tags:
-            self._skip = False
-        if tag in ("p", "div", "h1", "h2", "h3", "h4", "h5", "h6", "table"):
-            self._text.append("\n")
-
-    def handle_data(self, data):
-        if not self._skip:
-            self._text.append(data)
-
-    def get_text(self):
-        return "".join(self._text)
+        super().__init__(extract_links=True)
 
 
 def fetch_url(url: str, timeout: int = 30) -> str:
@@ -108,10 +83,6 @@ def extract_urls(text: str, base_url: str) -> list[str]:
             if url not in urls:
                 urls.append(url)
     return urls
-
-
-def content_hash(text: str) -> str:
-    return hashlib.sha256(text.encode()).hexdigest()[:12]
 
 
 def main():

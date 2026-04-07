@@ -248,3 +248,77 @@ map:task-config a map:Mapping ;
     map:ontologyProperty as:taskConfig ;
     map:targetTable "tasks" ;
     map:targetColumn "config" .
+
+# ── Prompt mappings ──────────────────────────────────────
+
+map:prompt-table a map:Mapping ;
+    map:ontologyClass as:Prompt ;
+    map:targetTable "prompts" ;
+    rdfs:label "Prompt → prompts table" .
+
+map:prompt-id a map:Mapping ;
+    map:ontologyProperty as:promptId ;
+    map:targetTable "prompts" ;
+    map:targetColumn "id" .
+
+map:prompt-name a map:Mapping ;
+    map:ontologyProperty as:promptName ;
+    map:targetTable "prompts" ;
+    map:targetColumn "name" .
+
+map:prompt-type a map:Mapping ;
+    map:ontologyProperty as:promptType ;
+    map:targetTable "prompts" ;
+    map:targetColumn "prompt_type" .
+
+map:prompt-purpose a map:Mapping ;
+    map:ontologyProperty as:promptPurpose ;
+    map:targetTable "prompts" ;
+    map:targetColumn "purpose" .
+
+map:prompt-source a map:Mapping ;
+    map:ontologyProperty as:promptSourceFile ;
+    map:targetTable "prompts" ;
+    map:targetColumn "source_file" .
+
+map:prompt-skill a map:Mapping ;
+    map:ontologyProperty as:belongsToSkill ;
+    map:targetTable "prompts" ;
+    map:targetColumn "skill_name" .
+
+map:prompt-tags a map:Mapping ;
+    map:ontologyProperty as:promptTag ;
+    map:targetTable "prompts" ;
+    map:targetColumn "tags" .
+
+# ── Agent manifest mappings ──────────────────────────────
+
+map:agent-manifest-table a map:Mapping ;
+    map:ontologyClass as:AgentManifest ;
+    map:targetTable "agent_manifests" ;
+    rdfs:label "AgentManifest → agent_manifests table" .
+
+map:agent-manifest-name a map:Mapping ;
+    map:ontologyProperty as:manifestName ;
+    map:targetTable "agent_manifests" ;
+    map:targetColumn "name" .
+
+map:agent-manifest-model a map:Mapping ;
+    map:ontologyProperty as:manifestModel ;
+    map:targetTable "agent_manifests" ;
+    map:targetColumn "model_override" .
+
+map:agent-manifest-allowed a map:Mapping ;
+    map:ontologyProperty as:allowedTool ;
+    map:targetTable "agent_manifests" ;
+    map:targetColumn "allowed_tools" .
+
+map:agent-manifest-denied a map:Mapping ;
+    map:ontologyProperty as:deniedTool ;
+    map:targetTable "agent_manifests" ;
+    map:targetColumn "denied_tools" .
+
+map:agent-manifest-prompt a map:Mapping ;
+    map:ontologyProperty as:derivedFromPrompt ;
+    map:targetTable "agent_manifests" ;
+    map:targetColumn "derived_from_prompt" .

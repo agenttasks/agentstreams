@@ -46,7 +46,7 @@ CRAWL_TARGETS = [
     },
 ]
 
-ALL_STAGES = ["crawl", "extract", "validate", "security"]
+ALL_STAGES = ["crawl", "extract", "validate", "security", "prompts"]
 
 
 # ── Stage runners ─────────────────────────────────────────
@@ -238,6 +238,50 @@ def stage_security() -> tuple[bool, list[str]]:
     return ok, messages
 
 
+def stage_prompts() -> tuple[bool, list[str]]:
+    """Stage 5: Validate agentic prompt integrations."""
+    messages = []
+
+    # Check that prompt sources exist
+    ok_sources, output_sources = run_command(
+        [
+            "uv",
+            "run",
+            str(SCRIPTS_DIR / "render_prompts.py"),
+            "--validate",
+        ],
+        "Validating prompt source files",
+    )
+
+    if ok_sources:
+        messages.append(f"  ✓ Prompt sources: {output_sources.strip()}")
+    else:
+        messages.append("  ✗ Prompt sources FAILED")
+        return False, messages
+
+    # Check that all integration points exist
+    ok_integrations, output_integrations = run_command(
+        [
+            "uv",
+            "run",
+            str(SCRIPTS_DIR / "apply_prompts.py"),
+            "--check",
+        ],
+        "Validating prompt integrations",
+    )
+
+    if ok_integrations:
+        messages.append(f"  ✓ Integrations: {output_integrations.strip()}")
+    else:
+        messages.append("  ✗ Integration check FAILED")
+        for line in output_integrations.splitlines():
+            if "ERROR" in line:
+                messages.append(f"    {line.strip()}")
+        return False, messages
+
+    return True, messages
+
+
 # ── Pipeline orchestrator ─────────────────────────────────
 
 STAGE_RUNNERS = {
@@ -245,6 +289,7 @@ STAGE_RUNNERS = {
     "extract": stage_extract,
     "validate": stage_validate,
     "security": stage_security,
+    "prompts": stage_prompts,
 }
 
 
