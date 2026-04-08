@@ -34,7 +34,8 @@ When reviewing PRs, check:
 - Markdown: ATX headings, fenced code blocks with language tags
 - Shell scripts: `set -euo pipefail`
 - No trailing whitespace
-- Python managed with `uv` exclusively — no `npm`/`node_modules`/`package.json` in this repo
+- Python managed with `uv` exclusively
+- Frontend webapp in `webapp/` managed with `npm`
 
 ## Neon Postgres
 
