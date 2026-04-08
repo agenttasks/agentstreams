@@ -19,6 +19,14 @@
 *.ttl text eol=lf
 *.sql text eol=lf
 
+# TypeScript / JavaScript / JSX
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.mjs text eol=lf
+*.css text eol=lf
+
 # Config files
 *.toml text eol=lf
 *.yaml text eol=lf
@@ -37,15 +45,24 @@ vendors/** linguist-vendored=true
 # Mark taxonomy crawl output as generated
 taxonomy/** linguist-generated=true
 
+# Lock files are generated
+uv.lock linguist-generated=true
+webapp/package-lock.json linguist-generated=true
+skills-lock.json linguist-generated=true
+
 # ── Memory Palace Wings ─────────────────────────────────────
 # Following mempalace architecture: wings (domains), rooms (topics),
 # halls (memory types), tunnels (cross-wing connections)
+# Ref: milla-jovovich/mempalace — verbatim storage, vector retrieval
 #
 # Wing: ontology/     — UDA source of truth (TTL, SQL, mappings)
 # Wing: src/          — Programmatic tools (bloom, crawlers, dspy, mcp)
 # Wing: scripts/      — CLI crawlers and pipeline runners
 # Wing: skills/       — Multi-language skill packages
-# Wing: .claude/      — Agent and subagent manifests
+# Wing: .claude/      — Agent and subagent manifests + memory sync
+# Wing: webapp/       — Next.js 16 + Tailwind + Motion landing page
+# Wing: .github/      — CI/CD workflows, security rules, branch protection
+# Wing: evals/        — Promptfoo evaluation suites
 #
 # Halls bridge wings:
 #   hall_facts    → ontology/*.ttl + ontology/schema.sql
@@ -53,6 +70,9 @@ taxonomy/** linguist-generated=true
 #   hall_agents   → .claude/agents/*.md + .claude/subagents/*.md
 #   hall_skills   → skills/*/SKILL.md + .claude/skills/*.md
 #   hall_evals    → evals/*/promptfooconfig.yaml
+#   hall_ci       → .github/workflows/*.yml + .github/BRANCH_PROTECTION.md
+#   hall_webapp   → webapp/src/**/*.tsx + webapp/src/app/globals.css
+#   hall_safety   → .github/security-instructions.txt + .github/fp-filtering.txt
 #
 # Tunnels (cross-wing connections):
 #   ontology → src/projections.py (generates Avro/GraphQL from TTL)
@@ -60,6 +80,27 @@ taxonomy/** linguist-generated=true
 #   src/crawlers.py → scripts/crawl-sitemap.py (UDACrawler replaces inline)
 #   src/neon_db.py → scripts/crawl-sitemap.py (data layer replaces inline)
 #   src/dspy_prompts.py → .claude/subagents/ (signatures define extraction)
+#   src/orchestrator.py → .claude/agents/*.md (agent configs ↔ frontmatter)
+#   .claude/agents/ → .github/workflows/agent-boundary-check.yml (CI validates)
+#   .github/security-instructions.txt → .claude/agents/security-auditor.md
+#   webapp/package.json → @neondatabase/serverless (Neon edge queries)
+#   webapp/package.json → @anthropic-ai/claude-agent-sdk (agent runtime)
+#
+# SDK Ecosystem (tunnels to npm registry):
+#   @anthropic-ai/claude-agent-sdk  — Agent runtime (query, hooks, subagents)
+#   @anthropic-ai/claude-code       — CLI package (renamed to agent-sdk)
+#   @anthropic-ai/claude-trace      — JSONL transcript capture + web UI
+#   @anthropic-ai/sdk               — Direct Messages API client
+#   @anthropic-ai/mcpb              — MCP Bundle builder (desktop extensions)
+#   @neondatabase/serverless        — Neon SQL over HTTPS/WebSocket
+#   @neondatabase/neon-js           — Neon Auth + Data API (PostgREST)
+#
+# Claude Code Memory Sync:
+#   CLAUDE.md          — Shared project memory (checked in, all sessions)
+#   CLAUDE.local.md    — Private local memory (gitignored, per-developer)
+#   ~/.claude/CLAUDE.md — Global memory (cross-project preferences)
+#   .claude/skills/remember.md — Memory organization skill
+#   .claude/agents/memory-validator.md — Three-layer memory validation
 
 # ── Binary Files (no diff, no merge) ────────────────────────
 *.png binary

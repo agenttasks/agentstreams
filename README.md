@@ -87,6 +87,39 @@ See [`.github/BRANCH_PROTECTION.md`](.github/BRANCH_PROTECTION.md) for branch pr
 
 Install the pip-installable packages: `make install-safety`
 
+## Memory Palace architecture
+
+The repo uses the [MemPalace](https://github.com/milla-jovovich/mempalace) organizational metaphor for file memory that syncs with Claude Code sessions. Defined in `.gitattributes`:
+
+```
+Wings (domains)          Halls (memory types)         Tunnels (cross-wing)
+├── ontology/            ├── hall_facts (TTL, SQL)     ontology → src/projections.py
+├── src/                 ├── hall_tools (Python)       src/orchestrator.py ↔ .claude/agents/
+├── scripts/             ├── hall_agents (agent MD)    .claude/agents → .github/workflows/
+├── skills/              ├── hall_skills (SKILL.md)    webapp/package.json → @neondatabase/serverless
+├── .claude/             ├── hall_evals (promptfoo)    webapp/package.json → @anthropic-ai/sdk
+├── webapp/              ├── hall_ci (workflows)
+├── .github/             └── hall_safety (sec rules)
+└── evals/
+```
+
+Claude Code memory sync layers:
+- `CLAUDE.md` — shared project memory (checked in, all sessions read it)
+- `CLAUDE.local.md` — private local memory (gitignored, per-developer)
+- `~/.claude/CLAUDE.md` — global memory (cross-project preferences)
+
+## SDK ecosystem
+
+| Package | Purpose |
+|---------|---------|
+| `@anthropic-ai/claude-agent-sdk` | Agent runtime — query(), hooks, subagents, MCP, sessions |
+| `@anthropic-ai/sdk` | Direct Messages API client (v0.86+) |
+| `@anthropic-ai/claude-code` | CLI package (renamed to agent-sdk for programmatic use) |
+| `@anthropic-ai/claude-trace` | JSONL transcript capture + web UI |
+| `@anthropic-ai/mcpb` | MCP Bundle builder for desktop extensions |
+| `@neondatabase/serverless` | Neon SQL over HTTPS/WebSocket (edge-ready) |
+| `@neondatabase/neon-js` | Neon Auth + Data API (PostgREST, browser-safe) |
+
 ## Auth
 
 All auth flows through `CLAUDE_CODE_OAUTH_TOKEN`. Never use `ANTHROPIC_API_KEY`.

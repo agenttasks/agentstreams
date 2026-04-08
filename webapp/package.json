@@ -11,6 +11,8 @@
     "check": "npm run typecheck && npm run lint && npm run build"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.86.1",
+    "@neondatabase/serverless": "^1.0.2",
     "clsx": "^2.1.0",
     "motion": "^12.38.0",
     "next": "16.2.3",
