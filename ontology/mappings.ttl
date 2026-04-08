@@ -322,3 +322,228 @@ map:agent-manifest-prompt a map:Mapping ;
     map:ontologyProperty as:derivedFromPrompt ;
     map:targetTable "agent_manifests" ;
     map:targetColumn "derived_from_prompt" .
+
+# ── UDA Architecture Mappings ────────────────────────────
+
+# Bloom filter state mappings
+map:bloom-filter-table a map:Mapping ;
+    map:ontologyClass as:BloomFilterState ;
+    map:targetTable "bloom_filters" ;
+    rdfs:label "BloomFilterState → bloom_filters table" .
+
+map:bloom-name a map:Mapping ;
+    map:ontologyProperty as:bloomName ;
+    map:targetTable "bloom_filters" ;
+    map:targetColumn "name" .
+
+map:bloom-domain a map:Mapping ;
+    map:ontologyProperty as:bloomDomain ;
+    map:targetTable "bloom_filters" ;
+    map:targetColumn "domain" .
+
+map:bloom-expected a map:Mapping ;
+    map:ontologyProperty as:bloomExpectedItems ;
+    map:targetTable "bloom_filters" ;
+    map:targetColumn "expected_items" .
+
+map:bloom-fp-rate a map:Mapping ;
+    map:ontologyProperty as:bloomFpRate ;
+    map:targetTable "bloom_filters" ;
+    map:targetColumn "fp_rate" .
+
+# Crawl page mappings
+map:crawl-page-table a map:Mapping ;
+    map:ontologyClass as:CrawlPage ;
+    map:targetTable "crawl_pages" ;
+    rdfs:label "CrawlPage → crawl_pages table" .
+
+map:crawl-url a map:Mapping ;
+    map:ontologyProperty as:crawlURL ;
+    map:targetTable "crawl_pages" ;
+    map:targetColumn "url" .
+
+map:crawl-domain a map:Mapping ;
+    map:ontologyProperty as:crawlDomain ;
+    map:targetTable "crawl_pages" ;
+    map:targetColumn "domain" .
+
+map:crawl-content-hash a map:Mapping ;
+    map:ontologyProperty as:crawlContentHash ;
+    map:targetTable "crawl_pages" ;
+    map:targetColumn "content_hash" .
+
+map:crawl-title a map:Mapping ;
+    map:ontologyProperty as:crawlTitle ;
+    map:targetTable "crawl_pages" ;
+    map:targetColumn "title" .
+
+# DSPy signature mappings
+map:dspy-signature-table a map:Mapping ;
+    map:ontologyClass as:DSPySignature ;
+    map:targetTable "dspy_signatures" ;
+    rdfs:label "DSPySignature → dspy_signatures table" .
+
+map:dspy-sig-name a map:Mapping ;
+    map:ontologyProperty as:signatureName ;
+    map:targetTable "dspy_signatures" ;
+    map:targetColumn "name" .
+
+map:dspy-sig-doc a map:Mapping ;
+    map:ontologyProperty as:signatureDoc ;
+    map:targetTable "dspy_signatures" ;
+    map:targetColumn "doc" .
+
+# DSPy module mappings
+map:dspy-module-table a map:Mapping ;
+    map:ontologyClass as:DSPyModule ;
+    map:targetTable "dspy_modules" ;
+    rdfs:label "DSPyModule → dspy_modules table" .
+
+map:dspy-module-sig a map:Mapping ;
+    map:ontologyProperty as:moduleSigRef ;
+    map:targetTable "dspy_modules" ;
+    map:targetColumn "signature_name" .
+
+map:dspy-module-model a map:Mapping ;
+    map:ontologyProperty as:moduleModel ;
+    map:targetTable "dspy_modules" ;
+    map:targetColumn "model_id" .
+
+# Subagent mappings
+map:subagent-table a map:Mapping ;
+    map:ontologyClass as:Subagent ;
+    map:targetTable "subagents" ;
+    rdfs:label "Subagent → subagents table" .
+
+map:subagent-name a map:Mapping ;
+    map:ontologyProperty as:subagentName ;
+    map:targetTable "subagents" ;
+    map:targetColumn "name" .
+
+map:subagent-pipeline a map:Mapping ;
+    map:ontologyProperty as:subagentPipeline ;
+    map:targetTable "subagents" ;
+    map:targetColumn "pipeline_modules" .
+
+# DataContainer mappings
+map:data-container-table a map:Mapping ;
+    map:ontologyClass as:DataContainer ;
+    map:targetTable "data_containers" ;
+    rdfs:label "DataContainer → data_containers table" .
+
+map:data-container-source a map:Mapping ;
+    map:ontologyProperty as:containerSource ;
+    map:targetTable "data_containers" ;
+    map:targetColumn "source_id" .
+
+map:data-container-class a map:Mapping ;
+    map:ontologyProperty as:projectsClass ;
+    map:targetTable "data_containers" ;
+    map:targetColumn "class_name" .
+
+# ── Embedding mappings (pgvector + LanceDB) ─────────────
+
+map:embedding-table a map:Mapping ;
+    map:ontologyClass as:Embedding ;
+    map:targetTable "embeddings" ;
+    rdfs:label "Embedding → embeddings table (pgvector)" .
+
+map:embedding-wing a map:Mapping ;
+    map:ontologyProperty as:embeddingWing ;
+    map:targetTable "embeddings" ;
+    map:targetColumn "wing" .
+
+map:embedding-room a map:Mapping ;
+    map:ontologyProperty as:embeddingRoom ;
+    map:targetTable "embeddings" ;
+    map:targetColumn "room" .
+
+# ── Thinking trace mappings ──────────────────────────────
+
+map:thinking-trace-table a map:Mapping ;
+    map:ontologyClass as:ThinkingTrace ;
+    map:targetTable "thinking_traces" ;
+    rdfs:label "ThinkingTrace → thinking_traces table" .
+
+map:thinking-mode a map:Mapping ;
+    map:ontologyProperty as:thinkingMode ;
+    map:targetTable "thinking_traces" ;
+    map:targetColumn "thinking_type" .
+
+map:thinking-budget a map:Mapping ;
+    map:ontologyProperty as:thinkingBudget ;
+    map:targetTable "thinking_traces" ;
+    map:targetColumn "budget_tokens" .
+
+map:thinking-tokens a map:Mapping ;
+    map:ontologyProperty as:thinkingTokens ;
+    map:targetTable "thinking_traces" ;
+    map:targetColumn "thinking_tokens" .
+
+# ── Token count mappings (pg_tiktoken) ───────────────────
+
+map:token-count-table a map:Mapping ;
+    map:ontologyClass as:TokenCount ;
+    map:targetTable "token_counts" ;
+    rdfs:label "TokenCount → token_counts table" .
+
+map:token-model a map:Mapping ;
+    map:ontologyProperty as:tokenModel ;
+    map:targetTable "token_counts" ;
+    map:targetColumn "model" .
+
+map:token-count a map:Mapping ;
+    map:ontologyProperty as:tokenCount ;
+    map:targetTable "token_counts" ;
+    map:targetColumn "token_count" .
+
+# ── HLL sketch mappings ─────────────────────────────────
+
+map:hll-sketch-table a map:Mapping ;
+    map:ontologyClass as:HLLSketch ;
+    map:targetTable "hll_sketches" ;
+    rdfs:label "HLLSketch → hll_sketches table" .
+
+map:hll-name a map:Mapping ;
+    map:ontologyProperty as:hllName ;
+    map:targetTable "hll_sketches" ;
+    map:targetColumn "name" .
+
+# ── Harness run mappings ─────────────────────────────────
+
+map:harness-run-table a map:Mapping ;
+    map:ontologyClass as:HarnessRun ;
+    map:targetTable "harness_runs" ;
+    rdfs:label "HarnessRun → harness_runs table" .
+
+map:harness-name a map:Mapping ;
+    map:ontologyProperty as:harnessName ;
+    map:targetTable "harness_runs" ;
+    map:targetColumn "harness_name" .
+
+map:harness-sprint a map:Mapping ;
+    map:ontologyProperty as:sprintId ;
+    map:targetTable "harness_runs" ;
+    map:targetColumn "sprint_id" .
+
+map:harness-status a map:Mapping ;
+    map:ontologyProperty as:harnessStatus ;
+    map:targetTable "harness_runs" ;
+    map:targetColumn "final_status" .
+
+# ── Evaluation result mappings ───────────────────────────
+
+map:eval-result-table a map:Mapping ;
+    map:ontologyClass as:EvaluationResultClass ;
+    map:targetTable "evaluation_results" ;
+    rdfs:label "EvaluationResult → evaluation_results table" .
+
+map:eval-score a map:Mapping ;
+    map:ontologyProperty as:evaluationScore ;
+    map:targetTable "evaluation_results" ;
+    map:targetColumn "overall_score" .
+
+map:eval-iteration a map:Mapping ;
+    map:ontologyProperty as:evaluationIteration ;
+    map:targetTable "evaluation_results" ;
+    map:targetColumn "iteration" .

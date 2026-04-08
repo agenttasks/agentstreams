@@ -131,6 +131,24 @@ def main():
         "CodeTask",
         "KnowledgeWorkTask",
         "FinancialTask",
+        # UDA abstract/enum classes (no physical table needed)
+        "EmbeddingBackend",
+        "LanceDBBackend",
+        "PgVectorBackend",
+        "OntologyMapping",
+        "Projection",
+        "ProjectionFormat",
+        "AvroFormat",
+        "GraphQLFormat",
+        "DataContainerTTL",
+        "MappingTTL",
+        "ThinkingMode",
+        "EnabledThinking",
+        "AdaptiveThinking",
+        # Harness abstract classes
+        "EvaluationCriteria",
+        "SprintContract",
+        "FrontendDesign",
     }
     unmapped = classes - mapped_classes - skip_classes
     for cls in sorted(unmapped):

@@ -27,7 +27,7 @@ FORBIDDEN_PATTERNS = [
 ]
 
 # Patterns that must use hyphen format
-MODEL_PATTERN = re.compile(r"claude[_\.](?:opus|sonnet|haiku)[_\.][\d]")
+MODEL_PATTERN = re.compile(r"claude[_\.](?:opus|sonnet|haiku|mythos)[_\.][\d]")
 
 # Valid SDK constructors per language
 VALID_CONSTRUCTORS = {
@@ -92,7 +92,9 @@ def check_cross_references(skill_dir: Path, content: str, file_path: Path) -> li
         ):
             continue
         # Skip repo-root relative refs (outside skill dir)
-        if ref.startswith(("agentstreams/", "taxonomy/", "vendors/", "~/")):
+        if ref.startswith(
+            ("agentstreams/", "taxonomy/", "vendors/", "~/", ".claude/", "src/", "scripts/")
+        ):
             continue
         # Try relative to skill dir and file parent
         candidates = [

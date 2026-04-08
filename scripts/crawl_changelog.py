@@ -30,14 +30,25 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 import aiohttp
-from spiders import BloomDedup, html_to_text  # shared base module
 from spiders import content_hash as _base_hash
+from spiders import html_to_text  # shared base module
+
+# UDA integration: use src/bloom.py BloomFilter when available
+try:
+    from src.bloom import BloomFilter as _BloomFilter
+
+    _DEDUP = _BloomFilter(expected_items=10_000, fp_rate=0.01)
+    _use_src_bloom = True
+except ImportError:
+    from spiders import BloomDedup
+
+    _DEDUP = BloomDedup(hash_length=16)
+    _use_src_bloom = False
 
 # ── Constants ────────────────────────────────────────────────
 
 CHANGELOG_URL = "https://code.claude.com/docs/en/changelog"
 USER_AGENT = "agentstreams-crawler/2.0 (changelog spider)"
-DEDUP_SEEN = BloomDedup(hash_length=16)
 
 
 # ── Content hashing / bloom filter dedup ─────────────────────
@@ -49,8 +60,8 @@ def content_hash(text: str) -> str:
 
 
 def is_new(text: str) -> bool:
-    """Check if content is new (not seen before). Bloom filter pattern."""
-    return DEDUP_SEEN.is_new(text)
+    """Check if content is new (not seen before). Uses src/bloom.BloomFilter when available."""
+    return _DEDUP.is_new(text)
 
 
 # ── Data models ──────────────────────────────────────────────

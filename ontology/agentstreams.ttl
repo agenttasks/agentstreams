@@ -9,6 +9,105 @@
 # Inspired by Netflix UDA (Unified Data Architecture)
 # ═══════════════════════════════════════════════════════════
 
+# ── UDA Core Classes ─────────────────────────────────────
+# Following Netflix UDA: ontology is source of truth,
+# all physical/API representations are projections.
+
+as:DataContainer a rdfs:Class ;
+    rdfs:label "Data Container" ;
+    rdfs:comment "A data mesh source registration — the projected Avro/GraphQL schema for an ontology class. UDA pattern from Netflix." ;
+    skos:example "Skill_source, Model_source, CrawlPage_source" .
+
+as:OntologyMapping a rdfs:Class ;
+    rdfs:label "Ontology Mapping" ;
+    rdfs:comment "Links an ontology concept to a physical storage location (table/column). Bridges semantic and physical layers." .
+
+as:Projection a rdfs:Class ;
+    rdfs:label "Projection" ;
+    rdfs:comment "A format-specific representation generated from the ontology: Avro, GraphQL, DataContainer TTL, or Mapping TTL." .
+
+as:ProjectionFormat a rdfs:Class ;
+    rdfs:label "Projection Format" .
+
+as:AvroFormat a as:ProjectionFormat ; rdfs:label "Avro" .
+as:GraphQLFormat a as:ProjectionFormat ; rdfs:label "GraphQL" .
+as:DataContainerTTL a as:ProjectionFormat ; rdfs:label "DataContainer TTL" .
+as:MappingTTL a as:ProjectionFormat ; rdfs:label "Mapping TTL" .
+
+as:BloomFilterState a rdfs:Class ;
+    rdfs:label "Bloom Filter State" ;
+    rdfs:comment "Persistent bloom filter for cross-session deduplication. Stored as bit array in Neon Postgres." .
+
+as:CrawlPage a rdfs:Class ;
+    rdfs:label "Crawl Page" ;
+    rdfs:comment "A web page fetched by UDACrawler with content, hash, and metadata. DataContainer in the crawl pipeline." .
+
+as:DSPySignature a rdfs:Class ;
+    rdfs:label "DSPy Signature" ;
+    rdfs:comment "A typed I/O contract for DSPy modules — defines input and output fields for structured extraction." .
+
+as:DSPyModule a rdfs:Class ;
+    rdfs:label "DSPy Module" ;
+    rdfs:comment "A prompt module wrapping a Signature with execution logic. Composable into Pipelines." .
+
+as:Subagent a rdfs:Class ;
+    rdfs:label "Subagent" ;
+    rdfs:comment "A headless DSPy subagent that runs extraction pipelines autonomously with Neon persistence." .
+
+as:Embedding a rdfs:Class ;
+    rdfs:label "Embedding" ;
+    rdfs:comment "A vector embedding of text content stored in LanceDB (local) or Neon pgvector (remote). Follows mempalace drawer pattern with wing/room taxonomy." .
+
+as:EmbeddingBackend a rdfs:Class ;
+    rdfs:label "Embedding Backend" .
+
+as:ThinkingTrace a rdfs:Class ;
+    rdfs:label "Thinking Trace" ;
+    rdfs:comment "Audit record for extended-thinking or adaptive-thinking API calls. Tracks budget, actual tokens, model, and duration." .
+
+as:ThinkingMode a rdfs:Class ;
+    rdfs:label "Thinking Mode" .
+
+as:EnabledThinking a as:ThinkingMode ;
+    rdfs:label "Extended Thinking" ;
+    rdfs:comment "Fixed budget deep reasoning: thinking={type: enabled, budget_tokens: N}." .
+
+as:AdaptiveThinking a as:ThinkingMode ;
+    rdfs:label "Adaptive Thinking" ;
+    rdfs:comment "Self-calibrating reasoning: thinking={type: adaptive}. Claude 4.6 feature." .
+
+as:TokenCount a rdfs:Class ;
+    rdfs:label "Token Count" ;
+    rdfs:comment "Token count record from pg_tiktoken extension. Tracks tokenization of crawled content, DSPy I/O, and embeddings." .
+
+as:HLLSketch a rdfs:Class ;
+    rdfs:label "HyperLogLog Sketch" ;
+    rdfs:comment "Approximate distinct count sketch from hll extension. Complements bloom filters for cardinality estimation." .
+
+as:HarnessRun a rdfs:Class ;
+    rdfs:label "Harness Run" ;
+    rdfs:comment "A GAN-inspired iterative evaluation run. Planner → Generator → Evaluator loop with sprint contract negotiation." .
+
+as:SprintContract a rdfs:Class ;
+    rdfs:label "Sprint Contract" ;
+    rdfs:comment "Negotiated agreement between generator and evaluator defining done criteria, max iterations, and acceptance threshold." .
+
+as:EvaluationCriteria a rdfs:Class ;
+    rdfs:label "Evaluation Criteria" ;
+    rdfs:comment "A grading criterion with name, description, weight, and threshold for evaluator scoring." .
+
+as:EvaluationResultClass a rdfs:Class ;
+    rdfs:label "Evaluation Result" ;
+    rdfs:comment "Per-iteration graded output from evaluator with scores, feedback, and strategy recommendation." .
+
+as:LanceDBBackend a as:EmbeddingBackend ;
+    rdfs:label "LanceDB" ;
+    rdfs:comment "Local columnar vector store — millisecond queries, no server." .
+
+as:PgVectorBackend a as:EmbeddingBackend ;
+    rdfs:label "pgvector" ;
+    rdfs:comment "Neon Postgres vector extension — SQL-native similarity search." .
+
 # ── Core Classes ──────────────────────────────────────────
 
 as:Skill a rdfs:Class ;
@@ -380,6 +479,164 @@ as:taskConfig a rdf:Property ;
     rdfs:range xsd:string ;
     rdfs:comment "Task configuration/parameters (JSONB in physical layer)." .
 
+# ── Properties: UDA Architecture ─────────────────────────
+
+as:containerSource a rdf:Property ;
+    rdfs:domain as:DataContainer ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Data mesh source identifier." .
+
+as:projectsClass a rdf:Property ;
+    rdfs:domain as:DataContainer ;
+    rdfs:range rdfs:Class ;
+    rdfs:comment "The ontology class this container projects." .
+
+as:projectionFormat a rdf:Property ;
+    rdfs:domain as:Projection ;
+    rdfs:range as:ProjectionFormat .
+
+as:projectionSource a rdf:Property ;
+    rdfs:domain as:Projection ;
+    rdfs:range rdfs:Class ;
+    rdfs:comment "Ontology class the projection is generated from." .
+
+as:bloomName a rdf:Property ;
+    rdfs:domain as:BloomFilterState ;
+    rdfs:range xsd:string .
+
+as:bloomDomain a rdf:Property ;
+    rdfs:domain as:BloomFilterState ;
+    rdfs:range xsd:string .
+
+as:bloomExpectedItems a rdf:Property ;
+    rdfs:domain as:BloomFilterState ;
+    rdfs:range xsd:integer .
+
+as:bloomFpRate a rdf:Property ;
+    rdfs:domain as:BloomFilterState ;
+    rdfs:range xsd:float .
+
+as:crawlURL a rdf:Property ;
+    rdfs:domain as:CrawlPage ;
+    rdfs:range xsd:anyURI .
+
+as:crawlDomain a rdf:Property ;
+    rdfs:domain as:CrawlPage ;
+    rdfs:range xsd:string .
+
+as:crawlContentHash a rdf:Property ;
+    rdfs:domain as:CrawlPage ;
+    rdfs:range xsd:string .
+
+as:crawlTitle a rdf:Property ;
+    rdfs:domain as:CrawlPage ;
+    rdfs:range xsd:string .
+
+as:signatureName a rdf:Property ;
+    rdfs:domain as:DSPySignature ;
+    rdfs:range xsd:string .
+
+as:signatureDoc a rdf:Property ;
+    rdfs:domain as:DSPySignature ;
+    rdfs:range xsd:string .
+
+as:moduleSigRef a rdf:Property ;
+    rdfs:domain as:DSPyModule ;
+    rdfs:range as:DSPySignature .
+
+as:moduleModel a rdf:Property ;
+    rdfs:domain as:DSPyModule ;
+    rdfs:range as:Model .
+
+as:subagentName a rdf:Property ;
+    rdfs:domain as:Subagent ;
+    rdfs:range xsd:string .
+
+as:subagentPipeline a rdf:Property ;
+    rdfs:domain as:Subagent ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Ordered list of DSPy module names in the pipeline." .
+
+as:embeddingWing a rdf:Property ;
+    rdfs:domain as:Embedding ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Mempalace wing (domain): ontology, skills, docs, code." .
+
+as:embeddingRoom a rdf:Property ;
+    rdfs:domain as:Embedding ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Mempalace room (topic): tool-use, streaming, agents, mcp." .
+
+as:embeddingBackend a rdf:Property ;
+    rdfs:domain as:Embedding ;
+    rdfs:range as:EmbeddingBackend .
+
+as:embeddingDim a rdf:Property ;
+    rdfs:domain as:Embedding ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "Embedding vector dimension (default 384)." .
+
+# Properties: Thinking traces
+as:thinkingMode a rdf:Property ;
+    rdfs:domain as:ThinkingTrace ;
+    rdfs:range as:ThinkingMode .
+
+as:thinkingBudget a rdf:Property ;
+    rdfs:domain as:ThinkingTrace ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "Requested thinking token budget." .
+
+as:thinkingTokens a rdf:Property ;
+    rdfs:domain as:ThinkingTrace ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "Actual thinking tokens consumed." .
+
+# Properties: Token counts
+as:tokenModel a rdf:Property ;
+    rdfs:domain as:TokenCount ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Tiktoken encoding: cl100k_base, p50k_base, r50k_base." .
+
+as:tokenCount a rdf:Property ;
+    rdfs:domain as:TokenCount ;
+    rdfs:range xsd:integer .
+
+# Properties: HLL sketches
+as:hllName a rdf:Property ;
+    rdfs:domain as:HLLSketch ;
+    rdfs:range xsd:string .
+
+as:hllCardinality a rdf:Property ;
+    rdfs:domain as:HLLSketch ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "Approximate distinct count from the sketch." .
+
+# Properties: Harness architecture
+as:harnessName a rdf:Property ;
+    rdfs:domain as:HarnessRun ;
+    rdfs:range xsd:string .
+
+as:sprintId a rdf:Property ;
+    rdfs:domain as:HarnessRun ;
+    rdfs:range xsd:string .
+
+as:harnessStatus a rdf:Property ;
+    rdfs:domain as:HarnessRun ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Lifecycle: running → accepted | max_iterations | failed." .
+
+as:contractObjective a rdf:Property ;
+    rdfs:domain as:SprintContract ;
+    rdfs:range xsd:string .
+
+as:evaluationScore a rdf:Property ;
+    rdfs:domain as:EvaluationResultClass ;
+    rdfs:range xsd:float .
+
+as:evaluationIteration a rdf:Property ;
+    rdfs:domain as:EvaluationResultClass ;
+    rdfs:range xsd:integer .
+
 # ── Instances: Languages ──────────────────────────────────
 
 as:TypeScript a as:Language ; rdfs:label "TypeScript" .
@@ -416,6 +673,15 @@ as:claude-haiku-4-5 a as:Model ;
     as:supportsToolUse true ;
     as:supportsVision true ;
     rdfs:label "Claude Haiku 4.5" .
+
+as:claude-mythos-preview a as:Model ;
+    as:modelId "claude-mythos-preview" ;
+    as:modelFamily "Claude Mythos" ;
+    as:supportsThinking true ;
+    as:supportsToolUse true ;
+    as:supportsVision true ;
+    rdfs:label "Claude Mythos Preview" ;
+    rdfs:comment "Frontier research preview model — partner-only, not generally available. $25/M input, $125/M output." .
 
 # ── Instances: SDKs ───────────────────────────────────────
 
@@ -672,3 +938,102 @@ as:resource-sonnet-46-card a as:Resource ;
     as:resourceURL "https://www.anthropic.com/claude-sonnet-4-6-system-card"^^xsd:anyURI ;
     as:relatedModel as:claude-sonnet-4-6 ;
     rdfs:label "Claude Sonnet 4.6 System Card" .
+
+as:resource-mythos-preview-card a as:Resource ;
+    as:resourceType as:ModelCard ;
+    as:resourceURL "https://www.anthropic.com/glasswing"^^xsd:anyURI ;
+    as:relatedModel as:claude-mythos-preview ;
+    rdfs:label "Claude Mythos Preview — Project Glasswing" .
+
+as:resource-motion-dev a as:Resource ;
+    as:resourceType as:Cookbook ;
+    as:resourceURL "https://motion.dev/docs"^^xsd:anyURI ;
+    rdfs:label "Motion.dev Animation Library Docs" ;
+    rdfs:comment "React/Vue/JS animation library — scroll, layout, gestures, SVG. Crawled to taxonomy/motion-dev-full.md." .
+
+as:resource-asc11-com a as:Resource ;
+    as:resourceType as:Cookbook ;
+    as:resourceURL "https://asc11.com"^^xsd:anyURI ;
+    rdfs:label "ASC11 ASCII Design Tool" ;
+    rdfs:comment "ASCII editor for creating website and marketing visuals. Crawled to taxonomy/asc11-com-full.md." .
+
+# ── Instances: UDA Architecture ──────────────────────────
+
+# DSPy Signatures (pre-built in src/dspy_prompts.py)
+as:sig-extract-entities a as:DSPySignature ;
+    as:signatureName "ExtractEntities" ;
+    as:signatureDoc "Extract structured entities from crawled documentation page content." ;
+    rdfs:label "Extract Entities Signature" .
+
+as:sig-classify-content a as:DSPySignature ;
+    as:signatureName "ClassifyContent" ;
+    as:signatureDoc "Classify crawled content into skill-relevant categories." ;
+    rdfs:label "Classify Content Signature" .
+
+as:sig-extract-api-patterns a as:DSPySignature ;
+    as:signatureName "ExtractAPIPatterns" ;
+    as:signatureDoc "Extract API usage patterns, code samples, and SDK constructor calls." ;
+    rdfs:label "Extract API Patterns Signature" .
+
+as:sig-align-to-ontology a as:DSPySignature ;
+    as:signatureName "AlignToOntology" ;
+    as:signatureDoc "Map extracted entities to AgentStreams ontology classes and properties." ;
+    rdfs:label "Align to Ontology Signature" .
+
+# Subagents (headless DSPy pipeline runners)
+as:subagent-crawler a as:Subagent ;
+    as:subagentName "uda-crawler" ;
+    rdfs:label "UDA Crawler Subagent" ;
+    rdfs:comment "Web crawling with bloom filter dedup and Neon persistence." .
+
+as:subagent-extractor a as:Subagent ;
+    as:subagentName "uda-extractor" ;
+    as:subagentPipeline "ExtractEntities → ClassifyContent → AlignToOntology" ;
+    rdfs:label "UDA Extractor Subagent" ;
+    rdfs:comment "DSPy structured extraction with ontology alignment." .
+
+as:subagent-projector a as:Subagent ;
+    as:subagentName "uda-projector" ;
+    rdfs:label "UDA Projector Subagent" ;
+    rdfs:comment "Ontology projection generator: Avro, GraphQL, DataContainer, Mapping." .
+
+# Agent Manifests for UDA agents
+as:manifest-uda-crawler a as:AgentManifest ;
+    as:manifestName "uda-crawler" ;
+    as:allowedTool "Read", "Glob", "Grep", "Bash", "Write" ;
+    rdfs:label "UDA Crawler Agent Manifest" .
+
+as:manifest-uda-extractor a as:AgentManifest ;
+    as:manifestName "uda-extractor" ;
+    as:allowedTool "Read", "Glob", "Grep", "Bash" ;
+    rdfs:label "UDA Extractor Agent Manifest" .
+
+as:manifest-uda-thinker a as:AgentManifest ;
+    as:manifestName "uda-thinker" ;
+    as:manifestModel "opus" ;
+    as:allowedTool "Read", "Glob", "Grep", "Bash" ;
+    rdfs:label "UDA Thinker Agent Manifest" .
+
+as:subagent-thinker a as:Subagent ;
+    as:subagentName "uda-thinker" ;
+    as:subagentPipeline "ExtendedThinking → AdaptiveThinking → record_thinking_trace" ;
+    rdfs:label "UDA Thinker Subagent" ;
+    rdfs:comment "Deep reasoning with extended/adaptive thinking and Neon extension integration." .
+
+as:frontend-design a as:Skill ;
+    as:skillName "frontend-design" ;
+    as:description "Frontend design with React/Vite/Tailwind using GAN-inspired iterative evaluation" ;
+    as:triggerPattern "frontend design, React component, UI design, Tailwind, Vite, design system" ;
+    as:supportsLanguage as:Python ;
+    rdfs:label "Frontend Design" .
+
+as:manifest-frontend-generator a as:AgentManifest ;
+    as:manifestName "frontend-generator" ;
+    as:allowedTool "Read", "Glob", "Grep", "Bash", "Write" ;
+    rdfs:label "Frontend Generator Agent Manifest" .
+
+as:manifest-frontend-evaluator a as:AgentManifest ;
+    as:manifestName "frontend-evaluator" ;
+    as:allowedTool "Read", "Glob", "Grep", "Bash" ;
+    as:deniedTool "Edit", "Write", "Agent" ;
+    rdfs:label "Frontend Evaluator Agent Manifest" .

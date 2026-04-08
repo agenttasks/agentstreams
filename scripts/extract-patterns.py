@@ -102,7 +102,7 @@ API_PATTERNS = [
     # Anthropic API methods
     r"(?:client|anthropic)\.\w+\.\w+(?:\.\w+)?",  # client.messages.create
     # Model IDs
-    r"claude-(?:opus|sonnet|haiku)-[\w.-]+",
+    r"claude-(?:opus|sonnet|haiku|mythos)-[\w.-]+",
     # HTTP methods + paths
     r"(?:GET|POST|PUT|DELETE|PATCH)\s+/\w[\w/{}.-]*",
     # REST endpoints

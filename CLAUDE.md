@@ -36,6 +36,27 @@ When reviewing PRs, check:
 - No trailing whitespace
 - Python managed with `uv` exclusively — no `npm`/`node_modules`/`package.json` in this repo
 
+## Neon Postgres
+
+Project: `calm-paper-82059121` — database `neondb`
+Console: https://console.neon.tech/app/projects/calm-paper-82059121?database=neondb
+
+Credentials live in `.env` (gitignored), loaded automatically by the `SessionStart` hook in `.claude/settings.json` → `scripts/setup-env.sh`.
+
+Environment variables available after session start:
+- `NEON_DATABASE_URL` — full psycopg connection string (use when TCP:5432 is reachable)
+- `NEON_HTTP_HOST` — pooler hostname for SQL-over-HTTP (`/sql` endpoint)
+- `NEON_HTTP_CONN` — connection string passed in `Neon-Connection-String` header
+
+**Always use `NEON_DATABASE_URL` from env** — never hardcode credentials in scripts.
+
+Access patterns:
+- **psycopg (TCP)**: `src/neon_db.py` reads `NEON_DATABASE_URL` automatically
+- **SQL-over-HTTP (HTTPS)**: `scripts/neon-http-upsert.py` for proxy-only environments where TCP:5432 is blocked — uses `httpx` + Neon's `/sql` endpoint
+- **Crawl pipeline**: `scripts/crawl-sitemap.py` writes to Neon via `--neon-url` or `NEON_DATABASE_URL`
+
+Schema: `ontology/schema.sql` (12 tables, `resources.url` has UNIQUE constraint)
+
 ## Stack
 
 - Python only for executable code (managed with `uv`)

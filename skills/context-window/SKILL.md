@@ -11,6 +11,7 @@ Manage context windows, count tokens, optimize prompts, cache context, and proce
 
 - Use `claude-sonnet-4-6` for standard tasks (200K context window)
 - Use `claude-opus-4-6` for complex reasoning requiring extended thinking
+- Use `claude-mythos-preview` for frontier coding and vulnerability analysis (partner-only)
 - Always count tokens before sending large payloads
 - Enable prompt caching for repeated system prompts and tool definitions
 - Default chunking: 100K tokens per chunk with 5K overlap
@@ -41,11 +42,12 @@ Before reading setup docs, determine which capability the user needs:
 
 ## Context Window Sizes
 
-| Model | Context Window | Max Output |
-|-------|---------------|------------|
-| `claude-opus-4-6` | 200K tokens | 32K tokens |
-| `claude-sonnet-4-6` | 200K tokens | 16K tokens |
-| `claude-haiku-4-5-20251001` | 200K tokens | 8K tokens |
+| Model | Context Window | Max Output | Availability |
+|-------|---------------|------------|--------------|
+| `claude-mythos-preview` | 200K tokens | 32K tokens | Partner-only |
+| `claude-opus-4-6` | 200K tokens | 32K tokens | GA |
+| `claude-sonnet-4-6` | 200K tokens | 16K tokens | GA |
+| `claude-haiku-4-5-20251001` | 200K tokens | 8K tokens | GA |
 
 ---
 

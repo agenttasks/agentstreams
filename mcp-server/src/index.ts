@@ -65,7 +65,7 @@ server.tool(
     tags_filter: z
       .record(z.string(), z.string())
       .optional()
-      .describe("Filter by tag values (e.g. {model: 'claude-opus-4-6'})"),
+      .describe("Filter by tag values (e.g. {model: 'claude-opus-4-6'} or {model: 'claude-mythos-preview'})"),
     aggregate: z
       .enum(["none", "avg", "sum", "max", "min"])
       .default("none")
@@ -278,7 +278,7 @@ server.tool(
     input: z.record(z.string(), z.unknown()).describe("Task input payload"),
     config: z.record(z.string(), z.unknown()).optional().describe("Task configuration"),
     skill_name: z.string().optional().describe("Associated skill name"),
-    model_id: z.string().optional().describe("Model to use (e.g. claude-opus-4-6)"),
+    model_id: z.string().optional().describe("Model to use (e.g. claude-opus-4-6 or claude-mythos-preview)"),
     plugin: z.string().optional().describe("Plugin identifier for knowledge-work tasks"),
     priority: z.number().default(0).describe("Priority (higher = sooner, default: 0)"),
   },

@@ -10,6 +10,7 @@ Build agents that execute code in sandboxed environments, automate desktop/brows
 ## Defaults
 
 - Use `claude-sonnet-4-6` for code execution tasks, `claude-opus-4-6` for complex multi-step automation
+- Use `claude-mythos-preview` for vulnerability detection and exploit analysis (partner-only)
 - Always sandbox code execution — never run untrusted code on host
 - Computer use requires `anthropic-beta: computer-use-2025-01-24` header
 - Default container: E2B, Modal, or Docker for sandboxed execution

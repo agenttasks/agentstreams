@@ -44,7 +44,7 @@ def aggregate_patterns(patterns: list[dict]) -> dict:
     for p in patterns:
         for api in p.get("api_surface", []):
             # Extract model IDs
-            if re.match(r"claude-(?:opus|sonnet|haiku)-[\w.-]+", api):
+            if re.match(r"claude-(?:opus|sonnet|haiku|mythos)-[\w.-]+", api):
                 model_ids.add(api)
             else:
                 api_methods.add(api)
@@ -84,7 +84,7 @@ def scan_skill_files(skills_dir: Path) -> dict:
             continue
 
         # Extract model IDs
-        for match in re.findall(r"claude-(?:opus|sonnet|haiku)-[\w.-]+", content):
+        for match in re.findall(r"claude-(?:opus|sonnet|haiku|mythos)-[\w.-]+", content):
             model_ids.add(match)
 
         # Extract SDK constructor patterns

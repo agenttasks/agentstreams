@@ -137,7 +137,10 @@ class TestWriteToNeon:
             {"url": "https://example.com/page2", "content": "World", "hash": "def", "error": None},
         ]
         mock_conn = _mock_async_conn()
-        with patch("psycopg.AsyncConnection.connect", return_value=mock_conn):
+        with (
+            patch.object(mod, "_src_available", False),
+            patch("psycopg.AsyncConnection.connect", return_value=mock_conn),
+        ):
             r_count, t_count = await write_to_neon("postgres://test", results, "example.com", None)
         assert r_count == 2
         assert t_count == 2
@@ -150,7 +153,10 @@ class TestWriteToNeon:
             {"url": "https://example.com/bad", "content": None, "hash": None, "error": "404"},
         ]
         mock_conn = _mock_async_conn()
-        with patch("psycopg.AsyncConnection.connect", return_value=mock_conn):
+        with (
+            patch.object(mod, "_src_available", False),
+            patch("psycopg.AsyncConnection.connect", return_value=mock_conn),
+        ):
             r_count, t_count = await write_to_neon("postgres://test", results, "example.com", None)
         assert r_count == 1
         assert t_count == 1
@@ -161,7 +167,10 @@ class TestWriteToNeon:
             {"url": "https://example.com/ja/page", "content": "JA", "hash": "a2", "error": None},
         ]
         mock_conn = _mock_async_conn()
-        with patch("psycopg.AsyncConnection.connect", return_value=mock_conn):
+        with (
+            patch.object(mod, "_src_available", False),
+            patch("psycopg.AsyncConnection.connect", return_value=mock_conn),
+        ):
             await write_to_neon("postgres://test", results, "example.com", re.compile("/en/"))
         task_calls = [c for c in mock_conn.execute.call_args_list if "tasks" in str(c.args[0])]
         assert task_calls[0].args[1][1] == 1  # /en/ -> priority 1
@@ -169,7 +178,10 @@ class TestWriteToNeon:
 
     async def test_handles_empty_results(self):
         mock_conn = _mock_async_conn()
-        with patch("psycopg.AsyncConnection.connect", return_value=mock_conn):
+        with (
+            patch.object(mod, "_src_available", False),
+            patch("psycopg.AsyncConnection.connect", return_value=mock_conn),
+        ):
             r_count, t_count = await write_to_neon("postgres://test", [], "example.com", None)
         assert r_count == 0
         assert t_count == 0

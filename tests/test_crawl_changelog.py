@@ -13,7 +13,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 from crawl_changelog import (
-    DEDUP_SEEN,
+    _DEDUP,
     ChangelogBullet,
     XMLTask,
     bullets_to_tasks,
@@ -50,7 +50,7 @@ SAMPLE_CHANGELOG = """# Changelog
 @pytest.fixture(autouse=True)
 def clear_dedup():
     """Clear dedup set before each test."""
-    DEDUP_SEEN.clear()
+    _DEDUP.clear()
 
 
 class TestContentHash:
@@ -131,7 +131,7 @@ class TestParseChangelog:
     def test_deduplicates(self):
         entries1 = parse_changelog_text(SAMPLE_CHANGELOG)
         count1 = sum(len(e.bullets) for e in entries1)
-        DEDUP_SEEN.clear()
+        _DEDUP.clear()
         entries2 = parse_changelog_text(SAMPLE_CHANGELOG)
         count2 = sum(len(e.bullets) for e in entries2)
         assert count1 == count2  # same content parses same count independently

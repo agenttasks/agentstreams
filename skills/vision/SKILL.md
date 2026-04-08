@@ -10,6 +10,7 @@ Analyze images, extract text from documents, process PDFs, moderate visual conte
 ## Defaults
 
 - Use `claude-sonnet-4-6` for image analysis, `claude-opus-4-6` for complex multi-image reasoning
+- Use `claude-mythos-preview` for security-critical visual analysis (partner-only)
 - Support base64 and URL image sources
 - Accepted formats: JPEG, PNG, GIF, WebP (max 5MB per image)
 - PDF support via the files API (beta)

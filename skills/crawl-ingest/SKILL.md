@@ -11,6 +11,7 @@ Build web crawlers with bloom filter deduplication, Anthropic SDK integration, p
 
 - Default to local storage (SQLite, filesystem) until the user explicitly requests cloud DW
 - Use `claude-opus-4-6` with adaptive thinking for crawl strategy decisions
+- Use `claude-mythos-preview` for security-focused crawl analysis (partner-only)
 - Always enable bloom filter deduplication by default (configurable false positive rate: 0.01)
 - Respect robots.txt and implement polite crawling (1-2 req/sec default)
 

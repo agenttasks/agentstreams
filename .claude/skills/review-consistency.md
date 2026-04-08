@@ -26,6 +26,7 @@ Key packages to verify:
 
 ### 2. Model Name Format
 All model references must use hyphen format:
+- `claude-mythos-preview` (correct)
 - `claude-opus-4-6` (correct)
 - `claude-sonnet-4-6` (correct)
 - `claude-haiku-4-5` (correct)

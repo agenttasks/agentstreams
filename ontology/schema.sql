@@ -1,10 +1,18 @@
 -- ═══════════════════════════════════════════════════════════
--- AgentStreams — Neon Postgres Schema (pg_graphql auto-exposes)
+-- AgentStreams — Neon Postgres 18 Schema
 -- UDA physical layer: each table maps to an ontology class
+-- Extensions: pgvector, pgrag, pg_tiktoken, hll, bloom,
+--   pg_trgm, pg_graphql, pg_cron, pg_stat_statements
 -- ═══════════════════════════════════════════════════════════
 
--- Enable pg_graphql
-CREATE EXTENSION IF NOT EXISTS pg_graphql;
+-- ── Extensions (Neon Postgres 18) ───────────────────────
+CREATE EXTENSION IF NOT EXISTS pg_graphql;       -- GraphQL API layer
+CREATE EXTENSION IF NOT EXISTS vector;           -- pgvector: embeddings + similarity search
+CREATE EXTENSION IF NOT EXISTS pg_tiktoken;      -- tokenize text using OpenAI tiktoken
+CREATE EXTENSION IF NOT EXISTS hll;              -- HyperLogLog: approximate distinct counting
+CREATE EXTENSION IF NOT EXISTS pg_trgm;          -- trigram similarity search
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements; -- query performance monitoring
+CREATE EXTENSION IF NOT EXISTS pg_cron;          -- scheduled jobs for pipeline automation
 
 -- ── Languages ────────────────────────────────────────────
 
@@ -119,7 +127,7 @@ CREATE TABLE resources (
     id SERIAL PRIMARY KEY,
     type TEXT NOT NULL,             -- 'model_card', 'api_primer', 'llms_index', 'cookbook'
     label TEXT NOT NULL,
-    url TEXT NOT NULL,
+    url TEXT NOT NULL UNIQUE,       -- ON CONFLICT (url) requires unique constraint
     related_model_id TEXT REFERENCES models(model_id),
     description TEXT,
     fetched_at TIMESTAMPTZ,
@@ -193,6 +201,194 @@ CREATE INDEX idx_tasks_queue ON tasks(queue_name, status, priority DESC);
 CREATE INDEX idx_tasks_created ON tasks(created_at);
 CREATE INDEX idx_tasks_type ON tasks(type);
 
+-- ── Bloom Filters (UDA: persistent deduplication) ────────
+
+CREATE TABLE bloom_filters (
+    name TEXT PRIMARY KEY,              -- 'crawler:docs', 'crawler:blog'
+    domain TEXT NOT NULL DEFAULT '',
+    bit_array BYTEA NOT NULL,           -- serialized bloom filter bit array
+    expected_items INTEGER NOT NULL DEFAULT 100000,
+    fp_rate DOUBLE PRECISION NOT NULL DEFAULT 0.01,
+    num_hashes INTEGER NOT NULL,
+    item_count INTEGER NOT NULL DEFAULT 0,
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- ── Crawl Pages (UDA DataContainer: crawled web content) ─
+
+CREATE TABLE crawl_pages (
+    id BIGSERIAL PRIMARY KEY,
+    url TEXT NOT NULL UNIQUE,
+    domain TEXT NOT NULL,
+    content_hash TEXT NOT NULL,
+    title TEXT NOT NULL DEFAULT '',
+    content TEXT NOT NULL DEFAULT '',
+    status_code INTEGER NOT NULL DEFAULT 200,
+    crawled_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX idx_crawl_pages_domain ON crawl_pages(domain);
+CREATE INDEX idx_crawl_pages_hash ON crawl_pages(content_hash);
+CREATE INDEX idx_crawl_pages_crawled ON crawl_pages(crawled_at);
+
+-- ── DSPy Signatures (UDA: typed I/O contracts) ──────────
+
+CREATE TABLE dspy_signatures (
+    name TEXT PRIMARY KEY,              -- 'ExtractEntities'
+    doc TEXT NOT NULL,
+    input_fields JSONB NOT NULL DEFAULT '[]',
+    output_fields JSONB NOT NULL DEFAULT '[]',
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- ── DSPy Modules (UDA: prompt modules with execution) ───
+
+CREATE TABLE dspy_modules (
+    name TEXT PRIMARY KEY,              -- 'extract-entities'
+    signature_name TEXT REFERENCES dspy_signatures(name),
+    model_id TEXT REFERENCES models(model_id),
+    module_type TEXT NOT NULL CHECK (module_type IN ('module', 'chain_of_thought')),
+    system_prompt TEXT,
+    temperature DOUBLE PRECISION DEFAULT 0.0,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- ── Subagents (UDA: headless pipeline runners) ──────────
+
+CREATE TABLE subagents (
+    name TEXT PRIMARY KEY,              -- 'uda-crawler'
+    description TEXT,
+    pipeline_modules TEXT[],            -- ordered module names
+    neon_persist BOOLEAN DEFAULT true,
+    manifest_path TEXT,                 -- '.claude/subagents/uda-crawler.md'
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- ── Data Containers (UDA: data mesh source registrations)
+
+CREATE TABLE data_containers (
+    id SERIAL PRIMARY KEY,
+    class_name TEXT NOT NULL UNIQUE,    -- ontology class name
+    source_type TEXT NOT NULL DEFAULT 'APPLICATION_PRODUCER',
+    source_id TEXT,
+    projection_avro JSONB,             -- generated Avro schema
+    projection_graphql TEXT,           -- generated GraphQL type
+    projection_ttl TEXT,               -- generated TTL DataContainer
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- ── Embeddings (pgvector: semantic search) ──────────────
+
+CREATE TABLE embeddings (
+    id TEXT PRIMARY KEY,
+    text TEXT NOT NULL,
+    embedding vector(384) NOT NULL,     -- 384-dim (MiniLM / hash_embedding)
+    wing TEXT NOT NULL DEFAULT '',       -- mempalace domain: ontology, skills, docs
+    room TEXT NOT NULL DEFAULT '',       -- mempalace topic: tool-use, streaming, mcp
+    source_url TEXT NOT NULL DEFAULT '',
+    content_hash TEXT NOT NULL DEFAULT '',
+    metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX idx_embeddings_vector ON embeddings
+    USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100);
+CREATE INDEX idx_embeddings_wing ON embeddings(wing);
+CREATE INDEX idx_embeddings_room ON embeddings(room);
+-- pg_trgm index for fuzzy text search on embedded chunks
+CREATE INDEX idx_embeddings_text_trgm ON embeddings
+    USING gin (text gin_trgm_ops);
+
+-- ── Token Counts (pg_tiktoken: tokenization tracking) ───
+
+CREATE TABLE token_counts (
+    id BIGSERIAL PRIMARY KEY,
+    source_type TEXT NOT NULL,           -- 'crawl_page', 'dspy_input', 'dspy_output', 'embedding'
+    source_id TEXT NOT NULL,             -- URL, task ID, or embedding ID
+    model TEXT NOT NULL DEFAULT 'cl100k_base',  -- tiktoken encoding name
+    token_count INTEGER NOT NULL,
+    char_count INTEGER NOT NULL,
+    token_ratio DOUBLE PRECISION GENERATED ALWAYS AS (
+        CASE WHEN char_count > 0 THEN token_count::double precision / char_count ELSE 0 END
+    ) STORED,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX idx_token_counts_source ON token_counts(source_type, source_id);
+
+-- ── HyperLogLog Sketches (hll: approximate distinct counts) ─
+
+CREATE TABLE hll_sketches (
+    name TEXT PRIMARY KEY,               -- 'crawl:urls:example.com', 'embeddings:docs'
+    domain TEXT NOT NULL DEFAULT '',
+    sketch hll NOT NULL DEFAULT hll_empty(),
+    description TEXT,
+    updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- ── Thinking Traces (extended-thinking audit log) ───────
+
+CREATE TABLE thinking_traces (
+    id BIGSERIAL PRIMARY KEY,
+    task_id BIGINT REFERENCES tasks(id),
+    thinking_type TEXT NOT NULL CHECK (thinking_type IN ('enabled', 'adaptive')),
+    budget_tokens INTEGER,               -- requested budget
+    thinking_tokens INTEGER,             -- actual tokens used
+    input_tokens INTEGER,
+    output_tokens INTEGER,
+    model TEXT NOT NULL,
+    duration_ms INTEGER,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX idx_thinking_model ON thinking_traces(model);
+CREATE INDEX idx_thinking_task ON thinking_traces(task_id);
+
+-- ── Scheduled Pipelines (pg_cron: automated jobs) ───────
+-- NOTE: pg_cron jobs are registered via SQL, not DDL.
+-- Example: SELECT cron.schedule('nightly-crawl', '0 2 * * *',
+--   $$SELECT net.http_post(...)$$);
+-- Jobs are stored in cron.job (managed by pg_cron extension).
+
+-- ── Harness Runs (GAN-inspired iterative evaluation) ────
+
+CREATE TABLE harness_runs (
+    id BIGSERIAL PRIMARY KEY,
+    harness_name TEXT NOT NULL,
+    sprint_id TEXT NOT NULL UNIQUE,
+    objective TEXT NOT NULL,
+    criteria JSONB NOT NULL DEFAULT '[]',
+    max_iterations INTEGER NOT NULL DEFAULT 5,
+    acceptance_threshold DOUBLE PRECISION NOT NULL DEFAULT 0.7,
+    final_status TEXT NOT NULL DEFAULT 'running'
+        CHECK (final_status IN ('running', 'accepted', 'max_iterations', 'failed')),
+    total_iterations INTEGER NOT NULL DEFAULT 0,
+    total_tokens INTEGER NOT NULL DEFAULT 0,
+    created_at TIMESTAMPTZ DEFAULT now(),
+    completed_at TIMESTAMPTZ
+);
+
+CREATE INDEX idx_harness_runs_status ON harness_runs(final_status);
+CREATE INDEX idx_harness_runs_name ON harness_runs(harness_name);
+
+-- ── Evaluation Results (per-iteration grades) ───────────
+
+CREATE TABLE evaluation_results (
+    id BIGSERIAL PRIMARY KEY,
+    harness_run_id BIGINT REFERENCES harness_runs(id),
+    iteration INTEGER NOT NULL,
+    scores JSONB NOT NULL DEFAULT '[]',
+    overall_score DOUBLE PRECISION NOT NULL,
+    passed BOOLEAN NOT NULL DEFAULT false,
+    summary TEXT NOT NULL DEFAULT '',
+    strategy_recommendation TEXT DEFAULT '',
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX idx_eval_results_run ON evaluation_results(harness_run_id);
+
 -- ── Seed data ────────────────────────────────────────────
 
 INSERT INTO languages (id, label) VALUES
@@ -208,14 +404,16 @@ INSERT INTO languages (id, label) VALUES
 INSERT INTO models (model_id, family, label, supports_thinking, supports_tool_use, supports_vision) VALUES
     ('claude-opus-4-6', 'Claude 4.6', 'Claude Opus 4.6', true, true, true),
     ('claude-sonnet-4-6', 'Claude 4.6', 'Claude Sonnet 4.6', true, true, true),
-    ('claude-haiku-4-5-20251001', 'Claude 4.5', 'Claude Haiku 4.5', false, true, true);
+    ('claude-haiku-4-5-20251001', 'Claude 4.5', 'Claude Haiku 4.5', false, true, true),
+    ('claude-mythos-preview', 'Claude Mythos', 'Claude Mythos Preview', true, true, true);
 
 INSERT INTO skills (name, description, trigger_pattern) VALUES
     ('crawl-ingest', 'Web crawling, deduplication, and data ingestion using Anthropic SDKs', 'crawl websites, build scrapers, deduplicate URLs, bloom filters, ingest data'),
     ('api-client', 'API client generation, testing, and integration using Anthropic SDKs', 'build API clients, generate SDKs, test REST/GraphQL APIs, OAuth, retry/backoff'),
     ('data-pipeline', 'Data pipeline orchestration, ETL/ELT, streaming, and batch processing', 'build data pipelines, ETL/ELT workflows, stream processing, batch jobs, CDC'),
     ('agentic-prompts', 'Structured prompt engineering patterns from multi-agent AI architectures', 'prompt patterns, agent design, XML tasks, verification, coordination'),
-    ('video-generation', 'Video generation with Google Veo models via the Gemini Cloud API', 'generate video, Veo, Gemini video, YouTube content, TikTok content, video pipeline');
+    ('video-generation', 'Video generation with Google Veo models via the Gemini Cloud API', 'generate video, Veo, Gemini video, YouTube content, TikTok content, video pipeline'),
+    ('frontend-design', 'Frontend design with React/Vite/Tailwind using GAN-inspired iterative evaluation', 'frontend design, React component, UI design, Tailwind, Vite, design system');
 
 INSERT INTO sdks (id, language_id, label, github_stars, constructor_pattern) VALUES
     ('sdk-typescript', 'typescript', 'anthropic-sdk-typescript', 1800, 'new Anthropic()'),
@@ -245,7 +443,12 @@ INSERT INTO resources (type, label, url, description) VALUES
 
 INSERT INTO resources (type, label, url, related_model_id, description) VALUES
     ('model_card', 'Claude Opus 4.6 System Card', 'https://www.anthropic.com/claude-opus-4-6-system-card', 'claude-opus-4-6', 'Safety and capability documentation'),
-    ('model_card', 'Claude Sonnet 4.6 System Card', 'https://www.anthropic.com/claude-sonnet-4-6-system-card', 'claude-sonnet-4-6', 'Safety and capability documentation');
+    ('model_card', 'Claude Sonnet 4.6 System Card', 'https://www.anthropic.com/claude-sonnet-4-6-system-card', 'claude-sonnet-4-6', 'Safety and capability documentation'),
+    ('model_card', 'Claude Mythos Preview — Project Glasswing', 'https://www.anthropic.com/glasswing', 'claude-mythos-preview', 'Frontier research preview — partner-only cybersecurity and coding model');
+
+INSERT INTO resources (type, label, url, description) VALUES
+    ('cookbook', 'Motion.dev Animation Library Docs', 'https://motion.dev/docs', 'React/Vue/JS animation library — scroll, layout, gestures, SVG. Crawled to taxonomy/motion-dev-full.md.'),
+    ('cookbook', 'ASC11 ASCII Design Tool', 'https://asc11.com', 'ASCII editor for website/marketing visuals. Crawled to taxonomy/asc11-com-full.md.');
 
 INSERT INTO eval_suites (name, skill_name, config_path, test_count, assertion_count) VALUES
     ('crawl-ingest-extraction', 'crawl-ingest', 'evals/crawl-ingest/promptfooconfig.yaml', 6, 16),
@@ -267,4 +470,41 @@ INSERT INTO agent_manifests (name, model_override, allowed_tools, denied_tools, 
     ('coordinator', NULL, ARRAY['Agent', 'SendMessage', 'TaskStop', 'Read', 'Glob', 'Grep', 'Bash'], NULL, '05', '.claude/agents/coordinator.md'),
     ('verification', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash'], ARRAY['Edit', 'Write', 'Agent', 'NotebookEdit'], '07', '.claude/agents/verification.md'),
     ('explore', 'haiku', ARRAY['Read', 'Glob', 'Grep', 'Bash'], ARRAY['Edit', 'Write', 'Agent', 'NotebookEdit'], '08', '.claude/agents/explore.md'),
-    ('video-generator', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash', 'Write'], NULL, NULL, '.claude/agents/video-generator.md');
+    ('video-generator', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash', 'Write'], NULL, NULL, '.claude/agents/video-generator.md'),
+    ('uda-crawler', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash', 'Write'], NULL, NULL, '.claude/agents/uda-crawler.md'),
+    ('uda-extractor', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash'], NULL, NULL, '.claude/agents/uda-extractor.md'),
+    ('uda-thinker', 'opus', ARRAY['Read', 'Glob', 'Grep', 'Bash'], NULL, NULL, '.claude/agents/uda-thinker.md'),
+    ('frontend-generator', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash', 'Write'], NULL, NULL, '.claude/agents/frontend-generator.md'),
+    ('frontend-evaluator', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash'], ARRAY['Edit', 'Write', 'Agent'], NULL, '.claude/agents/frontend-evaluator.md');
+
+-- ── Seed: DSPy Signatures ───────────────────────────────
+
+INSERT INTO dspy_signatures (name, doc, input_fields, output_fields) VALUES
+    ('ExtractEntities', 'Extract structured entities from crawled documentation page content.',
+     '[{"name":"url","type":"str"},{"name":"content","type":"str"},{"name":"domain","type":"str"}]'::jsonb,
+     '[{"name":"entities","type":"list"},{"name":"relationships","type":"list"},{"name":"summary","type":"str"}]'::jsonb),
+    ('ClassifyContent', 'Classify crawled content into skill-relevant categories.',
+     '[{"name":"content","type":"str"},{"name":"title","type":"str"}]'::jsonb,
+     '[{"name":"primary_category","type":"str"},{"name":"skills","type":"list"},{"name":"languages","type":"list"},{"name":"confidence","type":"float"}]'::jsonb),
+    ('ExtractAPIPatterns', 'Extract API usage patterns, code samples, and SDK constructor calls.',
+     '[{"name":"content","type":"str"},{"name":"language","type":"str"}]'::jsonb,
+     '[{"name":"patterns","type":"list"},{"name":"sdk_constructor","type":"str"},{"name":"auth_method","type":"str"},{"name":"models_referenced","type":"list"}]'::jsonb),
+    ('AlignToOntology', 'Map extracted entities to AgentStreams ontology classes and properties.',
+     '[{"name":"entities","type":"list"},{"name":"relationships","type":"list"},{"name":"ontology_classes","type":"list"}]'::jsonb,
+     '[{"name":"mappings","type":"list"},{"name":"new_classes","type":"list"},{"name":"property_mappings","type":"list"}]'::jsonb);
+
+-- ── Seed: Subagents ─────────────────────────────────────
+
+INSERT INTO subagents (name, description, pipeline_modules, manifest_path) VALUES
+    ('uda-crawler', 'Web crawling with bloom filter dedup and Neon persistence',
+     ARRAY['UDACrawler', 'BloomFilter', 'NeonBloomStore'],
+     '.claude/subagents/uda-crawler.md'),
+    ('uda-extractor', 'DSPy structured extraction with ontology alignment',
+     ARRAY['ExtractEntities', 'ClassifyContent', 'AlignToOntology'],
+     '.claude/subagents/uda-extractor.md'),
+    ('uda-projector', 'Ontology projection generator: Avro, GraphQL, DataContainer, Mapping',
+     ARRAY['AvroProjection', 'GraphQLProjection', 'DataContainerProjection', 'MappingProjection'],
+     '.claude/subagents/uda-projector.md'),
+    ('uda-thinker', 'Deep reasoning with extended/adaptive thinking and Neon extensions',
+     ARRAY['ExtendedThinking', 'AdaptiveThinking', 'record_thinking_trace'],
+     '.claude/subagents/uda-thinker.md');
