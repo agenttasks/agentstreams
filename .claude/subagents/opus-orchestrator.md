@@ -177,13 +177,20 @@ type: subagent
       for most safety-research projects.
     </package>
 
+    <package name="lie-detector" stars="4" install="uv add git+https://github.com/safety-research/lie-detector">
+      Framework for eliciting deceptive behavior. 46 eval tasks, 138K+ examples
+      across 8 categories. Built on Inspect AI. Three-criteria detection:
+      false statement + model knows it's false + doubles down.
+      Used by: alignment-auditor, eval-builder pipelines.
+    </package>
+
     <!-- Reference repos (not pip-installable, used as methodology context) -->
     <reference name="trusted-monitor" relevance="alignment-auditor">
       Transcript suspicion scoring (0-100, 8-tier rubric). Quick scan and
       full scan modes. Evaluates: suspicion, incriminating, severity,
       confidence, effectiveness, realism.
     </reference>
-    <reference name="auditing-agents" relevance="security-auditor">
+    <reference name="auditing-agents" relevance="security-auditor" stars="12">
       Research framework for auditing AI agents. Experiment infrastructure
       with evaluation scripts and data pipelines.
     </reference>
@@ -197,18 +204,43 @@ type: subagent
     <reference name="impossiblebench" relevance="eval-builder" stars="36">
       Measures LLM propensity to exploit test cases vs. genuinely solve.
     </reference>
-    <reference name="SCONE-bench" relevance="eval-builder" stars="175">
-      Safety evaluation under nuanced conditions.
+    <reference name="SCONE-bench" relevance="eval-builder,security-auditor" stars="175">
+      Smart contract exploit benchmark: 405 contracts from real DeFi hacks
+      with Docker-based eval.
     </reference>
-    <reference name="persona_vectors" relevance="prompt-hardener" stars="388">
+    <reference name="persona_vectors" relevance="prompt-hardener,harmlessness-screen" stars="388">
       Monitoring and controlling character traits via activation-space directions.
     </reference>
-    <reference name="crosscoder_emergent_misalignment" relevance="alignment-auditor">
+    <reference name="assistant-axis" relevance="harmlessness-screen" stars="120">
+      Direction in activation space capturing model's assistant-like behavior.
+      Pipeline for generating the axis + notebooks for monitoring/steering.
+    </reference>
+    <reference name="crosscoder_emergent_misalignment" relevance="alignment-auditor" stars="5">
       Crosscoder model diffing with SAEs for emergent misalignment detection.
     </reference>
     <reference name="SHADE-Arena" relevance="alignment-auditor" stars="24">
       Stealth evaluation for covert agent behaviors. Canonical version at
       github.com/jkutaso/SHADE-Arena.
+    </reference>
+    <reference name="ciphered-reasoning-llms" relevance="alignment-auditor,harmlessness-screen" stars="9">
+      Studies steganographic reasoning to evade monitoring. Key threat model
+      for extended-thinking block analysis.
+    </reference>
+    <reference name="A3" relevance="alignment-auditor,eval-builder" stars="13">
+      Automated Alignment Agent: hypothesis-driven data generation + LoRA
+      fine-tuning from a single unsafe example. Generates harmful/benign
+      query pairs to prevent false positives.
+    </reference>
+    <reference name="open-source-alignment-faking" relevance="alignment-auditor,eval-builder" stars="56">
+      Replication of Anthropic's alignment faking paper. Models that fake
+      alignment during evaluation vs. deployment — core orchestrator threat.
+    </reference>
+    <reference name="data-poisoning-public" relevance="security-auditor" stars="1">
+      Data poisoning experiments for emergent misalignment. Supply-chain
+      threat model for fine-tuned models.
+    </reference>
+    <reference name="PurpleLlama" relevance="security-auditor">
+      Fork of Meta's CyberSecEval. Industry-standard LLM security assessment.
     </reference>
 
     <usage_note>
@@ -218,6 +250,51 @@ type: subagent
         uv pip install -e ".[safety]"
     </usage_note>
   </safety-research-tooling>
+
+  <anthropic-sdk-ecosystem>
+    <!-- NPM packages that define the runtime for this orchestrator -->
+    <package name="@anthropic-ai/claude-agent-sdk"
+             npm="npmjs.com/package/@anthropic-ai/claude-agent-sdk"
+             docs="platform.claude.com/docs/en/agent-sdk/overview">
+      Primary runtime for building orchestrator agents. Provides query() with
+      built-in tools (Read, Write, Edit, Bash, Glob, Grep, WebSearch, WebFetch,
+      AskUserQuestion), hooks (PreToolUse, PostToolUse, Stop, SessionStart,
+      SessionEnd), subagent spawning via AgentDefinition, MCP server integration,
+      session resumption, and permission modes. Python: claude_agent_sdk.
+      TypeScript: @anthropic-ai/claude-agent-sdk.
+    </package>
+    <package name="@anthropic-ai/sdk"
+             npm="npmjs.com/package/@anthropic-ai/sdk"
+             docs="platform.claude.com/docs/en/api/client-sdks">
+      Direct API client for Messages API. Use for custom tool loops, batch
+      processing, or when Agent SDK overhead is unnecessary. v0.85+.
+    </package>
+    <package name="@anthropic-ai/bedrock-sdk"
+             npm="npmjs.com/package/@anthropic-ai/bedrock-sdk">
+      Claude API access via AWS Bedrock. Set CLAUDE_CODE_USE_BEDROCK=1.
+    </package>
+    <package name="@anthropic-ai/claude-code"
+             npm="npmjs.com/package/@anthropic-ai/claude-code">
+      CLI package. Agent SDK supersedes this for programmatic use.
+      Renamed: imports should use @anthropic-ai/claude-agent-sdk.
+    </package>
+    <package name="@anthropic-ai/claude-trace"
+             docs="github.com/badlogic/lemmy/tree/main/apps/claude-trace">
+      Transcript tracing: intercepts fetch() calls to /v1/messages, logs to
+      JSONL in .claude-trace/. Captures system prompts, tool definitions,
+      tool outputs, thinking blocks. Web UI for viewing interactions.
+      Integration: hook into PostToolUse for real-time audit logging.
+      Complementary to safety-research/trusted-monitor for transcript analysis.
+    </package>
+    <observability>
+      Agent SDK hooks enable observability integration:
+      - LangSmith: native Claude Agent SDK tracing (docs.langchain.com)
+      - Langfuse: hooks-based capture (langfuse.com/integrations)
+      - OpenTelemetry: @traceai/anthropic for OTEL instrumentation
+      - claude-trace: JSONL transcript capture with web UI
+      All produce transcripts consumable by trusted-monitor for suspicion scoring.
+    </observability>
+  </anthropic-sdk-ecosystem>
 
   <constraints>
     <constraint id="no-recursive-agents">

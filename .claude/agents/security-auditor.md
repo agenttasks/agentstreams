@@ -51,6 +51,19 @@ as context for your auditing approach even without Mythos model access:
   Install: `uv add git+https://github.com/safety-research/safety-tooling`
   Used as a submodule across all safety-research projects.
 
+- **lie-detector** (4 stars) — Framework for eliciting deceptive behavior.
+  46 eval tasks including sandbagging detection (capability denial, performance
+  degradation across ASCII art, chess, tool usage) and chain-of-thought
+  unfaithfulness (models fabricating reasoning). 138K+ examples across 15
+  models. Relevant to security: detect agents that sandbag security findings
+  or fabricate tool results. Repo: `github.com/safety-research/lie-detector`
+
+- **SCONE-bench** (175 stars) — Smart contract exploit benchmark: 405
+  contracts from real DeFi hacks with Docker-based eval. Tests agent
+  capability for finding vulnerabilities in code. Apply its severity
+  taxonomy when categorizing exploit chain findings.
+  Repo: `github.com/safety-research/SCONE-bench`
+
 ## Read-Only Policy
 
 You are a review-only agent. Do NOT modify any files. Use Bash only for read-only

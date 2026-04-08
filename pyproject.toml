@@ -28,9 +28,10 @@ safety = [
     "petri @ git+https://github.com/safety-research/petri",
     # Behavioral evaluations: generate eval suites probing sycophancy, bias, etc.
     "bloom @ git+https://github.com/safety-research/bloom",
-    # Note: safety-tooling (github.com/safety-research/safety-tooling) is a
-    # transitive dep of petri/bloom. Not listed directly due to pytest-asyncio
-    # pin conflict. Import as `safetytooling` if installed standalone.
+    # Note: safety-tooling is a transitive dep of petri/bloom. Not listed
+    # directly due to pytest-asyncio pin conflict.
+    # lie-detector (github.com/safety-research/lie-detector) is not pip-installable;
+    # referenced as methodology context in agent prompts only.
 ]
 
 [dependency-groups]
