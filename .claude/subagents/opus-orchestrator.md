@@ -12,24 +12,54 @@ type: subagent
   </purpose>
 
   <model-hierarchy>
+    <!-- Benchmarks from Claude Mythos Preview System Card (April 7, 2026) -->
+    <model name="mythos" tier="frontier-preview"
+           strengths="Vulnerability discovery, exploit development, deep code reasoning.
+                      Cybench 100% pass@1, CyberGym 0.83, SWE-bench Verified 93.9%,
+                      Terminal-Bench 82%, GPQA Diamond 94.5%, USAMO 2026 97.6%.
+                      First model to solve private cyber range end-to-end."
+           constraints="Limited research-preview. Restricted to Project Glasswing partners.
+                        Not generally available. Reserve for security-auditor only."
+           api_string="claude-mythos-preview"/>
     <model name="opus" tier="production-frontier"
-           strengths="Hardest long-horizon problems, architecture review, alignment auditing, complex multi-step reasoning."
+           strengths="Complex multi-step reasoning, architecture review, alignment auditing.
+                      SWE-bench Verified 80.8%, CyberGym 0.67, GPQA Diamond 91.3%."
            api_string="claude-opus-4-6"/>
     <model name="sonnet" tier="production-balanced"
-           strengths="Fast codegen, test execution, prompt hardening."
+           strengths="Fast codegen, test execution, prompt hardening.
+                      CyberGym 0.65."
            api_string="claude-sonnet-4-6"/>
     <model name="haiku" tier="speed-optimized"
            strengths="Fastest response, lightweight screening, harmlessness classification."
            api_string="claude-haiku-4-5"/>
 
     <selection_rules>
-      1. Alignment auditing, architecture review, security audit, or complex
-         multi-step reasoning → opus.
-      2. Codegen, test execution, prompt hardening, or structured output
-         extraction → sonnet.
-      3. Input screening, harmlessness classification, or trivial format
-         validation → haiku.
+      1. If the task involves finding or exploiting vulnerabilities, penetration testing,
+         or security audit of critical infrastructure → mythos (if available) or opus.
+      2. Alignment auditing, architecture review, or complex multi-step reasoning → opus.
+      3. Codegen, test execution, prompt hardening, or structured output extraction → sonnet.
+      4. Input screening, harmlessness classification, or trivial format validation → haiku.
     </selection_rules>
+
+    <safety-benchmarks source="Mythos System Card Section 8.1, 8.3">
+      Violative request harmless rate: 97.84% (Mythos), 99.27% (Opus 4.6)
+      Benign request overrefusal: 0.06% (Mythos, best of all models)
+      Malicious Claude Code refusal: 96.72% (Mythos), 83.31% (Opus 4.6)
+      Prompt injection coding (extended thinking): 0.0% attack success (Mythos)
+      Prompt injection computer use (extended thinking, 200 attempts): 21.43% (Mythos vs 78.6% Opus 4.6)
+      Browser prompt injection: 0.68% environments breached (Mythos vs 80.41% Opus 4.6)
+    </safety-benchmarks>
+
+    <alignment-benchmarks source="Mythos System Card Section 4">
+      Misuse cooperation: >50% reduction vs Opus 4.6
+      Deception behaviors: >50% reduction vs Opus 4.6
+      Destructive actions (synthetic backend): 0.3% rate
+      Cover-up rate (final model): below 1 in 1M Claude Code transcripts
+      SHADE-Arena stealth (extended thinking): 4-5% (Mythos) vs 0-3% (Opus 4.6)
+      Evaluation awareness (unverbalized): ~29% of behavioral audit transcripts
+      Constitutional adherence: best or tied on 15/15 dimensions vs all prior models
+      Petri 2.0: among most robustly aligned models tested across providers
+    </alignment-benchmarks>
   </model-hierarchy>
 
   <subagent-roster>
