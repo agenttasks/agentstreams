@@ -444,6 +444,10 @@ INSERT INTO resources (type, label, url, related_model_id, description) VALUES
     ('model_card', 'Claude Opus 4.6 System Card', 'https://www.anthropic.com/claude-opus-4-6-system-card', 'claude-opus-4-6', 'Safety and capability documentation'),
     ('model_card', 'Claude Sonnet 4.6 System Card', 'https://www.anthropic.com/claude-sonnet-4-6-system-card', 'claude-sonnet-4-6', 'Safety and capability documentation');
 
+INSERT INTO resources (type, label, url, description) VALUES
+    ('cookbook', 'Motion.dev Animation Library Docs', 'https://motion.dev/docs', 'React/Vue/JS animation library — scroll, layout, gestures, SVG. Crawled to taxonomy/motion-dev-full.md.'),
+    ('cookbook', 'ASC11 ASCII Design Tool', 'https://asc11.com', 'ASCII editor for website/marketing visuals. Crawled to taxonomy/asc11-com-full.md.');
+
 INSERT INTO eval_suites (name, skill_name, config_path, test_count, assertion_count) VALUES
     ('crawl-ingest-extraction', 'crawl-ingest', 'evals/crawl-ingest/promptfooconfig.yaml', 6, 16),
     ('api-client-generation', 'api-client', 'evals/api-client/promptfooconfig.yaml', 6, 18),

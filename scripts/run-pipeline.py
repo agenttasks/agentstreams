@@ -44,6 +44,18 @@ CRAWL_TARGETS = [
         "taxonomy": "taxonomy/code-claude-com-full.md",
         "max_pages": 1000,
     },
+    {
+        "name": "motion-dev",
+        "sitemap": "https://motion.dev/sitemap.xml",
+        "taxonomy": "taxonomy/motion-dev-full.md",
+        "max_pages": 500,
+    },
+    {
+        "name": "asc11-com",
+        "sitemap": "https://asc11.com/sitemap.xml",
+        "taxonomy": "taxonomy/asc11-com-full.md",
+        "max_pages": 50,
+    },
 ]
 
 ALL_STAGES = ["crawl", "extract", "validate", "security", "prompts"]

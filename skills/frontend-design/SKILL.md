@@ -75,8 +75,56 @@ result = await runner.run("Build a landing page for a Dutch art museum")
 3. **Typography** — limit to 2 fonts maximum; establish clear heading/body/caption hierarchy
 4. **Color** — build a cohesive palette (3-5 colors); use contrast ratios for accessibility
 5. **Layout** — use CSS grid/flexbox for responsive structure; avoid fixed pixel widths
-6. **Motion** — subtle transitions enhance UX; avoid gratuitous animation
+6. **Motion** — use Motion (formerly Framer Motion) for production-grade animations; subtle transitions enhance UX; avoid gratuitous animation
 7. **Accessibility** — semantic HTML, ARIA labels, keyboard navigation, screen reader support
+
+## Animation with Motion (motion.dev)
+
+Motion is the recommended animation library. Install with `npm install motion`,
+import with `import { motion } from "motion/react"`.
+
+### Core Animation Props
+
+| Prop | Purpose | Example |
+|------|---------|---------|
+| `animate` | Continuous target values | `animate={{ opacity: 1 }}` |
+| `initial` | Starting state | `initial={{ scale: 0 }}` |
+| `exit` | DOM removal animation | `exit={{ opacity: 0 }}` |
+| `whileHover` | Hover gesture | `whileHover={{ scale: 1.1 }}` |
+| `whileTap` | Tap/click gesture | `whileTap={{ scale: 0.95 }}` |
+| `whileInView` | Viewport entry | `whileInView={{ opacity: 1 }}` |
+| `layout` | Auto layout animation | `<motion.div layout />` |
+
+### Key Patterns
+
+- **Enter animations**: `initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}`
+- **Exit animations**: Wrap with `<AnimatePresence>` + `exit` prop
+- **Scroll-triggered**: `whileInView` with `viewport={{ once: true }}`
+- **Scroll-linked**: `useScroll()` → `useTransform()` for parallax, progress bars
+- **Layout animations**: `<motion.div layout />` auto-detects size/position changes
+- **Shared layout**: `layoutId="key"` for cross-component transitions
+- **Staggered children**: `staggerChildren` in parent transition config
+- **Spring physics**: `type: "spring"` with `stiffness`, `damping` for natural motion
+
+### Essential Hooks
+
+| Hook | Purpose |
+|------|---------|
+| `useScroll()` | Track scrollX/Y and progress (0-1) |
+| `useSpring()` | Smooth values with spring physics |
+| `useTransform()` | Map one value range to another |
+| `useAnimate()` | Imperative animation sequences |
+| `useInView()` | Detect viewport visibility (non-motion elements) |
+| `useReducedMotion()` | Respect `prefers-reduced-motion` |
+
+### Performance
+
+- Motion uses native `ScrollTimeline` for hardware-accelerated scroll animations
+- `IntersectionObserver` pooling minimizes viewport detection overhead
+- Use `LazyMotion` + dynamic imports to reduce bundle size
+- Prefer transforms (`x`, `y`, `scale`, `rotate`) over layout properties (`width`, `height`)
+
+Crawled reference: `taxonomy/motion-dev-full.md`
 
 ## Anti-Patterns
 

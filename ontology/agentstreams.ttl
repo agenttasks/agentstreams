@@ -930,6 +930,18 @@ as:resource-sonnet-46-card a as:Resource ;
     as:relatedModel as:claude-sonnet-4-6 ;
     rdfs:label "Claude Sonnet 4.6 System Card" .
 
+as:resource-motion-dev a as:Resource ;
+    as:resourceType as:Cookbook ;
+    as:resourceURL "https://motion.dev/docs"^^xsd:anyURI ;
+    rdfs:label "Motion.dev Animation Library Docs" ;
+    rdfs:comment "React/Vue/JS animation library — scroll, layout, gestures, SVG. Crawled to taxonomy/motion-dev-full.md." .
+
+as:resource-asc11-com a as:Resource ;
+    as:resourceType as:Cookbook ;
+    as:resourceURL "https://asc11.com"^^xsd:anyURI ;
+    rdfs:label "ASC11 ASCII Design Tool" ;
+    rdfs:comment "ASCII editor for creating website and marketing visuals. Crawled to taxonomy/asc11-com-full.md." .
+
 # ── Instances: UDA Architecture ──────────────────────────
 
 # DSPy Signatures (pre-built in src/dspy_prompts.py)
