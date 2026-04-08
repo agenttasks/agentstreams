@@ -56,6 +56,12 @@ CRAWL_TARGETS = [
         "taxonomy": "taxonomy/asc11-com-full.md",
         "max_pages": 50,
     },
+    {
+        "name": "anthropic-com",
+        "sitemap": "https://www.anthropic.com/sitemap.xml",
+        "taxonomy": "taxonomy/anthropic-com-full.md",
+        "max_pages": 500,
+    },
 ]
 
 ALL_STAGES = ["crawl", "extract", "validate", "security", "prompts"]
