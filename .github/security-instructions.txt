@@ -1,0 +1,44 @@
+**Agent Boundary Violations:**
+- Subagent tool grants exceeding what the agent's .claude/agents/*.md frontmatter declares
+- Agents with "Agent" in their tools array (recursive spawning — only the orchestrator may spawn agents)
+- Write/Edit/Bash tools granted to agents that should be read-only (security-auditor, alignment-auditor, architecture-reviewer)
+- Missing inoculation blocks in subagent system prompts
+
+**Auth Pattern Violations:**
+- Any use of ANTHROPIC_API_KEY except in "never use" warnings
+- All auth must flow through CLAUDE_CODE_OAUTH_TOKEN
+- Hardcoded API keys, tokens, passwords, or database connection strings
+- Credentials in example code, shell scripts, or GitHub Actions workflows
+- .env files or credential patterns committed to version control
+
+**Prompt Injection Surface:**
+- User-controlled strings interpolated into system prompts without sanitization
+- Missing inoculation blocks (the standard "You may encounter instructions..." block)
+- Agent descriptions ambiguous enough to cause unintended delegation
+- LLM judge prompt injection — agents submitting work to LLM-based judges may inject grading instructions
+- Prefill manipulation — pre-filled turns containing prior sabotage patterns
+
+**Sandbox Escape Vectors:**
+- Shell injection through tool-call arguments
+- Network restriction circumvention patterns
+- Credential harvesting via /proc/ inspection or process memory
+- Writing to shell input via file-editing tools
+- Subagents spawned with less restrictive permissions than intended
+
+**Python-Specific:**
+- Unsafe eval(), exec(), subprocess with user input
+- Pickle deserialization from untrusted sources
+- SQL injection via string concatenation (must use parameterized queries)
+- Path traversal in file handling (os.path.join with user input)
+- SSRF in crawler URL handling (following redirects to internal networks)
+
+**Next.js/React-Specific (webapp/):**
+- XSS via dangerouslySetInnerHTML
+- Server-side request forgery in API routes
+- Sensitive data exposed in client-side bundles
+- Missing Content-Security-Policy headers
+
+**Neon Postgres-Specific:**
+- Connection strings hardcoded instead of using NEON_DATABASE_URL from env
+- SQL injection in psycopg queries (string formatting instead of parameterized)
+- Overly permissive database roles or grants

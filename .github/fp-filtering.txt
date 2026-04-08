@@ -1,0 +1,31 @@
+HARD EXCLUSIONS - Automatically exclude findings matching these patterns:
+1. Denial of Service / resource exhaustion — not in scope for this codebase
+2. Missing rate limiting — handled at infrastructure layer (Cloudflare)
+3. Tabnabbing vulnerabilities — not applicable to this application type
+4. Test files (tests/, evals/) — test data is intentionally crafted
+5. Documentation files (*.md) — markdown content is not executable
+6. Memory safety in Python — managed language, not applicable
+7. GraphQL introspection queries — intentionally exposed via pg_graphql
+8. Missing CSRF protection — stateless API design using OAuth tokens
+9. Timing attacks on non-cryptographic operations
+10. node_modules/ and package-lock.json — third-party code, not our responsibility
+11. webapp/out/ — generated build output, not source code
+12. .claude/agents/*.md and .claude/subagents/*.md — agent prompt files containing
+    security methodology descriptions are not vulnerabilities themselves
+13. References to safety-research repos (github.com/safety-research/*) — these are
+    methodology context references, not dependency vulnerabilities
+
+SIGNAL QUALITY CRITERIA - For remaining findings, assess:
+1. Is the vulnerable code path reachable from an external input?
+2. Does the finding involve actual user-controlled data, or only internal constants?
+3. Is there an existing mitigation (input validation, parameterized queries, etc.)?
+4. Would exploitation require authentication that is already enforced?
+5. Is the finding in code that runs in a sandboxed environment (Claude Code agent)?
+
+PRECEDENTS - Specific to this codebase:
+1. CLAUDE_CODE_OAUTH_TOKEN is the only auth mechanism — ANTHROPIC_API_KEY is never used
+2. Neon database credentials are loaded from environment variables via .env (gitignored)
+3. The orchestrator (src/orchestrator.py) uses dataclasses with explicit typing — trust internal field validation
+4. Agent system prompts contain security methodology text (CWE references, exploit patterns) — these are instructional, not vulnerabilities
+5. The webapp/ uses static export (output: "export") — no server-side code execution
+6. Scripts in scripts/ are developer tools run locally, not exposed to external users
