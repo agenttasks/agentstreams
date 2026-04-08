@@ -159,6 +159,66 @@ type: subagent
     </pipeline>
   </pipelines>
 
+  <safety-research-tooling source="github.com/safety-research (42 repos)">
+    <!-- Installable packages: uv pip install -e ".[safety]" -->
+    <package name="petri" stars="979" install="uv add git+https://github.com/safety-research/petri">
+      Autonomous alignment auditing agent. Three-role architecture (auditor,
+      target, judge) with 111 default seed instructions. Constructs multi-turn
+      test scenarios. Used by: alignment-auditor pipeline.
+    </package>
+    <package name="bloom" stars="1270" install="uv add git+https://github.com/safety-research/bloom">
+      Generates behavioral eval suites (sycophancy, self-preservation, bias).
+      Config-driven via seed.yaml. CLI: bloom init, bloom run, bloom chat.
+      Used by: eval-builder pipeline.
+    </package>
+    <package name="safety-tooling" stars="114" install="uv add git+https://github.com/safety-research/safety-tooling">
+      Shared inference API wrapper with caching and rate limiting. Common
+      interface for OpenAI, Anthropic, Google models. Submodule dependency
+      for most safety-research projects.
+    </package>
+
+    <!-- Reference repos (not pip-installable, used as methodology context) -->
+    <reference name="trusted-monitor" relevance="alignment-auditor">
+      Transcript suspicion scoring (0-100, 8-tier rubric). Quick scan and
+      full scan modes. Evaluates: suspicion, incriminating, severity,
+      confidence, effectiveness, realism.
+    </reference>
+    <reference name="auditing-agents" relevance="security-auditor">
+      Research framework for auditing AI agents. Experiment infrastructure
+      with evaluation scripts and data pipelines.
+    </reference>
+    <reference name="finetuning-auditor" relevance="security-auditor" stars="20">
+      Detects harmful fine-tuning. 7 specialized tools, 0-10 risk scores.
+    </reference>
+    <reference name="inoculation-prompting" relevance="prompt-hardener" stars="10">
+      Implementation of arxiv.org/abs/2510.05024. Four experimental settings
+      for building prompt resistance to adversarial patterns.
+    </reference>
+    <reference name="impossiblebench" relevance="eval-builder" stars="36">
+      Measures LLM propensity to exploit test cases vs. genuinely solve.
+    </reference>
+    <reference name="SCONE-bench" relevance="eval-builder" stars="175">
+      Safety evaluation under nuanced conditions.
+    </reference>
+    <reference name="persona_vectors" relevance="prompt-hardener" stars="388">
+      Monitoring and controlling character traits via activation-space directions.
+    </reference>
+    <reference name="crosscoder_emergent_misalignment" relevance="alignment-auditor">
+      Crosscoder model diffing with SAEs for emergent misalignment detection.
+    </reference>
+    <reference name="SHADE-Arena" relevance="alignment-auditor" stars="24">
+      Stealth evaluation for covert agent behaviors. Canonical version at
+      github.com/jkutaso/SHADE-Arena.
+    </reference>
+
+    <usage_note>
+      These tools provide Mythos-grade methodology without requiring Mythos
+      model access. Any model in the hierarchy (Opus 4.6, Sonnet 4.6, Haiku 4.5)
+      can apply these techniques. Install the pip-installable packages via:
+        uv pip install -e ".[safety]"
+    </usage_note>
+  </safety-research-tooling>
+
   <constraints>
     <constraint id="no-recursive-agents">
       No subagent's tools array may include "Agent".

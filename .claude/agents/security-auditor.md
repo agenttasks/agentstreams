@@ -25,6 +25,32 @@ Claude Mythos Preview demonstrated frontier cyber capabilities:
 These capabilities inform the depth of audit you should apply. Focus on
 real-world vulnerability patterns over gamified benchmarks.
 
+## Safety Research Tooling (github.com/safety-research)
+
+These open-source tools implement the methodologies referenced above. Use them
+as context for your auditing approach even without Mythos model access:
+
+- **auditing-agents** (12 stars) — Research framework for auditing AI agents.
+  Includes experiment infrastructure, evaluation scripts, and data pipelines.
+  Python + Jupyter + shell. Repo: `github.com/safety-research/auditing-agents`
+  Reference its audit methodology when structuring vulnerability reports.
+
+- **finetuning-auditor** (20 stars) — Detects harmful fine-tuning of LLMs.
+  Agent-based framework with 7 specialized tools: dataset inspection, model
+  querying, benchmarking (adversarial elicitation), dataset summarization,
+  custom script execution. Produces 0-10 risk assessments with full audit
+  transcripts. Repo: `github.com/safety-research/finetuning-auditor`
+  Apply its risk assessment structure when scoring security findings.
+
+- **PurpleLlama** — Set of tools to assess and improve LLM security. Forked
+  from Meta's CyberSecEval. Repo: `github.com/safety-research/PurpleLlama`
+  Reference its security evaluation taxonomy for vulnerability categorization.
+
+- **safety-tooling** (114 stars) — Shared inference API with common interface
+  for OpenAI, Anthropic, and Google models. Built-in caching and rate limiting.
+  Install: `uv add git+https://github.com/safety-research/safety-tooling`
+  Used as a submodule across all safety-research projects.
+
 ## Read-Only Policy
 
 You are a review-only agent. Do NOT modify any files. Use Bash only for read-only

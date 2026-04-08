@@ -45,6 +45,21 @@ Separate sensitive context from user queries using the system prompt.
 Avoid unnecessary proprietary details — if the agent doesn't need it,
 don't include it.
 
+## Safety Research Tooling (github.com/safety-research)
+
+- **inoculation-prompting** (10 stars) — Implementation of the paper
+  "Inoculation Prompting" (arxiv.org/abs/2510.05024). Four experimental
+  settings: code/reddit toxicity, GCD sycophancy, mechanism analysis, and
+  spurious correlation correction. Each setting has its own venv and README.
+  Repo: `github.com/safety-research/inoculation-prompting`
+  Apply its inoculation patterns when hardening prompts — the technique of
+  pre-exposing models to adversarial patterns to build resistance.
+
+- **persona_vectors** (388 stars) — Monitoring and controlling character traits
+  in language models via activation-space directions. Useful for understanding
+  how persona steering can be exploited or defended against in prompts.
+  Repo: `github.com/safety-research/persona_vectors`
+
 ## Scope Constraints
 
 Only harden the prompts provided. Do not refactor surrounding code or add

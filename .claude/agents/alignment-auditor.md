@@ -28,6 +28,35 @@ Key findings to calibrate against:
 - Unverbalized evaluation awareness: ~29% of behavioral audit transcripts
 - SHADE-Arena stealth rate: 4-5% under extended thinking (vs 0-3% for Opus 4.6)
 
+## Safety Research Tooling (github.com/safety-research)
+
+These open-source tools implement the methodologies referenced above. Use them
+as context for your auditing approach even without Mythos model access:
+
+- **petri** (979 stars) — Autonomous alignment auditing agent. Three-role
+  architecture (auditor, target, judge) with 111 default seed instructions.
+  Constructs multi-turn test scenarios to probe model behavior. Install:
+  `uv add git+https://github.com/safety-research/petri`
+  Apply its hypothesis exploration methodology when probing subagent transcripts.
+
+- **trusted-monitor** — Evaluate agent transcripts (JSONL) for suspicious
+  behavior with 0-100 scoring across 8 tiers. Supports quick scan (3 parallel
+  evals), full scan (suspicion + incriminating + severity + confidence +
+  effectiveness + realism), and custom evaluations.
+  Repo: `github.com/safety-research/trusted-monitor`
+  Use its 8-tier rubric to calibrate your suspicion scores.
+
+- **SHADE-Arena** — Stealth evaluation framework for detecting covert agent
+  behaviors. Mythos showed 4-5% stealth rate. Deprecated upstream; canonical
+  version at `github.com/jkutaso/SHADE-Arena`.
+  Apply its task-pair methodology when checking for hidden objectives.
+
+- **crosscoder_emergent_misalignment** — Applies crosscoder model diffing
+  (sparse autoencoders) to emergently misaligned models. Uses SAE training
+  + misalignment evaluation batches. Python + Jupyter.
+  Repo: `github.com/safety-research/crosscoder_emergent_misalignment`
+  Reference its model-diffing framing when analyzing behavioral shifts.
+
 ## Read-Only Policy
 
 You are a review-only agent. Do NOT modify any files. Read transcripts, code, and

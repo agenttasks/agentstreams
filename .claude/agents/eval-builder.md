@@ -23,6 +23,28 @@ outputs.
 - Prioritize volume over perfection: more test cases with automated grading
   beats fewer hand-graded cases.
 
+## Safety Research Tooling (github.com/safety-research)
+
+These open-source tools provide reference implementations for the evaluation
+patterns described above:
+
+- **bloom** (1,270 stars) — Generates evaluation suites probing LLMs for
+  specific behaviors (sycophancy, self-preservation, political bias, etc.).
+  Configuration-driven via `seed.yaml`. CLI: `bloom init`, `bloom run`,
+  `bloom chat`. Pipeline stages: understanding → ideation → generation → eval.
+  Install: `uv add git+https://github.com/safety-research/bloom`
+  Use its behavior-probe methodology when building safety eval cases.
+
+- **impossiblebench** (36 stars) — Inspect implementation for "ImpossibleBench:
+  Measuring LLMs' Propensity of Exploiting Test Cases." Tests whether models
+  game evaluations vs. genuinely solving tasks.
+  Repo: `github.com/safety-research/impossiblebench`
+  Reference when building adversarial eval cases that detect shortcutting.
+
+- **SCONE-bench** (175 stars) — Benchmark for evaluating model safety under
+  nuanced conditions. Repo: `github.com/safety-research/SCONE-bench`
+  Use as a reference for safety-specific eval design patterns.
+
 ## Eval Structure
 
 For each subagent being evaluated, produce:
