@@ -283,7 +283,9 @@ async def main_async(args: argparse.Namespace) -> None:
     priority_pattern = re.compile(args.priority_pattern) if args.priority_pattern else None
 
     headers = {"User-Agent": USER_AGENT}
-    async with aiohttp.ClientSession(headers=headers) as session:
+    # trust_env=True lets aiohttp use HTTP(S)_PROXY env vars, which is required
+    # in proxy-based environments where DNS resolution is proxy-side only.
+    async with aiohttp.ClientSession(headers=headers, trust_env=True) as session:
         # Resolve URL list
         if args.urls:
             urls = args.urls
@@ -293,13 +295,13 @@ async def main_async(args: argparse.Namespace) -> None:
             urls = await fetch_sitemap_urls(session, args.sitemap_url)
             print(f"Found {len(urls)} URLs in sitemap", file=sys.stderr)
 
-        # Apply max-pages limit
-        urls = urls[: args.max_pages]
-
-        # Filter by priority pattern if --priority-only
+        # Filter by priority pattern if --priority-only (before max-pages limit)
         if args.priority_only and priority_pattern:
             urls = [u for u in urls if priority_pattern.search(u)]
             print(f"Filtered to {len(urls)} priority URLs", file=sys.stderr)
+
+        # Apply max-pages limit
+        urls = urls[: args.max_pages]
 
         if not urls:
             print("No URLs to crawl", file=sys.stderr)
