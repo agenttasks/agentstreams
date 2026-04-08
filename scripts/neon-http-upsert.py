@@ -10,14 +10,28 @@ Usage:
 """
 
 import json
+import os
 import re
 import sys
 from pathlib import Path
+from urllib.parse import urlparse
 
 import httpx
 
-NEON_HOST = "ep-noisy-surf-aju7f7eb-pooler.c-3.us-east-2.aws.neon.tech"
-CONN_STRING = f"postgresql://neondb_owner:npg_h15YMtbzqkBj@{NEON_HOST}/neondb?sslmode=require"
+# Read from environment (.env loaded by SessionStart hook)
+NEON_HOST = os.environ.get(
+    "NEON_HTTP_HOST",
+    urlparse(os.environ.get("NEON_DATABASE_URL", "")).hostname or "",
+)
+CONN_STRING = os.environ.get(
+    "NEON_HTTP_CONN",
+    os.environ.get("NEON_DATABASE_URL", ""),
+)
+if not NEON_HOST or not CONN_STRING:
+    print(
+        "Error: Set NEON_DATABASE_URL or NEON_HTTP_HOST + NEON_HTTP_CONN in .env", file=sys.stderr
+    )
+    sys.exit(1)
 SQL_ENDPOINT = f"https://{NEON_HOST}/sql"
 BATCH_SIZE = 50
 

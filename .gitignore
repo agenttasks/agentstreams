@@ -2,6 +2,11 @@
 __pycache__/
 *.pyc
 
+# Environment secrets (never commit)
+.env
+.env.local
+.env.production
+
 # Generated files
 scripts/timeseries-seed.sql
 
