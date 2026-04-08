@@ -47,6 +47,7 @@ METRICS = {
     "agentstreams.api.requests": {
         "type": "counter",
         "tags_combos": [
+            {"model": "claude-mythos-preview", "skill": "code-execution", "status": "200"},
             {"model": "claude-opus-4-6", "skill": "crawl-ingest", "status": "200"},
             {"model": "claude-opus-4-6", "skill": "crawl-ingest", "status": "429"},
             {"model": "claude-sonnet-4-6", "skill": "api-client", "status": "200"},
@@ -57,6 +58,8 @@ METRICS = {
     "agentstreams.api.tokens": {
         "type": "counter",
         "tags_combos": [
+            {"model": "claude-mythos-preview", "skill": "code-execution", "direction": "input"},
+            {"model": "claude-mythos-preview", "skill": "code-execution", "direction": "output"},
             {"model": "claude-opus-4-6", "skill": "crawl-ingest", "direction": "input"},
             {"model": "claude-opus-4-6", "skill": "crawl-ingest", "direction": "output"},
             {"model": "claude-sonnet-4-6", "skill": "api-client", "direction": "input"},
@@ -68,6 +71,7 @@ METRICS = {
     "agentstreams.api.cost": {
         "type": "distribution_summary",
         "tags_combos": [
+            {"model": "claude-mythos-preview", "skill": "code-execution"},
             {"model": "claude-opus-4-6", "skill": "crawl-ingest"},
             {"model": "claude-sonnet-4-6", "skill": "api-client"},
             {"model": "claude-haiku-4-5-20251001", "skill": "data-pipeline"},
@@ -226,6 +230,7 @@ def gen_gauge(step: int, tags: dict) -> float:
 def gen_distribution(_step: int, tags: dict) -> float:
     """Distribution summary: cost per request in USD."""
     model_costs = {
+        "claude-mythos-preview": 0.125,
         "claude-opus-4-6": 0.075,
         "claude-sonnet-4-6": 0.015,
         "claude-haiku-4-5-20251001": 0.005,

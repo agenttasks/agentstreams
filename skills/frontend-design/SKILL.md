@@ -13,6 +13,7 @@ quality) until acceptance criteria are met.
 
 - Stack: React + Vite + Tailwind CSS
 - Use `claude-sonnet-4-6` for generation, `claude-opus-4-6` for complex design decisions
+- Use `claude-mythos-preview` for security-focused frontend auditing (partner-only)
 - Iterative evaluation via `src/harness.py` HarnessRunner
 - 4 grading criteria: design quality, originality, craft, functionality
 - Max 5 iterations per sprint, 0.7 acceptance threshold

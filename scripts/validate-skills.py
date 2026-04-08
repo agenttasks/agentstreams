@@ -27,7 +27,7 @@ FORBIDDEN_PATTERNS = [
 ]
 
 # Patterns that must use hyphen format
-MODEL_PATTERN = re.compile(r"claude[_\.](?:opus|sonnet|haiku)[_\.][\d]")
+MODEL_PATTERN = re.compile(r"claude[_\.](?:opus|sonnet|haiku|mythos)[_\.][\d]")
 
 # Valid SDK constructors per language
 VALID_CONSTRUCTORS = {

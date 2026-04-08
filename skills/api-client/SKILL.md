@@ -11,6 +11,7 @@ Build type-safe API clients from OpenAPI/GraphQL schemas, test APIs with Claude-
 
 - Generate clients from OpenAPI 3.x specs when available
 - Use `claude-sonnet-4-6` for code generation, `claude-opus-4-6` with adaptive thinking for architecture decisions
+- Use `claude-mythos-preview` for security-critical API design and vulnerability scanning (partner-only)
 - Always include retry with exponential backoff (3 retries, 1s base)
 - Generate type-safe request/response models from schemas
 - Include rate limiting middleware by default

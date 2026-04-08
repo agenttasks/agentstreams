@@ -11,6 +11,7 @@ Build data pipelines with Claude-powered transformation, validation, and orchest
 
 - Default to batch processing unless the user specifies streaming
 - Use `claude-sonnet-4-6` for data transformation, `claude-opus-4-6` with adaptive thinking for pipeline design decisions
+- Use `claude-mythos-preview` for security-sensitive data pipeline auditing (partner-only)
 - Always validate data quality between stages (null checks, schema conformance, row counts)
 - Default to idempotent operations (safe to re-run)
 
@@ -113,3 +114,4 @@ Before reading setup docs, determine which language stack the user needs:
 | **Validation** | Generate data quality rules from context | claude-sonnet-4-6 |
 | **Error handling** | Classify and route failed records | claude-sonnet-4-6 |
 | **Documentation** | Generate pipeline docs from code | claude-sonnet-4-6 |
+| **Security audit** | Vulnerability scanning of pipeline code | claude-mythos-preview (partner-only) |

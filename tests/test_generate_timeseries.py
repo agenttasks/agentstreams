@@ -101,6 +101,11 @@ class TestGenDistribution:
         ]
         assert sum(vals_opus) / len(vals_opus) > sum(vals_haiku) / len(vals_haiku)
 
+    def test_mythos_most_expensive(self):
+        vals_mythos = [gen_distribution(i, {"model": "claude-mythos-preview"}) for i in range(200)]
+        vals_opus = [gen_distribution(i, {"model": "claude-opus-4-6"}) for i in range(200)]
+        assert sum(vals_mythos) / len(vals_mythos) > sum(vals_opus) / len(vals_opus)
+
 
 class TestEscapeSql:
     def test_escapes_single_quotes(self):
@@ -125,4 +130,4 @@ class TestMetricsConfig:
 
     def test_total_series_count(self):
         total = sum(len(c["tags_combos"]) for c in METRICS.values())
-        assert total == 44  # 33 original + 11 task metrics
+        assert total == 48  # 33 original + 11 task metrics + 4 mythos-preview

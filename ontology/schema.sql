@@ -404,7 +404,8 @@ INSERT INTO languages (id, label) VALUES
 INSERT INTO models (model_id, family, label, supports_thinking, supports_tool_use, supports_vision) VALUES
     ('claude-opus-4-6', 'Claude 4.6', 'Claude Opus 4.6', true, true, true),
     ('claude-sonnet-4-6', 'Claude 4.6', 'Claude Sonnet 4.6', true, true, true),
-    ('claude-haiku-4-5-20251001', 'Claude 4.5', 'Claude Haiku 4.5', false, true, true);
+    ('claude-haiku-4-5-20251001', 'Claude 4.5', 'Claude Haiku 4.5', false, true, true),
+    ('claude-mythos-preview', 'Claude Mythos', 'Claude Mythos Preview', true, true, true);
 
 INSERT INTO skills (name, description, trigger_pattern) VALUES
     ('crawl-ingest', 'Web crawling, deduplication, and data ingestion using Anthropic SDKs', 'crawl websites, build scrapers, deduplicate URLs, bloom filters, ingest data'),
@@ -442,7 +443,8 @@ INSERT INTO resources (type, label, url, description) VALUES
 
 INSERT INTO resources (type, label, url, related_model_id, description) VALUES
     ('model_card', 'Claude Opus 4.6 System Card', 'https://www.anthropic.com/claude-opus-4-6-system-card', 'claude-opus-4-6', 'Safety and capability documentation'),
-    ('model_card', 'Claude Sonnet 4.6 System Card', 'https://www.anthropic.com/claude-sonnet-4-6-system-card', 'claude-sonnet-4-6', 'Safety and capability documentation');
+    ('model_card', 'Claude Sonnet 4.6 System Card', 'https://www.anthropic.com/claude-sonnet-4-6-system-card', 'claude-sonnet-4-6', 'Safety and capability documentation'),
+    ('model_card', 'Claude Mythos Preview — Project Glasswing', 'https://www.anthropic.com/glasswing', 'claude-mythos-preview', 'Frontier research preview — partner-only cybersecurity and coding model');
 
 INSERT INTO resources (type, label, url, description) VALUES
     ('cookbook', 'Motion.dev Animation Library Docs', 'https://motion.dev/docs', 'React/Vue/JS animation library — scroll, layout, gestures, SVG. Crawled to taxonomy/motion-dev-full.md.'),

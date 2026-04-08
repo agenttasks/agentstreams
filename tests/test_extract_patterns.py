@@ -95,6 +95,10 @@ class TestExtractApiSurface:
         assert any("claude-opus-4-6" in a for a in apis)
         assert any("claude-sonnet-4-6" in a for a in apis)
 
+    def test_mythos_model_id(self):
+        apis = extract_api_surface("Use claude-mythos-preview for vulnerability detection")
+        assert any("claude-mythos-preview" in a for a in apis)
+
     def test_rest_endpoints(self):
         apis = extract_api_surface("POST /v1/messages to create a message")
         assert any("/v1/messages" in a for a in apis)

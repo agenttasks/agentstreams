@@ -674,6 +674,15 @@ as:claude-haiku-4-5 a as:Model ;
     as:supportsVision true ;
     rdfs:label "Claude Haiku 4.5" .
 
+as:claude-mythos-preview a as:Model ;
+    as:modelId "claude-mythos-preview" ;
+    as:modelFamily "Claude Mythos" ;
+    as:supportsThinking true ;
+    as:supportsToolUse true ;
+    as:supportsVision true ;
+    rdfs:label "Claude Mythos Preview" ;
+    rdfs:comment "Frontier research preview model — partner-only, not generally available. $25/M input, $125/M output." .
+
 # ── Instances: SDKs ───────────────────────────────────────
 
 as:sdk-typescript a as:SDK ;
@@ -929,6 +938,12 @@ as:resource-sonnet-46-card a as:Resource ;
     as:resourceURL "https://www.anthropic.com/claude-sonnet-4-6-system-card"^^xsd:anyURI ;
     as:relatedModel as:claude-sonnet-4-6 ;
     rdfs:label "Claude Sonnet 4.6 System Card" .
+
+as:resource-mythos-preview-card a as:Resource ;
+    as:resourceType as:ModelCard ;
+    as:resourceURL "https://www.anthropic.com/glasswing"^^xsd:anyURI ;
+    as:relatedModel as:claude-mythos-preview ;
+    rdfs:label "Claude Mythos Preview — Project Glasswing" .
 
 as:resource-motion-dev a as:Resource ;
     as:resourceType as:Cookbook ;
