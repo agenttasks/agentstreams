@@ -1,0 +1,146 @@
+name: Required Checks
+
+# This workflow aggregates all required status checks into a single
+# "Required Checks" job that branch protection rules can reference.
+# Configure branch protection → "Require status checks to pass" → select "All Checks Pass".
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  # ── Layer 1: Static analysis (fast, deterministic) ────────
+  python-lint:
+    name: Python Lint & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "latest"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install and check
+        run: |
+          uv sync
+          uv run ruff check src/ scripts/ tests/
+          uv run ruff format --check src/ scripts/ tests/
+          uv run pytest tests/ -v --tb=short
+
+  webapp-build:
+    name: Webapp Build
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'webapp') || true
+    defaults:
+      run:
+        working-directory: webapp
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: webapp/package-lock.json
+
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npx next build
+
+  # ── Layer 2: Agent boundary enforcement ───────────────────
+  agent-boundaries:
+    name: Agent Boundaries
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Validate agent tool grants
+        run: |
+          set -euo pipefail
+          FAIL=0
+
+          # No recursive spawning (only coordinator may have Agent tool)
+          for f in .claude/agents/*.md; do
+            AGENT=$(basename "$f" .md)
+            [ "$AGENT" = "coordinator" ] && continue
+            TOOLS=$(sed -n '/^---$/,/^---$/p' "$f" | grep -E '^tools:' | head -1)
+            if echo "$TOOLS" | grep -qw "Agent"; then
+              echo "::error file=$f::$AGENT has recursive Agent tool"
+              FAIL=1
+            fi
+          done
+
+          # ANTHROPIC_API_KEY never used
+          VIOLATIONS=$(grep -rn "ANTHROPIC_API_KEY" \
+            --include="*.py" --include="*.ts" --include="*.yml" \
+            --include="*.sh" --include="*.json" \
+            . 2>/dev/null | \
+            grep -vi "never use" | grep -vi "NEVER" | \
+            grep -v "node_modules" | grep -v ".git/" || true)
+          if [ -n "$VIOLATIONS" ]; then
+            echo "::error::ANTHROPIC_API_KEY found outside warnings"
+            echo "$VIOLATIONS"
+            FAIL=1
+          fi
+
+          [ "$FAIL" -eq 0 ] || exit 1
+
+  # ── Layer 3: AI security review (semantic, blocking) ──────
+  security-review:
+    name: Security Review
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 2
+
+      - uses: anthropics/claude-code-security-review@main
+        id: security
+        with:
+          claude-api-key: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          comment-pr: 'true'
+          upload-results: 'true'
+          claude-model: claude-sonnet-4-6
+          claudecode-timeout: '25'
+          exclude-directories: 'webapp/node_modules,webapp/out,webapp/.next,taxonomy'
+          custom-security-scan-instructions: '.github/security-instructions.txt'
+          false-positive-filtering-instructions: '.github/fp-filtering.txt'
+
+  # ── Merge gate ────────────────────────────────────────────
+  all-checks-pass:
+    name: All Checks Pass
+    needs: [python-lint, webapp-build, agent-boundaries, security-review]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Evaluate results
+        run: |
+          echo "## Required Checks Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Result |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Python Lint & Test | ${{ needs.python-lint.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Webapp Build | ${{ needs.webapp-build.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Agent Boundaries | ${{ needs.agent-boundaries.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Security Review | ${{ needs.security-review.result }} |" >> $GITHUB_STEP_SUMMARY
+
+          # Fail if any required check failed
+          if [ "${{ needs.python-lint.result }}" = "failure" ] || \
+             [ "${{ needs.webapp-build.result }}" = "failure" ] || \
+             [ "${{ needs.agent-boundaries.result }}" = "failure" ] || \
+             [ "${{ needs.security-review.result }}" = "failure" ]; then
+            echo ""
+            echo "::error::One or more required checks failed — PR cannot be merged"
+            exit 1
+          fi
+
+          echo ""
+          echo "All required checks passed." >> $GITHUB_STEP_SUMMARY

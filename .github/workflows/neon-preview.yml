@@ -31,7 +31,7 @@ jobs:
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         if: steps.check.outputs.skip != 'true'
 
       - name: Create Neon branch

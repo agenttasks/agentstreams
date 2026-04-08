@@ -25,7 +25,7 @@ jobs:
       run:
         working-directory: evals/crawl-ingest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: actions/setup-node@v4
         with:
@@ -80,7 +80,7 @@ jobs:
       run:
         working-directory: evals/crawl-ingest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: actions/setup-node@v4
         with:
