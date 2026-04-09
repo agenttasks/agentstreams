@@ -24,4 +24,5 @@ export {
   type Layer,
   type LayerResult,
   LAYER_REGISTRY,
+  LAYER_IDS,
 } from "./layers.js";

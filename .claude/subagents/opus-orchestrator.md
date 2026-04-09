@@ -239,7 +239,7 @@ type: subagent
       Data poisoning experiments for emergent misalignment. Supply-chain
       threat model for fine-tuned models.
     </reference>
-    <reference name="PurpleLlama" relevance="security-auditor">
+    <reference name="PurpleLlama" relevance="security-auditor" stars="4115">
       Fork of Meta's CyberSecEval. Industry-standard LLM security assessment.
     </reference>
 

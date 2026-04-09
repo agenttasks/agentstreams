@@ -28,7 +28,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { SessionStore, type SessionEvent } from "./session.js";
 import { TaskRouter, type TaskDefinition } from "./router.js";
-import { LAYER_REGISTRY, LAYER_IDS, type LayerResult } from "./layers.js";
+import { type LayerResult } from "./layers.js";
 
 export interface AgentOptions {
   /** Session ID for durable logging (auto-generated if omitted) */

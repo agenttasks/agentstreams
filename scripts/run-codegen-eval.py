@@ -86,11 +86,8 @@ def call_model(task: EvalTask) -> tuple[EvalTask, str, dict]:
     """Call Claude API for a single task. Returns (task, generated_code, metadata)."""
     import anthropic
 
-    api_key = os.environ.get("CLAUDE_CODE_OAUTH_TOKEN", "")
-    if not api_key:
-        return task, "", {"error": "No CLAUDE_CODE_OAUTH_TOKEN"}
-
-    client = anthropic.Anthropic(api_key=api_key)
+    # Auth: SDK reads CLAUDE_CODE_OAUTH_TOKEN automatically (never use ANTHROPIC_API_KEY).
+    client = anthropic.Anthropic()
     t0 = time.monotonic()
 
     try:

@@ -42,7 +42,7 @@ as context for your auditing approach even without Mythos model access:
   transcripts. Repo: `github.com/safety-research/finetuning-auditor`
   Apply its risk assessment structure when scoring security findings.
 
-- **PurpleLlama** — Set of tools to assess and improve LLM security. Forked
+- **PurpleLlama** (4115 stars) — Set of tools to assess and improve LLM security. Forked
   from Meta's CyberSecEval. Repo: `github.com/safety-research/PurpleLlama`
   Reference its security evaluation taxonomy for vulnerability categorization.
 
