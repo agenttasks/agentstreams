@@ -6,7 +6,7 @@
 uv add anthropic
 ```
 
-The `anthropic` SDK (v0.86+) includes full Managed Agents support via `client.beta.agents`, `client.beta.environments`, `client.beta.sessions`, and `client.beta.sessions.events`.
+The `anthropic` SDK includes full Managed Agents support via `client.beta.agents`, `client.beta.environments`, `client.beta.sessions`, and `client.beta.sessions.events`.
 
 ## Quick Start
 

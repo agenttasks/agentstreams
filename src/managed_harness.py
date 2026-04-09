@@ -12,8 +12,8 @@ Architecture:
     4. Stream events and collect results via SSE
     5. Feed results through the existing gate system
 
-This enables running security-auditor, alignment-auditor, and other
-safety agents in isolated cloud containers with controlled networking,
+This enables running security-auditor, alignment-auditor, architecture-reviewer,
+harmlessness-screen, and other safety agents in isolated cloud containers with controlled networking,
 while preserving the Orchestrator's pipeline logic and gate checks.
 
 Uses CLAUDE_CODE_OAUTH_TOKEN for auth (never ANTHROPIC_API_KEY).
