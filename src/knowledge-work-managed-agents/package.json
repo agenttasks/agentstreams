@@ -1,8 +1,8 @@
 {
   "name": "knowledge-work-managed-agents",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
-  "description": "14-layer managed agent runtime for knowledge work — connects circuits, tracers, prompts, tasks, subtasks, subagents, harness, evals, training, steering, reasoning, behavioral safety, welfare, and governance",
+  "description": "14-layer managed agent runtime for knowledge work — dual-mode execution via Claude Code Agent SDK (local) and Managed Agents API (cloud), with MCP tool server, 14-layer safety stack, and system card methodology",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,10 +13,11 @@
     "test": "node --test dist/**/*.test.js"
   },
   "dependencies": {
-    "@anthropic-ai/claude-agent-sdk": "^0.2.88",
+    "@anthropic-ai/claude-agent-sdk": "^0.2.97",
     "@anthropic-ai/claude-code": "^2.1.97",
     "@anthropic-ai/mcpb": "^2.1.2",
     "@anthropic-ai/sdk": "^0.86.1",
+    "@modelcontextprotocol/sdk": "^1.12.0",
     "@crawlee/core": "^3.16.0",
     "@crawlee/http": "^3.16.0",
     "@crawlee/browser": "^3.16.0",
@@ -24,7 +25,8 @@
     "@neondatabase/serverless": "^1.0.2",
     "@octokit/graphql": "^9.0.3",
     "crawlee": "^3.16.0",
-    "markdown-it": "^14.1.1"
+    "markdown-it": "^14.1.1",
+    "zod": "^3.24.0"
   },
   "devDependencies": {
     "@types/markdown-it": "^14.1.2",

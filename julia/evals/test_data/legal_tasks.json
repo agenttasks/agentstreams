@@ -1,0 +1,74 @@
+[
+  {
+    "id": "contract-review-indemnification",
+    "input": "Review this contract clause for risks: 'Vendor shall indemnify, defend, and hold harmless Client from and against all claims, damages, losses, and expenses arising from Vendor's breach of this Agreement, negligence, or willful misconduct. The aggregate liability under this section shall not exceed the total fees paid in the preceding 12-month period.'",
+    "expected_verdict": "PASS",
+    "expected_risk": "GREEN",
+    "expected_clauses": ["indemnification", "liability cap"],
+    "category": "contract-review",
+    "skill": "review-contract"
+  },
+  {
+    "id": "contract-review-unlimited-liability",
+    "input": "Review this contract clause: 'Vendor shall indemnify Client for ALL claims arising from any cause whatsoever, with no limitation on liability, including consequential, incidental, and punitive damages.'",
+    "expected_verdict": "NEEDS_REMEDIATION",
+    "expected_risk": "RED",
+    "expected_clauses": ["indemnification", "unlimited liability"],
+    "category": "contract-review",
+    "skill": "review-contract"
+  },
+  {
+    "id": "nda-triage-standard",
+    "input": "Triage this NDA: 'Mutual Non-Disclosure Agreement. Term: 2 years. Confidential Information excludes: publicly available info, independently developed info, info received from third parties. Return/destroy upon termination. Governing law: Delaware.'",
+    "expected_verdict": "PASS",
+    "expected_risk": "GREEN",
+    "expected_clauses": ["mutual", "standard carveouts", "reasonable term"],
+    "category": "nda-triage",
+    "skill": "triage-nda"
+  },
+  {
+    "id": "nda-triage-non-compete",
+    "input": "Triage this NDA: 'Non-Disclosure and Non-Competition Agreement. Recipient shall not compete with Discloser in any market for 5 years after termination. Non-solicitation of employees extends indefinitely. No carveouts for publicly available information.'",
+    "expected_verdict": "BLOCK",
+    "expected_risk": "RED",
+    "expected_clauses": ["non-compete", "non-solicitation", "missing carveouts", "excessive term"],
+    "category": "nda-triage",
+    "skill": "triage-nda"
+  },
+  {
+    "id": "compliance-check-gdpr",
+    "input": "Check compliance for: We plan to collect email addresses from EU users for marketing. We will store them in a US-based database and share with third-party ad networks. We have no DPA with the ad network.",
+    "expected_verdict": "BLOCK",
+    "expected_risk": "RED",
+    "expected_clauses": ["GDPR", "data transfer", "DPA required"],
+    "category": "compliance",
+    "skill": "compliance-check"
+  },
+  {
+    "id": "compliance-check-standard",
+    "input": "Check compliance for: We plan to send transactional emails to users who opted in during account creation. Data stored in EU-based servers. DPA signed with email provider. Privacy policy updated.",
+    "expected_verdict": "PASS",
+    "expected_risk": "GREEN",
+    "expected_clauses": ["GDPR compliant", "consent", "DPA in place"],
+    "category": "compliance",
+    "skill": "compliance-check"
+  },
+  {
+    "id": "risk-assessment-ip-transfer",
+    "input": "Assess risk: Proposed deal includes full transfer of all IP developed during engagement to the client, including background IP and any improvements to our existing tools.",
+    "expected_verdict": "NEEDS_REMEDIATION",
+    "expected_risk": "ORANGE",
+    "expected_clauses": ["IP transfer", "background IP at risk"],
+    "category": "risk-assessment",
+    "skill": "legal-risk-assessment"
+  },
+  {
+    "id": "legal-response-dsr",
+    "input": "Draft a response to: A user has submitted a GDPR data subject access request asking for all data we hold about them.",
+    "expected_verdict": "PASS",
+    "expected_risk": "GREEN",
+    "expected_clauses": ["DSAR acknowledgment", "30-day timeline"],
+    "category": "legal-response",
+    "skill": "legal-response"
+  }
+]

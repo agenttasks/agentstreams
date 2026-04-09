@@ -1,0 +1,62 @@
+cubes:
+  - name: julia_vault_files
+    sql: SELECT * FROM julia_vault_files
+    description: "Accumulating snapshot fact — document processing pipeline"
+
+    measures:
+      - name: count
+        type: count
+        description: "Total files uploaded"
+
+      - name: total_size_bytes
+        sql: size_bytes
+        type: sum
+        description: "Total storage consumed"
+
+      - name: total_chunks
+        sql: chunk_count
+        type: sum
+        description: "Total chunks across all files"
+
+      - name: total_tokens
+        sql: token_count
+        type: sum
+        description: "Total tokens across all files"
+
+      - name: avg_chunk_count
+        sql: chunk_count
+        type: avg
+
+    dimensions:
+      - name: id
+        sql: id
+        type: string
+        primary_key: true
+
+      - name: filename
+        sql: filename
+        type: string
+
+      - name: mime_type
+        sql: mime_type
+        type: string
+
+      - name: processing_status
+        sql: processing_status
+        type: string
+        description: "Pipeline milestone: pending → processing → ready | failed"
+
+      - name: uploaded_at
+        sql: uploaded_at
+        type: time
+        description: "Accumulating snapshot: upload milestone"
+
+      - name: processed_at
+        sql: processed_at
+        type: time
+        description: "Accumulating snapshot: completion milestone"
+
+    joins:
+      - name: projects
+        relationship: many_to_one
+        sql: "{CUBE}.project_id = {projects}.id"

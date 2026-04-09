@@ -1,0 +1,43 @@
+cubes:
+  - name: julia_client_matters
+    sql: SELECT * FROM julia_client_matters WHERE is_current = true
+    description: "SCD Type 2 dimension — client matter billing and access control"
+
+    measures:
+      - name: count
+        type: count
+        description: "Number of active client matters"
+
+      - name: total_queries
+        sql: query_count
+        type: sum
+        description: "Total queries across all matters"
+
+      - name: total_tokens
+        sql: token_count
+        type: sum
+        description: "Total tokens consumed across all matters"
+
+    dimensions:
+      - name: id
+        sql: id
+        type: string
+        primary_key: true
+
+      - name: name
+        sql: name
+        type: string
+
+      - name: status
+        sql: status
+        type: string
+        description: "active, closed, or archived"
+
+      - name: effective_date
+        sql: effective_date
+        type: time
+        description: "SCD2: when this version became active"
+
+      - name: created_at
+        sql: created_at
+        type: time

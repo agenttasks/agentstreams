@@ -1,10 +1,26 @@
 /**
- * KnowledgeWorkAgent — the main managed agent runtime.
+ * KnowledgeWorkAgent — dual-mode managed agent runtime.
  *
- * Implements the brain/hands decoupling from Anthropic's Managed Agents:
- *   - Brain: this class (stateless harness loop)
- *   - Hands: cloud containers via @anthropic-ai/claude-agent-sdk
- *   - Session: durable event log via @neondatabase/serverless
+ * Two execution surfaces, one interface:
+ *
+ *   LOCAL (Claude Code Agent SDK — code.claude.com):
+ *     Brain: this class (stateless harness loop)
+ *     Hands: local filesystem via @anthropic-ai/claude-agent-sdk query()
+ *     Session: durable event log via @neondatabase/serverless
+ *     Auth: CLAUDE_CODE_OAUTH_TOKEN
+ *     Use: mode "local" — runs on your machine with file/shell access
+ *
+ *   CLOUD (Managed Agents API — platform.claude.com):
+ *     Brain: this class
+ *     Hands: cloud containers via POST /v1/sessions
+ *     Session: SSE event stream from Anthropic infrastructure
+ *     Auth: CLAUDE_CODE_OAUTH_TOKEN
+ *     Use: mode "cloud" — runs in Anthropic-hosted sandbox
+ *
+ *   API (Direct Messages API — fallback):
+ *     Brain: this class
+ *     Hands: single-turn Messages API call
+ *     Use: mode "api" — no tools, just prompt → response
  *
  * Executes knowledge-work tasks through the 14-layer stack:
  *   L0  Training     → Model selection based on character profile
@@ -29,6 +45,16 @@ import Anthropic from "@anthropic-ai/sdk";
 import { SessionStore, type SessionEvent } from "./session.js";
 import { TaskRouter, type TaskDefinition } from "./router.js";
 import { type LayerResult } from "./layers.js";
+import { executeTask, executeQuery, type AgentSDKResult } from "./agent-sdk.js";
+import {
+  ManagedAgentsClient,
+  type ManagedAgentConfig,
+  type EnvironmentConfig,
+  type SessionConfig,
+} from "./managed-agents.js";
+
+/** Execution mode: where the agent's "hands" run. */
+export type ExecutionMode = "local" | "cloud" | "api";
 
 export interface AgentOptions {
   /** Session ID for durable logging (auto-generated if omitted) */
@@ -43,21 +69,37 @@ export interface AgentOptions {
   enableReasoningMonitor?: boolean;
   /** System prompt prepended to task prompt */
   systemPrompt?: string;
+  /**
+   * Execution mode:
+   *   "local" — Claude Code Agent SDK (runs on your machine)
+   *   "cloud" — Managed Agents API (runs in Anthropic sandbox)
+   *   "api"   — Direct Messages API (no tools, single-turn)
+   */
+  mode?: ExecutionMode;
+  /** For cloud mode: pre-created agent ID */
+  cloudAgentId?: string;
+  /** For cloud mode: environment ID */
+  cloudEnvironmentId?: string;
 }
 
-interface ExecutionResult {
+export interface ExecutionResult {
   task: TaskDefinition;
   output: string;
   sessionId: string;
   events: SessionEvent[];
   layers: LayerResult[];
   duration_ms: number;
+  /** Which execution mode was used */
+  mode: ExecutionMode;
+  /** Tool calls made (local mode only) */
+  toolCalls?: Array<{ name: string; input: Record<string, unknown> }>;
 }
 
 export class KnowledgeWorkAgent {
   private client: Anthropic;
   private router: TaskRouter;
   private session: SessionStore;
+  private managedClient: ManagedAgentsClient | null = null;
   private options: Required<AgentOptions>;
 
   constructor(options?: AgentOptions) {
@@ -75,7 +117,15 @@ export class KnowledgeWorkAgent {
       enableSafety: options?.enableSafety ?? true,
       enableReasoningMonitor: options?.enableReasoningMonitor ?? true,
       systemPrompt: options?.systemPrompt ?? "",
+      mode: options?.mode ?? "api",
+      cloudAgentId: options?.cloudAgentId ?? "",
+      cloudEnvironmentId: options?.cloudEnvironmentId ?? "",
     };
+
+    // Initialize Managed Agents client for cloud mode
+    if (this.options.mode === "cloud") {
+      this.managedClient = new ManagedAgentsClient();
+    }
 
     this.session = new SessionStore(this.options.sessionId);
   }
@@ -159,54 +209,129 @@ export class KnowledgeWorkAgent {
     );
 
     // ── L7: Harness execution (brain) ────────────────────────
-    await this.session.emit("harness.start", { model, maxTurns: this.options.maxTurns }, 7);
+    const mode = this.options.mode;
+    await this.session.emit(
+      "harness.start",
+      { model, maxTurns: this.options.maxTurns, mode },
+      7,
+    );
 
     let output = "";
+    let sdkResult: AgentSDKResult | undefined;
+
     try {
-      const response = await this.client.messages.create({
-        model,
-        max_tokens: 8192,
-        system: systemPrompt,
-        messages: [{ role: "user", content: request }],
-      });
+      if (mode === "local") {
+        // ── LOCAL: Claude Code Agent SDK ───────────────────
+        // Runs on your machine with file/shell access via query()
+        sdkResult = await executeTask(task, request);
+        output = sdkResult.output;
 
-      output =
-        response.content
-          .filter((b): b is Anthropic.TextBlock => b.type === "text")
-          .map((b) => b.text)
-          .join("\n") || "";
+        await this.session.emit(
+          "harness.complete",
+          {
+            mode: "local",
+            toolCallCount: sdkResult.toolCalls.length,
+            agentSessionId: sdkResult.sessionId,
+          },
+          7,
+        );
 
-      await this.session.emit(
-        "harness.complete",
-        {
-          inputTokens: response.usage.input_tokens,
-          outputTokens: response.usage.output_tokens,
-          stopReason: response.stop_reason,
-        },
-        7
-      );
+        layerResults.push({
+          layer: 7,
+          name: "harness",
+          pass: true,
+          score: 1.0,
+          evidence: [
+            `Local execution via Agent SDK, ${sdkResult.toolCalls.length} tool calls`,
+          ],
+          metadata: {
+            mode: "local",
+            toolCalls: sdkResult.toolCalls.length,
+            agentSessionId: sdkResult.sessionId,
+          },
+        });
+      } else if (mode === "cloud" && this.managedClient) {
+        // ── CLOUD: Managed Agents API ─────────────────────
+        // Runs in Anthropic-hosted sandbox via SSE streaming
+        const cloudSessionId = await this.managedClient.createSession({
+          agent: {
+            type: "agent",
+            id: this.options.cloudAgentId,
+          },
+          environment: this.options.cloudEnvironmentId,
+          title: `KW: ${task.name}`,
+        });
 
-      layerResults.push({
-        layer: 7,
-        name: "harness",
-        pass: true,
-        score: 1.0,
-        evidence: [`Completed with stop_reason=${response.stop_reason}`],
-        metadata: {
-          inputTokens: response.usage.input_tokens,
-          outputTokens: response.usage.output_tokens,
-        },
-      });
+        output = await this.managedClient.runWithCustomTools(
+          cloudSessionId,
+          request,
+          {},
+        );
+
+        await this.session.emit(
+          "harness.complete",
+          { mode: "cloud", cloudSessionId },
+          7,
+        );
+
+        layerResults.push({
+          layer: 7,
+          name: "harness",
+          pass: true,
+          score: 1.0,
+          evidence: [`Cloud execution via Managed Agents API`],
+          metadata: { mode: "cloud", cloudSessionId },
+        });
+      } else {
+        // ── API: Direct Messages API (fallback) ───────────
+        // Single-turn, no tools — just prompt → response
+        const response = await this.client.messages.create({
+          model,
+          max_tokens: 8192,
+          system: systemPrompt,
+          messages: [{ role: "user", content: request }],
+        });
+
+        output =
+          response.content
+            .filter((b): b is Anthropic.TextBlock => b.type === "text")
+            .map((b) => b.text)
+            .join("\n") || "";
+
+        await this.session.emit(
+          "harness.complete",
+          {
+            mode: "api",
+            inputTokens: response.usage.input_tokens,
+            outputTokens: response.usage.output_tokens,
+            stopReason: response.stop_reason,
+          },
+          7,
+        );
+
+        layerResults.push({
+          layer: 7,
+          name: "harness",
+          pass: true,
+          score: 1.0,
+          evidence: [`API execution, stop_reason=${response.stop_reason}`],
+          metadata: {
+            mode: "api",
+            inputTokens: response.usage.input_tokens,
+            outputTokens: response.usage.output_tokens,
+          },
+        });
+      }
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      await this.session.emit("harness.error", { error: msg }, 7);
+      await this.session.emit("harness.error", { error: msg, mode }, 7);
       layerResults.push({
         layer: 7,
         name: "harness",
         pass: false,
         score: 0,
         evidence: [msg],
-        metadata: {},
+        metadata: { mode },
       });
     }
 
@@ -251,6 +376,8 @@ export class KnowledgeWorkAgent {
       events: await this.session.getEvents(),
       layers: layerResults,
       duration_ms: Date.now() - t0,
+      mode,
+      toolCalls: sdkResult?.toolCalls,
     };
   }
 
