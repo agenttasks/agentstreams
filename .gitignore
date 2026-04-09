@@ -25,5 +25,8 @@ webapp/node_modules/
 webapp/.next/
 webapp/out/
 
+# Wrangler local state
+.wrangler/
+
 # Skills plugin cache
 .agents/

@@ -13,12 +13,9 @@
   --border-hover: rgba(255, 255, 255, 0.12);
   --glow: rgba(200, 255, 0, 0.08);
 
-  /* System font stacks — swap to Google Fonts in production:
-     Outfit (display), Crimson Pro (body), JetBrains Mono (mono).
-     Add to layout.tsx: import { Outfit, Crimson_Pro, JetBrains_Mono } from "next/font/google" */
-  --font-display: "Helvetica Neue", Helvetica, system-ui, -apple-system, sans-serif;
-  --font-body: Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-code: "SF Mono", "Cascadia Code", "Fira Code", Menlo, monospace;
+  --font-display: var(--font-outfit), "Helvetica Neue", system-ui, sans-serif;
+  --font-body: var(--font-crimson), Georgia, "Times New Roman", serif;
+  --font-code: var(--font-jetbrains), "SF Mono", "Cascadia Code", Menlo, monospace;
 }
 
 @theme inline {
