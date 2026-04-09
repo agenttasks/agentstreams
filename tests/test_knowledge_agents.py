@@ -27,8 +27,9 @@ from src.managed_agents import NetworkingMode
 
 
 class TestPluginCategory:
-    def test_all_17_categories(self):
-        assert len(PluginCategory) == 17
+    def test_all_categories(self):
+        # 17 knowledge-work + 5 FSI = 22
+        assert len(PluginCategory) == 22
 
     def test_category_values_match_directory_names(self):
         assert PluginCategory.PRODUCTIVITY.value == "productivity"
@@ -99,10 +100,21 @@ class TestCategoryAgents:
         for cat in PluginCategory:
             assert cat in CATEGORY_AGENTS, f"{cat} not mapped to an agent"
 
-    def test_one_to_one_mapping(self):
-        """Each plugin category has its own dedicated agent."""
-        agent_names = list(CATEGORY_AGENTS.values())
-        assert len(agent_names) == len(set(agent_names)), "Some categories share agents"
+    def test_knowledge_work_one_to_one(self):
+        """Each knowledge-work plugin category has its own dedicated agent."""
+        kw_agents = [
+            CATEGORY_AGENTS[cat] for cat in PluginCategory
+            if not cat.value.startswith("fsi-")
+        ]
+        assert len(kw_agents) == len(set(kw_agents)), "KW categories share agents"
+
+    def test_fsi_categories_share_finance_agent(self):
+        """All FSI categories route to finance-agent."""
+        fsi_agents = {
+            CATEGORY_AGENTS[cat] for cat in PluginCategory
+            if cat.value.startswith("fsi-")
+        }
+        assert fsi_agents == {"finance-agent"}
 
     def test_key_agent_names(self):
         assert CATEGORY_AGENTS[PluginCategory.SALES] == "sales-agent"
@@ -201,8 +213,8 @@ class TestKnowledgeAgentConfig:
 class TestKnowledgeWorkRegistry:
     def test_init(self):
         registry = KnowledgeWorkRegistry()
-        assert registry.skill_count >= 100
-        assert registry.category_count == 17
+        assert registry.skill_count >= 160  # 119 KW + 45 FSI
+        assert registry.category_count == 22  # 17 KW + 5 FSI
 
     def test_resolve_data_skill(self):
         registry = KnowledgeWorkRegistry()
@@ -411,3 +423,48 @@ class TestConvenienceFunctions:
     def test_total_installs(self):
         total = total_installs()
         assert total > 50000
+
+
+# ── Financial Services Plugin Tests ──────────────────────────
+
+
+class TestFinancialServicesPlugins:
+    def test_fsi_categories_exist(self):
+        assert PluginCategory.FSI_FINANCIAL_ANALYSIS.value == "fsi-financial-analysis"
+        assert PluginCategory.FSI_INVESTMENT_BANKING.value == "fsi-investment-banking"
+        assert PluginCategory.FSI_EQUITY_RESEARCH.value == "fsi-equity-research"
+        assert PluginCategory.FSI_PRIVATE_EQUITY.value == "fsi-private-equity"
+        assert PluginCategory.FSI_WEALTH_MANAGEMENT.value == "fsi-wealth-management"
+
+    def test_fsi_skills_count(self):
+        fsi_skills = [m for m in SKILL_CATALOG.values()
+                      if m.category.value.startswith("fsi-")]
+        assert len(fsi_skills) == 45
+
+    def test_fsi_core_skills(self):
+        assert "dcf-model" in SKILL_CATALOG
+        assert "comps-analysis" in SKILL_CATALOG
+        assert "lbo-model" in SKILL_CATALOG
+        assert "3-statement-model" in SKILL_CATALOG
+
+    def test_fsi_equity_research_skills(self):
+        assert "earnings-analysis" in SKILL_CATALOG
+        assert "initiating-coverage" in SKILL_CATALOG
+
+    def test_fsi_private_equity_skills(self):
+        assert "ic-memo" in SKILL_CATALOG
+        assert "deal-sourcing" in SKILL_CATALOG
+        assert "returns-analysis" in SKILL_CATALOG
+
+    def test_fsi_wealth_management_skills(self):
+        assert "tax-loss-harvesting" in SKILL_CATALOG
+        assert "portfolio-rebalance" in SKILL_CATALOG
+
+    def test_fsi_skills_route_to_finance_agent(self):
+        registry = KnowledgeWorkRegistry()
+        for skill_name in ("dcf-model", "earnings-analysis", "ic-memo",
+                           "tax-loss-harvesting", "pitch-deck"):
+            agent = registry.resolve(skill_name)
+            assert agent.name == "finance-agent", (
+                f"{skill_name} routes to {agent.name} instead of finance-agent"
+            )

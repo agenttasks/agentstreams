@@ -1,11 +1,12 @@
 """Knowledge Work Agents — plugin-to-agent bridge layer.
 
-Maps the 124 skills from anthropics/knowledge-work-plugins (17 plugin
-directories) to 17 domain agents, providing factory functions and pipelines
-that integrate with the existing Orchestrator infrastructure.
+Maps skills from two Anthropic plugin repos to domain agents:
+- anthropics/knowledge-work-plugins: 119 skills across 17 plugins
+- anthropics/financial-services-plugins: 45 skills across 5 plugins
 
-Source of truth: vendors/knowledge-work-plugins/ (cloned from GitHub).
-Every skill in SKILL_CATALOG corresponds to a SKILL.md file in that repo.
+Source of truth: vendors/knowledge-work-plugins/ and
+vendors/financial-services-plugins/ (cloned from GitHub).
+Every skill in SKILL_CATALOG corresponds to a SKILL.md file.
 
 Plugin categories (PluginCategory enum values mirror directory names exactly):
     BIO_RESEARCH              → bio-research-agent       (6 skills)
@@ -64,11 +65,15 @@ from src.managed_agents import (
 
 
 class PluginCategory(Enum):
-    """Plugin directories from anthropics/knowledge-work-plugins.
+    """Plugin directories from anthropics/knowledge-work-plugins and
+    anthropics/financial-services-plugins.
 
-    Enum names and values mirror the actual directory names in the repo.
+    Enum names and values mirror the actual directory names in each repo.
+    Knowledge-work plugins use the directory name as-is.
+    Financial-services plugins are prefixed with 'fsi-' to avoid collisions.
     """
 
+    # ── knowledge-work-plugins ────────────────────────────────
     BIO_RESEARCH = "bio-research"
     COWORK_PLUGIN_MANAGEMENT = "cowork-plugin-management"
     CUSTOMER_SUPPORT = "customer-support"
@@ -86,6 +91,13 @@ class PluginCategory(Enum):
     PRODUCT_MANAGEMENT = "product-management"
     PRODUCTIVITY = "productivity"
     SALES = "sales"
+
+    # ── financial-services-plugins ────────────────────────────
+    FSI_FINANCIAL_ANALYSIS = "fsi-financial-analysis"
+    FSI_INVESTMENT_BANKING = "fsi-investment-banking"
+    FSI_EQUITY_RESEARCH = "fsi-equity-research"
+    FSI_PRIVATE_EQUITY = "fsi-private-equity"
+    FSI_WEALTH_MANAGEMENT = "fsi-wealth-management"
 
 
 # Agent name that handles each plugin category.
@@ -108,6 +120,12 @@ CATEGORY_AGENTS: dict[PluginCategory, str] = {
     PluginCategory.PRODUCT_MANAGEMENT: "product-management-agent",
     PluginCategory.PRODUCTIVITY: "productivity-agent",
     PluginCategory.SALES: "sales-agent",
+    # financial-services-plugins
+    PluginCategory.FSI_FINANCIAL_ANALYSIS: "finance-agent",
+    PluginCategory.FSI_INVESTMENT_BANKING: "finance-agent",
+    PluginCategory.FSI_EQUITY_RESEARCH: "finance-agent",
+    PluginCategory.FSI_PRIVATE_EQUITY: "finance-agent",
+    PluginCategory.FSI_WEALTH_MANAGEMENT: "finance-agent",
 }
 
 
@@ -354,6 +372,60 @@ for _n, _i in [
     ("pipeline-review", 492),
 ]:
     _register(_n, PluginCategory.SALES, _i)
+
+
+# ── financial-services-plugins ───────────────────────────────
+# Source: vendors/financial-services-plugins/
+# 5 plugins, 45 skills, 11 MCP integrations
+
+# financial-analysis (11 skills) — core plugin, all MCP connectors
+for _n, _i in [
+    ("3-statement-model", 261), ("audit-xls", 247),
+    ("clean-data-xls", 236), ("competitive-analysis", 327),
+    ("comps-analysis", 254), ("dcf-model", 360),
+    ("deck-refresh", 211), ("ib-check-deck", 219),
+    ("lbo-model", 271), ("ppt-template-creator", 392),
+    ("skill-creator", 250),
+]:
+    _register(_n, PluginCategory.FSI_FINANCIAL_ANALYSIS, _i)
+
+# investment-banking (9 skills)
+for _n, _i in [
+    ("buyer-list", 0), ("cim-builder", 0),
+    ("datapack-builder", 269), ("deal-tracker", 0),
+    ("merger-model", 0), ("pitch-deck", 290),
+    ("process-letter", 0), ("strip-profile", 0),
+    ("teaser", 0),
+]:
+    _register(_n, PluginCategory.FSI_INVESTMENT_BANKING, _i)
+
+# equity-research (9 skills)
+for _n, _i in [
+    ("catalyst-calendar", 0), ("earnings-analysis", 528),
+    ("earnings-preview", 0), ("idea-generation", 0),
+    ("initiating-coverage", 310), ("model-update", 0),
+    ("morning-note", 0), ("sector-overview", 0),
+    ("thesis-tracker", 0),
+]:
+    _register(_n, PluginCategory.FSI_EQUITY_RESEARCH, _i)
+
+# private-equity (10 skills)
+for _n, _i in [
+    ("ai-readiness", 0), ("dd-checklist", 0),
+    ("dd-meeting-prep", 0), ("deal-screening", 0),
+    ("deal-sourcing", 0), ("ic-memo", 0),
+    ("portfolio-monitoring", 0), ("returns-analysis", 0),
+    ("unit-economics", 0), ("value-creation-plan", 0),
+]:
+    _register(_n, PluginCategory.FSI_PRIVATE_EQUITY, _i)
+
+# wealth-management (6 skills)
+for _n, _i in [
+    ("client-report", 0), ("client-review", 0),
+    ("financial-plan", 0), ("investment-proposal", 0),
+    ("portfolio-rebalance", 0), ("tax-loss-harvesting", 0),
+]:
+    _register(_n, PluginCategory.FSI_WEALTH_MANAGEMENT, _i)
 
 
 # ── Knowledge Agent Configs ──────────────────────────────────
