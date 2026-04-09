@@ -99,7 +99,7 @@ skills-lock.json linguist-generated=true
 #   Tunnel: julia/src/completion.ts ↔ src/knowledge-work-managed-agents/src/agent.ts
 #   Tunnel: julia/src/completion.ts → vendors/knowledge-work-plugins/legal/skills/ (prompt templates)
 #   Tunnel: julia/agents/*.md ↔ .claude/agents/compliance-reviewer.md (shared legal skills)
-#   Tunnel: julia/mcp-server.ts ↔ mcp-server/src/index.ts (shared MCP patterns)
+#   Tunnel: julia/src/mcp-server.ts ↔ mcp-server/src/index.ts (shared MCP patterns)
 #   Tunnel: julia/agents/ → src/knowledge_agents.py (CATEGORY_AGENTS registry)
 #
 # SDK Ecosystem (tunnels to npm registry):
