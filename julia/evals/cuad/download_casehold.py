@@ -16,34 +16,54 @@ Auth: CLAUDE_CODE_OAUTH_TOKEN (never ANTHROPIC_API_KEY).
 from __future__ import annotations
 
 import argparse
+import csv
 import json
+import os
 from pathlib import Path
 
 DATA_DIR = Path(__file__).parent / "data"
 
 
 def download_casehold(split: str = "test", limit: int | None = None) -> list[dict]:
-    """Download CaseHOLD from HuggingFace and save to local JSONL."""
-    from datasets import load_dataset
+    """Download CaseHOLD from HuggingFace via direct CSV download.
+
+    The casehold/casehold dataset uses a legacy loading script that is
+    no longer supported by the datasets library. We download the CSV
+    directly via huggingface_hub.
+    """
+    from huggingface_hub import hf_hub_download
+
+    token = os.environ.get("HUGGINGFACE_API_TOKEN") or os.environ.get("HF_TOKEN")
 
     print(f"Downloading CaseHOLD dataset (split={split}) from HuggingFace...")
-    ds = load_dataset("casehold/casehold", "all", split=split)
+    csv_path = hf_hub_download(
+        repo_id="casehold/casehold",
+        filename=f"data/all/{split}.csv",
+        repo_type="dataset",
+        token=token,
+    )
 
+    # CaseHOLD CSV uses numeric column headers:
+    # col 0 = citing_prompt, cols 1-5 = holding options, col 11 = label (0-4)
+    # "Unnamed: 0" = example_id
     examples = []
-    for i, row in enumerate(ds):
-        if limit and i >= limit:
-            break
+    with open(csv_path, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for i, row in enumerate(reader):
+            if limit and i >= limit:
+                break
 
-        examples.append({
-            "id": str(row.get("example_id", i)),
-            "citing_prompt": row["citing_prompt"],
-            "holding_0": row["holding_0"],
-            "holding_1": row["holding_1"],
-            "holding_2": row["holding_2"],
-            "holding_3": row["holding_3"],
-            "holding_4": row["holding_4"],
-            "label": row["label"],
-        })
+            example_id = row.get("Unnamed: 0", str(i))
+            examples.append({
+                "id": str(example_id),
+                "citing_prompt": row["0"],
+                "holding_0": row["1"],
+                "holding_1": row["2"],
+                "holding_2": row["3"],
+                "holding_3": row["4"],
+                "holding_4": row["5"],
+                "label": int(row["11"]),
+            })
 
     print(f"Parsed {len(examples)} CaseHOLD examples")
 

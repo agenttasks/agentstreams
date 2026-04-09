@@ -30,10 +30,20 @@ DATA_DIR = Path(__file__).parent / "data"
 
 def download_cuad() -> list[dict]:
     """Download CUAD from HuggingFace and save to local JSONL."""
+    import os
+
     from datasets import load_dataset
 
+    token = os.environ.get("HUGGINGFACE_API_TOKEN") or os.environ.get("HF_TOKEN")
+
     print("Downloading CUAD dataset from HuggingFace...")
-    ds = load_dataset("cuad", split="test")
+    # chenghao/cuad_qa: maintained mirror with standard format (test split available)
+    # theatticusproject/cuad: original but only has 'train' split
+    try:
+        ds = load_dataset("chenghao/cuad_qa", split="test", token=token)
+    except Exception:
+        print("  Falling back to theatticusproject/cuad (train split)...")
+        ds = load_dataset("theatticusproject/cuad", split="train", token=token)
 
     # CUAD structure: context (contract text), questions (clause type queries),
     # answers (extracted spans per clause type), id, title
