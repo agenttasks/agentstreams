@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=75.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "agentstreams"
 version = "0.3.0"
@@ -14,7 +18,12 @@ dependencies = [
     "psycopg[binary]>=3.2",
     "pymupdf>=1.27.2.2",
     "pyyaml>=6.0",
+    "rich>=14.3.3",
+    "typer>=0.24.1",
 ]
+
+[project.scripts]
+agentstreams = "src.cli:main"
 
 [project.optional-dependencies]
 vector = [
@@ -45,6 +54,21 @@ dev = [
     "aioresponses>=0.7",
     "ruff>=0.9",
 ]
+diagrams = [
+    "diagrams>=0.25.1",
+]
+eval = [
+    "deepeval>=3.9.6",
+    "promptfoo>=0.1.4",
+    "pyright>=1.1.408",
+    "ruff>=0.15.8",
+    "tree-sitter>=0.25.2",
+    "tree-sitter-python>=0.25.0",
+    "tree-sitter-typescript>=0.23.2",
+]
+
+[tool.setuptools.packages.find]
+include = ["src*"]
 
 [tool.ruff]
 target-version = "py312"
@@ -52,7 +76,7 @@ line-length = 100
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM"]
-ignore = ["E501", "SIM102", "SIM108"]  # line length; keep explicit if/else for readability
+ignore = ["E501", "SIM102", "SIM108", "B008"]  # line length; keep explicit if/else; typer uses function calls in defaults by design
 
 [tool.ruff.format]
 quote-style = "double"

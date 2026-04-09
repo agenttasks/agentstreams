@@ -86,6 +86,12 @@ skills-lock.json linguist-generated=true
 #   webapp/package.json → @neondatabase/serverless (Neon edge queries)
 #   webapp/package.json → @anthropic-ai/claude-agent-sdk (agent runtime)
 #
+# Wing: src/knowledge-work-managed-agents/ — 14-layer TS managed agent runtime
+#   Tunnel: src/knowledge_work/*.py ↔ src/knowledge-work-managed-agents/src/*.ts
+#   Tunnel: vendors/circuit-tracer ↔ src/knowledge_work/tracers.py (Layer 2)
+#   Tunnel: vendors/knowledge-work-plugins ↔ src/knowledge_work/prompts.py (Layer 3)
+#   Tunnel: evals/codegen-ab/ ↔ src/knowledge_work/evals.py (Layer 8)
+#
 # SDK Ecosystem (tunnels to npm registry):
 #   @anthropic-ai/claude-agent-sdk  — Agent runtime (query, hooks, subagents)
 #   @anthropic-ai/claude-code       — CLI package (renamed to agent-sdk)

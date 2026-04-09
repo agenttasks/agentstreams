@@ -1,0 +1,66 @@
+[
+  {
+    "id": "py-bloom-filter",
+    "description": "Implement a bloom filter from scratch",
+    "prompt": "Write a Python bloom filter class with add(), __contains__(), configurable false-positive rate, and optimal hash count calculation. Use only the standard library. Include a working demo at the bottom that adds 1000 items and checks false positive rate. Return ONLY the Python code.",
+    "language": "python",
+    "difficulty": "medium",
+    "expected_features": ["class", "hash", "bitarray", "add", "__contains__"]
+  },
+  {
+    "id": "py-async-rate-limiter",
+    "description": "Build an async token-bucket rate limiter",
+    "prompt": "Write a Python async token-bucket rate limiter using asyncio. It should support: configurable rate (tokens/sec), burst capacity, and an async context manager for acquiring tokens. Include a demo that makes 20 concurrent 'requests' with a limit of 5/sec. Return ONLY the Python code.",
+    "language": "python",
+    "difficulty": "hard",
+    "expected_features": ["asyncio", "class", "async with", "await"]
+  },
+  {
+    "id": "py-cli-parser",
+    "description": "Build a CLI argument parser from scratch",
+    "prompt": "Write a Python CLI argument parser WITHOUT using argparse or click. Support positional args, --flag options, --key=value options, -short flags, and --help generation. Include a demo that parses: 'myapp input.txt --verbose --output=result.txt -n 5'. Return ONLY the Python code.",
+    "language": "python",
+    "difficulty": "medium",
+    "expected_features": ["class", "def parse", "sys.argv", "--help"]
+  },
+  {
+    "id": "py-lru-cache",
+    "description": "Implement an LRU cache with O(1) operations",
+    "prompt": "Write a Python LRU cache using a doubly-linked list and dict for O(1) get/put. Support max_size, get(key), put(key, value), and __repr__. Do NOT use functools.lru_cache or collections.OrderedDict. Include a working demo. Return ONLY the Python code.",
+    "language": "python",
+    "difficulty": "medium",
+    "expected_features": ["class", "get", "put", "Node", "next", "prev"]
+  },
+  {
+    "id": "py-json-parser",
+    "description": "Build a JSON parser from scratch",
+    "prompt": "Write a recursive descent JSON parser in Python. Parse strings, numbers, booleans, null, arrays, and objects. Do NOT use the json module. Handle escape sequences in strings. Include tests that parse '{\"name\": \"test\", \"values\": [1, 2.5, true, null]}'. Return ONLY the Python code.",
+    "language": "python",
+    "difficulty": "hard",
+    "expected_features": ["def parse", "def parse_string", "def parse_number", "def parse_array", "def parse_object"]
+  },
+  {
+    "id": "py-event-emitter",
+    "description": "Implement a typed event emitter",
+    "prompt": "Write a Python typed event emitter supporting on(), off(), emit(), once(), and type-safe event registration using generics and dataclasses. Support async handlers. Include a demo with 'user_login' and 'data_received' events. Return ONLY the Python code.",
+    "language": "python",
+    "difficulty": "medium",
+    "expected_features": ["class", "on", "emit", "off", "once", "dataclass"]
+  },
+  {
+    "id": "py-parallel-map",
+    "description": "Build a parallel map with worker pool",
+    "prompt": "Write a Python parallel map function using multiprocessing that: distributes work across N workers, supports timeout per task, collects results in order, handles worker crashes gracefully. Include a demo that computes SHA-256 hashes of 100 random strings across 4 workers. Return ONLY the Python code.",
+    "language": "python",
+    "difficulty": "hard",
+    "expected_features": ["multiprocessing", "Pool", "map", "timeout"]
+  },
+  {
+    "id": "py-schema-validator",
+    "description": "Build a JSON schema validator",
+    "prompt": "Write a Python function that validates a JSON object against a schema (supporting type, required, properties, items, minimum, maximum, minLength, maxLength, enum, pattern). Return a list of validation errors. Do NOT use jsonschema or pydantic. Include tests. Return ONLY the Python code.",
+    "language": "python",
+    "difficulty": "hard",
+    "expected_features": ["def validate", "type", "required", "properties", "errors"]
+  }
+]

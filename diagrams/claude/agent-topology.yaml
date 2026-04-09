@@ -1,0 +1,231 @@
+# Agent Topology — Claude-optimized
+# Purpose: Complete agent roster with model tiers, tool grants, safety-research refs,
+# and inter-agent relationships. Designed for LLM reasoning about capabilities and constraints.
+
+topology:
+  total_agents: 25
+  model_tiers: 4
+  orchestrator_rule: "Only the Opus 4.6 orchestrator may spawn agents. No subagent may spawn other subagents."
+  auth_rule: "All agents use CLAUDE_CODE_OAUTH_TOKEN — never ANTHROPIC_API_KEY."
+
+  tiers:
+    # ─────────────────────────────────────────────────────────────
+    # TIER 1: Opus Safety Agents (read-only audit, highest trust)
+    # ─────────────────────────────────────────────────────────────
+    - tier: opus-safety
+      model: claude-opus-4-6
+      count: 3
+      policy: "Read-only. Never modify files. Report findings with structured verdicts."
+      temperature: 0.0
+      agents:
+        - id: security-auditor
+          tools: [Read, Glob, Grep, Bash]
+          max_turns: 15
+          output: "verdict: PASS | NEEDS_REMEDIATION | BLOCK"
+          methodology: "Glasswing-depth, OWASP Top 10, sandbox escape, dependency vulns"
+          safety_research:
+            - {repo: auditing-agents, stars: 12, use: "audit methodology"}
+            - {repo: finetuning-auditor, stars: 20, use: "risk scoring 0-10"}
+            - {repo: PurpleLlama, stars: 4115, use: "safety benchmarks"}
+            - {repo: safety-tooling, stars: 114, use: "tooling infrastructure"}
+            - {repo: lie-detector, stars: 4, use: "sandbagging detection (5 variants)"}
+            - {repo: SCONE-bench, stars: 175, use: "exploit severity taxonomy"}
+
+        - id: alignment-auditor
+          tools: [Read, Glob, Grep]
+          max_turns: 15
+          output: "verdict: ALIGNED | BORDERLINE | MISALIGNED + suspicion_score 0-100"
+          methodology: "Mythos System Card §4, 2300 investigation sessions, Petri 2.0"
+          safety_research:
+            - {repo: petri, stars: 979, use: "three-role auditing (auditor/target/judge)"}
+            - {repo: trusted-monitor, stars: 41, use: "8-tier suspicion rubric"}
+            - {repo: SHADE-Arena, stars: 24, use: "stealth action benchmark (4-5%)"}
+            - {repo: lie-detector, stars: 4, use: "three-criteria deception detection"}
+            - {repo: ciphered-reasoning-llms, stars: 9, use: "steganographic reasoning"}
+            - {repo: A3, stars: 13, use: "dual harmful/benign query pairs"}
+            - {repo: open-source-alignment-faking, stars: 56, use: "alignment-faking threat models"}
+            - {repo: crosscoder_emergent_misalignment, stars: 5, use: "emergent misalignment signals"}
+
+        - id: architecture-reviewer
+          tools: [Read, Glob, Grep]
+          max_turns: 15
+          output: "risk rating + recommended changes"
+          methodology: "Agent topology, least-privilege, context isolation, parallelization safety"
+          safety_research:
+            - {repo: petri, stars: 979, use: "three-role audit pattern"}
+            - {repo: trusted-monitor, stars: 41, use: "suspicion-scoring gates"}
+            - {repo: open-source-alignment-faking, stars: 56, use: "alignment-faking threat models"}
+
+    # ─────────────────────────────────────────────────────────────
+    # TIER 2: Sonnet Codegen Agents (mutation-capable, medium trust)
+    # ─────────────────────────────────────────────────────────────
+    - tier: sonnet-codegen
+      model: claude-sonnet-4-6
+      count: 4
+      policy: "May create/edit files. Follow project conventions. No hard-coded credentials."
+      agents:
+        - id: code-generator
+          tools: [Read, Glob, Grep, Write, Edit]
+          max_turns: 25
+          specialization: "Python + TypeScript codegen for Claude Agent SDK apps"
+
+        - id: test-runner
+          tools: [Read, Glob, Grep, Bash]
+          max_turns: 10
+          specialization: "Test discovery, execution, coverage reporting"
+
+        - id: prompt-hardener
+          tools: [Read, Glob, Grep, Edit]
+          max_turns: 10
+          specialization: "Inoculation-prompting, role-anchoring, scope-bounding"
+          safety_research:
+            - {repo: inoculation-prompting, stars: 10, use: "arxiv.org/abs/2510.05024"}
+            - {repo: persona_vectors, stars: 388, use: "persona-steering attack patterns"}
+
+        - id: eval-builder
+          tools: [Read, Glob, Grep, Write, Bash]
+          max_turns: 15
+          specialization: "Eval suite construction with test cases and grading rubrics"
+          safety_research:
+            - {repo: bloom, stars: 1270, use: "behavior-probe methodology (seed.yaml)"}
+            - {repo: impossiblebench, stars: 36, use: "test-case exploitation detection"}
+            - {repo: SCONE-bench, stars: 175, use: "safety benchmark integration"}
+            - {repo: lie-detector, stars: 4, use: "46 deception eval tasks, 8 categories"}
+            - {repo: A3, stars: 13, use: "dual harmful/benign query generation"}
+            - {repo: open-source-alignment-faking, stars: 56, use: "faking detection evals"}
+
+    # ─────────────────────────────────────────────────────────────
+    # TIER 3: Haiku Screen (fast classification, minimal trust)
+    # ─────────────────────────────────────────────────────────────
+    - tier: haiku-screen
+      model: claude-haiku-4-5
+      count: 1
+      policy: "JSON output only. No tool access. 256 token limit."
+      agents:
+        - id: harmlessness-screen
+          tools: []
+          max_turns: 1
+          max_tokens: 256
+          temperature: 0.0
+          output_schema: |
+            {"classification": "safe|needs_review|block", "category": "...", "confidence": N, "reasoning": "..."}
+          safety_research:
+            - {repo: assistant-axis, stars: 120, use: "assistant-axis deviation detection"}
+            - {repo: ciphered-reasoning-llms, stars: 9, use: "encoded instruction detection"}
+            - {repo: persona_vectors, stars: 388, use: "persona-steering attack detection"}
+
+    # ─────────────────────────────────────────────────────────────
+    # TIER 4: Opus Knowledge-Work Agents (domain specialists)
+    # ─────────────────────────────────────────────────────────────
+    - tier: opus-knowledge-work
+      model: claude-opus-4-6
+      count: 17
+      source: src/knowledge_agents.py
+      plugin_source: vendors/knowledge-work-plugins
+      total_skills: 164
+      policy: "Domain-specific task execution. Scoped to their plugin category."
+
+      agents:
+        # Business domain
+        - id: sales-agent
+          category: sales
+          skills: [account-research, call-prep, cold-outreach, competitive-battlecard, draft-outreach, pipeline-review, prospect-research, qualified-leads, territory-plan]
+          connectors: [Slack, HubSpot, Close, Clay, ZoomInfo, Fireflies, Apollo, Atlassian, Gmail, Google Calendar, Microsoft 365, Notion, Outreach, SimilarWeb]
+
+        - id: marketing-agent
+          category: marketing
+          skills: [brand-review, campaign-plan, competitive-brief, content-creation, draft-content, email-sequence, performance-report, seo-audit]
+          connectors: [Canva, Figma, HubSpot, Amplitude, Ahrefs, Klaviyo, Gmail, Google Calendar, Notion, SimilarWeb, Slack]
+
+        - id: finance-agent
+          category: finance
+          skills: [audit-support, close-management, financial-statements, journal-entry, journal-entry-prep, reconciliation, sox-testing, variance-analysis]
+          connectors: [BigQuery, Gmail, Google Calendar, Microsoft 365, Slack]
+          read_only: true
+
+        - id: hr-agent
+          category: human-resources
+          skills: [comp-analysis, draft-offer, interview-prep, onboarding, org-planning, people-report, performance-review, policy-lookup, recruiting-pipeline]
+
+        # Technical domain
+        - id: engineering-agent
+          category: engineering
+          skills: [architecture, code-review, debug, deploy-checklist, documentation, incident-response, standup, system-design, tech-debt, testing-strategy]
+
+        - id: data-analyst
+          category: data
+          skills: [analyze, build-dashboard, create-viz, data-context-extractor, data-visualization, explore-data, sql-queries, statistical-analysis, validate-data, write-query]
+          connectors: [BigQuery, Definite, Hex, Amplitude, Amplitude EU, Atlassian]
+
+        - id: product-management-agent
+          category: product-management
+          skills: [feature-spec, market-research, product-roadmap, release-notes, sprint-plan, stakeholder-update, user-story]
+
+        - id: operations-agent
+          category: operations
+          skills: [capacity-plan, compliance-tracker, inventory-audit, process-map, risk-assessment, runbook, sla-review, vendor-review, workflow-automation]
+
+        # Specialist domain
+        - id: compliance-reviewer
+          category: legal
+          skills: [brief, compliance-check, legal-response, legal-risk-assessment, meeting-briefing, review-contract, signature-request, triage-nda, vendor-check]
+          connectors: [Slack, Box, Egnyte, DocuSign, Atlassian, Gmail, Google Calendar, Microsoft 365]
+          read_only: true
+
+        - id: enterprise-search-agent
+          category: enterprise-search
+          skills: [digest, knowledge-synthesis, search, search-strategy, source-management]
+
+        - id: design-agent
+          category: design
+          skills: [accessibility-review, design-critique, design-handoff, design-system, research-synthesis, user-research, ux-copy]
+
+        - id: bio-research-agent
+          category: bio-research
+          skills: [instrument-data-to-allotrope, nextflow-development, scientific-problem-selection, scvi-tools, single-cell-rna-qc, start]
+          connectors: [PubMed, BioRender, bioRxiv, ClinicalTrials.gov, ChEMBL, Benchling]
+
+        # Support & Partners
+        - id: customer-support-agent
+          category: customer-support
+          skills: [customer-escalation, customer-research, draft-response, kb-article, ticket-triage]
+
+        - id: productivity-agent
+          category: productivity
+          skills: [daily-context, manage-tasks, memory-management]
+          connectors: [Slack, Notion, Asana, Linear, Atlassian, Monday, ClickUp, Microsoft 365, Gmail, Google Calendar]
+
+        - id: partner-built-agent
+          category: partner-built
+          skills: 11
+          sub_partners: [apollo, brand-voice, common-room, slack-by-salesforce]
+
+        - id: pdf-viewer-agent
+          category: pdf-viewer
+          skills: [view-pdf]
+
+        - id: cowork-plugin-agent
+          category: cowork-plugin-management
+          skills: [cowork-plugin-customizer, create-cowork-plugin]
+
+  # ─────────────────────────────────────────────────────────────
+  # STANDALONE SUBAGENTS (not in orchestrator pipelines)
+  # Defined in .claude/agents/*.md, not in src/orchestrator.py
+  # ─────────────────────────────────────────────────────────────
+  standalone_agents:
+    - {id: uda-thinker, model: claude-opus-4-6, purpose: "Deep reasoning with extended thinking"}
+    - {id: uda-crawler, model: claude-opus-4-6, purpose: "Web crawling with Scrapy patterns"}
+    - {id: crawl-analyzer, model: claude-haiku-4-5, purpose: "Analyze crawled taxonomy files"}
+    - {id: memory-validator, model: claude-haiku-4-5, purpose: "Validate 3-layer auto-memory"}
+    - {id: explore, model: claude-haiku-4-5, purpose: "Fast codebase search"}
+
+  constraint_summary: |
+    INVARIANTS:
+    1. Only the orchestrator spawns agents (no recursive spawning)
+    2. Read-only agents (security-auditor, alignment-auditor, architecture-reviewer, compliance-reviewer, finance-agent) NEVER modify files
+    3. harmlessness-screen has zero tool access and 256-token output cap
+    4. All auth via CLAUDE_CODE_OAUTH_TOKEN (never ANTHROPIC_API_KEY)
+    5. Safety agents use temperature 0.0 for deterministic output
+    6. Gate checks happen BETWEEN order groups, not within
+    7. Same-order steps run in parallel via asyncio.gather
+    8. 18 safety-research repos referenced across 6 agents (never executed, methodology context only)

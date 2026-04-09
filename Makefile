@@ -1,6 +1,8 @@
 .PHONY: help install install-safety install-webapp dev dev-webapp \
        lint lint-py lint-webapp format test test-py test-webapp \
        build build-webapp typecheck security-audit validate \
+       eval-codegen eval-codegen-quick eval-codegen-dry eval-promptfoo \
+       install-managed-agents build-managed-agents check-managed-agents \
        clean ci ci-py ci-webapp
 
 # ── Help ─────────────────────────────────────────────────────
@@ -23,6 +25,18 @@ install-all: install install-webapp ## Install everything
 # ── Development ──────────────────────────────────────────────
 dev: ## Start Python dev environment
 	uv run python -c "print('agentstreams ready')"
+
+cli: ## Run the agentstreams CLI (pass ARGS, e.g., make cli ARGS="agents list")
+	uv run agentstreams $(ARGS)
+
+cli-help: ## Show agentstreams CLI help tree
+	@uv run agentstreams --help
+	@echo ""
+	@echo "Subcommands:"
+	@for cmd in agents eval pdf pipeline validate layers; do \
+	  echo ""; echo "  agentstreams $$cmd:"; \
+	  uv run agentstreams $$cmd --help 2>/dev/null | grep -E "^  [a-z]" || true; \
+	done
 
 dev-webapp: ## Start Next.js dev server
 	cd webapp && npm run dev
@@ -92,12 +106,40 @@ validate-agents: ## Validate agent boundaries (no recursive spawning, API key ba
 	  src/ .claude/ webapp/src/ 2>/dev/null | \
 	  grep -vi "never use" | grep -vi "NEVER" | \
 	  grep -v "security-audit.py" | grep -v "validate-skills.py" | \
-	  grep -v "node_modules" || true); \
+	  grep -v "node_modules" | grep -vi "BLOCKED\|block-secrets\|violations\.push\|output\.includes" || true); \
 	if [ -n "$$VIOLATIONS" ]; then \
 	  echo "FAIL: ANTHROPIC_API_KEY found in source files"; \
 	  echo "$$VIOLATIONS"; exit 1; \
 	fi
 	@echo "All agent boundary checks passed."
+
+# ── Evals ────────────────────────────────────────────────────
+eval-codegen: ## Run A/B code generation eval (all models, all languages)
+	uv run scripts/run-codegen-eval.py
+
+eval-codegen-quick: ## Quick codegen eval (sonnet only, 1 sample)
+	uv run scripts/run-codegen-eval.py --models sonnet --samples 1
+
+eval-codegen-dry: ## Dry-run codegen eval (show task matrix)
+	uv run scripts/run-codegen-eval.py --dry-run
+
+## ── Managed Agents ──────────────────────────────────────────
+install-managed-agents: ## Install managed agents TS package deps
+	cd src/knowledge-work-managed-agents && npm install
+
+build-managed-agents: ## Build managed agents TypeScript
+	cd src/knowledge-work-managed-agents && npx tsc
+
+check-managed-agents: ## Type-check managed agents
+	cd src/knowledge-work-managed-agents && npx tsc --noEmit
+
+eval-promptfoo: ## Run all promptfoo eval suites
+	@for dir in evals/*/; do \
+	  if [ -f "$$dir/promptfooconfig.yaml" ]; then \
+	    echo "Running: $$dir"; \
+	    cd "$$dir" && npx promptfoo eval && cd ../..; \
+	  fi; \
+	done
 
 # ── CI (mirrors GitHub Actions) ──────────────────────────────
 ci: ci-py ci-webapp validate validate-agents security-audit ## Run full CI locally

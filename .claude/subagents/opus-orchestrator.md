@@ -185,7 +185,7 @@ type: subagent
     </package>
 
     <!-- Reference repos (not pip-installable, used as methodology context) -->
-    <reference name="trusted-monitor" relevance="alignment-auditor">
+    <reference name="trusted-monitor" relevance="alignment-auditor" stars="41">
       Transcript suspicion scoring (0-100, 8-tier rubric). Quick scan and
       full scan modes. Evaluates: suspicion, incriminating, severity,
       confidence, effectiveness, realism.
@@ -239,7 +239,7 @@ type: subagent
       Data poisoning experiments for emergent misalignment. Supply-chain
       threat model for fine-tuned models.
     </reference>
-    <reference name="PurpleLlama" relevance="security-auditor">
+    <reference name="PurpleLlama" relevance="security-auditor" stars="4115">
       Fork of Meta's CyberSecEval. Industry-standard LLM security assessment.
     </reference>
 
@@ -267,7 +267,7 @@ type: subagent
              npm="npmjs.com/package/@anthropic-ai/sdk"
              docs="platform.claude.com/docs/en/api/client-sdks">
       Direct API client for Messages API. Use for custom tool loops, batch
-      processing, or when Agent SDK overhead is unnecessary. v0.85+.
+      processing, or when Agent SDK overhead is unnecessary. v0.86+.
     </package>
     <package name="@anthropic-ai/bedrock-sdk"
              npm="npmjs.com/package/@anthropic-ai/bedrock-sdk">

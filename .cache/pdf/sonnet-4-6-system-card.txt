@@ -1,0 +1,6160 @@
+ANTHROP\C
+
+How Anthropic
+Anthropic teams
+teams
+How
+use
+use Claude
+Claude Code
+Code
+
+</>
+
+Anthropic's internal
+internal teams
+teams are
+are transforming
+transforming their
+their workflows
+Claude Code,
+Code, enabling 
+enabling
+Anthropic’s
+workflows with
+with Claude
+developers
+developers and
+and non-technical
+non-technical staff
+staff to
+to tackle
+tackle complex
+complex projects,
+projects, automate
+automate tasks,
+tasks, and
+and bridge 
+bridge
+skill
+skill gaps
+gaps that
+that previously
+previously limited
+limited their
+their productivity. 
+
+productivity.
+
+Through
+with our
+we’ve gathered
+gathered insights
+Through interviews
+interviews with
+our own
+own Claude
+Claude Code
+Code power
+power users,
+users, we've
+insights on
+on how
+how
+different
+work, and
+different departments
+departments leverage
+leverage Claude
+Claude Code,
+Code, its
+its impact
+impact on
+on their
+their work,
+and tips
+tips for
+for other
+other
+organizations
+organizations considering
+considering adoption.
+adoption.
+
+Contents
+Contents
+
+2
+2
+
+Claude
+Claude Code
+Code for
+for data
+data infrastructure
+infrastructure
+
+33
+
+Claude
+Claude Code
+Code for
+for product
+product development
+development
+
+55
+
+Claude Code
+Code for
+for security
+security engineering
+engineering
+Claude
+
+77
+
+Claude
+Claude Code
+Code for
+for inference
+inference
+
+99
+
+Claude
+Claude Code
+Code for
+for data
+data science
+science and
+and visualization
+visualization
+
+11
+11
+
+Claude
+API
+Claude Code
+Code for
+for API
+
+13
+13
+
+Claude
+Claude Code
+Code for
+for growth
+growth marketing
+marketing
+
+15
+15
+
+Claude
+Claude Code
+Code for
+for product
+product design
+design
+
+17
+17
+
+Claude
+Claude Code
+Code for
+for RL
+RL engineering
+engineering
+
+19
+19
+
+Claude
+Claude Code
+Code for
+for legal
+legal
+
+21
+21
+
+How
+HOW Anthropic
+ANTHROPIC teams
+TEAMS use
+USE Claude
+CLAUDE Code
+CODE
+
+Claude
+Claude Code
+Code for
+for data
+data
+infrastructure
+infrastructure
+The
+The Data
+Data Infrastructure
+Infrastructure team
+team
+organizes
+organizes all
+all business
+business data
+data for
+for
+teams
+teams across
+across the
+the company.
+company. They
+They
+use
+Claude
+Code
+for
+automating
+use Claude Code for automating
+routine
+routine data
+data engineering
+engineering tasks,
+tasks,
+troubleshooting
+troubleshooting complex
+complex
+infrastructure
+issues, and
+infrastructureissues,and
+creating
+documented
+creating documented workflows
+workflows
+for
+for technical
+technical and
+and non-technical
+non-technical
+team
+team members
+members to
+to access
+access and
+and
+manipulate
+manipulate data
+data independently.
+independently.
+
+Main
+Main Claude
+Claude Code
+Code use
+use cases
+cases
+Kubernetes debugging
+debugging with
+screenshots
+Kubernetes
+with screenshots 
+When Kubernetes
+weren’t scheduling
+When
+Kubernetes clusters
+clusters went
+went down
+down and
+and weren't
+scheduling new
+new pods,
+pods,
+the
+the team
+team used
+used Claude
+Claude Code
+Code to
+to diagnose
+diagnose the
+the issue.
+issue. They
+They fed
+fed screenshots
+screenshots of
+of
+dashboards
+guided them
+dashboards into
+into Claude
+Claude Code,
+Code, which
+which guided
+them through
+through Google
+Google Cloud’s
+Cloud's
+UI menu
+UI
+menu by
+by menu
+menu until
+until they
+they found
+found aa warning
+warning indicating
+indicating pod
+pod IP
+IP address
+address
+exhaustion.
+exhaustion. Claude
+Claude Code
+Code then
+then provided
+provided the
+the exact
+exact commands
+commands to
+to create
+create aa
+new
+new IP
+IP pool
+pool and
+and add
+add it
+it to
+to the
+the cluster,
+cluster, bypassing
+bypassing the
+the need
+need to
+to involve
+involve
+networking
+networking specialists.
+
+specialists.
+
+Plain
+Plain text
+text workflows
+workflows for
+for finance
+finance team 
+team
+The team
+The
+team showed
+showed finance
+finance team
+team members
+members how
+how to
+to write
+write plain
+plain text
+text files
+files
+describing
+describing their
+their data
+data workflows,
+workflows, then
+then load
+load them
+them into
+into Claude
+Claude Code
+Code to
+to get
+get
+fully
+fully automated
+automated execution.
+execution. Employees
+Employees with
+with no
+no coding
+coding experience
+experience could
+could
+describe
+get information,
+describe steps
+steps like
+like “query
+"query this
+this dashboard,
+dashboard, get
+information, run
+run these
+these
+queries, produce
+produce Excel
+Excel output,”
+output," and
+and Claude
+Claude Code
+Code would
+would execute
+execute the
+the entire
+entire
+queries,
+workflow, including
+workflow,
+including asking
+asking for
+for required
+required inputs
+inputs like
+like dates.
+
+dates.
+Codebase
+Codebase navigation
+navigation for
+for new
+new hires 
+hires
+When
+new data
+data scientists
+scientists join
+join the
+the team,
+team, they’re
+they're directed
+directed to
+to use
+use Claude
+Claude
+When new
+Code
+Code to
+to navigate
+navigate their
+their massive
+massive codebase.
+codebase. Claude
+Claude Code
+Code reads
+reads their
+their
+Claude.md
+Claude.md files
+files (documentation),
+(documentation), identifies
+identifies relevant
+relevant files
+files for
+for specific
+specific
+tasks, explains
+explains data
+data pipeline
+pipeline dependencies,
+dependencies, and
+and helps
+helps newcomers
+newcomers
+tasks,
+understand
+understand which
+which upstream
+upstream sources
+sources feed
+feed into
+into dashboards.
+dashboards. This
+This replaces
+replaces
+traditional
+traditional data
+data catalogs
+catalogs and
+and discoverability
+discoverability tools.
+
+tools.
+End-of-session documentation
+documentation updates 
+updates
+End-of-session
+The team
+The
+team asks
+asks Claude
+Claude Code
+Code to
+to summarize
+summarize completed
+completed work
+work sessions
+sessions and
+and
+suggest
+suggest improvements
+improvements at
+at the
+the end
+end of
+of each
+each task.
+task. This
+This creates
+creates aa continuous
+continuous
+improvement loop
+loop where
+where Claude
+Claude Code
+Code helps
+helps refine
+refine the
+the Claude.md
+Claude.md
+improvement
+documentation
+documentation and
+and workflow
+workflow instructions
+instructions based
+based on
+on actual
+actual usage,
+usage, making
+making
+subsequent
+subsequent iterations
+iterations more
+more effective.
+
+effective.
+Parallel task
+management across
+across multiple
+multiple instances 
+instances
+Parallel
+task management
+When working
+working on
+When
+on long-running
+long-running data
+data tasks,
+tasks, they
+they open
+open multiple
+multiple instances
+instances
+of
+of Claude
+Claude Code
+Code in
+in different
+different repositories
+repositories for
+for different
+different projects.
+projects. Each
+Each
+instance maintains
+maintains full
+full context,
+context, so
+so when
+when they
+they switch
+switch back
+back after
+after hours
+hours or
+or
+instance
+days,
+were doing
+days, Claude
+Claude Code
+Code remembers
+remembers exactly
+exactly what
+what they
+they were
+doing and
+and where
+where
+they left
+left off,
+off, enabling
+enabling true
+true parallel
+parallel workflow
+management without 
+without
+they
+workflow management
+context
+context loss.
+loss.
+
+3
+3
+
+Claude
+CLAUDE Code
+CODE for
+FOR data
+DATAinfrastructure
+INFRASTRUCTURE
+
+Claude
+Claude Code
+Code for
+for data
+data
+infrastructure
+infrastructure
+Team
+Team impact
+impact
+
+Resolved
+without specialized
+Resolved infrastructure
+infrastructure problems
+problems without
+specialized expertise 
+expertise
+Resolved Kubernetes
+Kubernetes cluster
+cluster issues
+issues that
+that would
+would normally
+normally require
+require pulling
+pulling in
+in
+Resolved
+systems or
+or networking
+networking team
+team members,
+members, using
+using Claude
+Claude Code
+Code to
+to diagnose
+diagnose
+systems
+problems
+problems and
+and provide
+provide exact
+exact fixes.
+
+fixes.
+Accelerated
+onboarding
+Accelerated onboarding 
+New
+New data
+data analysts
+analysts and
+and team
+team members
+members can
+can quickly
+quickly understand
+understand complex
+complex
+systems
+without extensive
+systems and
+and contribute
+contribute meaningfully
+meaningfully without
+extensive guidance.
+
+guidance.
+Enhanced support
+support workflow
+Enhanced
+workflow 
+Can
+Can process
+process much
+much larger
+larger data
+data volumes
+volumes and
+and identify
+identify anomalies
+anomalies (like
+(like
+monitoring
+monitoring 200
+200 dashboards)
+dashboards) that
+that would
+would be
+be impossible
+impossible for
+for humans
+humans to
+to
+review manually.
+
+manually.
+review
+
+Enabled
+Enabled cross-team
+cross-team self-service 
+self-service
+Finance
+Finance teams
+teams with
+with no
+no coding
+coding experience
+experience can
+can now
+now execute
+execute complex
+complex data
+data
+workflows
+independently.
+workflows independently.
+
+Top
+Top tips
+tips from
+from the 
+the
+Data
+Data Infrastructure
+Infrastructure
+team
+team
+
+Write detailed
+Write
+detailed Claude.md
+Claude.md files 
+files
+The better
+your workflows,
+The
+better you
+you document
+document your
+workflows, tools,
+tools, and
+and expectations
+expectations in
+in
+Claude.md
+Claude.md files,
+files, the
+the better
+better Claude
+Claude Code
+Code performs.
+performs. This
+This made
+made Claude
+Claude Code
+Code
+excel at
+at routine
+routine tasks
+tasks like
+like setting
+setting up
+up new
+new data
+data pipelines
+pipelines when
+when you
+have
+excel
+you have
+existing
+existing patterns.
+
+patterns.
+Use MCP
+Use
+MCPservers
+servers instead
+instead of
+of CLI
+CLIfor
+for sensitive
+sensitive data 
+data
+They
+recommend using
+using MCP
+servers rather
+rather than
+than the
+the BigQuery
+BigQuery CLI
+CLI to
+to
+They recommend
+MCP servers
+maintain
+what Claude
+maintain better
+better security
+security control
+control over
+over what
+Claude Code
+Code can
+can access,
+access,
+especially
+especially for
+for handling
+handling sensitive
+sensitive data
+data that
+that requires
+requires logging
+logging or
+or has
+has
+potential privacy
+privacy concerns.
+
+concerns.
+potential
+Share
+Share team
+team usage
+usage sessions 
+sessions
+The team
+The
+team held
+held sessions
+sessions where
+where members
+members demonstrated
+demonstrated their
+their Claude
+Claude Code
+Code
+workflows
+to each
+each other.
+other. This
+This helped
+helped spread
+spread best
+best practices
+practices and
+and showed
+showed
+workflows to
+different
+different ways
+ways to
+to use
+use the
+the tool
+tool they
+they might
+might not
+not have
+have discovered
+discovered on 
+on
+their
+their own.
+own.
+
+4
+4
+
+Claude
+CLAUDE Code
+CODE for
+FOR data
+DATAinfrastructure
+INFRASTRUCTURE
+
+Claude
+Claude Code
+Code for
+for product
+product
+development
+development
+The
+The Claude
+Claude Code
+Code team
+team uses
+uses their
+their
+own
+own product
+product to
+to build
+build updates
+updates to
+to
+Claude
+Claude Code,
+Code, expanding
+expanding the
+the
+product’s
+product's enterprise
+enterprise capabilities
+capabilities
+and
+and agentic
+agentic loop
+loop functionalities.
+functionalities.
+
+Main
+Main Claude
+Claude Code
+Code use
+use cases
+cases
+Fast prototyping
+prototyping with
+auto-accept mode 
+mode
+Fast
+with auto-accept
+Engineers
+Engineers use
+use Claude
+Claude Code
+Code for
+for rapid
+rapid prototyping
+prototyping by
+by enabling
+enabling “auto"autoaccept
+where Claude
+accept mode”
+mode" (shift+tab)
+(shift+tab) and
+and setting
+setting up
+up autonomous
+autonomous loops
+loops where
+Claude
+writes
+They give
+give Claude
+writes code,
+code, runs
+runs tests,
+tests, and
+and iterates
+iterates continuously.
+continuously. They
+Claude
+abstract
+with, let
+work autonomously,
+abstract problems
+problems they’re
+they're unfamiliar
+unfamiliar with,
+let it
+it work
+autonomously, then
+then
+review
+review the
+the 80%
+80% complete
+complete solution
+solution before
+before taking
+taking over
+over for
+for final
+final refinements.
+refinements.
+Teams
+Teams emphasize
+emphasize starting
+starting from
+from aa clean
+clean git
+git state
+state and
+and committing
+committing
+checkpoints
+checkpoints regularly
+regularly so
+so they
+they can
+can easily
+easily revert
+revert any
+any incorrect
+incorrect changes 
+changes
+if
+goes off
+if Claude
+Claude goes
+off track.
+
+track.
+Synchronous
+Synchronous coding
+coding for
+for core
+core features 
+features
+For
+For more
+more critical
+critical features
+features touching
+touching the
+the application’s
+application's business
+business logic,
+logic, the
+the
+team
+team works
+works synchronously
+synchronously with
+with Claude
+Claude Code,
+Code, giving
+giving detailed
+detailed prompts
+prompts
+with
+They monitor
+with specific
+specific implementation
+implementation instructions.
+instructions. They
+monitor the
+the process
+process in
+in
+real-time to
+to ensure
+ensure code
+code quality,
+quality, style
+style guide
+guide compliance,
+compliance, and
+and proper
+proper
+real-time
+architecture
+architecture while
+while letting
+letting Claude
+Claude handle
+handle the
+the repetitive
+repetitive coding
+coding work.
+
+work.
+Building
+Vim mode 
+Building Vim
+mode
+One of
+of their
+their most
+most successful
+successful async
+async projects
+projects was
+was implementing
+implementing Vim 
+Vim
+One
+key
+key bindings
+bindings for
+for Claude
+Claude Code.
+Code. They
+They asked
+asked Claude
+Claude to
+to build
+build the
+the entire
+entire
+feature
+being aa priority),
+feature (despite
+(despite it
+it not
+not being
+priority), and
+and roughly
+roughly 70%
+70% of
+of the
+the final
+final
+implementation came
+came from
+from Claude’s
+Claude's autonomous
+autonomous work,
+work, requiring 
+requiring
+implementation
+only
+only aa few
+few iterations
+iterations to
+to complete.
+
+complete.
+Test
+Test generation
+generation and
+and bug
+bug fixes 
+fixes
+They use
+use Claude
+Claude Code
+Code to
+to write
+write comprehensive
+comprehensive tests
+tests after
+after implementing
+implementing
+They
+features
+features and
+and handle
+handle simple
+simple bug
+bug fixes
+fixes identified
+identified in
+in pull
+pull request
+request reviews.
+reviews.
+They
+Actions integration
+They also
+also leverage
+leverage GitHub
+GitHub Actions
+integration to
+to have
+have Claude
+Claude
+automatically address
+address Pull
+Pull Request
+Request comments
+comments like
+like formatting
+formatting issues 
+issues
+automatically
+or
+or function
+function renaming.
+
+renaming.
+Codebase
+Codebase exploration 
+exploration
+When
+with unfamiliar
+unfamiliar codebases
+codebases (like
+(like the
+the monorepo
+monorepo or
+or API
+When working
+working with
+API 
+side),
+side), the
+the team
+team uses
+uses Claude
+Claude Code
+Code to
+to quickly
+quickly understand
+understand how
+how systems
+systems
+work. Instead
+work.
+Instead of
+of waiting
+waiting for
+for Slack
+Slack responses,
+responses, they
+they ask
+ask Claude
+Claude directly 
+directly
+for explanations
+explanations and
+and code
+code references,
+references, saving
+saving significant
+significant time
+time in 
+in
+for
+context
+context switching.
+switching.
+
+5
+5
+
+Claude
+CLAUDE Code
+CODE for
+FOR product
+PRODUCT development
+DEVELOPMENT
+
+Claude
+Claude Code
+Code for
+for product
+product
+development
+development
+Team
+Team impact
+impact
+
+Faster
+Faster feature
+feature implementation 
+implementation
+Successfully implemented
+implemented complex
+complex features
+features like
+like Vim
+Vim mode
+mode with
+with 70%
+70% of
+of
+Successfully
+code written
+autonomously by
+by Claude.
+
+Claude.
+code
+written autonomously
+Improved
+velocity 
+Improved development
+development velocity
+Can rapidly
+rapidly prototype
+prototype features
+features and
+and iterate
+iterate on
+on ideas
+ideas without
+getting
+Can
+without getting
+bogged
+bogged down
+down in
+in implementation
+implementation details.
+
+details.
+Enhanced
+through automated
+testing 
+Enhanced code
+code quality
+quality through
+automated testing
+Claude generates
+comprehensive tests
+tests and
+and handles
+handles routine
+routine bug
+bug fixes,
+fixes,
+Claude
+generates comprehensive
+maintaining
+maintaining high
+high standards
+standards while
+while reducing
+reducing manual
+manual effort.
+
+effort.
+Better
+Better codebase
+codebase exploration 
+exploration
+Team
+members can
+can quickly
+quickly understand
+understand unfamiliar
+unfamiliar parts
+parts of
+of the
+the monorepo
+monorepo
+Team members
+without waiting
+without
+waiting for
+for colleague
+colleague responses.
+responses.
+
+Top
+Top tips
+tips from
+from the 
+the
+Claude
+Claude Code
+Code team
+team
+
+Create
+Create self-sufficient
+self-sufficient loops 
+loops
+Set
+work by
+Set up
+up Claude
+Claude to
+to verify
+verify its
+its own
+own work
+by running
+running builds,
+builds, tests,
+tests, and
+and lints
+lints
+automatically.
+This
+allows
+Claude
+to
+work
+longer
+autonomously
+and
+catch
+automatically. This allows Claude to work longer autonomously and catch
+its
+when you
+generate
+its own
+own mistakes,
+mistakes, especially
+especially effective
+effective when
+you ask
+ask Claude
+Claude to
+to generate
+tests
+tests before
+before writing
+writing code.
+
+code.
+
+Develop task
+task classification
+classification intuition 
+intuition
+Develop
+Learn
+Learn to
+to distinguish
+distinguish between
+between tasks
+tasks that
+that work
+work well
+well asynchronously
+asynchronously
+(peripheral
+versus those
+(peripheral features,
+features, prototyping)
+prototyping) versus
+those needing
+needing synchronous
+synchronous
+supervision
+(core
+business
+logic,
+critical
+fixes).
+Abstract
+tasks on
+on the
+the
+supervision (core business logic, critical fixes). Abstract tasks
+product’s
+be handled
+with “auto-accept
+while core
+product's edges
+edges can
+can be
+handled with
+"auto-accept mode,”
+mode," while
+core
+functionality
+functionality requires
+requires closer
+closer oversight.
+
+oversight.
+Form clear,
+clear, detailed
+detailed prompts 
+prompts
+Form
+When components
+When
+components have
+have similar
+similar names
+names or
+or functions,
+functions, be
+be extremely
+extremely specific
+specific
+in
+The better
+in your
+your requests.
+requests. The
+better and
+and more
+more detailed
+detailed your
+your prompt,
+prompt, the
+the more
+more you
+you
+can
+trust
+Claude
+to
+work
+independently
+without
+unexpected
+changes
+to
+can trust Claude to work independently without unexpected changes to
+the
+wrong parts
+the wrong
+parts of
+of the
+the codebase.
+code base.
+
+6
+6
+
+Claude
+CLAUDE Code
+CODE for
+FOR product
+PRODUCT development
+DEVELOPMENT
+
+Claude
+Claude Code
+Code for
+for security
+security
+engineering
+eng1neer1ng
+■
+
+■
+
+The
+The Security
+Security Engineering
+Engineering team
+team
+focuses
+focuses on
+on securing
+securing the
+the software
+software
+development
+development lifecycle,
+lifecycle, supply
+supply
+chain
+security,
+and
+development
+chain security, and development
+environment
+environment security.
+security. They
+They use
+use
+Claude
+Claude Code
+Code extensively
+extensively for
+for
+writing
+writing and
+and debugging
+debugging code.
+code.
+
+Main
+Main Claude
+Claude Code
+Code use
+use cases
+cases
+Complex infrastructure
+infrastructure debugging 
+debugging
+Complex
+When working
+working on
+When
+on incidents,
+incidents, they
+they feed
+feed Claude
+Claude Code
+Code stack
+stack traces
+traces and
+and
+documentation,
+documentation, asking
+asking it
+it to
+to trace
+trace control
+control flow
+flow through
+through the
+the codebase.
+code base. This
+This
+significantly
+significantly reduces
+reduces time-to-resolution
+time-to-resolution for
+for production
+production issues,
+issues, allowing
+allowing
+them
+them to
+to understand
+understand problems
+problems that
+that would
+would normally
+normally take
+take 10-15
+10-15minutes
+minutes of
+of
+manual
+manual code
+code scanning
+scanning in
+in about
+about 55 minutes.
+
+minutes.
+
+Terraform
+Terraform code
+code review
+review and
+and analysis 
+analysis
+For
+For infrastructure
+infrastructure changes
+changes requiring
+requiring security
+security approval,
+approval, they
+they copy
+copy
+Terraform plans
+Am II
+Terraform
+plans into
+into Claude
+Claude Code
+Code to
+to ask
+ask “what’s
+"what's this
+this going
+going to
+to do?
+do? Am
+going
+going to
+to regret
+regret this?”
+this?" This
+This creates
+creates tighter
+tighter feedback
+feedback loops
+loops and
+and makes
+makes it
+it
+easier
+easier for
+for the
+the security
+security team
+team to
+to quickly
+quickly review
+review and
+and approve
+approve infrastructure
+infrastructure
+changes,
+changes, reducing
+reducing bottlenecks
+bottlenecks in
+in the
+the development
+development process.
+
+process.
+Documentation
+Documentation synthesis
+synthesis and
+and runbooks 
+runbooks
+They
+have Claude
+Claude Code
+Code ingest
+ingest multiple
+multiple documentation
+documentation sources
+sources and
+and
+They have
+create
+create markdown
+markdown runbooks,
+run books, troubleshooting
+troubleshooting guides,
+guides, and
+and overviews. 
+overviews.
+They use
+They
+use these
+these condensed
+condensed documents
+documents as
+as context
+context for
+for debugging
+debugging real
+real
+issues, creating
+creating aa more
+more efficient
+efficient workflow
+workflow than
+than searching
+searching through
+through full
+full
+issues,
+knowledge
+bases.
+
+knowledge bases.
+Test-driven
+workflow 
+Test-driven development
+development workflow
+Instead
+janky code
+Instead of
+of their
+their previous
+previous “design
+"design doc
+doc →
+- janky
+code →
+- refactor
+refactor →
+- give
+give up
+up
+on
+guide it
+on tests”
+tests" pattern,
+pattern, they
+they now
+now ask
+ask Claude
+Claude Code
+Code for
+for pseudocode,
+pseudocode, guide
+it
+through
+through test-driven
+test-driven development,
+development, and
+and periodically
+periodically check
+check in
+in to
+to steer
+steer it
+it
+when
+stuck, resulting
+resulting in
+in more
+more reliable
+reliable and
+and testable
+testable code.
+
+code.
+when stuck,
+Context
+Context switching
+switching and
+and project
+project onboarding 
+onboarding
+When contributing
+When
+contributing to
+to existing
+existing projects
+projects like
+like “dependant”
+"dependant" (a
+(a web
+web
+application for
+for security
+security approval
+approval workflows),
+they use
+use Claude
+Claude Code 
+Code
+application
+workflows), they
+to
+to write,
+write, review,
+review, and
+and execute
+execute specifications
+specifications written
+written in
+in markdown
+markdown and
+and
+stored
+stored in
+in the
+the codebase,
+codebase, enabling
+enabling meaningful
+meaningful contributions
+contributions within
+within days
+days
+instead
+instead of
+of weeks.
+weeks.
+
+77
+
+Claude
+CLAUDE Code
+CODE for
+FOR security
+SECURITY engineering
+ENGINEERING
+
+Claude
+Claude Code
+Code for
+for security
+security
+engineering
+eng1neer1ng
+■
+
+■
+
+Team
+Team impact
+impact
+
+Reduced
+time 
+Reduced incident
+incident resolution
+resolution time
+Infrastructure debugging
+debugging that
+that normally
+normally takes
+takes 10-15
+10-15minutes
+minutes of
+of manual
+manual
+Infrastructure
+code scanning
+scanning now
+now takes
+takes about
+about 55 minutes.
+
+minutes.
+code
+Improved
+Improved security
+security review
+review cycle 
+cycle
+Terraform
+code reviews
+reviews for
+for security
+security approval
+approval happen
+happen much
+much faster,
+faster,
+Terraform code
+eliminating
+eliminating developer
+developer blocks
+blocks while
+while waiting
+waiting for
+for security
+security team
+team approval.
+
+approval.
+Enhanced
+Enhanced cross-functional
+cross-functional contribution 
+contribution
+Team
+members can
+can meaningfully
+meaningfully contribute
+contribute to
+to projects
+projects within
+within days
+days
+Team members
+instead
+instead of
+of weeks
+weeks of
+of context
+context building.
+
+building.
+Better
+workflow 
+Better documentation
+documentation workflow
+Synthesized troubleshooting
+troubleshooting guides
+guides and
+and runbooks
+runbooks from
+from multiple
+multiple sources
+sources
+Synthesized
+create
+create more
+more efficient
+efficient debugging
+debugging processes.
+processes.
+
+Top
+Top tips
+tips from
+from the 
+the
+Security
+Security Engineering
+Engineering
+team
+team
+
+Use custom
+Use
+custom slash
+slash commands
+commands extensively 
+extensively
+Security
+Security engineering
+engineering uses
+uses 50%
+50% of
+of all
+all custom
+custom slash
+slash command
+command
+implementations
+in
+the
+entire
+monorepo.
+These
+custom
+commands
+implementations in the entire monorepo. These custom commands
+streamline
+workflows and
+streamline specific
+specific workflows
+and speed
+speed up
+up repeated
+repeated tasks.
+
+tasks.
+Let
+Let Claude
+Claude talk
+talk first 
+first
+Instead of
+of asking
+asking targeted
+targeted questions
+questions for
+for code
+code snippets,
+snippets, they
+they now 
+now
+Instead
+tell
+tell Claude
+Claude Code
+Code to
+to “commit
+"commit your
+your work
+work as
+as you
+you go”
+go" and
+and let
+let it
+it work
+work
+autonomously
+with periodic
+autonomously with
+periodic check-ins,
+check-ins, resulting
+resulting in
+in more 
+more
+comprehensive solutions.
+
+solutions.
+comprehensive
+Leverage
+Leverage it
+it for
+for documentation 
+documentation
+Beyond
+Beyond coding,
+coding, Claude
+Claude Code
+Code excels
+excels at
+at synthesizing
+synthesizing documentation
+documentation and
+and
+creating structured
+structured outputs.
+outputs. They
+provide writing
+writing samples
+samples and
+and formatting
+formatting
+creating
+They provide
+preferences
+get documents
+preferences to
+to get
+documents they
+they can
+can immediately
+immediately use
+use in
+in Slack,
+Slack, Google
+Google
+Docs,
+Docs, and
+and other
+other tools
+tools to
+to avoid
+avoid interface
+interface switching
+switching fatigue.
+fatigue.
+
+8
+8
+
+Claude
+CLAUDE Code
+CODE for
+FOR security
+SECURITY engineering
+ENGINEERING
+
+Claude
+Claude Code
+Code for
+for inference
+inference
+The
+The Inference
+Inference team
+team manages 
+manages
+the
+memory
+system
+the memory system that
+that stores
+stores
+information
+information while
+while Claude
+Claude reads
+reads
+your
+your prompt
+prompt and
+and generates
+generates its
+its
+response.
+response. Team
+Team members,
+members,
+especially
+especially those
+those who
+who are
+are new
+new to
+to
+machine
+machine learning,
+learning, can
+can use
+use Claude
+Claude
+Code
+Code extensively
+extensively to
+to bridge
+bridge that
+that
+knowledge
+knowledge gap
+gap and
+and accelerate
+accelerate
+their
+their work.
+work.
+
+Main
+Main Claude
+Claude Code
+Code use
+use cases
+cases
+Codebase
+Codebase comprehension
+comprehension and
+and onboarding 
+onboarding
+The
+team relies
+relies heavily
+heavily on
+on Claude
+Claude Code
+Code to
+to quickly
+quickly understand
+understand the
+the
+The team
+architecture when
+when joining
+joining aa complex
+complex codebase.
+codebase. Instead
+Instead of
+of manually
+manually
+architecture
+searching
+searching GitHub
+GitHub repos,
+repos, they
+they ask
+ask Claude
+Claude to
+to find
+find which
+which files
+files call
+call specific
+specific
+functionalities, getting
+getting results
+results in
+in seconds
+seconds rather
+rather than
+than asking
+asking colleagues
+colleagues or
+or
+functionalities,
+searching
+searching manually.
+
+manually.
+Unit
+test generation
+with edge
+Unit test
+generation with
+edge case
+case coverage 
+coverage
+After writing
+write comprehensive
+After
+writing core
+core functionality,
+functionality, they
+they ask
+ask Claude
+Claude to
+to write
+comprehensive
+unit
+unit tests.
+tests. Claude
+Claude automatically
+automatically includes
+includes missed
+missed edge
+edge cases,
+cases, completing
+completing
+what would
+would normally
+what
+normally take
+take significant
+significant mental
+mental energy
+energy in
+in minutes,
+minutes, acting
+acting
+like
+like aa coding
+coding assistant
+assistant they
+they can
+can review.
+
+review.
+Machine
+Machine learning
+learning concept
+concept explanation 
+explanation
+Without aa machine
+machine learning
+learning background,
+background, team
+team members
+members depend
+depend on
+on
+Without
+Claude
+What would
+Claude to
+to explain
+explain model-specific
+model-specific functions
+functions and
+and settings.
+settings. What
+would
+require
+require an
+an hour
+hour of
+of Google
+Google searching
+searching and
+and reading
+reading documentation
+documentation now
+now
+takes 10-20
+10-20 minutes,
+minutes, reducing
+reducing research
+research time
+time by
+by 80%.
+
+80%.
+takes
+Cross-language
+Cross-language code
+code translation 
+translation
+When testing
+When
+testing functionality
+functionality in
+in different
+different programming
+programming languages,
+languages, they
+they
+explain what
+they want
+to test
+test and
+and Claude
+Claude writes
+writes the
+the logic
+logic in
+in the
+the required
+required
+explain
+what they
+want to
+language
+just for
+language (like
+(like Rust),
+Rust), eliminating
+eliminating the
+the need
+need to
+to learn
+learn new
+new languages
+languages just
+for
+testing
+testing purposes.
+
+purposes.
+Command recall
+recall and
+and Kubernetes
+Kubemetes management 
+management
+Command
+Instead
+Instead of
+of remembering
+remembering complex
+complex Kubernetes
+Kubernetes commands,
+commands, they
+they ask
+ask Claude
+Claude
+for
+for the
+the correct
+correct syntax,
+syntax, like
+like “how
+"how to
+to get
+get all
+all pods
+pods or
+or deployment
+deployment status,”
+status," and
+and
+receive
+receive the
+the exact
+exact commands
+commands needed
+needed for
+for their
+their infrastructure
+infrastructure work.
+work.
+
+99
+
+Claude
+CLAUDE Code
+CODE for
+FOR inference
+INFERENCE
+
+Claude
+Claude Code
+Code for
+for inference
+inference
+Team
+Team impact
+impact
+
+Accelerated ML
+Accelerated
+ML concept
+concept learning 
+learning
+Research time
+time reduced
+reduced by
+80% -- what
+what took
+took an
+an hour
+hour of
+of Google
+Google searching
+searching
+Research
+by 80%
+now
+now takes
+takes 10-20
+10-20 minutes.
+
+minutes.
+Faster codebase
+codebase navigation 
+navigation
+Faster
+Can
+find
+relevant
+files and
+and understand
+understand system
+system architecture
+architecture in
+in seconds
+seconds
+Can find relevant files
+instead
+instead of
+of asking
+asking colleagues.
+
+colleagues.
+Comprehensive test
+coverage
+Comprehensive
+test coverage 
+Claude
+generates unit
+Claude automatically
+automatically generates
+unit tests
+tests with
+with edge
+edge cases,
+cases, relieving
+relieving
+mental
+mental burden
+burden while
+while maintaining
+maintaining code
+code quality.
+
+quality.
+Language barrier
+barrier elimination 
+elimination
+Language
+Can
+Can implement
+implement functionality
+functionality in
+in unfamiliar
+unfamiliar languages
+languages like
+like Rust
+Rust without
+without
+needing
+needing to
+to learn
+learn it.
+it.
+
+Top
+Top tips
+tips from
+from the 
+the
+Inference
+Inference team
+team
+
+Test
+Test knowledge
+knowledge base
+base functionality
+functionality first 
+first
+Try asking
+asking various
+various questions
+questions to
+to see
+see if
+if Claude
+Claude can
+can answer
+answer faster
+faster than
+than
+Try
+Google
+Google search.
+search. If
+If it’s
+it's faster
+faster and
+and more
+more accurate,
+accurate, it’s
+it's aa valuable
+valuable time-saving
+time-saving
+tool
+workflow.
+
+tool for
+for your
+your workflow.
+Start with
+code generation 
+generation
+Start
+with code
+Give
+Give Claude
+Claude specific
+specific instructions
+instructions and
+and ask
+ask it
+it to
+to write
+write logic,
+logic, then
+then verify
+verify
+correctness.
+correctness. This
+This helps
+helps build
+build trust
+trust in
+in the
+the tool’s
+tool's capabilities
+capabilities before
+before using
+using it
+it
+for
+more
+complex
+tasks.
+for more complex tasks.
+
+
+Use
+writing 
+Use it
+it for
+for test
+test writing
+Having
+Having Claude
+Claude write
+write unit
+unit tests
+tests relieves
+relieves significant
+significant pressure
+pressure from
+from daily
+daily
+development work.
+Leverage this
+this feature
+feature to
+to maintain
+maintain code
+code quality
+quality without
+without
+development
+work. Leverage
+spending
+spending time
+time thinking
+thinking through
+through all
+all test
+test cases
+cases manually.
+manually.
+
+10
+10
+
+Claude
+CLAUDE Code
+CODE for
+FOR inference
+INFERENCE
+
+Claude
+Claude Code
+Code for
+for data
+data science
+science
+and
+and visualization
+visualization
+Data
+Data Science
+Science and
+and ML
+ML
+Engineering
+Engineering teams
+teams need
+need
+sophisticated
+sophisticated visualization 
+visualization
+tools
+tools to
+to understand
+understand model
+model
+performance,
+performance, but
+but building
+building these
+these
+tools
+tools often
+often requires
+requires expertise 
+expertise
+in
+in unfamiliar
+unfamiliar languages
+languages and
+and
+frameworks.
+Claude
+Code
+frameworks. Claude Code
+enables
+enables these
+these teams
+teams to
+to build
+build
+production-quality
+production-quality analytics
+analytics
+dashboards
+dashboards without
+without becoming
+becoming
+full-stack
+developers.
+full-stack developers.
+
+Main
+Main Claude
+Claude Code
+Code use
+use cases
+cases
+Building JavaScript/Typescript
+dashboard apps  
+apps
+Building
+JavaScript/TypeScript dashboard
+Despite
+JavaScript and
+TypeScript,” the
+Despite knowing
+knowing “very
+"very little
+little JavaScript
+and Typescript,"
+the team
+team uses
+uses
+Claude
+visualizing RL
+Claude Code
+Code to
+to build
+build entire
+entire React
+React applications
+applications for
+for visualizing
+RL model
+model
+performance and
+write full
+performance
+and training
+training data.
+data. They
+They give
+give Claude
+Claude control
+control to
+to write
+full
+applications
+applications from
+from scratch,
+scratch, like
+like aa 5,000-line
+5,000-line TypeScript
+Typescript app,
+app, without
+without
+needing
+needing to
+to understand
+understand the
+the code
+code themselves.
+themselves. This
+This is
+is critical
+critical because
+because
+visualization apps
+visualization
+apps are
+are relatively
+relatively low
+low context
+context and
+and don’t
+don't require
+require
+understanding
+understanding the
+the entire
+entire monorepo,
+monorepo, allowing
+allowing rapid
+rapid prototyping
+prototyping of
+of tools 
+tools
+to
+to understand
+understand model
+model performance
+performance during
+during training
+training and
+and evaluations.
+
+evaluations.
+
+Handling
+Handling repetitive
+repetitive refactoring
+refactoring tasks 
+tasks
+When faced
+When
+faced with
+with merge
+merge conflicts
+conflicts or
+or semi-complicated
+semi-complicated file
+file refactoring
+refactoring
+that’s
+that's too
+too complex
+complex for
+for editor
+editor macros
+macros but
+but not
+not large
+large enough
+enough for
+for major
+major
+development
+development effort,
+effort, they
+they use
+use Claude
+Claude Code
+Code like
+like aa “slot
+"slot machine”
+machine" -- commit
+commit
+their state,
+state, let
+let Claude
+Claude work
+work autonomously
+autonomously for
+for 30
+30 minutes,
+minutes, and
+and either
+either
+their
+accept
+work.
+
+accept the
+the solution
+solution or
+or restart
+restart fresh
+fresh if
+if it
+it doesn’t
+doesn't work.
+Creating
+Creating persistent
+persistent analytics
+analytics tools
+tools instead
+instead of
+of throwaway
+throwaway notebooks 
+notebooks
+Instead of
+of building
+building one-off
+one-off Jupyter
+notebooks that
+that get
+discarded, the
+the
+Instead
+Jupyter notebooks
+get discarded,
+team
+team now
+now has
+has Claude
+Claude build
+build permanent
+permanent React
+React dashboards
+dashboards that
+that can
+can be
+be
+reused
+reused across
+across future
+future model
+model evaluations.
+evaluations. This
+This is
+is important
+important because
+because
+understanding Claude’s
+Claude's performance
+performance is
+is “one
+"one of
+of the
+the most
+most important
+important things
+things
+understanding
+for
+for the
+the team”
+team" -- they
+they need
+need to
+to understand
+understand how
+how models
+models perform
+perform during
+during
+training
+which “is
+training and
+and evaluations,
+evaluations, which
+"is actually
+actually non-trivial
+non-trivial and
+and simple
+simple tools
+tools
+can't get
+too much
+much signal
+signal from
+from looking
+looking at
+at aa single
+single number
+number go
+go up.”
+
+up."
+can’t
+get too
+Zero-dependency
+task delegation 
+Zero-dependency task
+delegation
+For
+For tasks
+tasks in
+in completely
+completely unfamiliar
+unfamiliar codebases
+codebases or
+or languages,
+languages, they
+they delegate
+delegate
+entire implementation
+implementation to
+to Claude
+Claude Code,
+Code, leveraging
+leveraging its
+its ability
+ability to
+to gather
+entire
+gather
+context
+context from
+from the
+the monorepo
+monorepo and
+and execute
+execute tasks
+tasks without
+without their
+their involvement
+involvement
+in
+This allows
+in the
+the actual
+actual coding
+coding process.
+process. This
+allows productivity
+productivity in
+in areas
+areas outside
+outside
+their expertise
+expertise instead
+instead of
+of spending
+spending time
+time learning
+learning new
+new technologies.
+technologies.
+their
+
+11
+11
+
+Claude
+CLAUDE Code
+CODE for
+FOR data
+DATA science
+SCIENCE and
+AND visualization
+VISUALIZATION
+
+Claude
+Claude Code
+Code for
+for data
+data science
+science
+and
+and visualization
+visualization
+Team
+Team impact
+impact
+
+Achieved
+2-4x time
+Achieved 2-4x
+time savings 
+savings
+Routine refactoring
+refactoring tasks
+tasks that
+that were
+were tedious
+tedious but
+manageable manually 
+manually
+Routine
+but manageable
+are now
+now completed
+completed much
+much faster.
+
+faster.
+are
+Built
+Built complex
+complex applications
+applications in
+in unfamiliar
+unfamiliar languages 
+languages
+Created 5,000-line
+5,000-line TypeScript
+Typescript applications
+applications despite
+despite having
+having minimal
+minimal
+Created
+JavaScript/TypeScript experience.
+
+JavaScript/Typescript
+experience.
+Shifted
+throwaway to
+Shifted from
+from throwaway
+to persistent
+persistent tools 
+tools
+Instead of
+of disposable
+disposable Jupyter
+Jupyter notebooks,
+notebooks, now
+now building
+building reusable
+reusable React
+React
+Instead
+dashboards
+dashboards for
+for model
+model analysis.
+
+analysis.
+Direct
+Direct model
+model improvement
+improvement insights 
+insights
+Firsthand Claude
+Claude Code
+Code experience
+experience informs
+informs development
+development of
+of better
+better
+Firsthand
+memory
+UX improvements
+memory systems
+systems and
+and UX
+improvements for
+for future
+future model
+model iterations.
+
+iterations.
+Enabled
+Enabled visualization-driven
+visualization-driven decision
+decision making 
+making
+Better understanding
+understanding of
+of Claude’s
+Claude's performance
+performance during
+during training
+training and
+and
+Better
+evaluations
+visualization tools.
+evaluations through
+through advanced
+advanced data
+data visualization
+tools.
+
+Top
+Top tips
+tips from
+from the 
+the
+Data
+Data Science
+Science and 
+and
+ML
+ML Engineering
+Engineering teams
+teams
+
+Treat
+Treat it
+it like
+like a
+a slot
+slot machine 
+machine
+Save
+Save your
+your state
+state before
+before letting
+letting Claude
+Claude work,
+work, let
+let it
+it run
+run for
+for 30
+30 minutes, 
+minutes,
+then either
+either accept
+accept the
+the result
+result or
+or start
+start fresh
+fresh rather
+rather than
+than trying
+trying to
+to wrestle
+then
+wrestle
+with corrections.
+with
+corrections. Starting
+Starting over
+over often
+often has
+has aa higher
+higher success
+success rate
+rate than
+than trying
+trying
+to
+to fix
+fix Claude’s
+Claude's mistakes.
+
+mistakes.
+Interrupt for
+for simplicity
+simplicity when
+when needed 
+needed
+Interrupt
+While supervising,
+While
+supervising, don’t
+don't hesitate
+hesitate to
+to stop
+stop Claude
+Claude and
+and ask
+ask “why
+"why are 
+are
+you doing
+The model
+you
+doing this?
+this? Try
+Try something
+something simpler.”
+simpler." The
+model tends
+tends toward 
+toward
+more complex
+complex solutions
+solutions by
+by default
+default but
+responds well
+well to
+to requests
+requests for 
+for
+more
+but responds
+simpler
+simpler approaches.
+approaches.
+
+12
+12
+
+Claude
+CLAUDE Code
+CODE for
+FOR data
+DATA science
+SCIENCE and
+AND visualization
+VISUALIZATION
+
+Claude
+Claude Code
+Code for
+for API
+API
+Main
+Main Claude
+Claude Code
+Code use
+use cases
+cases
+The
+The API
+API Knowledge
+Knowledge team
+team works
+works
+on features
+features like
+like PDF
+PDF support,
+support,
+citations,
+citations, and
+and web
+web search
+search that
+that
+bring
+bring additional
+additional knowledge
+knowledge into
+into
+Claude’s
+Claude's context
+context window.
+window.
+Working
+Working across
+across large,
+large, complex
+complex
+codebases
+codebases means
+means constantly
+constantly
+encountering
+encountering unfamiliar
+unfamiliar code
+sections,
+sections, spending
+spending significant
+significant
+time
+time understanding
+understanding which
+which files
+files to
+to
+examine
+examine for
+for any given
+given task,
+task, and
+and
+building
+building context
+context before
+before making
+making
+changes.
+changes. Claude
+Claude Code improves
+improves
+this
+this experience
+experience by
+by serving
+serving as a
+guide
+guide that
+that can
+can help
+help them
+them
+
+First-step workflow planning
+The team
+team uses
+uses Claude
+Claude Code as their
+their “first
+"first stop”
+stop" for any
+any task,
+task, asking
+asking it 
+it
+The
+identify which
+which files to examine
+examine for bug
+bug fixes, feature
+feature development, 
+development,
+to identify
+or analysis.
+analysis. This replaces
+replaces the
+the traditional
+traditional time-consuming
+time-consuming process
+process of
+manually navigating
+navigating the
+the codebase
+codebase and
+and gathering
+gathering context
+context before 
+before
+manually
+starting
+starting work.
+
+work.
+First-step workflow planning 
+
+Independent debugging across codebases
+The
+The team
+team now has
+has the
+the confidence
+confidence to tackle
+tackle bugs
+bugs in unfamiliar
+unfamiliar parts
+parts of the
+the
+codebase
+code base instead
+instead of asking
+asking others
+others for help.
+help. They
+They can
+can ask Claude
+Claude “Do
+"Do you
+you
+think
+think you can
+can fix
+fix this
+this bug? This
+This is the
+the behavior
+behavior I’m
+I'm seeing”
+seeing" and
+and often
+often get
+immediate
+which wasn’t
+immediate progress,
+progress, which
+wasn't feasible
+feasible before
+before given
+given the
+the time
+time
+investment
+investment required.
+
+required.
+Independent debugging across codebases 
+
+understand
+understand system
+system architecture,
+architecture,
+identify
+identify relevant
+relevant files,
+files, and
+and
+explain
+explain complex
+complex interactions.
+interactions.
+
+Model iteration
+iteration testing
+through dogfooding 
+dogfooding
+Model
+testing through
+Claude
+Claude Code automatically
+automatically uses
+uses the
+the latest
+latest research
+research model
+model snapshots,
+snapshots,
+making
+making it their
+their primary
+primary way of experiencing
+experiencing model
+model changes.
+changes. This gives
+them direct
+direct feedback
+feedback on
+on model
+model behavior
+behavior changes
+changes during
+during development
+development
+them
+cycles, which
+which they
+they hadn’t
+hadn't experienced
+experienced during
+during previous
+previous launches.
+
+launches.
+Eliminating context-switching overhead
+Instead of copying
+copying code
+code snippets
+snippets and
+and dragging
+dragging files into
+into Claude.ai 
+Claude.ai
+Instead
+while
+while explaining
+explaining problems
+problems extensively,
+extensively, they
+they can
+can ask questions
+questions directly
+directly in
+Claude
+without additional
+Claude Code without
+additional context
+context gathering,
+gathering, significantly
+significantly reducing 
+reducing
+mental
+mental overhead.
+overhead.
+Eliminating context-switching overhead 
+
+13
+
+CLAUDE CODE FOR API
+
+Claude Code for API
+
+Claude
+Claude Code
+Code for
+for API
+API
+Team
+Team impact
+impact
+
+Increased confidence in tackling unfamiliar areas
+Team members
+members can
+can independently
+independently debug
+debug bugs
+bugs and
+and investigate
+investigate incidents
+incidents
+Team
+in
+in unfamiliar
+unfamiliar codebases.
+
+codebases.
+Increased confidence in tackling unfamiliar areas 
+
+Significant time savings in context gathering
+Eliminated the
+the overhead
+overhead of copying
+copying code snippets
+snippets and
+and dragging
+dragging files into
+into
+Eliminated
+Claude.ai,
+Claude.ai, reducing
+reducing mental
+mental context-switching
+context-switching burden.
+
+burden.
+Significant time savings in context gathering 
+
+Faster rotation onboarding
+Engineers rotating to new teams can quickly navigate unfamiliar
+codebases
+code bases and
+and contribute
+contribute meaningfully
+meaningfully without
+without extensive
+extensive colleague
+colleague
+consultation.
+
+consultation.
+Faster rotation onboarding 
+
+Engineers rotating to new teams can quickly navigate unfamiliar
+
+Enhanced developer happiness
+Team
+Team reports
+reports feeling
+feeling happier
+happier and
+and more
+more productive
+productive with
+with reduced
+reduced friction
+friction
+in daily workflows.
+Enhanced developer happiness 
+
+Top tips
+tips from
+from the 
+the
+API
+API Knowledge
+Knowledge team
+team
+
+Treat it
+Treat
+it as
+as an
+an iterative
+iterative partner,
+partner, not
+not a
+a one-shot
+one-shot solution 
+solution
+Rather
+Rather than
+than expecting
+expecting Claude
+Claude to solve problems
+problems immediately,
+immediately, approach 
+approach
+it as a collaborator
+collaborator you iterate
+iterate with.
+with. This works better
+better than
+than trying
+trying to get
+perfect solutions
+solutions on
+on the
+the first try.
+
+try.
+perfect
+Use it for building
+building confidence
+confidence in
+in unfamiliar
+unfamiliar areas 
+areas
+Don’t
+your
+Don't hesitate
+hesitate to tackle
+tackle bugs
+bugs or investigate
+investigate incidents
+incidents outside
+outside your
+expertise
+Claude
+Code
+makes
+it
+feasible
+to
+work
+independently
+areas
+expertise
+makes
+independently in areas
+that
+would normally
+building.
+
+that would
+normally require
+require extensive
+extensive context
+context building.
+
+Start with minimal information
+Begin with just the bare minimum of what you need and let Claude guide
+you
+you through
+through the
+the process,
+process, rather
+rather than
+than front-loading
+front-loading extensive
+extensive explanations.
+explanations.
+Start with minimal information 
+
+Begin with just the bare minimum of what you need and let Claude guide
+
+14
+
+CLAUDE CODE FOR API
+
+Claude Code for API
+
+Claude
+Claude Code
+Code for
+for growth
+growth
+marketing
+marketing
+The
+The Growth
+Growth Marketing 
+Marketing
+team
+team focuses
+focuses on
+on building
+building out
+out
+performance
+performance marketing
+marketing channels
+channels
+across
+across paid
+paid search,
+search, paid
+paid social,
+social,
+mobile
+mobile app
+opp stores,
+stores, email
+email
+marketing,
+marketing, and
+and SEO.
+SEO. As
+As a
+a nonnontechnical
+technical team
+team of
+of one,
+one, they
+they use
+use
+Claude
+Code
+to
+automate
+Claude Code to automate
+repetitive
+repetitive marketing
+marketing tasks
+tasks and
+and
+create
+create agentic
+agentic workflows
+workflows that
+that
+would
+would traditionally
+traditionally require
+require
+significant
+engineering
+significant engineering
+resources.
+resources.
+
+Main
+Main Claude
+Claude Code
+Code use
+use cases
+cases
+Automated Google
+Google Ads
+Ads creative
+creative generation 
+generation
+Automated
+The
+The team
+team built
+built an
+an agentic
+agentic workflow
+workflow that
+that processes
+processes CSV
+CSVfiles
+files containing
+containing
+hundreds
+with performance
+hundreds of
+of existing
+existing ads
+ads with
+performance metrics,
+metrics, identifies
+identifies
+underperforming
+underperforming ads
+ads for
+for iteration,
+iteration, and
+and generates
+generates new
+new variations
+variations that
+that
+meet
+meet strict
+strict character
+character limits
+limits (30
+(30 characters
+characters for
+for headlines,
+headlines, 90
+90 for
+for
+descriptions).
+descriptions). Using
+Using two
+two specialized
+specialized sub-agents
+sub-agents (one
+(one for
+for headlines,
+headlines, one 
+one
+for
+generate hundreds
+for descriptions),
+descriptions), the
+the system
+system can
+can generate
+hundreds of
+of new
+new ads
+ads in
+in
+minutes
+minutes instead
+instead of
+of requiring
+requiring manual
+manual creation
+creation across
+across multiple
+multiple campaigns.
+campaigns.
+This
+would
+This has
+has enabled
+enabled them
+them to
+to test
+test and
+and iterate
+iterate at
+at scale,
+scale, something
+something that
+that would
+have
+have taken
+taken aa significant
+significant amount
+amount of
+of time
+time to
+to achieve
+achieve previously.
+
+previously.
+
+Figma
+Figma plugin
+plugin for
+for mass
+mass creative
+creative production 
+production
+Instead
+Instead of
+of manually
+manually duplicating
+duplicating and
+and editing
+editing static
+static images
+images for
+for paid 
+paid
+social
+social ads,
+ads, they
+they developed
+developed aa Figma
+Figma plugin
+plugin that
+that identifies
+identifies frames
+frames and
+and
+programmatically generates
+up to
+to 100
+100 ad
+ad variations
+by swapping
+swapping
+programmatically
+generates up
+variations by
+headlines
+headlines and
+and descriptions,
+descriptions, reducing
+reducing what
+what would
+would take
+take hours
+hours of
+of copycopypasting
+This enables
+pasting to
+to half
+half aa second
+second per
+per batch.
+batch. This
+enables 10x
+l0x creative
+creative output,
+output,
+allowing the
+the team
+team to
+to test
+test vastly
+vastly more
+more creative
+creative variations
+across key 
+key
+allowing
+variations across
+social
+social channels.
+
+channels.
+Meta
+Ads MCP
+MCP server
+Meta Ads
+server for
+for campaign
+campaign analytics 
+analytics
+They created
+created an
+an MCP
+MCP server
+server integrated
+integrated with
+Ads API
+API to
+to query
+query
+They
+with Meta
+Meta Ads
+campaign
+campaign performance,
+performance, spending
+spending data,
+data, and
+and ad
+ad effectiveness
+effectiveness directly
+directly
+within
+within the
+the Claude
+Claude Desktop
+Desktop app,
+app, eliminating
+eliminating the
+the need
+need to
+to switch
+switch between
+between
+platforms for
+for performance
+performance analysis,
+analysis, saving
+saving critical
+critical time
+time where
+every
+platforms
+where every
+efficiency
+gain translates
+efficiency gain
+translates to
+to better
+better ROI.
+
+ROI.
+Advanced
+Advanced prompt
+prompt engineering
+engineering with
+with memory
+memory systems 
+systems
+They implemented
+implemented aa rudimentary
+rudimentary memory
+memory system
+system that
+that logs
+logs hypotheses
+hypotheses
+They
+and
+and experiments
+experiments across
+across ad
+ad iterations,
+iterations, allowing
+allowing the
+the system
+system to
+to pull
+pull previous
+previous
+test
+generating new
+test results
+results into
+into context
+context when
+when generating
+new variations,
+variations, creating
+creating aa selfselfimproving testing
+testing framework.
+framework. This
+enables systematic
+systematic experimentation
+experimentation
+improving
+This enables
+that
+would be
+that would
+be impossible
+impossible to
+to track
+track manually.
+manually.
+
+15
+15
+
+Claude
+CLAUDE Code
+CODE for
+FOR growth
+GROWTH marketing
+MARKETING
+
+Claude
+Claude Code
+Code for
+for growth
+growth
+marketing
+marketing
+Team
+Team impact
+impact
+
+Dramatic
+time savings
+Dramatic time
+savings on
+on repetitive
+repetitive tasks 
+tasks
+Ad
+copy creation
+creation reduced
+reduced from
+from 22 hours
+hours to
+to 15
+15minutes,
+minutes, freeing
+freeing up
+up time
+time for
+for
+Ad copy
+strategic work.
+strategic
+work.
+
+10x
+10x increase
+increase in
+in creative
+creative output 
+output
+The
+team can
+can now
+now test
+test vastly
+more ad
+ad variations
+variations across
+across channels
+channels with
+with
+The team
+vastly more
+automated
+automated generation
+generation and
+and Figma
+Figma integration.
+
+integration.
+Operating
+Operating like
+like aa larger
+larger team 
+team
+The
+team can
+can handle
+handle tasks
+tasks that
+that traditionally
+traditionally required
+required dedicated
+dedicated
+The team
+engineering
+engineering resources.
+
+resources.
+Strategic
+Strategic focus
+focus shift 
+shift
+The
+team can
+can spend
+spend more
+more time
+time on
+on overall
+overall strategy
+strategy and
+and building
+building agentic
+agentic
+The team
+automation
+automation rather
+rather than
+than manual
+manual execution.
+execution.
+
+Top
+Top tips
+tips from
+from the 
+the
+Growth
+Growth Marketing
+Marketing
+team
+team
+
+Identify
+Identify API-enabled
+API-enabled repetitive
+repetitive tasks 
+tasks
+Look
+workflows involving
+Look for
+for workflows
+involving repetitive
+repetitive actions
+actions with
+with tools
+tools that
+that have 
+have
+APis
+(like
+ad
+platforms,
+design
+tools,
+analytics
+platforms).
+These
+are
+APIs (like ad platforms, design tools, analytics platforms). These are 
+prime
+prime candidates
+candidates for
+for automation
+automation and
+and where
+where Claude
+Claude Code
+Code provides
+provides the
+the
+most
+most value.
+
+value.
+Break complex
+complex workflows
+into specialized
+specialized sub-agents 
+sub-agents
+Break
+workflows into
+Instead
+Instead of
+of trying
+trying to
+to handle
+handle everything
+everything in
+in one
+one prompt
+prompt or
+or workflow,
+workflow, create
+create
+separate
+separate agents
+agents for
+for specific
+specific tasks
+tasks (like
+(like their
+their headline
+headline agent
+agent vs.
+vs. description
+description
+agent). This
+makes debugging
+debugging easier
+easier and
+and improves
+improves output
+output quality
+quality when
+when
+agent).
+This makes
+dealing
+dealing with
+with complex
+complex requirements.
+
+requirements.
+
+Thoroughly
+Thoroughly brainstorm
+brainstorm and
+and prompt
+prompt plan
+plan before
+before coding 
+coding
+Spend significant
+significant time
+time upfront
+upfront using
+using Claude.ai
+Claude.ai to
+to think
+think through
+through your
+your
+Spend
+entire
+workflow, then
+entire workflow,
+then have
+have Claude.ai
+Claude.ai create
+create aa comprehensive
+comprehensive prompt
+prompt and
+and
+code
+code structure
+structure for
+for Claude
+Claude Code
+Code to
+to reference.
+reference. Also,
+Also, work
+work step-by-step
+step-by-step
+rather than
+than asking
+asking for
+for one-shot
+one-shot solutions
+solutions to
+to avoid
+avoid Claude
+Claude getting
+rather
+getting
+overwhelmed
+overwhelmed by
+by complex
+complex tasks.
+tasks.
+
+16
+16
+
+Claude
+CLAUDE Code
+CODE for
+FOR growth
+GROWTH marketing
+MARKETING
+
+Claude
+Claude Code
+Code for
+for product
+product design
+design
+The
+The Product
+Product Design
+Design team
+team
+supports
+Claude
+Code,
+supports Claude Code, Claude.ai
+Claude.ai
+and
+and the
+the Anthropic
+Anthropic API,
+API,
+specializing
+specializing in
+in building
+building AI
+Al
+products.
+products. Even
+Even non-developers
+non-developers
+can
+can use
+use Claude
+Claude Code
+Code to
+to bridge
+bridge
+the
+the traditional
+traditional gap
+gap between
+between
+design
+design and
+and engineering,
+engineering, enabling
+enabling
+direct
+direct implementation
+implementation of
+of their
+their
+design
+vision
+without
+extensive
+design vision without extensive
+back-and-forth
+back-and-forth with
+with engineers.
+engineers.
+
+Main
+Main Claude
+Claude Code
+Code use
+use cases
+cases
+Front-end
+Front-end polish
+polish and
+and state
+state management
+management changes 
+changes
+Instead of
+of creating
+creating extensive
+extensive design
+design documentation
+documentation and
+and going
+going through
+through
+Instead
+multiple rounds
+rounds of
+of feedback
+feedback with
+with engineers
+engineers for
+for visual
+tweaks (typefaces,
+(typefaces,
+multiple
+visual tweaks
+colors,
+colors, spacing),
+spacing), they
+they now
+now directly
+directly implement
+implement these
+these changes
+changes using
+using Claude
+Claude
+Code. Engineers
+Engineers noted
+noted they’re
+they're making
+making “large
+"large state
+state management
+management changes
+changes
+Code.
+that
+you typically
+that you
+typically wouldn’t
+wouldn't see
+see aa designer
+designer making,”
+making," enabling
+enabling them
+them to
+to
+achieve
+achieve the
+the exact
+exact quality
+quality they
+they envision.
+
+envision.
+GitHub
+GitHub Actions
+Actions automated
+automated ticketing 
+ticketing
+Using Claude
+Using
+Claude Code’s
+Code's GitHub
+GitHub integration,
+integration, they
+they can
+can simply
+simply file
+file issues/
+issues/
+tickets
+tickets describing
+describing needed
+needed changes,
+changes, and
+and Claude
+Claude automatically
+automatically proposes
+proposes
+code
+without having
+code solutions
+solutions without
+having to
+to open
+open Claude
+Claude Code,
+Code, creating
+creating aa seamless
+seamless
+bug-fixing and
+bug-fixing
+and feature
+feature refinement
+refinement workflow
+workflow for
+for their
+their persistent
+persistent backlog 
+backlog
+of polish
+polish tasks.
+
+tasks.
+of
+Rapid
+Rapid interactive
+interactive prototyping 
+prototyping
+By
+By pasting
+pasting mockup
+mockup images
+images into
+into Claude
+Claude Code,
+Code, they
+they generate
+generate fully
+fully
+functional prototypes
+prototypes that
+that engineers
+engineers can
+can immediately
+immediately understand
+understand and
+and
+functional
+iterate
+iterate on,
+on, replacing
+replacing the
+the traditional
+traditional cycle
+cycle of
+of static
+static Figma
+Figma designs
+designs that
+that
+required
+required extensive
+extensive explanation
+explanation and
+and translation
+translation to
+to working
+working code.
+
+code.
+Edge case
+case discovery
+discovery and
+and system
+system architecture
+architecture understanding 
+understanding
+Edge
+They use
+They
+use Claude
+Claude Code
+Code to
+to map
+map out
+out error
+error states,
+states, logic
+logic flows,
+flows, and
+and different
+different
+system
+system statuses,
+statuses, allowing
+allowing them
+them to
+to identify
+identify edge
+edge cases
+cases during
+during design
+design rather
+rather
+than discovering
+discovering them
+them later
+later in
+in development,
+development, fundamentally
+fundamentally improving
+improving
+than
+the
+the quality
+quality of
+of their
+their initial
+initial designs.
+
+designs.
+
+Complex
+legal compliance 
+Complex copy
+copy changes
+changes and
+and legal
+compliance
+For tasks
+tasks like
+like removing
+removing “research
+"research preview”
+preview" messaging
+messaging across
+across the
+the entire
+entire
+For
+codebase,
+code base, they
+they used
+used Claude
+Claude Code
+Code to
+to find
+find all
+all instances,
+instances, review
+review surrounding
+surrounding
+copy,
+copy, coordinate
+coordinate changes
+changes with
+with legal
+legal in
+in real-time,
+real-time, and
+and implement
+implement updates
+updates -process that
+that took
+took two
+two 30-minute
+30-minute calls
+calls instead
+instead of
+of aa week
+week of
+ofback-andaa process
+back-andforth
+forth coordination.
+coordination.
+
+17
+17
+
+Claude
+CLAUDE Code
+CODE for
+FOR product
+PRODUCT design
+DESIGN
+
+Claude
+Claude Code
+Code for
+for product
+product design
+design
+Team
+Team impact
+impact
+
+Transformed core
+Transformed
+core workflow
+workflow 
+Claude Code
+Code becomes
+primary design
+design tool,
+tool, with
+Figma and
+and Claude
+Claude Code
+Code
+Claude
+becomes aa primary
+with Figma
+open
+open 80%
+80% of
+of the
+the time.
+
+time.
+2-3x
+faster execution 
+execution
+2-3x faster
+Visual
+and
+state
+management changes
+changes that
+that previously
+previously required
+required extensive
+extensive
+Visual and state management
+back-and-forth with
+with engineers
+back-and-forth
+engineers now
+now implemented
+implemented directly.
+
+directly.
+Weeks
+to hours
+hours cycle
+cycle time 
+time
+Weeks to
+Complex
+Complex projects
+projects like
+like GA
+GA launch
+launch messaging
+messaging that
+that would
+would take
+take aa week
+week of
+of
+coordination
+coordination now
+now completed
+completed in
+in two
+two 30-minute
+30-minute calls.
+
+calls.
+Two
+distinct user
+user experiences 
+experiences
+Two distinct
+Developers
+get “augmented
+Developers get
+"augmented workflow”
+workflow" (faster
+(faster execution),
+execution), while
+while nonnontechnical
+get “holy
+technical users
+users get
+"holy crap,
+crap, I’m
+I'm aa developer
+developer workflow”
+workflow" (entirely
+(entirely new
+new
+capabilities
+previously
+impossible).
+capabilities previously impossible).
+
+
+Improved
+Improved design-engineering
+design-engineering collaboration 
+collaboration
+Better
+Better communication
+communication and
+and faster
+faster problem-solving
+problem-solving because
+because designers
+designers
+understand system
+system constraints
+constraints and
+and possibilities
+possibilities upfront.
+upfront.
+understand
+
+Top
+Top tips
+tips from
+from the 
+the
+Product
+Product Design
+Design team
+team
+
+Get
+Get proper
+proper setup
+setup help
+help from
+from engineers 
+engineers
+Have
+with initial
+Have engineering
+engineering teammates
+teammates help
+help with
+initial repository
+repository setup
+setup and
+and
+permissions
+permissions -- the
+the technical
+technical onboarding
+onboarding is
+is challenging
+challenging for
+for non-developers,
+non-developers,
+but once
+once configured,
+configured, it
+it becomes
+becomes transformative
+transformative for
+for daily
+daily workflow.
+
+workflow.
+but
+Use custom
+to guide
+guide Claude’s
+Use
+custom memory
+memory files
+files to
+Claude's behavior 
+behavior
+Create
+with little
+Create specific
+specific instructions
+instructions telling
+telling Claude
+Claude you’re
+you're aa designer
+designer with
+little
+coding experience
+experience who
+who needs
+needs detailed
+detailed explanations
+explanations and
+and smaller,
+smaller,
+coding
+incremental
+incremental changes,
+changes, dramatically
+dramatically improving
+improving the
+the quality
+quality of
+of Claude’s
+Claude's
+responses
+responses and
+and making
+making it
+it less
+less intimidating.
+
+intimidating.
+Leverage image
+image pasting
+pasting for
+for prototyping 
+prototyping
+Leverage
+Use Command+V
+Use
+Command+V to
+to paste
+paste screenshots
+screenshots directly
+directly into
+into Claude
+Claude Code
+Code -- it
+it excels
+excels
+at
+at reading
+reading designs
+designs and
+and generating
+generating functional
+functional code,
+code, making
+making it
+it invaluable
+invaluable
+for turning
+turning static
+static mockups
+mockups into
+into interactive
+interactive prototypes
+prototypes that
+that engineers
+engineers can
+can
+for
+immediately
+immediately understand
+understand and
+and build
+build upon.
+upon.
+
+18
+18
+
+Claude
+CLAUDE Code
+CODE for
+FOR product
+PRODUCT design
+DESIGN
+
+Claude
+Claude Code
+Code for
+for RL
+RL engineering
+engineering
+The
+The RL
+RL Engineering
+Engineering team
+team
+focuses
+on
+efficient
+sampling
+focuses on efficient sampling in
+in
+RL
+RL and
+and weight
+weight transfers
+transfers across
+across
+the
+the cluster.
+cluster. They
+They use
+use Claude
+Claude
+Code
+Code primarily
+primarily for
+for writing
+writing small
+small
+to
+medium
+features,
+debugging,
+to medium features, debugging,
+and
+and understanding
+understanding complex
+complex
+codebases,
+codebases, with
+with an
+an iterative
+iterative
+approach
+approach that
+that includes
+includes frequent
+frequent
+checkpointing
+and
+rollbacks.
+checkpointing and rollbacks.
+
+Main
+Main Claude
+Claude Code
+Code use
+use cases
+cases
+Feature
+with supervised
+Feature development
+development with
+supervised autonomy 
+autonomy
+The team
+The
+team lets
+lets Claude
+Claude Code
+Code write
+write most
+most of
+of the
+the code
+code for
+for small
+small to
+to medium
+medium
+features while
+providing oversight,
+oversight, such
+such as
+as implementing
+implementing authentication
+authentication
+features
+while providing
+mechanisms
+mechanisms for
+for weight
+weight transfer
+transfer components.
+components. They
+They work
+work interactively,
+interactively,
+allowing Claude
+Claude to
+to take
+take the
+the lead
+lead but
+but steering
+steering it
+it when
+off track.
+
+track.
+allowing
+when itit goes
+goes off
+Test
+Test generation
+generation and
+and code
+code review 
+review
+After
+After implementing
+implementing changes
+changes themselves,
+themselves, they
+they ask
+ask Claude
+Claude Code
+Code to
+to add
+add
+tests
+tests or
+or review
+review their
+their code.
+code. This
+This automated
+automated testing
+testing workflow
+workflow saves
+saves
+significant
+significant time
+time on
+on routine
+routine but
+but important
+important quality
+quality assurance
+assurance tasks.
+
+tasks.
+Debugging
+Debugging and
+and error
+error investigation 
+investigation
+They use
+with mixed
+They
+use Claude
+Claude Code
+Code to
+to debug
+debug errors
+errors with
+mixed results
+results -- sometimes
+sometimes it
+it
+identifies
+while other
+identifies issues
+issues immediately
+immediately and
+and adds
+adds relevant
+relevant tests,
+tests, while
+other times 
+times
+struggles to
+to understand
+understand the
+the problem,
+problem, but
+but overall
+overall provides
+provides value
+value when 
+when
+itit struggles
+itit works.
+works.
+
+Codebase
+Codebase comprehension
+comprehension and
+and call
+call stack
+stack analysis 
+analysis
+One of
+of the
+the biggest
+biggest changes
+changes in
+in their
+their workflow
+workflow is
+is using
+using Claude
+Claude Code
+Code to
+to get
+get
+One
+quick
+quick summaries
+summaries of
+of relevant
+relevant components
+components and
+and call
+call stacks,
+stacks, replacing
+replacing
+manual
+generation.
+
+manual code
+code reading
+reading or
+or extensive
+extensive debugging
+debugging output
+output generation.
+Kubernetes operations
+operations guidance 
+guidance
+Kubernetes
+They frequently
+They
+frequently ask
+ask Claude
+Claude Code
+Code about
+about Kubernetes
+Kubemetes operations
+operations that
+that would
+would
+otherwise
+otherwise require
+require extensive
+extensive Googling,
+Googling, getting
+getting immediate
+immediate answers
+answers for
+for
+configuration and
+and deployment
+deployment questions.
+questions.
+configuration
+
+19
+19
+
+Claude
+CLAUDE Code
+CODE for
+FOR RL
+RL engineering
+ENGINEERING
+
+Claude
+Claude Code
+Code for
+for RL
+RL engineering
+engineering
+Development 
+Development
+workflow
+workflow impact
+impact
+
+Experimental
+Experimental approach
+approach enabled 
+enabled
+They
+now use
+use aa “try
+"try and
+and rollback”
+rollback" methodology,
+methodology, frequently
+frequently committing
+committing
+They now
+checkpoints
+checkpoints so
+so they
+they can
+can test
+test Claude’s
+Claude's autonomous
+autonomous implementation
+implementation
+attempts and
+and revert
+revert if
+if needed,
+needed, enabling
+enabling more
+more experimental.
+
+experimental.
+attempts
+Documentation
+Documentation acceleration 
+acceleration
+Claude
+Claude Code
+Code automatically
+automatically adds
+adds helpful
+helpful comments
+comments that
+that save
+save significant
+significant
+time
+on
+documentation,
+though
+they
+note
+it
+sometimes
+adds
+comments
+time on documentation, though they note it sometimes adds comments
+in
+in odd
+odd places
+places or
+or uses
+uses questionable
+questionable code
+code organization.
+
+organization.
+Speed-up
+with limitations 
+Speed-up with
+limitations
+While
+Claude Code
+Code can
+can implement
+implement small-to-medium
+small-to-medium PRs
+PRs with
+"relatively
+While Claude
+with “relatively
+little
+works on
+little time”
+time" from
+from them,
+them, they
+they acknowledge
+acknowledge it
+it only
+only works
+on first
+first attempt
+attempt
+about
+guidance or
+about one-third
+one-third of
+of the
+the time,
+time, requiring
+requiring either
+either additional
+additional guidance
+or
+manual
+manual intervention.
+intervention.
+
+Top
+Top tips
+tips from
+from the 
+the
+RL
+RL Engineering
+Engineering team
+team
+
+Customize
+Customize your
+your Claude.md
+Claude.md file
+file for
+for specific
+specific patterns 
+patterns
+Add instructions
+Add
+instructions to
+to your
+your Claude.md
+Claude.md file
+file to
+to prevent
+prevent Claude
+Claude from
+from making
+making
+repeated
+repeated tool-calling
+tool-calling mistakes,
+mistakes, such
+such as
+as telling
+telling it
+it to
+to “run
+"run pytest
+pytest not
+not run
+run and
+and
+don't cd
+cd unnecessarily
+unnecessarily -- just
+just use
+use the
+the right
+right path.”
+path." This
+This significantly
+significantly
+don’t
+improved
+improved consistency.
+
+consistency.
+Use
+workflow 
+Use aa checkpoint-heavy
+checkpoint-heavy workflow
+Regularly commit
+commit your
+your work
+as Claude
+Claude makes
+makes changes
+changes so
+so you
+you can
+can easily
+easily
+Regularly
+work as
+roll
+work out.
+roll back
+back when
+when experiments
+experiments don’t
+don't work
+out. This
+This enables
+enables aa more
+more
+experimental
+without risk.
+
+experimental approach
+approach to
+to development
+development without
+risk.
+Try one-shot
+one-shot first,
+first, then
+collaborate
+Try
+then collaborate 
+Give
+Give Claude
+Claude aa quick
+quick prompt
+prompt and
+and let
+let it
+it attempt
+attempt the
+the full
+full implementation
+implementation
+first.
+first. If
+Ifitit works
+works (about
+(about one-third
+one-third of
+of the
+the time),
+time), you’ve
+you've saved
+saved significant
+significant
+time.
+If
+not,
+then
+switch
+to
+a
+more
+collaborative,
+guided
+approach.
+time. If not, then switch to a more collaborative, guided approach.
+
+20
+20
+
+Claude
+CLAUDE Code
+CODE for
+FOR RL
+RL engineering
+ENGINEERING
+
+Claude
+Claude Code
+Code for
+for legal
+legal
+The
+The Legal
+Legal team
+team discovered
+discovered
+Claude
+Code’s
+potential
+Claude Code's potential through
+through
+experimentation,
+experimentation, and
+and a
+a desire
+desire to
+to
+learn
+learn about
+about Anthropic’s
+Anthropic's product
+product
+offerings.
+offerings. Additionally,
+Additionally, one
+one team
+team
+member
+had
+a
+personal
+use
+member had a personal use case
+case
+related
+related to
+to creating
+creating accessibility
+accessibility
+tools
+tools for
+for family
+fomily and
+and work
+work
+prototypes
+prototypes that
+that demonstrate 
+demonstrate
+the
+the technology’s
+technology's power
+power for 
+for
+non-developers.
+non-developers.
+
+Main
+Main Claude
+Claude Code
+Code use
+use cases
+cases
+Custom
+Custom accessibility
+accessibility solution
+solution for
+for family
+family members 
+members
+Team
+members have
+have built
+built communication
+communication assistants
+assistants for
+for family
+family members
+members
+Team members
+with
+speaking difficulties
+difficulties due
+due to
+to medical
+medical diagnoses.
+diagnoses. In
+In just
+just one
+one hour,
+hour, they
+they
+with speaking
+created
+created aa predictive
+predictive text
+text app
+app using
+using native
+native speech-to-text
+speech-to-text that
+that suggests
+suggests
+responses and
+and speaks
+speaks them
+them using
+using voice
+voice banks,
+banks, solving
+solving gaps
+gaps in
+in existing
+existing
+responses
+accessibility
+accessibility tools
+tools recommended
+recommended by
+by speech
+speech therapists.
+
+therapists.
+Legal
+workflow automation 
+Legal department
+department workflow
+automation
+They created
+They
+created prototype
+prototype “phone
+"phone tree”
+tree" systems
+systems to
+to help
+help team
+team members
+members
+connect
+with the
+Anthropic, demonstrating
+connect with
+the right
+right lawyer
+lawyer at
+at Anthropic,
+demonstrating how
+how legal
+legal
+departments
+departments can
+can build
+build custom
+custom tools
+tools for
+for common
+common tasks
+tasks without
+without traditional
+traditional
+development
+development resources.
+
+resources.
+Team
+Team coordination
+coordination tools 
+tools
+Managers have
+have built
+built G
+G Suite
+Suite applications
+applications that
+that automate
+automate weekly
+team
+Managers
+weekly team
+updates
+updates and
+and track
+track legal
+legal review
+review status
+status across
+across products,
+products, allowing
+allowing lawyers
+lawyers to
+to
+quickly
+quickly flag
+flag items
+items needing
+needing review
+review through
+through simple
+simple button
+button clicks
+clicks rather
+rather
+than spreadsheet
+spreadsheet management.
+
+management.
+than
+Rapid
+validation 
+Rapid prototyping
+prototyping for
+for solution
+solution validation
+They use
+They
+use Claude
+Claude Code
+Code to
+to quickly
+quickly build
+build functional
+functional prototypes
+prototypes they
+they can
+can
+show to
+to domain
+domain experts
+experts (like
+(like showing
+showing accessibility
+accessibility tools
+tools to
+to UCSF
+UCSF
+show
+specialists)
+specialists) to
+to validate
+validate ideas
+ideas and
+and identify
+identify existing
+existing solutions
+solutions before
+before
+investing
+investing more
+more time.
+time.
+
+21
+21
+
+Claude
+CLAUDECode
+CODEfor
+FORlegal
+LEGAL
+
+Claude
+Claude Code
+Code for
+for legal
+legal
+Work
+Work style
+style and
+and impact
+impact
+
+Planning
+Planning in
+in Claude.ai,
+Claude.ai, building
+building in
+in Claude
+Claude Code 
+Code
+They
+use aa two-step
+two-step process
+process where
+where they
+they brainstorm
+brainstorm and
+and plan
+plan with
+with
+They use
+Claude.ai
+Claude.ai first,
+first, then
+then move
+move to
+to Claude
+Claude Code
+Code for
+for implementation,
+implementation, asking
+asking it 
+it
+to slow
+slow down
+down and
+and work
+work step-by-step
+step-by-step rather
+rather than
+than outputting
+outputting everything 
+everything
+to
+at
+at once.
+
+once.
+Visual-first
+Visual-first approach 
+approach
+They frequently
+frequently use
+use screenshots
+screenshots to
+to show
+show Claude
+Claude Code
+Code what
+they want
+They
+what they
+want
+interfaces
+visual feedback
+interfaces to
+to look
+look like,
+like, then
+then iterate
+iterate based
+based on
+on visual
+feedback rather
+rather than
+than
+describing
+describing features
+features in
+in text.
+
+text.
+Prototype-driven innovation 
+innovation
+Prototype-driven
+They emphasize
+They
+emphasize overcoming
+overcoming the
+the fear
+fear of
+of sharing
+sharing “silly”
+"silly" or
+or “toy”
+"toy"
+prototypes,
+prototypes, as
+as these
+these demonstrations
+demonstrations inspire
+inspire others
+others to
+to see
+see possibilities
+possibilities
+they hadn’t
+hadn't considered.
+considered.
+they
+
+Security
+Security and
+and
+compliance
+compliance awareness
+awareness
+
+MCPintegration
+MCP
+integration concerns 
+concerns
+As
+As product
+product lawyers,
+lawyers, they
+they immediately
+immediately identify
+identify security
+security implications
+implications of
+of
+deep
+deep MCP
+MCP integrations,
+integrations, noting
+noting how
+how conservative
+conservative security
+security postures
+postures will
+will
+create barriers
+barriers as
+as AI
+AI tools
+tools access
+access more
+more sensitive
+sensitive systems.
+
+systems.
+create
+
+Compliance
+Compliance tooling
+tooling priorities 
+priorities
+They advocate
+AI 
+They
+advocate for
+for building
+building compliance
+compliance tools
+tools quickly
+quickly as
+as AI
+capabilities
+expand,
+recognizing
+the
+balance
+between
+innovation
+capabilities expand, recognizing the balance between innovation 
+and
+and risk
+risk management.
+management.
+
+Top
+Top tips
+tips from
+from the 
+the
+Legal
+Legal Department
+Department
+
+Plan
+Plan extensively
+extensively in
+in Claude.ai
+Claude.ai first 
+first
+Use Claude’s
+Use
+Claude's conversational
+conversational interface
+interface to
+to flesh
+flesh out
+out your
+your entire
+entire idea
+idea before
+before
+moving to
+to Claude
+Claude Code.
+Code. Then
+Then ask
+ask Claude
+Claude to
+to summarize
+summarize everything
+everything into
+into aa
+moving
+step-by-step
+step-by-step prompt
+prompt for
+for implementation.
+
+implementation.
+Work
+Work incrementally
+incrementally and
+and visually 
+visually
+Ask Claude
+Claude Code
+Code to
+to slow
+slow down
+down and
+and implement
+implement one
+one step
+step at
+at aa time
+time so
+so you
+Ask
+you
+can
+without getting
+getting overwhelmed.
+Use screenshots
+can copy-paste
+copy-paste without
+overwhelmed. Use
+screenshots liberally
+liberally to
+to
+show
+show what
+what you
+you want
+want interfaces
+interfaces to
+to look
+look like.
+
+like.
+Share prototypes
+prototypes despite
+despite imperfection 
+hnperfection
+Share
+Overcome
+work -- sharing
+Overcome the
+the urge
+urge to
+to hide
+hide “toy”
+"toy" projects
+projects or
+or unfinished
+unfinished work
+sharing
+prototypes
+prototypes helps
+helps others
+others see
+see possibilities
+possibilities and
+and sparks
+sparks innovation
+innovation across
+across
+departments
+that
+don't
+typically
+interact.
+departments that don’t typically interact.
+
+22
+22
+
+Claude
+CLAUDECode
+CODEfor
+FORlegal
+LEGAL
+
+
