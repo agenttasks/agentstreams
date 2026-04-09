@@ -859,6 +859,179 @@ def headless_batch(
         console.print(f"\n[green]All {len(results)} prompts completed.[/green]")
 
 
+# ── Sessions ────────────────────────────────────────────────────
+
+
+@sessions_app.command("list")
+def sessions_list(
+    limit: int = typer.Option(20, help="Maximum number of sessions to show"),
+) -> None:
+    """List recent Claude Code sessions with metadata.
+
+    Scans ~/.claude/projects/ for JSONL transcripts and displays
+    session ID, project path, message count, and last-updated time.
+    No API call is made — reads local transcript files only.
+    """
+    from src.sessions import SessionManager
+
+    sm = SessionManager()
+    sessions = sm.list_sessions(limit=limit)
+
+    if not sessions:
+        console.print("[yellow]No sessions found in ~/.claude/projects/[/yellow]")
+        raise typer.Exit(0)
+
+    table = Table(title=f"Recent Sessions (newest first, limit={limit})")
+    table.add_column("Session ID", style="cyan")
+    table.add_column("Name", style="green")
+    table.add_column("Project", style="yellow")
+    table.add_column("Messages", justify="right", style="magenta")
+    table.add_column("Last Updated")
+
+    for s in sessions:
+        project = s.project_path
+        if len(project) > 40:
+            project = "..." + project[-37:]
+        table.add_row(
+            s.session_id,
+            s.display_name or "[dim]-[/dim]",
+            project,
+            str(s.message_count),
+            s.last_updated.strftime("%Y-%m-%d %H:%M"),
+        )
+
+    console.print(table)
+
+
+@sessions_app.command("continue")
+def sessions_continue(
+    prompt: str = typer.Option(
+        "Acknowledge session continuation.",
+        help="Message sent to Claude on resumption",
+    ),
+) -> None:
+    """Resume the most-recent session in the current directory.
+
+    Equivalent to: claude -p <prompt> --continue --output-format json
+    """
+    from src.sessions import SessionManager
+
+    sm = SessionManager()
+    try:
+        result = sm.continue_session(prompt=prompt)
+    except RuntimeError as exc:
+        console.print(f"[red]{exc}[/red]")
+        raise typer.Exit(1)
+
+    console.print(f"[green]Session:[/green] {result.session_id}")
+    if result.cost_usd:
+        console.print(f"[dim]Cost: ${result.cost_usd:.4f}  Duration: {result.duration_ms}ms[/dim]")
+    console.print(result.result)
+
+
+@sessions_app.command("resume")
+def sessions_resume(
+    session_id: str = typer.Argument(..., help="Session UUID or display name"),
+    prompt: str = typer.Option(
+        "Acknowledge session resumption.",
+        help="Message sent to Claude on resumption",
+    ),
+) -> None:
+    """Resume a specific session from its last message.
+
+    Equivalent to: claude -p <prompt> --resume <session_id> --output-format json
+    """
+    from src.sessions import SessionManager
+
+    sm = SessionManager()
+    try:
+        result = sm.resume_session(session_id, prompt=prompt)
+    except RuntimeError as exc:
+        console.print(f"[red]{exc}[/red]")
+        raise typer.Exit(1)
+
+    console.print(f"[green]Session:[/green] {result.session_id}")
+    if result.cost_usd:
+        console.print(f"[dim]Cost: ${result.cost_usd:.4f}  Duration: {result.duration_ms}ms[/dim]")
+    console.print(result.result)
+
+
+@sessions_app.command("fork")
+def sessions_fork(
+    session_id: str = typer.Argument(..., help="Session UUID or display name to fork from"),
+    prompt: str = typer.Option(
+        "Acknowledge session fork.",
+        help="Initial message sent in the new forked session",
+    ),
+) -> None:
+    """Branch from an existing session into a fresh session ID.
+
+    The original session is left intact.
+    Equivalent to: claude -p <prompt> --resume <id> --fork-session --output-format json
+    """
+    from src.sessions import SessionManager
+
+    sm = SessionManager()
+    try:
+        result = sm.fork_session(session_id, prompt=prompt)
+    except RuntimeError as exc:
+        console.print(f"[red]{exc}[/red]")
+        raise typer.Exit(1)
+
+    console.print(f"[green]Forked session:[/green] {result.session_id}")
+    console.print(f"[dim]Parent:[/dim] {session_id}")
+    if result.cost_usd:
+        console.print(f"[dim]Cost: ${result.cost_usd:.4f}  Duration: {result.duration_ms}ms[/dim]")
+    console.print(result.result)
+
+
+@sessions_app.command("events")
+def sessions_events(
+    session_id: str = typer.Argument(..., help="Session UUID"),
+    types: list[str] = typer.Option(
+        [],
+        "--type",
+        help="Filter to specific event types: user, assistant, tool_use, tool_result. "
+        "Repeat --type for multiple. Omit for all.",
+    ),
+    tail: int = typer.Option(0, help="Show only the last N events (0 = show all)"),
+) -> None:
+    """Display events from a session's JSONL transcript.
+
+    Reads ~/.claude/projects/{project}/{session_id}/*.jsonl directly.
+    No API call is made.
+    """
+    from src.sessions import SessionManager
+
+    sm = SessionManager()
+    try:
+        events = sm.get_session_events(session_id, event_types=types if types else None)
+    except FileNotFoundError as exc:
+        console.print(f"[red]{exc}[/red]")
+        raise typer.Exit(1)
+
+    if not events:
+        console.print("[yellow]No events found for this session.[/yellow]")
+        raise typer.Exit(0)
+
+    if tail > 0:
+        events = events[-tail:]
+
+    table = Table(title=f"Events — {session_id}")
+    table.add_column("#", style="dim", justify="right")
+    table.add_column("Type", style="cyan")
+    table.add_column("Content")
+
+    for evt in events:
+        display = evt.content.replace("\n", " ")
+        if len(display) > 120:
+            display = display[:117] + "..."
+        table.add_row(str(evt.index), evt.event_type, display)
+
+    console.print(table)
+    console.print(f"[dim]{len(events)} event(s) shown[/dim]")
+
+
 # ── Top-level commands ──────────────────────────────────────────
 
 
