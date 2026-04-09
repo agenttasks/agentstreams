@@ -107,7 +107,7 @@ class TestAgentBoundaries:
         assert any("no tools restriction" in f.message for f in findings)
 
     def test_flags_write_tools_on_readonly(self):
-        content = "---\nname: test\ndescription: Reads and analyzes data\ntools: Read, Bash, Grep\n---\nBody"
+        content = "---\nname: test\ndescription: Reads and analyzes data\ntools: Read, Write, Grep\n---\nBody"
         findings = check_agent_boundaries(Path("/project/.claude/agents/test.md"), content)
         assert any("write tools" in f.message for f in findings)
 

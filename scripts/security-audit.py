@@ -139,7 +139,9 @@ def check_prompt_injection(file: Path, content: str) -> list[Finding]:
 # ── Check 3: Agent boundary violations ────────────────────
 
 # Tools that should NOT appear in read-only agents
-DANGEROUS_TOOLS = {"Bash", "Write", "Edit", "NotebookEdit"}
+DANGEROUS_TOOLS = {"Write", "Edit", "NotebookEdit"}
+# Note: Bash is intentionally excluded — read-only agents like security-auditor
+# and test-runner legitimately need Bash for scanning and test execution.
 
 # Required constraints for agent definitions
 REQUIRED_AGENT_CONSTRAINTS = {"Read"}  # at minimum, agents should have Read

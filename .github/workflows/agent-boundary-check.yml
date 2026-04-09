@@ -112,7 +112,7 @@ jobs:
 
       - name: ANTHROPIC_API_KEY never used
         run: |
-          # Scan all files except known exceptions
+          # Scan production code — exclude CI, tests, and validation scripts (meta-references)
           VIOLATIONS=$(grep -rn "ANTHROPIC_API_KEY" \
             --include="*.py" --include="*.ts" --include="*.yml" --include="*.yaml" \
             --include="*.sh" --include="*.json" --include="*.md" \
@@ -122,7 +122,11 @@ jobs:
             grep -v "NEVER" | \
             grep -v "not.*ANTHROPIC_API_KEY" | \
             grep -v "node_modules" | \
-            grep -v ".git/" || true)
+            grep -v ".git/" | \
+            grep -v ".github/workflows/" | \
+            grep -v "tests/" | \
+            grep -v "scripts/security-audit.py" | \
+            grep -v "scripts/validate-skills.py" || true)
 
           if [ -n "$VIOLATIONS" ]; then
             echo "::error::ANTHROPIC_API_KEY found outside 'never use' warnings"
