@@ -421,7 +421,7 @@ export async function semanticSearch(
  */
 export async function getFileDetails(
   fileIds: Array<ReturnType<typeof FileId>>,
-): Promise<Result<Map<ReturnType<typeof FileId>, Option<ReturnType<typeof VaultFile.fromRow>>>>> {
+): Promise<Result<Map<ReturnType<typeof FileId>, Option<VaultFileType>>>> {
   // Short-circuit: nothing to look up
   if (fileIds.length === 0) {
     return Ok(new Map());
@@ -450,17 +450,14 @@ export async function getFileDetails(
     `;
 
     // Build a lookup map from the results
-    const found = new Map<string, ReturnType<typeof VaultFile.fromRow>>();
+    const found = new Map<string, VaultFileType>();
     for (const row of rows) {
       const file = VaultFile.fromRow(row as Record<string, unknown>);
       found.set(file.id as string, file);
     }
 
     // Build the result map: Some for found, None for missing
-    const resultMap = new Map<
-      ReturnType<typeof FileId>,
-      Option<ReturnType<typeof VaultFile.fromRow>>
-    >();
+    const resultMap = new Map<ReturnType<typeof FileId>, Option<VaultFileType>>();
 
     for (const fid of fileIds) {
       const file = found.get(fid as string);

@@ -5,26 +5,31 @@
  * import from "julia" (or from the built dist/index.js) without
  * reaching into internal file paths.
  *
+ * Names that are both a value and a type (companion pattern, Cherny Ch.6
+ * p.160) are listed once in the value export block — TypeScript makes
+ * them available as types automatically. Pure types that have no value
+ * counterpart are in the `export type` block.
+ *
  * Auth: CLAUDE_CODE_OAUTH_TOKEN (never ANTHROPIC_API_KEY).
  */
 
-// ── types ─────────────────────────────────────────────────────
+// ── types — values (constructors, guards, constants) ─────────
 export {
-  // Branded ID constructors + types
+  // Branded ID constructors (also serve as the nominal type)
   ProjectId,
   FileId,
   ChunkId,
   MatterId,
   ReviewTableId,
   AuditLogId,
-  // Option
+  // Option constructors + guards
   Some,
   None,
   isSome,
   isNone,
   flatMap,
   getOrElse,
-  // Result
+  // Result constructors + guards
   Ok,
   Err,
   isOk,
@@ -33,44 +38,33 @@ export {
   VaultProject,
   VaultFile,
   ClientMatter,
-  // Type guards
+  // Type guard function
   isProcessingComplete,
-  // Enums / constants
+  // Enum constant
   LEGAL_SKILLS,
   // Exhaustive check helper
   assertNever,
 } from "./types.js";
 
+// ── types — pure types (no runtime value) ────────────────────
 export type {
-  // Branded ID types
-  ProjectId,
-  FileId,
-  ChunkId,
-  MatterId,
-  ReviewTableId,
-  AuditLogId,
-  // Option
+  // Option wrapper
   Option,
-  Some,
-  None,
-  // Result
+  // Result wrapper
   Result,
   VaultError,
-  // Status enums
+  // Status / enum types
   ProcessingStatus,
   RiskScore,
   Verdict,
   MatterStatus,
-  // Domain types
-  VaultProject,
-  VaultFile,
+  // Domain model types
   VaultChunk,
   ReviewColumnType,
   ReviewColumn,
   ReviewTable,
   ReviewRowStatus,
   ReviewRow,
-  ClientMatter,
   MatterUsageStats,
   AuditLogEntry,
   // Event unions

@@ -643,6 +643,7 @@ describe("searchByTimestamp", () => {
 //   const auditId = AuditLogId(1);
 //   const matterId: MatterId = auditId;  // ERROR: 'AuditLogId' not assignable to 'MatterId'
 //
+//   import { ChunkId } from "./types.js";
 //   const chunkId = ChunkId("chunk_1");
 //   await log({ type: "matter.delete", matterId: chunkId }); // ERROR: ChunkId not assignable to MatterId
 //
