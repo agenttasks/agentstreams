@@ -246,8 +246,7 @@ def generate_subagent_md(agent: MergedSubagent) -> str:
 
     # Skills frontmatter — relative paths for preloading
     real_skill_paths = [
-        p for p, s in zip(agent.skill_paths, agent.skills, strict=True)
-        if not _is_stub_skill(s)
+        p for p, s in zip(agent.skill_paths, agent.skills, strict=True) if not _is_stub_skill(s)
     ]
     if real_skill_paths:
         fm.append("skills:")

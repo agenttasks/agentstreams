@@ -36,7 +36,13 @@ class TestParsedSkill:
 
     def test_from_path_stub(self):
         # FSI stubs have minimal content
-        skill_dir = VENDORS_DIR / "financial-services-plugins" / "financial-analysis" / "skills" / "dcf-model"
+        skill_dir = (
+            VENDORS_DIR
+            / "financial-services-plugins"
+            / "financial-analysis"
+            / "skills"
+            / "dcf-model"
+        )
         if not skill_dir.exists():
             return
         skill = ParsedSkill.from_path(skill_dir)
@@ -132,9 +138,7 @@ class TestPluginBridge:
         # ANTHROPIC_API_KEY only appears in "never" warning context
         for line in config.system.split("\n"):
             if "ANTHROPIC_API_KEY" in line:
-                assert "never" in line.lower(), (
-                    f"ANTHROPIC_API_KEY in non-warning context: {line}"
-                )
+                assert "never" in line.lower(), f"ANTHROPIC_API_KEY in non-warning context: {line}"
 
     def test_to_managed_agent_has_mcp_servers(self):
         loader = PluginLoader()

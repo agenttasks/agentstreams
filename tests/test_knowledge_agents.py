@@ -76,15 +76,15 @@ class TestSkillCatalog:
             assert len(skills) > 0, f"Plugin {cat.value} has no skills"
 
     def test_data_plugin_skills(self):
-        data_skills = [m.name for m in SKILL_CATALOG.values()
-                       if m.category == PluginCategory.DATA]
+        data_skills = [m.name for m in SKILL_CATALOG.values() if m.category == PluginCategory.DATA]
         assert "data-visualization" in data_skills
         assert "sql-queries" in data_skills
         assert "statistical-analysis" in data_skills
 
     def test_legal_plugin_skills(self):
-        legal_skills = [m.name for m in SKILL_CATALOG.values()
-                        if m.category == PluginCategory.LEGAL]
+        legal_skills = [
+            m.name for m in SKILL_CATALOG.values() if m.category == PluginCategory.LEGAL
+        ]
         assert "legal-risk-assessment" in legal_skills
         assert "review-contract" in legal_skills
         assert "triage-nda" in legal_skills
@@ -101,16 +101,14 @@ class TestCategoryAgents:
     def test_knowledge_work_one_to_one(self):
         """Each knowledge-work plugin category has its own dedicated agent."""
         kw_agents = [
-            CATEGORY_AGENTS[cat] for cat in PluginCategory
-            if not cat.value.startswith("fsi-")
+            CATEGORY_AGENTS[cat] for cat in PluginCategory if not cat.value.startswith("fsi-")
         ]
         assert len(kw_agents) == len(set(kw_agents)), "KW categories share agents"
 
     def test_fsi_categories_share_finance_agent(self):
         """All FSI categories route to finance-agent."""
         fsi_agents = {
-            CATEGORY_AGENTS[cat] for cat in PluginCategory
-            if cat.value.startswith("fsi-")
+            CATEGORY_AGENTS[cat] for cat in PluginCategory if cat.value.startswith("fsi-")
         }
         assert fsi_agents == {"finance-agent"}
 
@@ -153,21 +151,30 @@ class TestKnowledgeAgentConfig:
     def test_expected_agent_names(self):
         configs = _knowledge_agent_configs()
         expected = {
-            "productivity-agent", "sales-agent", "customer-support-agent",
-            "product-management-agent", "marketing-agent", "compliance-reviewer",
-            "finance-agent", "data-analyst", "enterprise-search-agent",
-            "bio-research-agent", "design-agent", "engineering-agent",
-            "hr-agent", "operations-agent", "cowork-plugin-agent",
-            "partner-built-agent", "pdf-viewer-agent",
+            "productivity-agent",
+            "sales-agent",
+            "customer-support-agent",
+            "product-management-agent",
+            "marketing-agent",
+            "compliance-reviewer",
+            "finance-agent",
+            "data-analyst",
+            "enterprise-search-agent",
+            "bio-research-agent",
+            "design-agent",
+            "engineering-agent",
+            "hr-agent",
+            "operations-agent",
+            "cowork-plugin-agent",
+            "partner-built-agent",
+            "pdf-viewer-agent",
         }
         assert set(configs.keys()) == expected
 
     def test_all_agents_use_opus(self):
         configs = _knowledge_agent_configs()
         for name, kac in configs.items():
-            assert kac.model == "claude-opus-4-6", (
-                f"{name} uses {kac.model} instead of opus"
-            )
+            assert kac.model == "claude-opus-4-6", f"{name} uses {kac.model} instead of opus"
 
     def test_skills_populated(self):
         configs = _knowledge_agent_configs()
@@ -364,9 +371,7 @@ class TestManagedSettings:
         assert "Bash(rm *)" in settings["permissions"]["deny"]
 
     def test_audit_hook(self):
-        settings = knowledge_work_managed_settings(
-            audit_hook="/usr/local/bin/audit.sh"
-        )
+        settings = knowledge_work_managed_settings(audit_hook="/usr/local/bin/audit.sh")
         hooks = settings["hooks"]["PostToolUse"]
         assert hooks[0]["matcher"] == "Edit|Write"
         assert hooks[0]["hooks"][0]["command"] == "/usr/local/bin/audit.sh"
@@ -386,9 +391,7 @@ class TestEnvironmentFactory:
         assert env.networking.mode == NetworkingMode.UNRESTRICTED
 
     def test_restricted_environment(self):
-        env = knowledge_work_environment(
-            restricted=True, allowed_hosts=["api.example.com"]
-        )
+        env = knowledge_work_environment(restricted=True, allowed_hosts=["api.example.com"])
         assert env.networking.mode == NetworkingMode.LIMITED
 
     def test_serialization(self):
@@ -435,8 +438,7 @@ class TestFinancialServicesPlugins:
         assert PluginCategory.FSI_WEALTH_MANAGEMENT.value == "fsi-wealth-management"
 
     def test_fsi_skills_count(self):
-        fsi_skills = [m for m in SKILL_CATALOG.values()
-                      if m.category.value.startswith("fsi-")]
+        fsi_skills = [m for m in SKILL_CATALOG.values() if m.category.value.startswith("fsi-")]
         assert len(fsi_skills) == 45
 
     def test_fsi_core_skills(self):
@@ -460,8 +462,13 @@ class TestFinancialServicesPlugins:
 
     def test_fsi_skills_route_to_finance_agent(self):
         registry = KnowledgeWorkRegistry()
-        for skill_name in ("dcf-model", "earnings-analysis", "ic-memo",
-                           "tax-loss-harvesting", "pitch-deck"):
+        for skill_name in (
+            "dcf-model",
+            "earnings-analysis",
+            "ic-memo",
+            "tax-loss-harvesting",
+            "pitch-deck",
+        ):
             agent = registry.resolve(skill_name)
             assert agent.name == "finance-agent", (
                 f"{skill_name} routes to {agent.name} instead of finance-agent"

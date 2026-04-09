@@ -63,9 +63,11 @@ def main() -> None:
     if args.dry_run:
         for name in sorted(agents):
             content = generate_subagent_md(agents[name])
-            print(f"\n{'='*60}")
-            print(f"  {name}.md ({len(agents[name].skills)} skills, {len(agents[name].mcp_servers)} MCP)")
-            print(f"{'='*60}")
+            print(f"\n{'=' * 60}")
+            print(
+                f"  {name}.md ({len(agents[name].skills)} skills, {len(agents[name].mcp_servers)} MCP)"
+            )
+            print(f"{'=' * 60}")
             print(content[:800])
             if len(content) > 800:
                 print(f"  ... ({len(content)} chars total)")

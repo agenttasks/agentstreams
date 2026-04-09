@@ -343,7 +343,7 @@ for _n, _i in [
     ("stakeholder-update", 510),
     ("synthesize-research", 568),
     ("write-spec", 621),
-    ("competitive-brief", 574),   # already taken by marketing; no-op
+    ("competitive-brief", 574),  # already taken by marketing; no-op
 ]:
     _register(_n, PluginCategory.PRODUCT_MANAGEMENT, _i)
 
@@ -353,7 +353,7 @@ for _n, _i in [
     ("memory-management", 1400),
     ("task-management", 1700),
     ("update", 635),
-    ("start", 620),               # already taken by bio-research; no-op
+    ("start", 620),  # already taken by bio-research; no-op
 ]:
     _register(_n, PluginCategory.PRODUCTIVITY, _i)
 
@@ -380,50 +380,71 @@ for _n, _i in [
 
 # financial-analysis (11 skills) — core plugin, all MCP connectors
 for _n, _i in [
-    ("3-statement-model", 261), ("audit-xls", 247),
-    ("clean-data-xls", 236), ("competitive-analysis", 327),
-    ("comps-analysis", 254), ("dcf-model", 360),
-    ("deck-refresh", 211), ("ib-check-deck", 219),
-    ("lbo-model", 271), ("ppt-template-creator", 392),
+    ("3-statement-model", 261),
+    ("audit-xls", 247),
+    ("clean-data-xls", 236),
+    ("competitive-analysis", 327),
+    ("comps-analysis", 254),
+    ("dcf-model", 360),
+    ("deck-refresh", 211),
+    ("ib-check-deck", 219),
+    ("lbo-model", 271),
+    ("ppt-template-creator", 392),
     ("skill-creator", 250),
 ]:
     _register(_n, PluginCategory.FSI_FINANCIAL_ANALYSIS, _i)
 
 # investment-banking (9 skills)
 for _n, _i in [
-    ("buyer-list", 0), ("cim-builder", 0),
-    ("datapack-builder", 269), ("deal-tracker", 0),
-    ("merger-model", 0), ("pitch-deck", 290),
-    ("process-letter", 0), ("strip-profile", 0),
+    ("buyer-list", 0),
+    ("cim-builder", 0),
+    ("datapack-builder", 269),
+    ("deal-tracker", 0),
+    ("merger-model", 0),
+    ("pitch-deck", 290),
+    ("process-letter", 0),
+    ("strip-profile", 0),
     ("teaser", 0),
 ]:
     _register(_n, PluginCategory.FSI_INVESTMENT_BANKING, _i)
 
 # equity-research (9 skills)
 for _n, _i in [
-    ("catalyst-calendar", 0), ("earnings-analysis", 528),
-    ("earnings-preview", 0), ("idea-generation", 0),
-    ("initiating-coverage", 310), ("model-update", 0),
-    ("morning-note", 0), ("sector-overview", 0),
+    ("catalyst-calendar", 0),
+    ("earnings-analysis", 528),
+    ("earnings-preview", 0),
+    ("idea-generation", 0),
+    ("initiating-coverage", 310),
+    ("model-update", 0),
+    ("morning-note", 0),
+    ("sector-overview", 0),
     ("thesis-tracker", 0),
 ]:
     _register(_n, PluginCategory.FSI_EQUITY_RESEARCH, _i)
 
 # private-equity (10 skills)
 for _n, _i in [
-    ("ai-readiness", 0), ("dd-checklist", 0),
-    ("dd-meeting-prep", 0), ("deal-screening", 0),
-    ("deal-sourcing", 0), ("ic-memo", 0),
-    ("portfolio-monitoring", 0), ("returns-analysis", 0),
-    ("unit-economics", 0), ("value-creation-plan", 0),
+    ("ai-readiness", 0),
+    ("dd-checklist", 0),
+    ("dd-meeting-prep", 0),
+    ("deal-screening", 0),
+    ("deal-sourcing", 0),
+    ("ic-memo", 0),
+    ("portfolio-monitoring", 0),
+    ("returns-analysis", 0),
+    ("unit-economics", 0),
+    ("value-creation-plan", 0),
 ]:
     _register(_n, PluginCategory.FSI_PRIVATE_EQUITY, _i)
 
 # wealth-management (6 skills)
 for _n, _i in [
-    ("client-report", 0), ("client-review", 0),
-    ("financial-plan", 0), ("investment-proposal", 0),
-    ("portfolio-rebalance", 0), ("tax-loss-harvesting", 0),
+    ("client-report", 0),
+    ("client-review", 0),
+    ("financial-plan", 0),
+    ("investment-proposal", 0),
+    ("portfolio-rebalance", 0),
+    ("tax-loss-harvesting", 0),
 ]:
     _register(_n, PluginCategory.FSI_WEALTH_MANAGEMENT, _i)
 
@@ -718,12 +739,13 @@ def research_to_report_pipeline() -> Any:
         steps=[
             PipelineStep(order=0, agent_name="harmlessness-screen"),
             PipelineStep(order=1, agent_name="enterprise-search-agent"),
-            PipelineStep(order=2, agent_name="marketing-agent",
-                         input_from="enterprise-search-agent"),
-            PipelineStep(order=2, agent_name="compliance-reviewer",
-                         input_from="enterprise-search-agent"),
-            PipelineStep(order=3, agent_name="security-auditor",
-                         condition="sensitive_data"),
+            PipelineStep(
+                order=2, agent_name="marketing-agent", input_from="enterprise-search-agent"
+            ),
+            PipelineStep(
+                order=2, agent_name="compliance-reviewer", input_from="enterprise-search-agent"
+            ),
+            PipelineStep(order=3, agent_name="security-auditor", condition="sensitive_data"),
         ],
         gate=PipelineGate(
             block_on_verdict=Verdict.BLOCK,
@@ -742,12 +764,9 @@ def data_to_insight_pipeline() -> Any:
         steps=[
             PipelineStep(order=0, agent_name="harmlessness-screen"),
             PipelineStep(order=1, agent_name="data-analyst"),
-            PipelineStep(order=2, agent_name="finance-agent",
-                         input_from="data-analyst"),
-            PipelineStep(order=2, agent_name="compliance-reviewer",
-                         input_from="data-analyst"),
-            PipelineStep(order=3, agent_name="marketing-agent",
-                         input_from="finance-agent"),
+            PipelineStep(order=2, agent_name="finance-agent", input_from="data-analyst"),
+            PipelineStep(order=2, agent_name="compliance-reviewer", input_from="data-analyst"),
+            PipelineStep(order=3, agent_name="marketing-agent", input_from="finance-agent"),
         ],
         gate=PipelineGate(
             block_on_verdict=Verdict.BLOCK,
@@ -766,10 +785,10 @@ def compliance_review_pipeline() -> Any:
         steps=[
             PipelineStep(order=0, agent_name="harmlessness-screen"),
             PipelineStep(order=1, agent_name="compliance-reviewer"),
-            PipelineStep(order=2, agent_name="security-auditor",
-                         input_from="compliance-reviewer"),
-            PipelineStep(order=2, agent_name="enterprise-search-agent",
-                         input_from="compliance-reviewer"),
+            PipelineStep(order=2, agent_name="security-auditor", input_from="compliance-reviewer"),
+            PipelineStep(
+                order=2, agent_name="enterprise-search-agent", input_from="compliance-reviewer"
+            ),
             PipelineStep(order=3, agent_name="marketing-agent"),
         ],
         gate=PipelineGate(

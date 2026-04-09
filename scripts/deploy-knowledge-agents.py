@@ -68,9 +68,9 @@ def main() -> None:
         repos = loader.load_all()
         total_skills = 0
         for repo_name, manifests in repos.items():
-            print(f"\n{'='*60}")
+            print(f"\n{'=' * 60}")
             print(f"  {repo_name}")
-            print(f"{'='*60}")
+            print(f"{'=' * 60}")
             for m in manifests:
                 print(f"\n  {m.name} (v{m.version}) — {m.skill_count} skills")
                 if m.description:
@@ -81,7 +81,9 @@ def main() -> None:
                 if m.mcp_servers:
                     print(f"    MCP: {', '.join(m.mcp_servers.keys())}")
                 total_skills += m.skill_count
-        print(f"\nTotal: {total_skills} skills across {sum(len(v) for v in repos.values())} plugins")
+        print(
+            f"\nTotal: {total_skills} skills across {sum(len(v) for v in repos.values())} plugins"
+        )
         return
 
     bridge = PluginBridge(model=args.model)
