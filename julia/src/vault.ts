@@ -58,6 +58,12 @@ export function chunkText(
     return [];
   }
 
+  if (overlap >= chunkSize) {
+    throw new Error(
+      `chunkText: overlap (${overlap}) must be less than chunkSize (${chunkSize})`,
+    );
+  }
+
   const step = chunkSize - overlap;
   const chunks: Array<{ text: string; index: number }> = [];
 
@@ -477,6 +483,13 @@ export async function deleteFile(
     if (!sqlResult.ok) return sqlResult;
     const sql = sqlResult.value;
 
+    // Read size_bytes BEFORE delete to avoid TOCTOU race (audit finding #10)
+    const fileRows = await sql`
+      SELECT size_bytes FROM julia_vault_files
+      WHERE id = ${fileId as string} AND project_id = ${projectId as string}
+    `;
+    const sizeBytes = (fileRows[0] as Record<string, unknown> | undefined)?.size_bytes as number ?? 0;
+
     // DELETE cascades to julia_vault_file_chunks via FK constraint
     await sql`
       DELETE FROM julia_vault_files
@@ -484,17 +497,11 @@ export async function deleteFile(
         AND project_id = ${projectId as string}
     `;
 
-    // Decrement project counters (clamp to 0 to guard against drift)
+    // Decrement project counters using pre-read size (no TOCTOU)
     await sql`
       UPDATE julia_vault_projects
       SET    file_count    = GREATEST(file_count - 1, 0),
-             storage_bytes = GREATEST(
-               storage_bytes - COALESCE(
-                 (SELECT size_bytes FROM julia_vault_files WHERE id = ${fileId as string}),
-                 0
-               ),
-               0
-             ),
+             storage_bytes = GREATEST(storage_bytes - ${sizeBytes}, 0),
              updated_at = now()
       WHERE  id = ${projectId as string}
     `;
@@ -589,12 +596,12 @@ export async function createReviewTable(
  *
  * @param reviewTableId - The review table to query.
  * @param fileId        - The file whose row to retrieve.
- * @returns Option.Some(ReviewRow) if found, Option.None if absent.
+ * @returns Ok(Some(ReviewRow)) if found, Ok(None) if absent, Err on failure.
  */
 export async function getReviewRow(
   reviewTableId: ReviewTableIdType,
   fileId: ReturnType<typeof FileId>,
-): Promise<Option<ReviewRow>> {
+): Promise<Result<Option<ReviewRow>>> {
   try {
     const sqlResult = getSql();
     if (!sqlResult.ok) return sqlResult;
@@ -617,7 +624,7 @@ export async function getReviewRow(
 
     const row = rows[0];
     if (!row) {
-      return None;
+      return Ok(None);
     }
 
     const reviewRow: ReviewRow = {
@@ -630,13 +637,11 @@ export async function getReviewRow(
       updated_at: new Date(row["updated_at"] as string),
     };
 
-    return Some(reviewRow);
-  } catch {
-    // getReviewRow returns Option<ReviewRow>, not Result.
-    // Failures silently produce None; callers that need error details
-    // should use a Result-returning wrapper.
-    // TODO: Promote return type to Result<Option<ReviewRow>> if error
-    //       distinction becomes necessary.
-    return None;
+    return Ok(Some(reviewRow));
+  } catch (err) {
+    return Err({
+      type: "database_error",
+      message: err instanceof Error ? err.message : String(err),
+    });
   }
 }

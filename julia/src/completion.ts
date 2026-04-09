@@ -132,9 +132,8 @@ export async function complete<V extends boolean>(
   } catch (err) {
     const reason = err instanceof Error ? err.message : String(err);
     return Err({
-      type: "processing_failed",
-      fileId: FileId(""),
-      reason: `Completion failed: ${reason}`,
+      type: "database_error",
+      message: `Completion failed: ${reason}`,
     });
   }
 }

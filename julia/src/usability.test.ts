@@ -265,8 +265,11 @@ describe("Scenario: Review table across multiple contracts", () => {
     // Check that a row was created for each file (pending status)
     // The SQL mock returns empty for row queries
     const rowResult = await getReviewRow(rtId, FileId("file_1"));
-    // Will be None since mock returns empty — verifies the function doesn't crash
-    expect(rowResult._tag).toBe("None");
+    // Returns Result<Option<ReviewRow>>; mock returns empty → Ok(None)
+    expect(isOk(rowResult)).toBe(true);
+    if (isOk(rowResult)) {
+      expect(rowResult.value._tag).toBe("None");
+    }
   });
 });
 

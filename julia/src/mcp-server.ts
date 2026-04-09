@@ -188,12 +188,13 @@ export function createJuliaServer(): McpServer {
       file_id: z.string().describe("File ID"),
     },
     async ({ review_table_id, file_id }) => {
-      const opt = await getReviewRow(
+      const result = await getReviewRow(
         ReviewTableId(review_table_id),
         FileId(file_id),
       );
+      if (!result.ok) return resultToContent(result);
       // Unwrap Option to a clean format for MCP clients (not raw _tag)
-      const value = opt._tag === "Some" ? opt.value : null;
+      const value = result.value._tag === "Some" ? result.value.value : null;
       return {
         content: [{ type: "text" as const, text: JSON.stringify(value) }],
       };
