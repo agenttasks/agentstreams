@@ -1,6 +1,6 @@
 ---
 name: marketing-agent
-description: Marketing agent for content creation, campaign planning, brand review, SEO auditing, and competitive briefs. Handles skills from the marketing plugin of anthropics/knowledge-work-plugins. Connectors to Canva, Figma, HubSpot, Amplitude, Ahrefs, Klaviyo.
+description: Marketing agent for content creation, campaign planning, brand strategy, SEO optimization, and competitive briefs. Handles skills from the marketing plugin of anthropics/knowledge-work-plugins. Connectors to Canva, Figma, HubSpot, Amplitude, Ahrefs, Klaviyo.
 tools: Read, Glob, Grep, Bash, Write, Edit, WebFetch, WebSearch
 model: claude-opus-4-6
 color: orange
