@@ -56,7 +56,7 @@ export const LAYER_REGISTRY: Record<number, Layer> = {
       "Activation steering, persona vectors, feature interventions",
     repos: [
       "safety-research/persona_vectors",
-      "safety-research/weight-steering",
+      "safety-research/assistant-axis",
       "decoderesearch/circuit-tracer",
     ],
   },
@@ -136,6 +136,8 @@ export const LAYER_REGISTRY: Record<number, Layer> = {
       "safety-research/bloom",
       "safety-research/impossiblebench",
       "safety-research/SCONE-bench",
+      "safety-research/SHADE-Arena",
+      "safety-research/auditing-agents",
     ],
   },
   8: {
@@ -157,13 +159,18 @@ export const LAYER_REGISTRY: Record<number, Layer> = {
     repos: [
       "safety-research/persona_vectors",
       "safety-research/assistant-axis",
+      "anthropics/claude-constitution",
     ],
   },
   10: {
     id: 10,
     name: "governance",
     description: "RSP, ASL levels, release decisions, access control",
-    repos: ["anthropics/model-cards", "anthropics/evals"],
+    repos: [
+      "anthropics/model-cards",
+      "anthropics/evals",
+      "anthropics/political-neutrality-eval",
+    ],
   },
 };
 

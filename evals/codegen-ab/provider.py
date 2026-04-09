@@ -182,14 +182,11 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
     temperature = config.get("temperature", 0)
     language = config.get("language", "python")
 
-    api_key = os.environ.get("CLAUDE_CODE_OAUTH_TOKEN", "")
-    if not api_key:
-        return {"error": "No API key. Set CLAUDE_CODE_OAUTH_TOKEN."}
-
     # --- Call Claude ---
+    # Auth: SDK reads CLAUDE_CODE_OAUTH_TOKEN automatically (never use ANTHROPIC_API_KEY).
     t0 = time.monotonic()
     try:
-        client = anthropic.Anthropic(api_key=api_key)
+        client = anthropic.Anthropic()
         response = client.messages.create(
             model=model,
             max_tokens=max_tokens,
