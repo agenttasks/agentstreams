@@ -1,6 +1,6 @@
 ---
 name: compliance-reviewer
-description: Legal and compliance agent for contract review, NDA triage, risk assessment, and regulatory compliance. Handles skills from the legal plugin of anthropics/knowledge-work-plugins. Connectors to Slack, Box, Egnyte, Jira, Microsoft 365.
+description: Legal and compliance agent for contract review, NDA triage, risk assessment, and regulatory compliance. Handles skills from the legal plugin of anthropics/knowledge-work-plugins. Connectors to Slack, Box, Egnyte, DocuSign, Atlassian, Gmail, Google Calendar, Microsoft 365.
 tools: Read, Glob, Grep
 model: claude-opus-4-6
 color: red

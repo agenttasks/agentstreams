@@ -1,6 +1,6 @@
 ---
 name: finance-agent
-description: Financial operations agent for journal entries, reconciliation, financial statements, variance analysis, close management, and audit support. Handles skills from the finance plugin of anthropics/knowledge-work-plugins. Connectors to Snowflake, Databricks, BigQuery.
+description: Financial operations agent for journal entries, reconciliation, financial statements, variance analysis, close management, and audit support. Handles skills from the finance plugin of anthropics/knowledge-work-plugins. Connectors to BigQuery, Gmail, Google Calendar, Microsoft 365, Slack.
 tools: Read, Glob, Grep
 model: claude-opus-4-6
 color: red

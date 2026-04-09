@@ -1,6 +1,6 @@
 ---
 name: sales-agent
-description: Sales intelligence agent for prospect research, call prep, pipeline review, outreach drafting, and competitive battlecards. Handles skills from the sales plugin of anthropics/knowledge-work-plugins. Connectors to Slack, HubSpot, Close, Clay, ZoomInfo, Fireflies.
+description: Sales intelligence agent for prospect research, call prep, pipeline review, outreach drafting, and competitive battlecards. Handles skills from the sales plugin of anthropics/knowledge-work-plugins. Connectors to Slack, HubSpot, Close, Clay, ZoomInfo, Fireflies, Apollo, Atlassian, Gmail, Google Calendar, Microsoft 365, Notion, Outreach, SimilarWeb.
 tools: Read, Glob, Grep, Bash, Write, WebFetch, WebSearch
 model: claude-opus-4-6
 color: cyan
