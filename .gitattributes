@@ -92,6 +92,16 @@ skills-lock.json linguist-generated=true
 #   Tunnel: vendors/knowledge-work-plugins ↔ src/knowledge_work/prompts.py (Layer 3)
 #   Tunnel: evals/codegen-ab/ ↔ src/knowledge_work/evals.py (Layer 8)
 #
+# Wing: julia/ — Legal AI agent (Harvey replacement, zero Harvey dependencies)
+#   Hall: hall_julia → julia/schema.sql + julia/src/*.ts + julia/agents/*.md
+#   Tunnel: julia/schema.sql ↔ ontology/schema.sql (extends Neon schema, shares extensions)
+#   Tunnel: julia/src/vault.ts ↔ src/embeddings.py (shared embedding patterns, LanceDB)
+#   Tunnel: julia/src/completion.ts ↔ src/knowledge-work-managed-agents/src/agent.ts
+#   Tunnel: julia/src/completion.ts → vendors/knowledge-work-plugins/legal/skills/ (prompt templates)
+#   Tunnel: julia/agents/*.md ↔ .claude/agents/compliance-reviewer.md (shared legal skills)
+#   Tunnel: julia/mcp-server.ts ↔ mcp-server/src/index.ts (shared MCP patterns)
+#   Tunnel: julia/agents/ → src/knowledge_agents.py (CATEGORY_AGENTS registry)
+#
 # SDK Ecosystem (tunnels to npm registry):
 #   @anthropic-ai/claude-agent-sdk  — Agent runtime (query, hooks, subagents)
 #   @anthropic-ai/claude-code       — CLI package (renamed to agent-sdk)

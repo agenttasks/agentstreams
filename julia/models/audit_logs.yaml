@@ -1,0 +1,62 @@
+cubes:
+  - name: julia_audit_logs
+    sql: SELECT * FROM julia_audit_logs
+    description: "Transaction fact table — one row per Julia event"
+
+    measures:
+      - name: count
+        type: count
+        description: "Total number of events"
+
+      - name: total_input_tokens
+        sql: input_tokens
+        type: sum
+        description: "Sum of input tokens across all completions"
+
+      - name: total_output_tokens
+        sql: output_tokens
+        type: sum
+        description: "Sum of output tokens across all completions"
+
+      - name: avg_duration_ms
+        sql: duration_ms
+        type: avg
+        description: "Average operation duration in milliseconds"
+
+      - name: total_duration_ms
+        sql: duration_ms
+        type: sum
+        description: "Total time spent on operations"
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: event_type
+        sql: event_type
+        type: string
+        description: "Degenerate dimension — vault.upload, completion, matter.create, etc."
+
+      - name: user_email
+        sql: user_email
+        type: string
+
+      - name: model
+        sql: model
+        type: string
+        description: "Conformed dimension — claude-opus-4-6, claude-sonnet-4-6, etc."
+
+      - name: created_at
+        sql: created_at
+        type: time
+
+    joins:
+      - name: matters
+        relationship: many_to_one
+        sql: "{CUBE}.client_matter_id = {matters}.id AND {matters}.is_current = true"
+
+      - name: projects
+        relationship: many_to_one
+        sql: "{CUBE}.project_id = {projects}.id"
