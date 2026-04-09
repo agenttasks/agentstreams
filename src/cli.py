@@ -46,6 +46,11 @@ pdf_app = typer.Typer(help="Download and read PDFs with bloom filter dedup")
 pipeline_app = typer.Typer(help="Run multi-agent pipelines")
 validate_app = typer.Typer(help="Validate skills, agents, and ontology")
 layers_app = typer.Typer(help="Inspect the 14-layer knowledge-work architecture")
+tools_app = typer.Typer(help="Search, list, and inspect registered tools and skills")
+teams_app = typer.Typer(help="Manage and run agent teams for multi-session coordination")
+channels_app = typer.Typer(help="Manage and push channel events into Claude Code sessions")
+headless_app = typer.Typer(help="Run claude in headless/programmatic mode")
+sessions_app = typer.Typer(help="Manage Claude Code session lifecycle (continue/resume/fork)")
 
 app.add_typer(agents_app, name="agents")
 app.add_typer(eval_app, name="eval")
@@ -53,6 +58,11 @@ app.add_typer(pdf_app, name="pdf")
 app.add_typer(pipeline_app, name="pipeline")
 app.add_typer(validate_app, name="validate")
 app.add_typer(layers_app, name="layers")
+app.add_typer(tools_app, name="tools")
+app.add_typer(teams_app, name="teams")
+app.add_typer(channels_app, name="channels")
+app.add_typer(headless_app, name="headless")
+app.add_typer(sessions_app, name="sessions")
 
 
 # ── Agents ──────────────────────────────────────────────────────
@@ -188,8 +198,38 @@ def pipeline_run(
 def pipeline_security(
     paths: list[str] = typer.Option(["scripts/", ".claude/"], help="Paths to audit"),
     check_only: bool = typer.Option(False, "--check-only"),
+    structured: bool = typer.Option(
+        False,
+        "--structured",
+        help="Emit a structured JSON verdict via Claude (requires CLAUDE_CODE_OAUTH_TOKEN)",
+    ),
+    model: str = typer.Option("claude-sonnet-4-6", "--model", help="Model for structured output"),
 ) -> None:
-    """Run security audit pipeline."""
+    """Run security audit pipeline.
+
+    With ``--structured`` the command asks Claude to produce a machine-readable
+    JSON verdict (VERDICT_SCHEMA) instead of running the audit script.
+    """
+    if structured:
+        from src.structured_output import VERDICT_SCHEMA, run_structured
+        import json as _json
+
+        paths_str = ", ".join(paths)
+        prompt = (
+            f"Perform a security audit of the following paths in the agentstreams project: "
+            f"{paths_str}. "
+            "Identify any issues relating to credential exposure, unsafe subprocess calls, "
+            "unvalidated inputs, or agent boundary violations. "
+            "Produce a verdict object."
+        )
+        try:
+            result = run_structured(prompt, VERDICT_SCHEMA, model=model)
+            console.print_json(_json.dumps(result, indent=2))
+        except RuntimeError as exc:
+            console.print(f"[red]Structured output failed: {exc}[/red]")
+            raise typer.Exit(1)
+        return
+
     cmd = [sys.executable, str(PROJECT_ROOT / "scripts" / "security-audit.py")]
     cmd.extend(["--paths"] + paths)
     if check_only:
@@ -201,8 +241,65 @@ def pipeline_security(
 
 
 @validate_app.command("all")
-def validate_all() -> None:
-    """Run all validators (skills, ontology, agents)."""
+def validate_all(
+    structured: bool = typer.Option(
+        False,
+        "--structured",
+        help="Emit a structured JSON task result via Claude (requires CLAUDE_CODE_OAUTH_TOKEN)",
+    ),
+    model: str = typer.Option("claude-sonnet-4-6", "--model", help="Model for structured output"),
+) -> None:
+    """Run all validators (skills, ontology, agents).
+
+    With ``--structured`` the command asks Claude to summarise validation
+    results as a machine-readable TASK_RESULT_SCHEMA JSON object instead of
+    running each script individually.
+    """
+    if structured:
+        from src.structured_output import TASK_RESULT_SCHEMA, run_structured
+        import json as _json
+        import time
+
+        start_ms = int(time.monotonic() * 1000)
+        scripts = ["validate-skills.py", "validate-ontology.py"]
+        outputs: list[str] = []
+        errors: list[str] = []
+
+        for script in scripts:
+            path = PROJECT_ROOT / "scripts" / script
+            if path.exists():
+                result = subprocess.run(
+                    [sys.executable, str(path), "--check-only"],
+                    capture_output=True,
+                    text=True,
+                    cwd=PROJECT_ROOT,
+                )
+                if result.stdout.strip():
+                    outputs.append(f"[{script}] {result.stdout.strip()}")
+                if result.returncode != 0 and result.stderr.strip():
+                    errors.append(f"[{script}] {result.stderr.strip()}")
+
+        duration_ms = int(time.monotonic() * 1000) - start_ms
+        combined_output = "\n".join(outputs) or "No output from validators."
+        combined_errors = "\n".join(errors) if errors else None
+
+        prompt = (
+            "Summarise the following agentstreams validation run results. "
+            "Determine whether validation passed or failed. "
+            f"Output:\n{combined_output}\n"
+            + (f"Errors:\n{combined_errors}" if combined_errors else "No errors.")
+        )
+        try:
+            structured_result = run_structured(prompt, TASK_RESULT_SCHEMA, model=model)
+            # Inject the measured duration if the model left it at 0.
+            if structured_result.get("duration_ms", 0) == 0:
+                structured_result["duration_ms"] = duration_ms
+            console.print_json(_json.dumps(structured_result, indent=2))
+        except RuntimeError as exc:
+            console.print(f"[red]Structured output failed: {exc}[/red]")
+            raise typer.Exit(1)
+        return
+
     for script in ["validate-skills.py", "validate-ontology.py"]:
         path = PROJECT_ROOT / "scripts" / script
         if path.exists():
@@ -287,6 +384,237 @@ def layers_route(
         console.print(f"  Complexity: {task.complexity.value}")
     else:
         console.print("[yellow]No matching task found.[/yellow]")
+
+
+# ── Teams ───────────────────────────────────────────────────────
+
+
+@teams_app.command("list")
+def teams_list() -> None:
+    """List all pre-built team configs and their members."""
+    from src.agent_teams import TEAMS
+
+    for team_name, config in TEAMS.items():
+        table = Table(title=f"Team: {team_name}  (max_parallel={config.max_parallel})")
+        table.add_column("Agent", style="cyan")
+        table.add_column("Role", style="green")
+        table.add_column("Model", style="yellow")
+        table.add_column("Tools", style="magenta")
+
+        for member in config.members:
+            table.add_row(
+                member.agent_name,
+                member.role,
+                member.model,
+                ", ".join(member.tools) if member.tools else "-",
+            )
+
+        console.print(table)
+        if config.shared_context:
+            console.print(f"  [dim]Context:[/dim] {config.shared_context[:80]}...")
+        console.print()
+
+
+@teams_app.command("run")
+def teams_run(
+    team: str = typer.Argument(..., help="Team name (e.g., security-team, research-team)"),
+    task: str = typer.Option(..., "--task", "-t", help="Task description to broadcast to all members"),
+    member: str = typer.Option("", "--member", "-m", help="Target a single member instead of all"),
+    parallel: bool = typer.Option(True, help="Run members in parallel (default: True)"),
+) -> None:
+    """Run a task against a team or a single member.
+
+    Examples:
+      agentstreams teams run security-team --task "Audit src/ for injection flaws"
+      agentstreams teams run research-team --task "Summarise Q1 results" --member data-analyst
+    """
+    from src.agent_teams import TEAMS, TeamOrchestrator
+
+    if team not in TEAMS:
+        available = ", ".join(TEAMS.keys())
+        console.print(f"[red]Unknown team '{team}'. Available: {available}[/red]")
+        raise typer.Exit(1)
+
+    config = TEAMS[team]
+    orch = TeamOrchestrator(config)
+
+    if member:
+        # Single-member assignment
+        names = [m.agent_name for m in config.members]
+        if member not in names:
+            console.print(f"[red]Member '{member}' not in team '{team}'. Members: {', '.join(names)}[/red]")
+            raise typer.Exit(1)
+        console.print(f"[bold]Assigning task to {member}...[/bold]")
+        result = orch.assign_task(member, task)
+        _print_member_result(result)
+    elif parallel:
+        # Broadcast in parallel
+        tasks_list = [(m.agent_name, task) for m in config.members]
+        console.print(f"[bold]Running {len(tasks_list)} members in parallel...[/bold]")
+        results = orch.run_parallel(tasks_list)
+        for res in results:
+            _print_member_result(res)
+    else:
+        # Sequential broadcast
+        console.print(f"[bold]Broadcasting to {len(config.members)} members sequentially...[/bold]")
+        for m in config.members:
+            console.print(f"  -> {m.agent_name}")
+            result = orch.assign_task(m.agent_name, task)
+            _print_member_result(result)
+
+
+@teams_app.command("status")
+def teams_status() -> None:
+    """Show team registry status: member counts and agent file presence."""
+    from src.agent_teams import TEAMS
+
+    agents_dir = PROJECT_ROOT / ".claude" / "agents"
+
+    table = Table(title="Agent Teams Status")
+    table.add_column("Team", style="cyan")
+    table.add_column("Members", justify="right", style="yellow")
+    table.add_column("Max Parallel", justify="right", style="green")
+    table.add_column("Agents Found", justify="right")
+    table.add_column("Missing Agents", style="red")
+
+    for team_name, config in TEAMS.items():
+        found = []
+        missing = []
+        for m in config.members:
+            md = agents_dir / f"{m.agent_name}.md"
+            if md.exists():
+                found.append(m.agent_name)
+            else:
+                missing.append(m.agent_name)
+
+        table.add_row(
+            team_name,
+            str(len(config.members)),
+            str(config.max_parallel),
+            str(len(found)),
+            ", ".join(missing) if missing else "[green]none[/green]",
+        )
+
+    console.print(table)
+
+
+def _print_member_result(result: object) -> None:
+    """Render a MemberResult to the console."""
+    status = "[green]OK[/green]" if result.success else "[red]FAIL[/red]"
+    console.print(f"\n[bold]{result.agent_name}[/bold]  {status}  (exit {result.returncode})")
+    if result.stdout.strip():
+        console.print(result.stdout.strip())
+    if result.stderr.strip():
+        console.print(f"[dim]{result.stderr.strip()}[/dim]")
+
+
+# ── Tools ───────────────────────────────────────────────────────
+
+
+@tools_app.command("search")
+def tools_search(
+    query: str = typer.Argument(..., help="Keyword query (e.g., 'code review')"),
+    max_results: int = typer.Option(5, "--max", "-n", help="Maximum results to return"),
+    vendor: bool = typer.Option(False, "--vendor", help="Include vendored kwp: tools"),
+) -> None:
+    """Search registered tools and skills by keyword."""
+    from src.tool_search import DEFAULT_INDEX
+
+    results = DEFAULT_INDEX.search(query, max_results=max_results * 2)
+    if not vendor:
+        results = [t for t in results if not t.name.startswith("kwp:")]
+    results = results[:max_results]
+
+    if not results:
+        console.print("[yellow]No tools matched your query.[/yellow]")
+        raise typer.Exit(0)
+
+    table = Table(title=f"Tool search: '{query}'")
+    table.add_column("Name", style="cyan")
+    table.add_column("Description")
+    table.add_column("Loaded", justify="center", style="dim")
+
+    for tool in results:
+        loaded_mark = "[green]y[/green]" if tool.loaded else "[dim]n[/dim]"
+        table.add_row(tool.name, tool.description[:80], loaded_mark)
+
+    console.print(table)
+
+
+@tools_app.command("list")
+def tools_list(
+    vendor: bool = typer.Option(False, "--vendor", help="Show only vendored kwp: tools"),
+    all_tools: bool = typer.Option(False, "--all", "-a", help="Show all tools including vendored"),
+) -> None:
+    """List all tools registered in the default index."""
+    from src.tool_search import DEFAULT_INDEX
+
+    all_registered = DEFAULT_INDEX.list_all()
+
+    if vendor:
+        items = [t for t in all_registered if t.name.startswith("kwp:")]
+    elif all_tools:
+        items = all_registered
+    else:
+        items = [t for t in all_registered if not t.name.startswith("kwp:")]
+
+    table = Table(title=f"Registered tools ({len(items)})")
+    table.add_column("Name", style="cyan")
+    table.add_column("Description")
+    table.add_column("Source", style="dim")
+
+    for tool in items:
+        source = Path(tool.source_path).name if tool.source_path else "-"
+        table.add_row(tool.name, tool.description[:70], source)
+
+    console.print(table)
+    console.print(
+        f"[dim]Total in index: {len(DEFAULT_INDEX)}  "
+        f"(skills: {sum(1 for t in all_registered if not t.name.startswith('kwp:'))}, "
+        f"vendor: {sum(1 for t in all_registered if t.name.startswith('kwp:'))})[/dim]"
+    )
+
+
+@tools_app.command("load")
+def tools_load(
+    name: str = typer.Argument(..., help="Exact tool name to load"),
+    json_output: bool = typer.Option(False, "--json", help="Print raw JSON schema"),
+) -> None:
+    """Load and display the full schema for a named tool."""
+    from src.tool_search import DEFAULT_INDEX
+    import json as _json
+
+    schema = DEFAULT_INDEX.load(name)
+    if schema is None:
+        console.print(f"[red]Tool not found: {name}[/red]")
+        raise typer.Exit(1)
+
+    tool = DEFAULT_INDEX._tools.get(name)  # noqa: SLF001
+    console.print(f"[bold cyan]{name}[/bold cyan]")
+    if tool:
+        console.print(f"  [green]{tool.description}[/green]")
+        if tool.source_path:
+            console.print(f"  Source: [dim]{tool.source_path}[/dim]")
+
+    if json_output:
+        console.print(_json.dumps(schema, indent=2))
+    else:
+        props = schema.get("properties", {})
+        required = schema.get("required", [])
+        if props:
+            table = Table(title="Schema properties")
+            table.add_column("Property", style="cyan")
+            table.add_column("Type", style="yellow")
+            table.add_column("Required", justify="center")
+            table.add_column("Description")
+            for prop_name, prop_schema in props.items():
+                req_mark = "[green]y[/green]" if prop_name in required else ""
+                prop_type = str(prop_schema.get("type", "any"))
+                desc = prop_schema.get("description", "")[:60]
+                table.add_row(prop_name, prop_type, req_mark, desc)
+            console.print(table)
+        else:
+            console.print("[dim]No properties defined in schema.[/dim]")
 
 
 # ── Top-level commands ──────────────────────────────────────────
