@@ -2,7 +2,7 @@
 name: pdf-viewer-agent
 description: PDF viewing and analysis agent. Handles the view-pdf skill from the pdf-viewer plugin of anthropics/knowledge-work-plugins.
 tools: Read, Glob, Grep, Bash
-model: opus
+model: claude-opus-4-6
 color: blue
 memory: project
 maxTurns: 15

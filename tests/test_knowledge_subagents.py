@@ -143,4 +143,4 @@ class TestGenerateAll:
         for name, content in results.items():
             assert content.startswith("---\n"), f"{name} missing frontmatter"
             assert f"name: {name}" in content, f"{name} missing name field"
-            assert "model: opus" in content, f"{name} missing model"
+            assert "model: claude-opus-4-6" in content, f"{name} missing model"

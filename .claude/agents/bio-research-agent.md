@@ -2,7 +2,7 @@
 name: bio-research-agent
 description: Bio-research agent for preclinical research, genomics analysis, scRNA-seq QC, Nextflow pipelines, and scientific problem selection. Handles skills from the bio-research plugin of anthropics/knowledge-work-plugins. Connectors to PubMed, BioRender, bioRxiv, ClinicalTrials.gov, ChEMBL, Benchling.
 tools: Read, Glob, Grep, Bash, Write, Edit
-model: opus
+model: claude-opus-4-6
 color: purple
 memory: project
 maxTurns: 20

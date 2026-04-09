@@ -2,7 +2,7 @@
 name: enterprise-search-agent
 description: Enterprise search agent for cross-tool knowledge discovery, synthesis, search strategy, and source management. Handles skills from the enterprise-search plugin of anthropics/knowledge-work-plugins.
 tools: Read, Glob, Grep, Bash, WebFetch, WebSearch
-model: opus
+model: claude-opus-4-6
 color: cyan
 memory: project
 maxTurns: 20

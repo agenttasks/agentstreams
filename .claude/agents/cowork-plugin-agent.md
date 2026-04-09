@@ -2,7 +2,7 @@
 name: cowork-plugin-agent
 description: Plugin management agent for creating and customizing Cowork plugins. Handles skills from the cowork-plugin-management plugin of anthropics/knowledge-work-plugins.
 tools: Read, Glob, Grep, Write, Edit
-model: opus
+model: claude-opus-4-6
 color: green
 memory: project
 maxTurns: 20

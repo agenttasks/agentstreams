@@ -2,7 +2,7 @@
 name: productivity-agent
 description: Productivity agent for task management, calendar workflows, daily context, and memory management. Handles skills from the productivity plugin of anthropics/knowledge-work-plugins. Connectors to Slack, Notion, Asana, Linear, Jira, Monday, ClickUp, Microsoft 365.
 tools: Read, Glob, Grep, Bash
-model: opus
+model: claude-opus-4-6
 color: green
 memory: user
 maxTurns: 20

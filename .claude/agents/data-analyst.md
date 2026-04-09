@@ -2,7 +2,7 @@
 name: data-analyst
 description: Data querying, visualization, and analysis agent. Handles skills from the data plugin of anthropics/knowledge-work-plugins — SQL queries, statistical analysis, dashboards, and data validation. Connectors to Snowflake, Databricks, BigQuery, Definite, Hex, Amplitude.
 tools: Read, Glob, Grep, Bash, Write, Edit
-model: opus
+model: claude-opus-4-6
 color: blue
 memory: project
 maxTurns: 20

@@ -2,7 +2,7 @@
 name: operations-agent
 description: Operations agent for process optimization, compliance tracking, risk assessment, capacity planning, runbooks, and vendor review. Handles skills from the operations plugin of anthropics/knowledge-work-plugins.
 tools: Read, Glob, Grep, Bash
-model: opus
+model: claude-opus-4-6
 color: yellow
 memory: project
 maxTurns: 20

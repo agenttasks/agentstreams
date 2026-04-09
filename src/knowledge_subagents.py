@@ -239,7 +239,7 @@ def generate_subagent_md(agent: MergedSubagent) -> str:
         f"name: {name}",
         f"description: {desc}",
         f"tools: {tools}",
-        "model: opus",
+        "model: claude-opus-4-6",
         f"color: {color}",
         f"memory: {memory}",
         f"maxTurns: {max_turns}",

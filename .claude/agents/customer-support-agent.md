@@ -2,7 +2,7 @@
 name: customer-support-agent
 description: Customer support agent for ticket triage, response drafting, escalation handling, customer research, and knowledge base article creation. Handles skills from the customer-support plugin of anthropics/knowledge-work-plugins.
 tools: Read, Glob, Grep, Bash
-model: opus
+model: claude-opus-4-6
 color: orange
 memory: project
 maxTurns: 20

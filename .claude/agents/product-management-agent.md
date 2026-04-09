@@ -2,7 +2,7 @@
 name: product-management-agent
 description: Product management agent for specs, roadmaps, user research synthesis, sprint planning, stakeholder updates, and competitive landscape tracking. Handles skills from the product-management plugin of anthropics/knowledge-work-plugins.
 tools: Read, Glob, Grep, Bash
-model: opus
+model: claude-opus-4-6
 color: purple
 memory: project
 maxTurns: 20

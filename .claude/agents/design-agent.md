@@ -2,7 +2,7 @@
 name: design-agent
 description: Design agent for user research, design critique, accessibility review, design systems, UX copy, and research synthesis. Handles skills from the design plugin of anthropics/knowledge-work-plugins.
 tools: Read, Glob, Grep, Write, Edit
-model: opus
+model: claude-opus-4-6
 color: pink
 memory: project
 maxTurns: 20

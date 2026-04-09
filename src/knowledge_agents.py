@@ -307,7 +307,7 @@ for _n, _i in [
 ]:
     _register(_n, PluginCategory.OPERATIONS, _i)
 
-# partner-built — apollo, brand-voice, common-room, slack (14 unique skills).
+# partner-built — apollo, brand-voice, common-room, slack (14 raw, 11 after dedup).
 # account-research, call-prep, prospect already registered under first-party
 # sales/apollo; _register skips duplicates so partner-built entries for those
 # are silently ignored, which is the correct first-party-wins behaviour.
@@ -333,7 +333,7 @@ for _n, _i in [
 # pdf-viewer (1 skill)
 _register("view-pdf", PluginCategory.PDF_VIEWER, 365)
 
-# product-management (8 skills)
+# product-management (8 raw, 7 after dedup; competitive-brief yields to marketing)
 # competitive-brief already registered under marketing; skipped here.
 for _n, _i in [
     ("metrics-review", 511),
@@ -347,7 +347,7 @@ for _n, _i in [
 ]:
     _register(_n, PluginCategory.PRODUCT_MANAGEMENT, _i)
 
-# productivity (4 skills)
+# productivity (4 raw, 3 after dedup; start yields to bio-research)
 # start already registered under bio-research; skipped here.
 for _n, _i in [
     ("memory-management", 1400),

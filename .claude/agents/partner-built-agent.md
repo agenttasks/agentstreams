@@ -2,7 +2,7 @@
 name: partner-built-agent
 description: Partner-built integrations agent for Apollo lead enrichment, brand voice enforcement, Common Room community intelligence, and Slack workflows. Handles skills from the partner-built plugins of anthropics/knowledge-work-plugins.
 tools: Read, Glob, Grep, Bash, Write, WebFetch, WebSearch
-model: opus
+model: claude-opus-4-6
 color: cyan
 memory: project
 maxTurns: 20

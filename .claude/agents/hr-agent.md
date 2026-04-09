@@ -2,7 +2,7 @@
 name: hr-agent
 description: Human resources agent for recruiting, performance reviews, compensation analysis, onboarding, org planning, and policy lookup. Handles skills from the human-resources plugin of anthropics/knowledge-work-plugins.
 tools: Read, Glob, Grep, Write
-model: opus
+model: claude-opus-4-6
 color: yellow
 memory: project
 maxTurns: 20

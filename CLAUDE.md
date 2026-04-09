@@ -63,15 +63,30 @@ Memory sync (cloud-safe — all memory is in checked-in files):
 
 ## Orchestrator
 
-8 agents, 5 pipelines, 4 model tiers. Defined in:
+25 agents (8 safety/codegen + 17 knowledge-work), 8 pipelines, 4 model tiers. Defined in:
 - `src/orchestrator.py` — Python dataclasses + agent configs
+- `src/knowledge_agents.py` — Knowledge-work plugin catalog (164 skills, 22 categories)
+- `src/knowledge_subagents.py` — Claude Code CLI subagent generator
+- `src/plugin_bridge.py` — Cowork plugin → ManagedAgentConfig bridge
 - `.claude/agents/*.md` — Agent frontmatter (tools, model, color)
 - `.claude/subagents/opus-orchestrator.md` — Pipeline XML + safety-research tooling
 
 Model hierarchy:
-- opus: security-auditor, alignment-auditor, architecture-reviewer, uda-thinker
+- opus: security-auditor, alignment-auditor, architecture-reviewer, uda-thinker,
+        + 17 knowledge-work agents (sales-agent, data-analyst, compliance-reviewer, etc.)
 - sonnet: code-generator, test-runner, prompt-hardener, eval-builder
 - haiku: harmlessness-screen, crawl-analyzer, memory-validator, explore
+
+Knowledge-work pipelines (3):
+- research-to-report: harmlessness-screen → enterprise-search → marketing + compliance → security
+- data-to-insight: harmlessness-screen → data-analyst → finance + compliance → marketing
+- compliance-review: harmlessness-screen → compliance-reviewer → security + search → marketing
+
+Vendored plugin repos (vendors/):
+- knowledge-work-plugins: 17 plugins, 119 skills, 11 MCP connector sets
+- financial-services-plugins: 5 plugins, 45 skills, 11 MCP data providers
+- claude-plugins-official: 17 skills (3 plugins: document-skills, example-skills, claude-api)
+- claude-plugins-community: 814 plugins (marketplace.json registry only)
 
 ## Safety-Research Integration
 

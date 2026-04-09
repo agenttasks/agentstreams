@@ -2,7 +2,7 @@
 name: engineering-agent
 description: Engineering workflow agent for architecture review, code review, debugging, deployment checklists, incident response, and technical documentation. Handles skills from the engineering plugin of anthropics/knowledge-work-plugins.
 tools: Read, Glob, Grep, Bash, Write, Edit
-model: opus
+model: claude-opus-4-6
 color: green
 memory: project
 maxTurns: 20
