@@ -141,39 +141,52 @@ for _n, _i in [
 ]:
     _register(_n, PluginCategory.SALES, _i)
 
-# customer-support (5 skills)
+# customer-support (5 dir + 3 readme = 8 skills)
 for _n, _i in [
     ("customer-escalation", 472), ("customer-research", 719),
     ("draft-response", 483), ("kb-article", 491),
     ("ticket-triage", 664),
+    # readme-sourced
+    ("escalation", 162), ("knowledge-management", 316),
+    ("response-drafting", 190),
 ]:
     _register(_n, PluginCategory.CUSTOMER_SUPPORT, _i)
 
-# product-management (8 skills)
+# product-management (8 dir + 6 readme = 14 skills)
 for _n, _i in [
     ("competitive-brief", 574), ("metrics-review", 511),
     ("product-brainstorming", 622), ("roadmap-update", 543),
     ("sprint-planning", 520), ("stakeholder-update", 510),
     ("synthesize-research", 568), ("write-spec", 621),
+    # readme-sourced
+    ("competitive-analysis", 405), ("feature-spec", 463),
+    ("metrics-tracking", 268), ("roadmap-management", 336),
+    ("stakeholder-comms", 238), ("user-research-synthesis", 407),
 ]:
     _register(_n, PluginCategory.PRODUCT_MANAGEMENT, _i)
 
-# marketing (8 skills)
+# marketing (8 dir + 4 readme = 12 skills)
 for _n, _i in [
     ("brand-review", 537), ("campaign-plan", 558),
     ("content-creation", 1500), ("draft-content", 503),
     ("email-sequence", 491), ("performance-report", 523),
     ("seo-audit", 569), ("competitive-brief", 574),
+    # readme-sourced
+    ("brand-voice", 323), ("campaign-planning", 220),
+    ("competitive-analysis", 405), ("performance-analytics", 251),
 ]:
     _register(_n, PluginCategory.MARKETING, _i)
 
-# legal (9 skills)
+# legal (9 dir + 4 readme = 13 skills)
 for _n, _i in [
     ("brief", 500), ("compliance-check", 526),
     ("legal-response", 565), ("legal-risk-assessment", 1100),
     ("meeting-briefing", 689), ("review-contract", 617),
     ("signature-request", 475), ("triage-nda", 477),
     ("vendor-check", 486),
+    # readme-sourced
+    ("canned-responses", 162), ("compliance", 206),
+    ("contract-review", 341), ("nda-triage", 168),
 ]:
     _register(_n, PluginCategory.LEGAL, _i)
 
@@ -186,13 +199,16 @@ for _n, _i in [
 ]:
     _register(_n, PluginCategory.FINANCE, _i)
 
-# data (10 skills)
+# data (10 dir + 3 readme = 13 skills)
 for _n, _i in [
     ("analyze", 690), ("build-dashboard", 884),
     ("create-viz", 653), ("data-context-extractor", 710),
     ("data-visualization", 3800), ("explore-data", 697),
     ("sql-queries", 1100), ("statistical-analysis", 1100),
     ("validate-data", 568), ("write-query", 520),
+    # readme-sourced
+    ("data-exploration", 226), ("data-validation", 255),
+    ("interactive-dashboard-builder", 584),
 ]:
     _register(_n, PluginCategory.DATA, _i)
 
@@ -204,11 +220,13 @@ for _n, _i in [
 ]:
     _register(_n, PluginCategory.ENTERPRISE_SEARCH, _i)
 
-# bio-research (6 skills)
+# bio-research (6 dir + 1 readme = 7 skills)
 for _n, _i in [
     ("instrument-data-to-allotrope", 233), ("nextflow-development", 241),
     ("scientific-problem-selection", 258), ("scvi-tools", 231),
     ("single-cell-rna-qc", 244), ("start", 620),
+    # readme-sourced
+    ("clinical-trial-protocol-skill", 5),
 ]:
     _register(_n, PluginCategory.BIO_RESEARCH, _i)
 
@@ -220,12 +238,14 @@ for _n, _i in [
 
 # ── Additional Plugins ───────────────────────────────────────
 
-# design (7 skills)
+# design (7 dir + 2 readme = 9 skills)
 for _n, _i in [
     ("accessibility-review", 657), ("design-critique", 796),
     ("design-handoff", 643), ("design-system", 647),
     ("research-synthesis", 615), ("user-research", 820),
     ("ux-copy", 663),
+    # readme-sourced
+    ("design-system-management", 116), ("ux-writing", 132),
 ]:
     _register(_n, PluginCategory.DESIGN, _i)
 
@@ -239,23 +259,29 @@ for _n, _i in [
 ]:
     _register(_n, PluginCategory.ENGINEERING, _i)
 
-# human-resources (9 skills)
+# human-resources (9 dir + 3 readme = 12 skills)
 for _n, _i in [
     ("comp-analysis", 507), ("draft-offer", 485),
     ("interview-prep", 663), ("onboarding", 504),
     ("org-planning", 601), ("people-report", 479),
     ("performance-review", 545), ("policy-lookup", 509),
     ("recruiting-pipeline", 598),
+    # readme-sourced
+    ("compensation-benchmarking", 97), ("people-analytics", 100),
+    ("employee-handbook", 96),
 ]:
     _register(_n, PluginCategory.HUMAN_RESOURCES, _i)
 
-# operations (9 skills)
+# operations (9 dir + 3 readme = 12 skills)
 for _n, _i in [
     ("capacity-plan", 497), ("change-request", 488),
     ("compliance-tracking", 610), ("process-doc", 517),
     ("process-optimization", 653), ("risk-assessment", 672),
     ("runbook", 480), ("status-report", 509),
     ("vendor-review", 480),
+    # readme-sourced
+    ("change-management", 112), ("resource-planning", 100),
+    ("vendor-management", 99),
 ]:
     _register(_n, PluginCategory.OPERATIONS, _i)
 
