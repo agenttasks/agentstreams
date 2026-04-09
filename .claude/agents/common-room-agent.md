@@ -2,7 +2,7 @@
 name: common-room-agent
 description: Turn Common Room into your GTM copilot. Research accounts and contacts, prep for calls with attendee profiles and talking points, and draft personalized outreach across email, LinkedIn, and phone. Build targeted prospect lists, generate weekly briefings for every upcoming call, and create strategic account plans — all grounded in real signal data from product usage, engagement and intent signals, so every output reflects what's actually happening in your accounts.
 tools: Read, Glob, Grep, Bash, Write, Edit
-model: opus
+model: claude-opus-4-6
 color: blue
 memory: project
 maxTurns: 20

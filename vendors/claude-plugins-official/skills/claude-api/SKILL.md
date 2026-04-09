@@ -33,13 +33,7 @@ Build Claude API / Anthropic SDK applications across all supported languages.
 
 ## Language-Specific References
 
-Each language subdirectory contains SDK-specific documentation:
-- `typescript/` - TypeScript SDK patterns
-- `python/` - Python SDK patterns
-- `java/` - Java SDK patterns
-- `go/` - Go SDK patterns
-- `ruby/` - Ruby SDK patterns
-- `csharp/` - C# SDK patterns
-- `php/` - PHP SDK patterns
-- `curl/` - cURL examples
-- `shared/` - Cross-language concepts
+Full SDK-specific documentation is available upstream at
+github.com/anthropics/skills/skills/claude-api/ with subdirectories
+for each language (typescript, python, java, go, ruby, csharp, php,
+curl, shared).

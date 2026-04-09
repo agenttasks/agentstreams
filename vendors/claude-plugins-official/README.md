@@ -15,7 +15,7 @@ skills/
   algorithmic-art/          # Generative art via p5.js (templates/)
   brand-guidelines/         # Anthropic brand identity standards
   canvas-design/            # Visual art in PDF/PNG (canvas-fonts/)
-  claude-api/               # Claude API/SDK docs (csharp/ curl/ go/ java/ php/ python/ ruby/ shared/ typescript/)
+  claude-api/               # Claude API/SDK docs
   doc-coauthoring/          # Structured doc co-authoring workflow
   docx/                     # Word document operations (scripts/)
   frontend-design/          # Production-grade UI design guidance

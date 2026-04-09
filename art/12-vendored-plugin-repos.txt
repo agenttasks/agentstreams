@@ -1,0 +1,67 @@
+                ╔═══════════════════════════════════════════╗
+                ║   Vendored Plugin Repos (4)              ║
+                ║   995+ skills from 4 Anthropic repos     ║
+                ╚═══════════════════════════════════════════╝
+
+    vendors/
+    ├── knowledge-work-plugins/          ← anthropics/knowledge-work-plugins
+    │   ├── 17 plugin directories        ← bio-research, sales, data, ...
+    │   ├── 119 SKILL.md files           ← real skill content (YAML + md)
+    │   ├── 17 .mcp.json files           ← MCP server URLs per plugin
+    │   ├── 17 plugin.json manifests     ← name, description, version
+    │   └── README.md, LICENSE           ← Apache 2.0
+    │
+    ├── financial-services-plugins/      ← anthropics/financial-services-plugins
+    │   ├── 5 plugin directories         ← financial-analysis (core),
+    │   │                                   investment-banking, equity-research,
+    │   │                                   private-equity, wealth-management
+    │   ├── 45 SKILL.md stubs            ← 1-line stubs (not yet documented)
+    │   ├── 5 plugin.json manifests      ← name, description, version
+    │   ├── 11 MCP data providers:       ← Daloopa, Morningstar, S&P Global,
+    │   │     FactSet, Moody's,             MT Newswires, Aiera, LSEG,
+    │   │     PitchBook, Chronograph,       Egnyte
+    │   └── README.md, CLAUDE.md         ← Apache 2.0
+    │
+    ├── claude-plugins-official/         ← anthropics/skills
+    │   ├── 17 skills in skills/         ← frontend-design, claude-api,
+    │   │                                   skill-creator, pdf, docx, pptx,
+    │   │                                   xlsx, webapp-testing, mcp-builder,
+    │   │                                   canvas-design, algorithmic-art, ...
+    │   ├── marketplace.json             ← 3 plugins: document-skills,
+    │   │                                   example-skills, claude-api
+    │   ├── spec/agent-skills-spec.md    ← → agentskills.io/specification
+    │   └── template/SKILL.md            ← blank skill template
+    │
+    └── claude-plugins-community/        ← anthropics/claude-plugins-community
+        ├── marketplace.json (513 KB)    ← 814 community plugins
+        │   ├── name: "claude-community"
+        │   └── plugins: [{name, source, description}, ...]
+        └── README.md                    ← read-only mirror, nightly sync
+
+    Plugin Directory Structure (standard):
+    ──────────────────────────────────────
+    plugin-name/
+    ├── .claude-plugin/
+    │   └── plugin.json             # {"name","description","version"}
+    ├── .mcp.json                   # {"mcpServers": {"name": {"type","url"}}}
+    ├── skills/
+    │   └── skill-slug/
+    │       └── SKILL.md            # ---\nname: ...\ndescription: ...\n---\n# Body
+    ├── commands/                   # Slash commands (explicit triggers)
+    ├── CONNECTORS.md               # Connector documentation
+    └── README.md
+
+    SKILL.md Format:
+    ────────────────
+    ---
+    name: account-research
+    description: Research a company or person and get actionable sales intel
+    ---
+
+    # Account Research
+
+    ## How It Works
+    ...
+
+    ## Getting Started
+    ...

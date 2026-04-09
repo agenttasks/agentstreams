@@ -17,7 +17,7 @@ Subagent markdown format (from code.claude.com/docs/en/sub-agents):
     name: agent-name
     description: When Claude should delegate to this subagent
     tools: Read, Glob, Grep, Bash
-    model: opus
+    model: claude-opus-4-6
     color: blue
     memory: project
     maxTurns: 20

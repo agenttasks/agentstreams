@@ -1,0 +1,105 @@
+                ╔═══════════════════════════════════════════╗
+                ║   Data Strategy Integration              ║
+                ║   Ontology ↔ Taxonomy ↔ Knowledge Agents ║
+                ╚═══════════════════════════════════════════╝
+
+    ┌─────────────────────────────────────────────────────────────┐
+    │                    Ontology Layer                            │
+    │                    (ontology/)                               │
+    │                                                             │
+    │  schema.sql                    agentstreams.ttl              │
+    │  ┌──────────────────────┐     ┌──────────────────────┐     │
+    │  │ skills               │     │ :Skill rdfs:subClass │     │
+    │  │ ├── name (PK)       │◄───▶│   Of :Entity         │     │
+    │  │ ├── description     │     │ :AgentManifest       │     │
+    │  │ └── trigger_pattern │     │ :MCPServer           │     │
+    │  │                      │     │ :Pipeline            │     │
+    │  │ agent_manifests      │     │ :Task                │     │
+    │  │ ├── name (PK)       │     └──────────────────────┘     │
+    │  │ ├── model_override  │                                   │
+    │  │ ├── allowed_tools[] │     mappings.ttl                  │
+    │  │ └── manifest_path   │     ┌──────────────────────┐     │
+    │  │                      │     │ :Skill → skills table│     │
+    │  │ mcp_servers          │     │ :AgentManifest →     │     │
+    │  │ ├── id (PK)         │     │   agent_manifests    │     │
+    │  │ ├── name            │     └──────────────────────┘     │
+    │  │ ├── transport       │                                   │
+    │  │ └── description     │     migrations/                   │
+    │  │                      │     ┌──────────────────────┐     │
+    │  │ tasks                │     │ 001-knowledge-work-  │     │
+    │  │ ├── type: enum      │     │   plugins.sql        │     │
+    │  │ │   'code'          │     │ ├── 30 skills seeded │     │
+    │  │ │   'knowledge_work'│◄────│ ├── 17 agents seeded │     │
+    │  │ │   'financial'     │     │ └── 11 MCP servers   │     │
+    │  │ ├── plugin TEXT     │     └──────────────────────┘     │
+    │  │ └── skill_name FK   │                                   │
+    │  └──────────────────────┘                                   │
+    └────────────────────────────┬────────────────────────────────┘
+                                 │
+                                 │ feeds / consumes
+                                 │
+    ┌────────────────────────────▼────────────────────────────────┐
+    │                    Knowledge Agents Layer                    │
+    │                    (src/)                                    │
+    │                                                             │
+    │  knowledge_agents.py           plugin_bridge.py             │
+    │  ┌──────────────────────┐     ┌──────────────────────┐     │
+    │  │ SKILL_CATALOG        │     │ PluginLoader         │     │
+    │  │ 164 skills           │◄────│ reads vendors/       │     │
+    │  │                      │     │                      │     │
+    │  │ PluginCategory       │     │ PluginBridge         │     │
+    │  │ 22 enum values       │     │ → ManagedAgentConfig │     │
+    │  │                      │     └──────────────────────┘     │
+    │  │ CATEGORY_AGENTS      │                                   │
+    │  │ 17 agent mappings    │     knowledge_subagents.py        │
+    │  │                      │     ┌──────────────────────┐     │
+    │  │ KnowledgeWorkRegistry│     │ collect_subagents()  │     │
+    │  │ .resolve(skill)      │────▶│ generate_subagent_md │     │
+    │  │ .all_agent_configs() │     │ → .claude/agents/*.md│     │
+    │  └──────────────────────┘     └──────────────────────┘     │
+    └────────────────────────────┬────────────────────────────────┘
+                                 │
+                                 │ crawled / indexed
+                                 │
+    ┌────────────────────────────▼────────────────────────────────┐
+    │                    Taxonomy Layer                            │
+    │                    (taxonomy/)                               │
+    │                                                             │
+    │  skills-sh.md                  code-claude-com.md           │
+    │  ┌──────────────────────┐     ┌──────────────────────┐     │
+    │  │ skills.sh sitemap    │     │ Claude Code docs     │     │
+    │  │ 4,000 skills indexed │     │ sub-agents, plugins, │     │
+    │  │ 629 orgs             │     │ skills, agent teams  │     │
+    │  │ 5 Anthropic repos:   │     └──────────────────────┘     │
+    │  │ ├── knowledge-work   │                                   │
+    │  │ ├── financial-svc    │     platform-claude-com.md        │
+    │  │ ├── skills           │     ┌──────────────────────┐     │
+    │  │ ├── claude-code      │     │ Managed Agents API   │     │
+    │  │ └── plugins-official │     │ /v1/agents, sessions │     │
+    │  │ Install counts per   │     │ tools, environments  │     │
+    │  │ skill tracked        │     └──────────────────────┘     │
+    │  └──────────────────────┘                                   │
+    │                                                             │
+    │  live-sources.md               sources.md                   │
+    │  ┌──────────────────────┐     ┌──────────────────────┐     │
+    │  │ Recursively fetched  │     │ All crawled taxonomy │     │
+    │  │ missing taxonomy     │     │ pages indexed        │     │
+    │  │ pages                │     │                      │     │
+    │  └──────────────────────┘     └──────────────────────┘     │
+    └─────────────────────────────────────────────────────────────┘
+
+    Data Flow:
+    ──────────
+    1. PluginLoader reads vendors/ → SKILL_CATALOG populated
+    2. SKILL_CATALOG → seeds ontology/migrations/001-*.sql
+    3. skills.sh crawl → taxonomy/skills-sh.md (install counts)
+    4. Claude Code docs → taxonomy/code-claude-com.md (API patterns)
+    5. Managed Agents docs → taxonomy/platform-claude-com.md
+    6. All feed → Neon Postgres via ontology/schema.sql tables
+    7. pg_graphql exposes everything via GraphQL API
+
+    Cross-PR Alignment:
+    ────────────────────
+    PR #43 (UDA refactor) ─── schema registry, crawl pipeline, Scrapy
+    PR #48 (Cloudflare)   ─── webapp deployment
+    PR #50 (this PR)      ─── knowledge-work agents + data integration

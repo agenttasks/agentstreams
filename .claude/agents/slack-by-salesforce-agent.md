@@ -2,7 +2,7 @@
 name: slack-by-salesforce-agent
 description: Official Slack MCP server for interactive and collaborative workflows. Surface insights, draft messages, and engage teams directly within Slack from Claude Cowork.
 tools: Read, Glob, Grep, Bash, Write, Edit
-model: opus
+model: claude-opus-4-6
 color: blue
 memory: project
 maxTurns: 20

@@ -1,0 +1,100 @@
+                ╔═══════════════════════════════════════════╗
+                ║   MCP Connector Map — 50+ Integrations   ║
+                ║   From .mcp.json files in vendors/       ║
+                ╚═══════════════════════════════════════════╝
+
+    Knowledge-Work Plugins — MCP Servers per Agent
+    ═══════════════════════════════════════════════
+
+    sales-agent (14 servers)
+    ├── slack          → mcp.slack.com/mcp
+    ├── hubspot        → mcp.hubspot.com/anthropic
+    ├── close          → mcp.close.com/mcp
+    ├── clay           → api.clay.com/v3/mcp
+    ├── zoominfo       → mcp.zoominfo.com/mcp
+    ├── apollo         → api.apollo.io/mcp
+    ├── outreach       → mcp.outreach.io/mcp
+    ├── fireflies      → api.fireflies.ai/mcp
+    ├── notion         → mcp.notion.com/mcp
+    ├── atlassian      → mcp.atlassian.com/v1/mcp
+    ├── ms365          → microsoft365.mcp.claude.com/mcp
+    ├── google-calendar→ gcal.mcp.claude.com/mcp
+    ├── gmail          → gmail.mcp.claude.com/mcp
+    └── similarweb     → mcp.similarweb.com/mcp
+
+    product-management-agent (16 servers)
+    ├── slack, linear, asana, monday, clickup
+    ├── atlassian, notion, figma, amplitude
+    ├── pendo, intercom, fireflies
+    ├── google-calendar, gmail, similarweb
+    └── amplitude-eu
+
+    marketing-agent (13 servers)
+    ├── slack, hubspot, notion, figma
+    ├── amplitude, amplitude-eu, canva
+    ├── ahrefs, similarweb, klaviyo
+    ├── atlassian, google-calendar, gmail
+    └── ms365
+
+    engineering-agent (10 servers)
+    ├── slack, atlassian, notion
+    ├── linear, pagerduty, ms365
+    ├── google-calendar, gmail
+    ├── sentry
+    └── similarweb
+
+    partner-built-agent (10 servers)
+    ├── apollo         → mcp.apollo.io/mcp
+    ├── common-room    → mcp.commonroom.io/mcp
+    ├── slack          → mcp.slack.com/mcp
+    ├── notion, figma, atlassian
+    ├── box, gong, granola
+    └── microsoft-365
+
+    productivity-agent (10 servers)
+    ├── slack, notion, asana, linear
+    ├── atlassian, ms365, monday
+    ├── clickup, google-calendar
+    └── gmail
+
+    customer-support-agent (9 servers)
+    ├── slack, intercom, hubspot
+    ├── guru, atlassian, notion
+    ├── ms365, google-calendar
+    └── gmail
+
+    bio-research-agent (9 servers)
+    ├── biorender      → mcp.services.biorender.com/mcp
+    ├── biorxiv        → mcp.deepsense.ai/biorx
+    ├── chembl         → mcp.deepsense.ai/chembl
+    ├── clinicaltrials → mcp.deepsense.ai/ct
+    ├── pubmed         → mcp.deepsense.ai/pubmed
+    ├── benchling      → mcp.benchling.com/mcp
+    ├── synapse        → mcp.sagebionetworks.org/mcp
+    ├── owkin          → mcp.owkin.com/mcp
+    └── wiley          → mcp.wiley.com/mcp
+
+    compliance-reviewer (8), enterprise-search-agent (8),
+    operations-agent (8), design-agent (9), hr-agent (6),
+    data-analyst (6), finance-agent (5)
+
+    cowork-plugin-agent (0), pdf-viewer-agent (0)
+
+    Financial-Services Plugins — MCP Data Providers
+    ════════════════════════════════════════════════
+
+    Centralized in financial-analysis core plugin:
+    ├── daloopa        → mcp.daloopa.com/server/mcp
+    ├── morningstar    → mcp.morningstar.com/mcp
+    ├── spglobal       → kfinance.kensho.com/integrations/mcp
+    ├── factset        → mcp.factset.com/mcp
+    ├── moodys         → api.moodys.com/genai-ready-data/m1/mcp
+    ├── mt-newswires   → vast-mcp.blueskyapi.com/mtnewswires
+    ├── aiera          → mcp-pub.aiera.com
+    ├── lseg           → api.analytics.lseg.com/lfa/mcp
+    ├── pitchbook      → premium.mcp.pitchbook.com/mcp
+    ├── chronograph    → ai.chronograph.pe/mcp
+    └── egnyte         → mcp-server.egnyte.com/mcp
+
+    All connectors use HTTP transport (MCP over HTTPS).
+    Auth via vault_ids at session creation or OAuth tokens.
