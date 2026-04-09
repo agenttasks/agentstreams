@@ -1,7 +1,7 @@
 """Knowledge Work Agents — plugin-to-agent bridge layer.
 
 Maps skills from two Anthropic plugin repos to domain agents:
-- anthropics/knowledge-work-plugins: 119 skills across 17 plugins
+- anthropics/knowledge-work-plugins: 119 skills across 11 upstream + 6 extended plugins (17 total categories)
 - anthropics/financial-services-plugins: 45 skills across 5 plugins
 
 Source of truth: vendors/knowledge-work-plugins/ and

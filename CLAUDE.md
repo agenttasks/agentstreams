@@ -71,11 +71,15 @@ Memory sync (cloud-safe — all memory is in checked-in files):
 - `.claude/agents/*.md` — Agent frontmatter (tools, model, color)
 - `.claude/subagents/opus-orchestrator.md` — Pipeline XML + safety-research tooling
 
-Model hierarchy:
-- opus: security-auditor, alignment-auditor, architecture-reviewer, uda-thinker,
+Model hierarchy (orchestrated pipeline agents only):
+- opus: security-auditor, alignment-auditor, architecture-reviewer,
         + 17 knowledge-work agents (sales-agent, data-analyst, compliance-reviewer, etc.)
 - sonnet: code-generator, test-runner, prompt-hardener, eval-builder
-- haiku: harmlessness-screen, crawl-analyzer, memory-validator, explore
+- haiku: harmlessness-screen
+
+Standalone subagents (.claude/agents/, not in orchestrator pipelines):
+- opus: uda-thinker, uda-crawler
+- haiku: crawl-analyzer, memory-validator, explore
 
 Knowledge-work pipelines (3):
 - research-to-report: harmlessness-screen → enterprise-search → marketing + compliance → security
