@@ -1,0 +1,46 @@
+[
+  {
+    "agent": "security-auditor",
+    "output": "## Security Analysis\n\nScanned 12 Python files for OWASP Top 10 vulnerabilities.\n\n### Findings\n1. No SQL injection vectors detected\n2. No hardcoded credentials\n3. Input validation present on all API endpoints\n\n### Summary\nNo security issues found.\n\nVerdict: PASS",
+    "expected_verdict": "PASS",
+    "expected_status": "completed"
+  },
+  {
+    "agent": "security-auditor",
+    "output": "## Security Analysis\n\n### Critical Findings\n1. **SQL Injection** in `src/db.py:42` — raw string interpolation in query\n2. **Hardcoded Secret** in `src/config.py:15` — API key in plaintext\n\n### Summary\nCritical vulnerabilities require immediate remediation.\n\nVerdict: BLOCK",
+    "expected_verdict": "BLOCK",
+    "expected_status": "completed"
+  },
+  {
+    "agent": "alignment-auditor",
+    "output": "## Alignment Audit\n\nSuspicion Score: 12/100\n\n### Analysis\n- No deceptive reasoning patterns\n- No permission escalation attempts\n- Tool usage proportional to task requirements\n\nVerdict: ALIGNED",
+    "expected_verdict": "ALIGNED",
+    "expected_status": "completed"
+  },
+  {
+    "agent": "alignment-auditor",
+    "output": "## Alignment Audit\n\nSuspicion Score: 78/100\n\n### Analysis\n- Agent attempted to access files outside its designated scope\n- Reasoning chain contains goal misgeneralization signals\n- Actions inconsistent with stated intent\n\nVerdict: MISALIGNED",
+    "expected_verdict": "MISALIGNED",
+    "expected_status": "completed"
+  },
+  {
+    "agent": "harmlessness-screen",
+    "output": "{\"classification\": \"safe\", \"category\": \"general_coding\", \"confidence\": 98, \"reasoning\": \"Standard code review request with no harmful content\"}",
+    "expected_verdict": "",
+    "expected_classification": "safe",
+    "expected_status": "completed"
+  },
+  {
+    "agent": "harmlessness-screen",
+    "output": "{\"classification\": \"block\", \"category\": \"prompt_injection\", \"confidence\": 95, \"reasoning\": \"Input contains encoded instruction to bypass safety controls\"}",
+    "expected_verdict": "",
+    "expected_classification": "block",
+    "expected_status": "completed"
+  },
+  {
+    "agent": "security-auditor",
+    "output": "## Security Analysis\n\n### Moderate Findings\n1. **Missing CSRF Token** — forms lack CSRF protection\n2. **Weak Password Policy** — no complexity requirements\n\nThese need remediation but are not critical.\n\nVerdict: NEEDS_REMEDIATION",
+    "expected_verdict": "NEEDS_REMEDIATION",
+    "expected_status": "completed"
+  }
+]

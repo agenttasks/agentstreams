@@ -1,0 +1,12 @@
+[
+  {"type": "session.status_running", "processed_at": "2026-04-09T01:00:00Z"},
+  {"type": "agent.message", "id": "msg_001", "content": [{"type": "text", "text": "I'll analyze the code for security issues."}], "processed_at": "2026-04-09T01:00:01Z"},
+  {"type": "agent.tool_use", "id": "tu_001", "name": "glob", "input": {"pattern": "**/*.py"}, "processed_at": "2026-04-09T01:00:02Z"},
+  {"type": "agent.tool_result", "id": "tr_001", "tool_use_id": "tu_001", "content": [{"type": "text", "text": "src/managed_agents.py\nsrc/orchestrator.py"}], "processed_at": "2026-04-09T01:00:03Z"},
+  {"type": "agent.tool_use", "id": "tu_002", "name": "read", "input": {"file_path": "src/managed_agents.py"}, "processed_at": "2026-04-09T01:00:04Z"},
+  {"type": "agent.tool_result", "id": "tr_002", "tool_use_id": "tu_002", "content": [{"type": "text", "text": "# managed_agents.py content..."}], "processed_at": "2026-04-09T01:00:05Z"},
+  {"type": "span.model_request_start", "processed_at": "2026-04-09T01:00:06Z"},
+  {"type": "span.model_request_end", "model_usage": {"input_tokens": 5000, "output_tokens": 1200}, "processed_at": "2026-04-09T01:00:08Z"},
+  {"type": "agent.message", "id": "msg_002", "content": [{"type": "text", "text": "Security analysis complete. No critical issues found.\n\nVerdict: PASS"}], "processed_at": "2026-04-09T01:00:09Z"},
+  {"type": "session.status_idle", "stop_reason": "end_turn", "processed_at": "2026-04-09T01:00:10Z"}
+]

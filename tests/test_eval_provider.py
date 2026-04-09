@@ -58,14 +58,15 @@ class TestCallApiMissingKey:
 
 
 class TestCallApiKeyFallback:
-    def test_uses_anthropic_api_key_first(self):
-        env = {"ANTHROPIC_API_KEY": "key-1", "CLAUDE_CODE_OAUTH_TOKEN": "key-2"}
+    def test_uses_oauth_token(self):
+        # Never use ANTHROPIC_API_KEY — auth flows through CLAUDE_CODE_OAUTH_TOKEN
+        env = {"CLAUDE_CODE_OAUTH_TOKEN": "oauth-tok"}
         with _with_anthropic("response text", env=env) as (mock, _):
             result = provider.call_api("hello", {"config": {}}, None)
-        mock.Anthropic.assert_called_once_with(api_key="key-1")
+        mock.Anthropic.assert_called_once_with(api_key="oauth-tok")
         assert result["output"] == "response text"
 
-    def test_falls_back_to_oauth_token(self):
+    def test_uses_oauth_token_explicit(self):
         with _with_anthropic(env={"CLAUDE_CODE_OAUTH_TOKEN": "oauth-tok"}, clear_env=True) as (
             mock,
             _,
@@ -77,7 +78,7 @@ class TestCallApiKeyFallback:
 class TestCallApiConfig:
     def test_passes_config_to_api(self):
         config = {"model": "claude-opus-4-6", "max_tokens": 2048, "temperature": 0.5}
-        with _with_anthropic(env={"ANTHROPIC_API_KEY": "k"}) as (_, client):
+        with _with_anthropic(env={"CLAUDE_CODE_OAUTH_TOKEN": "k"}) as (_, client):
             provider.call_api("test", {"config": config}, None)
         kw = client.messages.create.call_args.kwargs
         assert kw["model"] == "claude-opus-4-6"
@@ -85,7 +86,7 @@ class TestCallApiConfig:
         assert kw["temperature"] == 0.5
 
     def test_default_config_values(self):
-        with _with_anthropic(env={"ANTHROPIC_API_KEY": "k"}) as (_, client):
+        with _with_anthropic(env={"CLAUDE_CODE_OAUTH_TOKEN": "k"}) as (_, client):
             provider.call_api("test", {"config": {}}, None)
         kw = client.messages.create.call_args.kwargs
         assert kw["model"] == "claude-sonnet-4-6"
@@ -95,7 +96,7 @@ class TestCallApiConfig:
 
 class TestCallApiTokenUsage:
     def test_returns_token_usage(self):
-        with _with_anthropic("hi", 100, 50, env={"ANTHROPIC_API_KEY": "k"}) as (_, __):
+        with _with_anthropic("hi", 100, 50, env={"CLAUDE_CODE_OAUTH_TOKEN": "k"}) as (_, __):
             result = provider.call_api("test", {"config": {}}, None)
         assert result["tokenUsage"] == {"total": 150, "prompt": 100, "completion": 50}
 
@@ -114,7 +115,7 @@ class TestCallApiErrorHandling:
 
         with (
             patch.dict("sys.modules", {"anthropic": mock_anthropic}),
-            patch.dict("os.environ", {"ANTHROPIC_API_KEY": "bad-key"}),
+            patch.dict("os.environ", {"CLAUDE_CODE_OAUTH_TOKEN": "bad-key"}),
         ):
             importlib.reload(provider)
             result = provider.call_api("test", {"config": {}}, None)
@@ -129,7 +130,7 @@ class TestCallApiErrorHandling:
 
         with (
             patch.dict("sys.modules", {"anthropic": mock_anthropic}),
-            patch.dict("os.environ", {"ANTHROPIC_API_KEY": "k"}),
+            patch.dict("os.environ", {"CLAUDE_CODE_OAUTH_TOKEN": "k"}),
         ):
             importlib.reload(provider)
             result = provider.call_api("test", {"config": {}}, None)

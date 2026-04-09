@@ -1,4 +1,7 @@
-"""Custom promptfoo provider using anthropic SDK with CLAUDE_CODE_OAUTH_TOKEN."""
+"""Custom promptfoo provider using anthropic SDK with CLAUDE_CODE_OAUTH_TOKEN.
+
+Never use ANTHROPIC_API_KEY — all auth flows through CLAUDE_CODE_OAUTH_TOKEN.
+"""
 
 import os
 
@@ -15,13 +18,10 @@ def call_api(prompt, options, context):
     max_tokens = config.get("max_tokens", 1024)
     temperature = config.get("temperature", 0)
 
-    # The anthropic SDK reads ANTHROPIC_API_KEY from env.
-    # In CI, we set ANTHROPIC_API_KEY=$CLAUDE_CODE_OAUTH_TOKEN.
-    # If that doesn't work (OAuth vs raw key), fall back to
-    # using the token directly.
-    api_key = os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("CLAUDE_CODE_OAUTH_TOKEN")
+    # Auth flows through CLAUDE_CODE_OAUTH_TOKEN (never use ANTHROPIC_API_KEY).
+    api_key = os.environ.get("CLAUDE_CODE_OAUTH_TOKEN", "")
     if not api_key:
-        return {"error": "No API key found. Set ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN."}
+        return {"error": "No API key found. Set CLAUDE_CODE_OAUTH_TOKEN."}
 
     try:
         client = anthropic.Anthropic(api_key=api_key)
@@ -39,8 +39,6 @@ def call_api(prompt, options, context):
         }
         return {"output": output, "tokenUsage": token_usage}
     except anthropic.AuthenticationError:
-        return {
-            "error": "Authentication failed. CLAUDE_CODE_OAUTH_TOKEN may not be a valid API key. Add a standard ANTHROPIC_API_KEY secret for evals."
-        }
+        return {"error": "Authentication failed. Check CLAUDE_CODE_OAUTH_TOKEN."}
     except Exception as e:
         return {"error": str(e)}

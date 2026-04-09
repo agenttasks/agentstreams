@@ -1,0 +1,404 @@
+description: "managed-agents API client evals — serialization fidelity, event parsing, config generation, and verdict extraction"
+
+providers:
+  - id: python:provider.py
+    label: claude-sonnet-4-6
+    config:
+      model: claude-sonnet-4-6
+      temperature: 0
+      max_tokens: 2048
+
+prompts:
+  # ── Agent Config Generation ──────────────────────────────
+  - id: generate-agent-config
+    raw: |
+      Given this natural language description, generate a valid Managed Agents API
+      request body for creating an agent via POST /v1/agents.
+      Return ONLY valid JSON matching the Managed Agents API schema.
+
+      Required fields: name (string), model (string), tools (array).
+      Optional fields: system (string), description (string), mcp_servers (array), metadata (object).
+
+      Tool types: "agent_toolset_20260401" for built-in tools, "custom" for user-defined,
+      "mcp_toolset" for MCP server tools.
+
+      Description: {{description}}
+
+  # ── Environment Config Generation ─────────────────────────
+  - id: generate-env-config
+    raw: |
+      Given this natural language description, generate a valid Managed Agents API
+      request body for creating an environment via POST /v1/environments.
+      Return ONLY valid JSON matching the Managed Agents API schema.
+
+      Required fields: name (string), config.type ("cloud"), config.networking (object).
+      Optional fields: config.packages (object with pip/npm/apt/cargo/gem/go arrays).
+      Networking types: "unrestricted" or "limited" (with allowed_hosts array).
+
+      Description: {{description}}
+
+  # ── Event Classification ──────────────────────────────────
+  - id: classify-event
+    raw: |
+      Given this SSE event from a Managed Agents session, classify it.
+      Return ONLY valid JSON with:
+      - domain: "user", "agent", "session", or "span"
+      - action: the specific action (e.g., "message", "tool_use", "status_idle")
+      - requires_response: boolean (true if you need to send a response event)
+      - response_type: if requires_response, the event type to send back (or null)
+
+      Event:
+      {{event}}
+
+  # ── Verdict Extraction ────────────────────────────────────
+  - id: extract-verdict
+    raw: |
+      Given this agent output from a security or alignment audit, extract structured data.
+      Return ONLY valid JSON with:
+      - verdict: "PASS", "NEEDS_REMEDIATION", "BLOCK", "ALIGNED", "BORDERLINE", or "MISALIGNED"
+      - severity: "none", "low", "medium", "high", or "critical"
+      - finding_count: number of distinct findings
+      - summary: one-sentence summary of the audit result
+
+      Agent Output:
+      {{output}}
+
+  # ── System Prompt Audit ───────────────────────────────────
+  - id: audit-system-prompt
+    raw: |
+      Evaluate this system prompt for a Managed Agent. Check for:
+      1. Clarity of role and constraints
+      2. Safety guardrails (does it prevent harmful actions?)
+      3. Tool scope alignment (does it match allowed tools?)
+      4. Output format specification
+
+      Return ONLY valid JSON with:
+      - clarity_score: 1-5
+      - safety_score: 1-5
+      - tool_alignment_score: 1-5
+      - format_score: 1-5
+      - issues: array of specific problems found
+      - suggestions: array of improvement suggestions
+
+      System prompt: {{system_prompt}}
+      Allowed tools: {{allowed_tools}}
+
+tests:
+  # ══════════════════════════════════════════════════════════
+  # Agent Config Generation
+  # ══════════════════════════════════════════════════════════
+
+  - description: "Generate coding agent config"
+    prompts:
+      - generate-agent-config
+    vars:
+      description: "A coding assistant using claude-sonnet-4-6 with all built-in tools enabled and a system prompt telling it to write clean code"
+    assert:
+      - type: is-json
+      - type: javascript
+        value: "JSON.parse(output).name !== undefined && JSON.parse(output).name.length > 0"
+      - type: javascript
+        value: "JSON.parse(output).model === 'claude-sonnet-4-6'"
+      - type: javascript
+        value: "JSON.parse(output).tools.some(t => t.type === 'agent_toolset_20260401')"
+      - type: javascript
+        value: "JSON.parse(output).system !== undefined && JSON.parse(output).system.length > 0"
+      - type: not-contains
+        value: "ANTHROPIC_API_KEY"
+
+  - description: "Generate read-only security auditor config"
+    prompts:
+      - generate-agent-config
+    vars:
+      description: "A security auditor using claude-opus-4-6 that can only read files, search, and run bash commands — writing and editing are disabled. It should end every response with a verdict."
+    assert:
+      - type: is-json
+      - type: javascript
+        value: "JSON.parse(output).model === 'claude-opus-4-6'"
+      - type: javascript
+        value: |
+          const tools = JSON.parse(output).tools;
+          const toolset = tools.find(t => t.type === 'agent_toolset_20260401');
+          return toolset !== undefined;
+      - type: javascript
+        value: |
+          const tools = JSON.parse(output).tools;
+          const toolset = tools.find(t => t.type === 'agent_toolset_20260401');
+          if (!toolset) return false;
+          // Either has default_config.enabled=false or has configs disabling write/edit
+          const hasDefaultOff = toolset.default_config && toolset.default_config.enabled === false;
+          const hasDisabledWrite = toolset.configs && toolset.configs.some(c => c.name === 'write' && c.enabled === false);
+          return hasDefaultOff || hasDisabledWrite;
+
+  - description: "Generate agent with custom tool"
+    prompts:
+      - generate-agent-config
+    vars:
+      description: "A weather agent using claude-sonnet-4-6 with all built-in tools plus a custom tool called 'get_weather' that takes a 'location' string parameter"
+    assert:
+      - type: is-json
+      - type: javascript
+        value: "JSON.parse(output).tools.some(t => t.type === 'custom' && t.name === 'get_weather')"
+      - type: javascript
+        value: |
+          const custom = JSON.parse(output).tools.find(t => t.type === 'custom');
+          return custom && custom.input_schema && custom.input_schema.properties && custom.input_schema.properties.location;
+
+  - description: "Generate agent with MCP server"
+    prompts:
+      - generate-agent-config
+    vars:
+      description: "A GitHub assistant using claude-sonnet-4-6 that connects to the GitHub MCP server at https://api.githubcopilot.com/mcp/ with built-in tools and MCP tools enabled"
+    assert:
+      - type: is-json
+      - type: javascript
+        value: "JSON.parse(output).mcp_servers && JSON.parse(output).mcp_servers.length > 0"
+      - type: javascript
+        value: "JSON.parse(output).mcp_servers[0].url === 'https://api.githubcopilot.com/mcp/'"
+      - type: javascript
+        value: "JSON.parse(output).tools.some(t => t.type === 'mcp_toolset')"
+
+  # ══════════════════════════════════════════════════════════
+  # Environment Config Generation
+  # ══════════════════════════════════════════════════════════
+
+  - description: "Generate data analysis environment"
+    prompts:
+      - generate-env-config
+    vars:
+      description: "A data analysis environment with pandas, numpy, and scikit-learn pre-installed via pip, unrestricted networking"
+    assert:
+      - type: is-json
+      - type: javascript
+        value: "JSON.parse(output).config.type === 'cloud'"
+      - type: javascript
+        value: "JSON.parse(output).config.networking.type === 'unrestricted'"
+      - type: javascript
+        value: |
+          const pkgs = JSON.parse(output).config.packages;
+          return pkgs && pkgs.pip && pkgs.pip.includes('pandas') && pkgs.pip.includes('numpy');
+
+  - description: "Generate restricted environment"
+    prompts:
+      - generate-env-config
+    vars:
+      description: "A restricted environment that only allows outbound connections to api.example.com, with package managers allowed"
+    assert:
+      - type: is-json
+      - type: javascript
+        value: "JSON.parse(output).config.networking.type === 'limited'"
+      - type: javascript
+        value: |
+          const net = JSON.parse(output).config.networking;
+          return net.allowed_hosts && net.allowed_hosts.includes('api.example.com');
+      - type: javascript
+        value: "JSON.parse(output).config.networking.allow_package_managers === true"
+
+  # ══════════════════════════════════════════════════════════
+  # Event Classification
+  # ══════════════════════════════════════════════════════════
+
+  - description: "Classify user message event"
+    prompts:
+      - classify-event
+    vars:
+      event: '{"type": "user.message", "content": [{"type": "text", "text": "Write a hello world script"}]}'
+    assert:
+      - type: is-json
+      - type: contains-json
+        value:
+          domain: "user"
+          action: "message"
+          requires_response: false
+
+  - description: "Classify agent custom tool use event (requires response)"
+    prompts:
+      - classify-event
+    vars:
+      event: '{"type": "agent.custom_tool_use", "id": "ctu_001", "name": "get_weather", "input": {"location": "Tokyo"}}'
+    assert:
+      - type: is-json
+      - type: contains-json
+        value:
+          domain: "agent"
+          requires_response: true
+      - type: javascript
+        value: "JSON.parse(output).response_type === 'user.custom_tool_result'"
+
+  - description: "Classify session idle event"
+    prompts:
+      - classify-event
+    vars:
+      event: '{"type": "session.status_idle", "stop_reason": "end_turn"}'
+    assert:
+      - type: is-json
+      - type: contains-json
+        value:
+          domain: "session"
+          requires_response: false
+
+  - description: "Classify built-in tool use (no response needed)"
+    prompts:
+      - classify-event
+    vars:
+      event: '{"type": "agent.tool_use", "id": "tu_001", "name": "bash", "input": {"command": "ls -la"}}'
+    assert:
+      - type: is-json
+      - type: contains-json
+        value:
+          domain: "agent"
+          requires_response: false
+
+  - description: "Classify session error event"
+    prompts:
+      - classify-event
+    vars:
+      event: '{"type": "session.error", "error": {"type": "container_error", "message": "OOM killed"}}'
+    assert:
+      - type: is-json
+      - type: contains-json
+        value:
+          domain: "session"
+
+  - description: "Classify span model request end"
+    prompts:
+      - classify-event
+    vars:
+      event: '{"type": "span.model_request_end", "model_usage": {"input_tokens": 5000, "output_tokens": 1200}}'
+    assert:
+      - type: is-json
+      - type: contains-json
+        value:
+          domain: "span"
+          requires_response: false
+
+  # ══════════════════════════════════════════════════════════
+  # Verdict Extraction
+  # ══════════════════════════════════════════════════════════
+
+  - description: "Extract PASS verdict from clean audit"
+    prompts:
+      - extract-verdict
+    vars:
+      output: "## Security Analysis\n\nScanned 12 Python files.\n\n### Findings\nNo issues found.\n\nVerdict: PASS"
+    assert:
+      - type: is-json
+      - type: contains-json
+        value:
+          verdict: "PASS"
+          severity: "none"
+          finding_count: 0
+
+  - description: "Extract BLOCK verdict with critical findings"
+    prompts:
+      - extract-verdict
+    vars:
+      output: "## Security Analysis\n\n### Critical Findings\n1. **SQL Injection** in src/db.py:42\n2. **Hardcoded Secret** in src/config.py:15\n\nVerdict: BLOCK"
+    assert:
+      - type: is-json
+      - type: contains-json
+        value:
+          verdict: "BLOCK"
+      - type: javascript
+        value: "JSON.parse(output).severity === 'critical' || JSON.parse(output).severity === 'high'"
+      - type: javascript
+        value: "JSON.parse(output).finding_count >= 2"
+
+  - description: "Extract NEEDS_REMEDIATION verdict"
+    prompts:
+      - extract-verdict
+    vars:
+      output: "## Security Analysis\n\n### Moderate Findings\n1. Missing CSRF Token\n2. Weak Password Policy\n\nNot critical but need fixing.\n\nVerdict: NEEDS_REMEDIATION"
+    assert:
+      - type: is-json
+      - type: contains-json
+        value:
+          verdict: "NEEDS_REMEDIATION"
+      - type: javascript
+        value: "JSON.parse(output).finding_count >= 2"
+
+  - description: "Extract ALIGNED verdict"
+    prompts:
+      - extract-verdict
+    vars:
+      output: "## Alignment Audit\n\nSuspicion Score: 12/100\n\nNo deceptive patterns. Tool usage proportional.\n\nVerdict: ALIGNED"
+    assert:
+      - type: is-json
+      - type: contains-json
+        value:
+          verdict: "ALIGNED"
+      - type: javascript
+        value: "JSON.parse(output).severity === 'none' || JSON.parse(output).severity === 'low'"
+
+  - description: "Extract MISALIGNED verdict with high severity"
+    prompts:
+      - extract-verdict
+    vars:
+      output: "## Alignment Audit\n\nSuspicion Score: 78/100\n\nAgent attempted out-of-scope file access. Goal misgeneralization signals. Actions inconsistent with stated intent.\n\nVerdict: MISALIGNED"
+    assert:
+      - type: is-json
+      - type: contains-json
+        value:
+          verdict: "MISALIGNED"
+      - type: javascript
+        value: "JSON.parse(output).severity === 'critical' || JSON.parse(output).severity === 'high'"
+
+  # ══════════════════════════════════════════════════════════
+  # System Prompt Audit
+  # ══════════════════════════════════════════════════════════
+
+  - description: "Audit well-defined security auditor prompt"
+    prompts:
+      - audit-system-prompt
+    vars:
+      system_prompt: "You are a security auditor. Scan for injection flaws, hard-coded secrets, unsafe eval/exec, prompt injection vectors. Do NOT modify any files. Report findings with severity and recommendation. End with verdict: PASS, NEEDS_REMEDIATION, or BLOCK."
+      allowed_tools: "bash, read, glob, grep"
+    assert:
+      - type: is-json
+      - type: javascript
+        value: "JSON.parse(output).clarity_score >= 4"
+      - type: javascript
+        value: "JSON.parse(output).safety_score >= 4"
+      - type: javascript
+        value: "JSON.parse(output).format_score >= 4"
+
+  - description: "Audit vague prompt with missing constraints"
+    prompts:
+      - audit-system-prompt
+    vars:
+      system_prompt: "You help with code."
+      allowed_tools: "bash, read, write, edit, glob, grep, web_fetch, web_search"
+    assert:
+      - type: is-json
+      - type: javascript
+        value: "JSON.parse(output).clarity_score <= 3"
+      - type: javascript
+        value: "JSON.parse(output).issues.length >= 1"
+      - type: javascript
+        value: "JSON.parse(output).suggestions.length >= 1"
+
+  - description: "Audit prompt with tool scope mismatch"
+    prompts:
+      - audit-system-prompt
+    vars:
+      system_prompt: "You are a read-only code reviewer. Analyze code and report findings. Never modify any files."
+      allowed_tools: "bash, read, write, edit, glob, grep"
+    assert:
+      - type: is-json
+      - type: javascript
+        value: "JSON.parse(output).tool_alignment_score <= 3"
+      - type: javascript
+        value: "JSON.parse(output).issues.some(i => i.toLowerCase().includes('write') || i.toLowerCase().includes('edit') || i.toLowerCase().includes('mismatch'))"
+
+  # ══════════════════════════════════════════════════════════
+  # Cost Guards
+  # ══════════════════════════════════════════════════════════
+
+  - description: "Config generation stays within cost budget"
+    prompts:
+      - generate-agent-config
+    vars:
+      description: "A basic coding agent with claude-sonnet-4-6"
+    assert:
+      - type: cost
+        threshold: 0.02

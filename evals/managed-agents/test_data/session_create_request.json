@@ -1,0 +1,14 @@
+{
+  "agent": "agent_01HqR2k7vXbZ9mNpL3wYcT8f",
+  "environment_id": "env_011CZkZ9X2dpNyB7HsEFoRfW",
+  "title": "Code review session",
+  "resources": [
+    {
+      "type": "github_repository",
+      "url": "https://github.com/agenttasks/agentstreams",
+      "authorization_token": "ghp_xxxxxxxxxxxx",
+      "checkout": {"type": "branch", "name": "main"}
+    }
+  ],
+  "metadata": {"pipeline": "standard-codegen", "step": "code-generator"}
+}

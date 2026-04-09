@@ -1,0 +1,12 @@
+{
+  "name": "restricted-env",
+  "config": {
+    "type": "cloud",
+    "networking": {
+      "type": "limited",
+      "allowed_hosts": ["api.example.com", "cdn.example.com"],
+      "allow_mcp_servers": true,
+      "allow_package_managers": true
+    }
+  }
+}

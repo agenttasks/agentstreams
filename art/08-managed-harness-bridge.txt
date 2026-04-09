@@ -1,0 +1,78 @@
+                ╔═══════════════════════════════════════════╗
+                ║   Managed Harness — Pipeline Bridge       ║
+                ║   Local orchestrator → Cloud sessions     ║
+                ╚═══════════════════════════════════════════╝
+
+    LOCAL EXECUTION                    CLOUD EXECUTION
+    (src/orchestrator.py)              (src/managed_harness.py)
+    ────────────────────               ─────────────────────────
+    Orchestrator                       ManagedOrchestrator
+    │                                  │
+    │  AgentConfig ──────────────────► │  ManagedAgentConfig
+    │  (model, prompt, tools)          │  (model, prompt, toolset)
+    │                                  │
+    │  AgentRunner.execute() ────────► │  create_session() +
+    │  (local Messages API)            │  send_message() +
+    │                                  │  stream_events()
+    │                                  │
+    │  TaskResult ◄──────────────────  │  ManagedStepResult
+    │  (outputs, tokens)               │  .to_task_result()
+    │                                  │
+    │  _check_gate() ◄──── same ─────► │  _check_gate()
+    │  (verdicts, scores)              │  (identical gate logic)
+
+    ┌─────────────────────────────────────────────────────────────┐
+    │              Config Conversion                               │
+    │                                                             │
+    │  agent_config_to_managed(config, disable_write=...)         │
+    │                                                             │
+    │  ┌─────────────────┐       ┌──────────────────────────┐    │
+    │  │  AgentConfig     │  ──►  │  ManagedAgentConfig      │    │
+    │  │  .name          │       │  .name                   │    │
+    │  │  .model         │       │  .model                  │    │
+    │  │  .system_prompt │       │  .system                 │    │
+    │  │  .tools (local) │       │  .toolset (cloud)        │    │
+    │  └─────────────────┘       └──────────────────────────┘    │
+    │                                                             │
+    │  Read-only enforcement:                                     │
+    │  ┌─────────────────────────────────────────────────────┐   │
+    │  │ security-auditor     → write=off, edit=off          │   │
+    │  │ alignment-auditor    → write=off, edit=off          │   │
+    │  │ architecture-reviewer→ write=off, edit=off          │   │
+    │  │ harmlessness-screen  → write=off, edit=off          │   │
+    │  └─────────────────────────────────────────────────────┘   │
+    └─────────────────────────────────────────────────────────────┘
+
+    ┌─────────────────────────────────────────────────────────────┐
+    │  Cloud Pipeline Execution (standard-codegen)                 │
+    │                                                             │
+    │  order 0:  ┌──────────────────┐                             │
+    │            │ harmlessness     │ cloud session #1             │
+    │            │ screen [haiku]   │ (isolated container)         │
+    │            └────────┬─────────┘                             │
+    │                     │ gate: safe?                            │
+    │  order 1:  ┌────────▼─────────┐                             │
+    │            │ code-generator   │ cloud session #2             │
+    │            │ [sonnet]         │ (full read/write)            │
+    │            └────────┬─────────┘                             │
+    │                     │                                        │
+    │  order 2:  ┌────────▼────┐ ┌──────────────┐                │
+    │            │ security   │ │ test-runner  │  parallel        │
+    │            │ auditor    │ │ [sonnet]     │  sessions        │
+    │            │ [opus]     │ │              │  #3a + #3b       │
+    │            │ read-only  │ │              │                  │
+    │            └────────┬───┘ └──────┬───────┘                  │
+    │                     │ gate: PASS? │                          │
+    │  order 3:  ┌────────▼────────────▼┐                         │
+    │            │ alignment-auditor    │ cloud session #4         │
+    │            │ [opus] read-only     │ (if agent code changed) │
+    │            └──────────────────────┘                         │
+    │                     │                                        │
+    │                     ▼                                        │
+    │            PipelineResult { gate_action, step_results }     │
+    └─────────────────────────────────────────────────────────────┘
+
+    One-line migration:
+    ────────────────────
+    orch = ManagedOrchestrator.from_local_configs()
+    result = await orch.run("standard-codegen", prompt)

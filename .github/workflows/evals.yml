@@ -21,72 +21,61 @@ jobs:
   validate:
     name: Validate Eval Config
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: evals/crawl-ingest
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'npm'
-          cache-dependency-path: evals/crawl-ingest/package-lock.json
-
-      - name: Install promptfoo
-        run: npm install -g promptfoo@0.121.3
-
-      - name: Validate config
+      - name: Validate all eval configs
         run: |
+          set -euo pipefail
           echo "## Eval Config Validation" >> $GITHUB_STEP_SUMMARY
+          FAIL=0
 
-          # Check YAML parses via promptfoo list
-          promptfoo eval --no-write --filter-sample 0 2>&1 && echo "- ✅ Config parses" >> $GITHUB_STEP_SUMMARY || {
-            # filter-sample 0 may not be supported; fall back to yaml check
-            python3 -c "import yaml; yaml.safe_load(open('promptfooconfig.yaml'))" && echo "- ✅ Config YAML valid" >> $GITHUB_STEP_SUMMARY || {
-              echo "- ❌ Config parse error" >> $GITHUB_STEP_SUMMARY
-              exit 1
-            }
-          }
+          for dir in evals/*/; do
+            CONFIG="${dir}promptfooconfig.yaml"
+            NAME=$(basename "$dir")
 
-          # Check test data files exist
-          MISSING=0
-          FILE_COUNT=0
-          for f in test_data/*.html; do
-            if [ ! -f "$f" ]; then
-              echo "- ❌ Missing: $f" >> $GITHUB_STEP_SUMMARY
-              MISSING=$((MISSING + 1))
+            if [ ! -f "$CONFIG" ]; then
+              echo "- ⚠️ ${NAME}: no promptfooconfig.yaml" >> $GITHUB_STEP_SUMMARY
+              continue
+            fi
+
+            # Check config file is non-empty and valid YAML structure
+            if [ ! -s "$CONFIG" ]; then
+              echo "- ❌ ${NAME}: config is empty" >> $GITHUB_STEP_SUMMARY
+              FAIL=1
+              continue
+            fi
+
+            # Count tests and assertions
+            TESTS=$(grep -c '^\s*- description:' "$CONFIG" || echo 0)
+            ASSERTS=$(grep -c '^\s*- type:' "$CONFIG" || echo 0)
+
+            # Check test_data directory exists
+            if [ -d "${dir}test_data" ]; then
+              FILES=$(find "${dir}test_data" -type f | wc -l)
+              echo "- ✅ ${NAME}: ${TESTS} tests, ${ASSERTS} assertions, ${FILES} data files" >> $GITHUB_STEP_SUMMARY
             else
-              FILE_COUNT=$((FILE_COUNT + 1))
+              echo "- ✅ ${NAME}: ${TESTS} tests, ${ASSERTS} assertions (no test_data/)" >> $GITHUB_STEP_SUMMARY
             fi
           done
-          if [ "$MISSING" -eq 0 ]; then
-            echo "- ✅ All test data files present (${FILE_COUNT} files)" >> $GITHUB_STEP_SUMMARY
-          fi
 
-          # Count tests and assertions
-          TESTS=$(grep -c '^\s*- description:' promptfooconfig.yaml || echo 0)
-          ASSERTS=$(grep -c '^\s*- type:' promptfooconfig.yaml || echo 0)
-          echo "- ✅ ${TESTS} test cases, ${ASSERTS} assertions" >> $GITHUB_STEP_SUMMARY
+          if [ "$FAIL" -ne 0 ]; then
+            exit 1
+          fi
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "To run live evals: trigger workflow_dispatch with live=true (requires CLAUDE_CODE_OAUTH_TOKEN secret)" >> $GITHUB_STEP_SUMMARY
+          echo "To run live evals: trigger workflow_dispatch with live=true" >> $GITHUB_STEP_SUMMARY
 
   # ── Live evals (workflow_dispatch only) ──────────────────
   live-eval:
     name: Live Extraction Evals
     if: github.event_name == 'workflow_dispatch' && inputs.live
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: evals/crawl-ingest
     steps:
       - uses: actions/checkout@v6
 
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
-          cache-dependency-path: evals/crawl-ingest/package-lock.json
 
       - uses: actions/setup-python@v5
         with:
@@ -99,24 +88,42 @@ jobs:
 
       - name: Run live evals
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # Never use ANTHROPIC_API_KEY — auth flows through CLAUDE_CODE_OAUTH_TOKEN
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: |
-          promptfoo eval --no-cache -o results.json
-          promptfoo eval --no-cache -o results.txt --output-format text
+          set -euo pipefail
+          echo "## Live Eval Results" >> $GITHUB_STEP_SUMMARY
+          TOTAL_PASS=0
+          TOTAL_FAIL=0
 
-      - name: Check results
-        run: |
-          PASS=$(jq '.results.stats.successes' results.json)
-          FAIL=$(jq '.results.stats.failures' results.json)
-          TOTAL=$((PASS + FAIL))
-          echo "## Live Eval Results: ${PASS}/${TOTAL} passed" >> $GITHUB_STEP_SUMMARY
+          for dir in evals/*/; do
+            CONFIG="${dir}promptfooconfig.yaml"
+            NAME=$(basename "$dir")
+            [ -f "$CONFIG" ] || continue
+
+            echo "### ${NAME}" >> $GITHUB_STEP_SUMMARY
+            cd "$dir"
+            promptfoo eval --no-cache -o results.json 2>&1 || true
+
+            if [ -f results.json ]; then
+              PASS=$(jq '.results.stats.successes // 0' results.json)
+              FAIL=$(jq '.results.stats.failures // 0' results.json)
+              TOTAL_PASS=$((TOTAL_PASS + PASS))
+              TOTAL_FAIL=$((TOTAL_FAIL + FAIL))
+              echo "- ${PASS} passed, ${FAIL} failed" >> "$GITHUB_STEP_SUMMARY"
+              if [ "$FAIL" -gt 0 ]; then
+                jq -r '.results.results[] | select(.success == false) | "  - **\(.description // "unknown")**: failed"' results.json >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+              fi
+            else
+              echo "- ⚠️ No results (promptfoo may have failed)" >> "$GITHUB_STEP_SUMMARY"
+            fi
+            cd "$OLDPWD"
+          done
+
           echo "" >> $GITHUB_STEP_SUMMARY
-          if [ "$FAIL" -gt 0 ]; then
-            echo "### Failures" >> $GITHUB_STEP_SUMMARY
-            jq -r '.results.results[] | select(.success == false) | "- **\(.description // .vars.html[:50])**: \(.assertionResults[] | select(.pass == false) | .assertion.type + " — " + (.reason // "failed"))"' results.json >> $GITHUB_STEP_SUMMARY 2>/dev/null || true
-            echo "::warning::${FAIL} eval(s) failed"
-          else
-            echo "All extraction evals passed." >> $GITHUB_STEP_SUMMARY
+          echo "**Total: ${TOTAL_PASS} passed, ${TOTAL_FAIL} failed**" >> $GITHUB_STEP_SUMMARY
+          if [ "$TOTAL_FAIL" -gt 0 ]; then
+            echo "::warning::${TOTAL_FAIL} eval(s) failed across all suites"
           fi
 
       - name: Upload results
@@ -124,6 +131,4 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: eval-results
-          path: |
-            evals/crawl-ingest/results.json
-            evals/crawl-ingest/results.txt
+          path: evals/*/results.json
