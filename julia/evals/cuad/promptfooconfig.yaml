@@ -1,0 +1,99 @@
+description: "CUAD + CaseHOLD legal benchmark evals — clause extraction F1, source accuracy, precedent ranking"
+
+# ═══════════════════════════════════════════════════════════════
+# Success Criteria (from Harvey BigLaw Bench + CUAD baselines)
+#
+# 1. Clause Extraction F1: >= 85% token-level F1 on CUAD clause
+#    extraction (published model baseline: 87%, human: 92%).
+#    Target: >= 85% across high-priority clause types.
+#
+# 2. Source Accuracy: >= 90% source score (Harvey methodology).
+#    Extracted quotes must appear verbatim in the contract.
+#
+# 3. Hallucination Rate: < 5% hallucination penalty.
+#    Julia must not fabricate clauses not in the source text.
+#
+# 4. CaseHOLD Accuracy: >= 70% on precedent ranking.
+#    5-way multiple choice across 53K case holdings.
+# ═══════════════════════════════════════════════════════════════
+
+providers:
+  - id: python:provider.py
+    label: julia-cuad-eval
+    config:
+      model: claude-opus-4-6
+      temperature: 0
+      max_tokens: 4096
+
+prompts:
+  - id: cuad-extraction
+    raw: |
+      Given the following contract text, extract the clause of type "{{clause_type}}".
+
+      Respond with ONLY a JSON object (no markdown, no explanation) in this exact format:
+      {
+        "clause_type": "{{clause_type}}",
+        "found": true or false,
+        "extracted_text": "exact word-for-word quote from contract" or null,
+        "section_reference": "section number or paragraph reference" or null,
+        "confidence": 0.0 to 1.0,
+        "verification": "verified" or "retracted" or "not_applicable"
+      }
+
+      If the clause type is NOT present in the contract, respond with found: false.
+      Do NOT fabricate clauses. Only extract text that literally appears in the contract.
+
+      CONTRACT TEXT:
+      {{contract_text}}
+
+tests:
+  # ── Indemnification (present) ─────────────────────────────
+  - vars:
+      clause_type: "Indemnification"
+      contract_text: "Section 8.1 Indemnification. Vendor shall indemnify, defend, and hold harmless Client from and against all claims, damages, losses, and expenses arising from Vendor's breach of this Agreement, negligence, or willful misconduct. The aggregate liability under this section shall not exceed the total fees paid in the preceding 12-month period."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).found === true"
+      - type: javascript
+        value: "JSON.parse(output).extracted_text !== null && JSON.parse(output).extracted_text.length > 0"
+      - type: javascript
+        value: "JSON.parse(output).confidence >= 0.8"
+
+  # ── Indemnification (absent) ──────────────────────────────
+  - vars:
+      clause_type: "Indemnification"
+      contract_text: "This is a simple purchase agreement for office supplies. Buyer agrees to pay $500 for 100 boxes of paper. Delivery within 30 days. Payment net 30."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).found === false"
+
+  # ── Limitation of Liability (present) ─────────────────────
+  - vars:
+      clause_type: "Limitation Of Liability"
+      contract_text: "Section 12. LIMITATION OF LIABILITY. IN NO EVENT SHALL EITHER PARTY'S AGGREGATE LIABILITY EXCEED THE TOTAL AMOUNTS PAID OR PAYABLE UNDER THIS AGREEMENT DURING THE 12-MONTH PERIOD PRECEDING THE CLAIM. NEITHER PARTY SHALL BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).found === true"
+      - type: javascript
+        value: "JSON.parse(output).extracted_text !== null"
+
+  # ── Non-Compete (present) ───────────────────────────────��─
+  - vars:
+      clause_type: "Non-Compete"
+      contract_text: "Section 15. Non-Competition. During the term of this Agreement and for a period of two (2) years following termination, Employee shall not directly or indirectly engage in any business that competes with the Company within the United States."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).found === true"
+
+  # ── IP Ownership (absent) ─────────────────────────────────
+  - vars:
+      clause_type: "Ip Ownership Assignment"
+      contract_text: "This Mutual Non-Disclosure Agreement is entered into between Party A and Party B. Both parties agree to keep confidential information received from the other party strictly confidential for a period of 3 years."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).found === false"

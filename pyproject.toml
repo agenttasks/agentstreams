@@ -58,6 +58,7 @@ diagrams = [
     "diagrams>=0.25.1",
 ]
 eval = [
+    "datasets>=3.0",
     "deepeval>=3.9.6",
     "promptfoo>=0.1.4",
     "pyright>=1.1.408",

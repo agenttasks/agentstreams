@@ -584,6 +584,45 @@ export type AnalysisResult = {
   summary: string;
 };
 
+// ── CUAD Evaluation Types ───────────────────────────────────
+// CUAD = Contract Understanding Atticus Dataset (510 contracts, 41 clause types).
+// Scoring follows Harvey BigLaw Bench: Answer Score + Source Score.
+
+/** Result of extracting a single clause type from a contract. */
+export type CUADClauseResult = {
+  clause_type: string;
+  found: boolean;
+  extracted_text: string | null;
+  section_reference: string | null;
+  confidence: number;
+  verification: "verified" | "retracted" | "not_applicable";
+};
+
+/** Harvey-style dual scoring for a single clause extraction. */
+export type CUADGrade = {
+  /** 0-1: did Julia correctly identify clause presence/absence? */
+  answer_score: number;
+  /** 0-1: is the extracted quote accurate against the source? */
+  source_score: number;
+  /** 0-1: penalty for fabricated clauses not in the source text. */
+  hallucination_penalty: number;
+  /** answer_score - hallucination_penalty. */
+  final_score: number;
+};
+
+// ── CaseHOLD Evaluation Types ───────────────────────────────
+// CaseHOLD = 53K case law holdings for precedent ranking.
+
+/** Result of a single CaseHOLD multiple-choice prediction. */
+export type CaseHOLDResult = {
+  example_id: string;
+  predicted_idx: number;
+  gold_idx: number;
+  correct: boolean;
+  confidence: number;
+  reasoning: string;
+};
+
 // ── Exhaustive check helper (Ch.6 p.150) ─────────────────────
 
 export function assertNever(value: never): never {

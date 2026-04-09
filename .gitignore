@@ -31,3 +31,10 @@ src/knowledge-work-managed-agents/node_modules/
 agentstreams.egg-info/
 src/agentstreams.egg-info/
 julia/node_modules/
+
+# CUAD + CaseHOLD benchmark data (downloaded from HuggingFace)
+julia/evals/cuad/data/*.jsonl
+julia/evals/cuad/data/*.json
+julia/evals/cuad/data/.lancedb/
+julia/evals/cuad/results/
+.lancedb/
