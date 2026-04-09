@@ -1,32 +1,41 @@
 """Knowledge Work Agents — plugin-to-agent bridge layer.
 
-Maps 124 skills from anthropics/knowledge-work-plugins (17 plugin directories)
-to knowledge-work agents, providing factory functions and pipelines that
-integrate with the existing Orchestrator and ManagedOrchestrator infrastructure.
+Maps the 124 skills from anthropics/knowledge-work-plugins (17 plugin
+directories) to 17 domain agents, providing factory functions and pipelines
+that integrate with the existing Orchestrator infrastructure.
 
 Source of truth: vendors/knowledge-work-plugins/ (cloned from GitHub).
+Every skill in SKILL_CATALOG corresponds to a SKILL.md file in that repo.
 
-Plugin directories map to PluginCategory enum values:
-    PRODUCTIVITY         → productivity-agent       (4 skills)
-    SALES                → sales-agent              (9 skills)
-    CUSTOMER_SUPPORT     → customer-support-agent   (5 skills)
-    PRODUCT_MANAGEMENT   → product-management-agent (8 skills)
-    MARKETING            → marketing-agent          (8 skills)
-    LEGAL                → compliance-reviewer      (9 skills, read-only)
-    FINANCE              → finance-agent            (8 skills, read-only)
-    DATA                 → data-analyst             (10 skills)
-    ENTERPRISE_SEARCH    → enterprise-search-agent  (5 skills)
-    BIO_RESEARCH         → bio-research-agent       (6 skills)
-    COWORK_PLUGIN_MGMT   → productivity-agent       (2 skills, shared)
-    DESIGN               → design-agent             (7 skills)
-    ENGINEERING          → engineering-agent         (10 skills)
-    HUMAN_RESOURCES      → hr-agent                 (9 skills)
-    OPERATIONS           → operations-agent         (9 skills)
-    PARTNER_BUILT        → sales-agent              (14 skills, shared)
-    PDF_VIEWER           → data-analyst             (1 skill, shared)
+Plugin categories (PluginCategory enum values mirror directory names exactly):
+    BIO_RESEARCH              → bio-research-agent       (6 skills)
+    COWORK_PLUGIN_MANAGEMENT  → cowork-plugin-agent      (2 skills)
+    CUSTOMER_SUPPORT          → customer-support-agent   (5 skills)
+    DATA                      → data-analyst             (10 skills)
+    DESIGN                    → design-agent             (7 skills)
+    ENGINEERING               → engineering-agent        (10 skills)
+    ENTERPRISE_SEARCH         → enterprise-search-agent  (5 skills)
+    FINANCE                   → finance-agent            (8 skills, read-only)
+    HUMAN_RESOURCES           → hr-agent                 (9 skills)
+    LEGAL                     → compliance-reviewer      (9 skills, read-only)
+    MARKETING                 → marketing-agent          (8 skills)
+    OPERATIONS                → operations-agent         (9 skills)
+    PARTNER_BUILT             → partner-built-agent      (11 unique skills:
+                                                          apollo, brand-voice,
+                                                          common-room, slack;
+                                                          3 cross-plugin dupes
+                                                          yielded to first-party)
+    PDF_VIEWER                → pdf-viewer-agent         (1 skill)
+    PRODUCT_MANAGEMENT        → product-management-agent (7 skills; competitive-brief
+                                                          yielded to marketing)
+    PRODUCTIVITY              → productivity-agent       (3 skills; start yielded
+                                                          to bio-research)
+    SALES                     → sales-agent              (9 skills)
 
-All knowledge-work agents use claude-opus-4-6 model.
+Skills that appear in multiple plugins use the first-party plugin as primary
+(e.g., account-research → SALES, not PARTNER_BUILT).
 
+All agents use claude-opus-4-6 model.
 Uses CLAUDE_CODE_OAUTH_TOKEN for auth (never ANTHROPIC_API_KEY).
 """
 
@@ -55,46 +64,50 @@ from src.managed_agents import (
 
 
 class PluginCategory(Enum):
-    """Plugin directories from anthropics/knowledge-work-plugins."""
+    """Plugin directories from anthropics/knowledge-work-plugins.
 
-    PRODUCTIVITY = "productivity"
-    SALES = "sales"
-    CUSTOMER_SUPPORT = "customer-support"
-    PRODUCT_MANAGEMENT = "product-management"
-    MARKETING = "marketing"
-    LEGAL = "legal"
-    FINANCE = "finance"
-    DATA = "data"
-    ENTERPRISE_SEARCH = "enterprise-search"
+    Enum names and values mirror the actual directory names in the repo.
+    """
+
     BIO_RESEARCH = "bio-research"
-    COWORK_PLUGIN_MGMT = "cowork-plugin-management"
+    COWORK_PLUGIN_MANAGEMENT = "cowork-plugin-management"
+    CUSTOMER_SUPPORT = "customer-support"
+    DATA = "data"
     DESIGN = "design"
     ENGINEERING = "engineering"
+    ENTERPRISE_SEARCH = "enterprise-search"
+    FINANCE = "finance"
     HUMAN_RESOURCES = "human-resources"
+    LEGAL = "legal"
+    MARKETING = "marketing"
     OPERATIONS = "operations"
     PARTNER_BUILT = "partner-built"
     PDF_VIEWER = "pdf-viewer"
+    PRODUCT_MANAGEMENT = "product-management"
+    PRODUCTIVITY = "productivity"
+    SALES = "sales"
 
 
-# Agent name that handles each plugin category
+# Agent name that handles each plugin category.
+# COWORK_PLUGIN_MANAGEMENT and PARTNER_BUILT each get their own dedicated agent.
 CATEGORY_AGENTS: dict[PluginCategory, str] = {
-    PluginCategory.PRODUCTIVITY: "productivity-agent",
-    PluginCategory.SALES: "sales-agent",
-    PluginCategory.CUSTOMER_SUPPORT: "customer-support-agent",
-    PluginCategory.PRODUCT_MANAGEMENT: "product-management-agent",
-    PluginCategory.MARKETING: "marketing-agent",
-    PluginCategory.LEGAL: "compliance-reviewer",
-    PluginCategory.FINANCE: "finance-agent",
-    PluginCategory.DATA: "data-analyst",
-    PluginCategory.ENTERPRISE_SEARCH: "enterprise-search-agent",
     PluginCategory.BIO_RESEARCH: "bio-research-agent",
-    PluginCategory.COWORK_PLUGIN_MGMT: "productivity-agent",
+    PluginCategory.COWORK_PLUGIN_MANAGEMENT: "cowork-plugin-agent",
+    PluginCategory.CUSTOMER_SUPPORT: "customer-support-agent",
+    PluginCategory.DATA: "data-analyst",
     PluginCategory.DESIGN: "design-agent",
     PluginCategory.ENGINEERING: "engineering-agent",
+    PluginCategory.ENTERPRISE_SEARCH: "enterprise-search-agent",
+    PluginCategory.FINANCE: "finance-agent",
     PluginCategory.HUMAN_RESOURCES: "hr-agent",
+    PluginCategory.LEGAL: "compliance-reviewer",
+    PluginCategory.MARKETING: "marketing-agent",
     PluginCategory.OPERATIONS: "operations-agent",
-    PluginCategory.PARTNER_BUILT: "sales-agent",
-    PluginCategory.PDF_VIEWER: "data-analyst",
+    PluginCategory.PARTNER_BUILT: "partner-built-agent",
+    PluginCategory.PDF_VIEWER: "pdf-viewer-agent",
+    PluginCategory.PRODUCT_MANAGEMENT: "product-management-agent",
+    PluginCategory.PRODUCTIVITY: "productivity-agent",
+    PluginCategory.SALES: "sales-agent",
 }
 
 
@@ -122,187 +135,225 @@ def _register(name: str, category: PluginCategory, installs: int = 0) -> None:
         SKILL_CATALOG[name] = SkillMeta(name=name, category=category, installs=installs)
 
 
-# ── First-Party Plugins ──────────────────────────────────────
+# ── Skill Registration ───────────────────────────────────────
+# Only skills with a SKILL.md in vendors/knowledge-work-plugins/ are listed.
+# First registration wins: first-party plugins take priority over partner-built
+# for skills that appear in multiple plugin directories.
 
-# productivity (4 skills)
+# bio-research (6 skills)
 for _n, _i in [
-    ("memory-management", 1400), ("start", 620),
-    ("task-management", 1700), ("update", 635),
-]:
-    _register(_n, PluginCategory.PRODUCTIVITY, _i)
-
-# sales (9 skills)
-for _n, _i in [
-    ("account-research", 734), ("call-prep", 686),
-    ("call-summary", 522), ("competitive-intelligence", 1300),
-    ("create-an-asset", 659), ("daily-briefing", 842),
-    ("draft-outreach", 796), ("forecast", 503),
-    ("pipeline-review", 492),
-]:
-    _register(_n, PluginCategory.SALES, _i)
-
-# customer-support (5 dir + 3 readme = 8 skills)
-for _n, _i in [
-    ("customer-escalation", 472), ("customer-research", 719),
-    ("draft-response", 483), ("kb-article", 491),
-    ("ticket-triage", 664),
-    # readme-sourced
-    ("escalation", 162), ("knowledge-management", 316),
-    ("response-drafting", 190),
-]:
-    _register(_n, PluginCategory.CUSTOMER_SUPPORT, _i)
-
-# product-management (8 dir + 6 readme = 14 skills)
-for _n, _i in [
-    ("competitive-brief", 574), ("metrics-review", 511),
-    ("product-brainstorming", 622), ("roadmap-update", 543),
-    ("sprint-planning", 520), ("stakeholder-update", 510),
-    ("synthesize-research", 568), ("write-spec", 621),
-    # readme-sourced
-    ("competitive-analysis", 405), ("feature-spec", 463),
-    ("metrics-tracking", 268), ("roadmap-management", 336),
-    ("stakeholder-comms", 238), ("user-research-synthesis", 407),
-]:
-    _register(_n, PluginCategory.PRODUCT_MANAGEMENT, _i)
-
-# marketing (8 dir + 4 readme = 12 skills)
-for _n, _i in [
-    ("brand-review", 537), ("campaign-plan", 558),
-    ("content-creation", 1500), ("draft-content", 503),
-    ("email-sequence", 491), ("performance-report", 523),
-    ("seo-audit", 569), ("competitive-brief", 574),
-    # readme-sourced
-    ("brand-voice", 323), ("campaign-planning", 220),
-    ("competitive-analysis", 405), ("performance-analytics", 251),
-]:
-    _register(_n, PluginCategory.MARKETING, _i)
-
-# legal (9 dir + 4 readme = 13 skills)
-for _n, _i in [
-    ("brief", 500), ("compliance-check", 526),
-    ("legal-response", 565), ("legal-risk-assessment", 1100),
-    ("meeting-briefing", 689), ("review-contract", 617),
-    ("signature-request", 475), ("triage-nda", 477),
-    ("vendor-check", 486),
-    # readme-sourced
-    ("canned-responses", 162), ("compliance", 206),
-    ("contract-review", 341), ("nda-triage", 168),
-]:
-    _register(_n, PluginCategory.LEGAL, _i)
-
-# finance (8 skills)
-for _n, _i in [
-    ("audit-support", 690), ("close-management", 648),
-    ("financial-statements", 1000), ("journal-entry", 474),
-    ("journal-entry-prep", 666), ("reconciliation", 682),
-    ("sox-testing", 466), ("variance-analysis", 693),
-]:
-    _register(_n, PluginCategory.FINANCE, _i)
-
-# data (10 dir + 3 readme = 13 skills)
-for _n, _i in [
-    ("analyze", 690), ("build-dashboard", 884),
-    ("create-viz", 653), ("data-context-extractor", 710),
-    ("data-visualization", 3800), ("explore-data", 697),
-    ("sql-queries", 1100), ("statistical-analysis", 1100),
-    ("validate-data", 568), ("write-query", 520),
-    # readme-sourced
-    ("data-exploration", 226), ("data-validation", 255),
-    ("interactive-dashboard-builder", 584),
-]:
-    _register(_n, PluginCategory.DATA, _i)
-
-# enterprise-search (5 skills)
-for _n, _i in [
-    ("digest", 489), ("knowledge-synthesis", 1200),
-    ("search", 633), ("search-strategy", 848),
-    ("source-management", 778),
-]:
-    _register(_n, PluginCategory.ENTERPRISE_SEARCH, _i)
-
-# bio-research (6 dir + 1 readme = 7 skills)
-for _n, _i in [
-    ("instrument-data-to-allotrope", 233), ("nextflow-development", 241),
-    ("scientific-problem-selection", 258), ("scvi-tools", 231),
-    ("single-cell-rna-qc", 244), ("start", 620),
-    # readme-sourced
-    ("clinical-trial-protocol-skill", 5),
+    ("instrument-data-to-allotrope", 233),
+    ("nextflow-development", 241),
+    ("scientific-problem-selection", 258),
+    ("scvi-tools", 231),
+    ("single-cell-rna-qc", 244),
+    ("start", 620),
 ]:
     _register(_n, PluginCategory.BIO_RESEARCH, _i)
 
 # cowork-plugin-management (2 skills)
 for _n, _i in [
-    ("cowork-plugin-customizer", 653), ("create-cowork-plugin", 648),
+    ("cowork-plugin-customizer", 653),
+    ("create-cowork-plugin", 648),
 ]:
-    _register(_n, PluginCategory.COWORK_PLUGIN_MGMT, _i)
+    _register(_n, PluginCategory.COWORK_PLUGIN_MANAGEMENT, _i)
 
-# ── Additional Plugins ───────────────────────────────────────
-
-# design (7 dir + 2 readme = 9 skills)
+# customer-support (5 skills)
 for _n, _i in [
-    ("accessibility-review", 657), ("design-critique", 796),
-    ("design-handoff", 643), ("design-system", 647),
-    ("research-synthesis", 615), ("user-research", 820),
+    ("customer-escalation", 472),
+    ("customer-research", 719),
+    ("draft-response", 483),
+    ("kb-article", 491),
+    ("ticket-triage", 664),
+]:
+    _register(_n, PluginCategory.CUSTOMER_SUPPORT, _i)
+
+# data (10 skills)
+for _n, _i in [
+    ("analyze", 690),
+    ("build-dashboard", 884),
+    ("create-viz", 653),
+    ("data-context-extractor", 710),
+    ("data-visualization", 3800),
+    ("explore-data", 697),
+    ("sql-queries", 1100),
+    ("statistical-analysis", 1100),
+    ("validate-data", 568),
+    ("write-query", 520),
+]:
+    _register(_n, PluginCategory.DATA, _i)
+
+# design (7 skills)
+for _n, _i in [
+    ("accessibility-review", 0),
+    ("design-critique", 796),
+    ("design-handoff", 643),
+    ("design-system", 647),
+    ("research-synthesis", 615),
+    ("user-research", 820),
     ("ux-copy", 663),
-    # readme-sourced
-    ("design-system-management", 116), ("ux-writing", 132),
 ]:
     _register(_n, PluginCategory.DESIGN, _i)
 
 # engineering (10 skills)
 for _n, _i in [
-    ("architecture", 745), ("code-review", 1400),
-    ("debug", 672), ("deploy-checklist", 662),
-    ("documentation", 1100), ("incident-response", 764),
-    ("standup", 621), ("system-design", 1200),
-    ("tech-debt", 866), ("testing-strategy", 855),
+    ("architecture", 745),
+    ("code-review", 1400),
+    ("debug", 672),
+    ("deploy-checklist", 662),
+    ("documentation", 1100),
+    ("incident-response", 764),
+    ("standup", 621),
+    ("system-design", 1200),
+    ("tech-debt", 866),
+    ("testing-strategy", 855),
 ]:
     _register(_n, PluginCategory.ENGINEERING, _i)
 
-# human-resources (9 dir + 3 readme = 12 skills)
+# enterprise-search (5 skills)
 for _n, _i in [
-    ("comp-analysis", 507), ("draft-offer", 485),
-    ("interview-prep", 663), ("onboarding", 504),
-    ("org-planning", 601), ("people-report", 479),
-    ("performance-review", 545), ("policy-lookup", 509),
+    ("digest", 489),
+    ("knowledge-synthesis", 1200),
+    ("search", 633),
+    ("search-strategy", 848),
+    ("source-management", 778),
+]:
+    _register(_n, PluginCategory.ENTERPRISE_SEARCH, _i)
+
+# finance (8 skills)
+for _n, _i in [
+    ("audit-support", 690),
+    ("close-management", 648),
+    ("financial-statements", 1000),
+    ("journal-entry", 474),
+    ("journal-entry-prep", 666),
+    ("reconciliation", 682),
+    ("sox-testing", 466),
+    ("variance-analysis", 693),
+]:
+    _register(_n, PluginCategory.FINANCE, _i)
+
+# human-resources (9 skills)
+for _n, _i in [
+    ("comp-analysis", 507),
+    ("draft-offer", 485),
+    ("interview-prep", 663),
+    ("onboarding", 504),
+    ("org-planning", 0),
+    ("people-report", 479),
+    ("performance-review", 545),
+    ("policy-lookup", 509),
     ("recruiting-pipeline", 598),
-    # readme-sourced
-    ("compensation-benchmarking", 97), ("people-analytics", 100),
-    ("employee-handbook", 96),
 ]:
     _register(_n, PluginCategory.HUMAN_RESOURCES, _i)
 
-# operations (9 dir + 3 readme = 12 skills)
+# legal (9 skills)
 for _n, _i in [
-    ("capacity-plan", 497), ("change-request", 488),
-    ("compliance-tracking", 610), ("process-doc", 517),
-    ("process-optimization", 653), ("risk-assessment", 672),
-    ("runbook", 480), ("status-report", 509),
+    ("brief", 500),
+    ("compliance-check", 526),
+    ("legal-response", 565),
+    ("legal-risk-assessment", 1100),
+    ("meeting-briefing", 689),
+    ("review-contract", 617),
+    ("signature-request", 475),
+    ("triage-nda", 477),
+    ("vendor-check", 486),
+]:
+    _register(_n, PluginCategory.LEGAL, _i)
+
+# marketing (8 skills)
+# competitive-brief is also in product-management; marketing registers first.
+for _n, _i in [
+    ("brand-review", 537),
+    ("campaign-plan", 558),
+    ("competitive-brief", 574),
+    ("content-creation", 1500),
+    ("draft-content", 503),
+    ("email-sequence", 491),
+    ("performance-report", 523),
+    ("seo-audit", 569),
+]:
+    _register(_n, PluginCategory.MARKETING, _i)
+
+# operations (9 skills)
+for _n, _i in [
+    ("capacity-plan", 497),
+    ("change-request", 488),
+    ("compliance-tracking", 610),
+    ("process-doc", 517),
+    ("process-optimization", 653),
+    ("risk-assessment", 672),
+    ("runbook", 480),
+    ("status-report", 509),
     ("vendor-review", 480),
-    # readme-sourced
-    ("change-management", 112), ("resource-planning", 100),
-    ("vendor-management", 99),
 ]:
     _register(_n, PluginCategory.OPERATIONS, _i)
 
-# partner-built (14 skills across apollo, brand-voice, common-room, slack)
+# partner-built — apollo, brand-voice, common-room, slack (14 unique skills).
+# account-research, call-prep, prospect already registered under first-party
+# sales/apollo; _register skips duplicates so partner-built entries for those
+# are silently ignored, which is the correct first-party-wins behaviour.
 for _n, _i in [
     # apollo
-    ("enrich-lead", 607), ("prospect", 581), ("sequence-load", 559),
+    ("enrich-lead", 607),
+    ("prospect", 581),
+    ("sequence-load", 559),
     # brand-voice
-    ("brand-voice-enforcement", 684), ("discover-brand", 635),
+    ("brand-voice-enforcement", 684),
+    ("discover-brand", 635),
     ("guideline-generation", 608),
-    # common-room
-    ("account-research", 734), ("call-prep", 686),
-    ("compose-outreach", 600), ("contact-research", 597),
-    ("prospect", 581), ("weekly-prep-brief", 569),
+    # common-room (account-research and call-prep already registered)
+    ("compose-outreach", 600),
+    ("contact-research", 597),
+    ("weekly-prep-brief", 569),
     # slack
-    ("slack-messaging", 702), ("slack-search", 607),
+    ("slack-messaging", 702),
+    ("slack-search", 607),
 ]:
     _register(_n, PluginCategory.PARTNER_BUILT, _i)
 
 # pdf-viewer (1 skill)
 _register("view-pdf", PluginCategory.PDF_VIEWER, 365)
+
+# product-management (8 skills)
+# competitive-brief already registered under marketing; skipped here.
+for _n, _i in [
+    ("metrics-review", 511),
+    ("product-brainstorming", 622),
+    ("roadmap-update", 543),
+    ("sprint-planning", 520),
+    ("stakeholder-update", 510),
+    ("synthesize-research", 568),
+    ("write-spec", 621),
+    ("competitive-brief", 574),   # already taken by marketing; no-op
+]:
+    _register(_n, PluginCategory.PRODUCT_MANAGEMENT, _i)
+
+# productivity (4 skills)
+# start already registered under bio-research; skipped here.
+for _n, _i in [
+    ("memory-management", 1400),
+    ("task-management", 1700),
+    ("update", 635),
+    ("start", 620),               # already taken by bio-research; no-op
+]:
+    _register(_n, PluginCategory.PRODUCTIVITY, _i)
+
+# sales (9 skills)
+# account-research and call-prep register here; partner-built/common-room
+# versions will be silently skipped when partner-built registers later.
+for _n, _i in [
+    ("account-research", 734),
+    ("call-prep", 686),
+    ("call-summary", 522),
+    ("competitive-intelligence", 1300),
+    ("create-an-asset", 659),
+    ("daily-briefing", 842),
+    ("draft-outreach", 796),
+    ("forecast", 503),
+    ("pipeline-review", 492),
+]:
+    _register(_n, PluginCategory.SALES, _i)
 
 
 # ── Knowledge Agent Configs ──────────────────────────────────
@@ -381,18 +432,19 @@ def _knowledge_agent_configs() -> dict[str, KnowledgeAgentConfig]:
         )
 
     return {
-        "productivity-agent": _make(
-            "productivity-agent",
-            "You are a productivity agent. Manage tasks, calendars, daily "
-            "workflows, and personal context. Handle plugins and memory "
-            "management for consistent outcomes across sessions.",
+        "bio-research-agent": _make(
+            "bio-research-agent",
+            "You are a bio-research agent. Support genomics pipelines, "
+            "single-cell RNA analysis, instrument data conversion to "
+            "Allotrope format, and nextflow workflow development. "
+            "Always cite primary literature. Never fabricate citations.",
         ),
-        "sales-agent": _make(
-            "sales-agent",
-            "You are a sales intelligence agent. Research prospects, prep "
-            "for calls, review pipelines, draft outreach, and build "
-            "competitive battlecards. Include source provenance for all "
-            "claims about prospects and competitors.",
+        "cowork-plugin-agent": _make(
+            "cowork-plugin-agent",
+            "You are a cowork plugin management agent. Help create and "
+            "customize Claude for Work plugins — scaffold plugin "
+            "components, configure schemas, and validate against the "
+            "cowork plugin specification.",
         ),
         "customer-support-agent": _make(
             "customer-support-agent",
@@ -400,85 +452,109 @@ def _knowledge_agent_configs() -> dict[str, KnowledgeAgentConfig]:
             "responses, package escalations, research customer context, "
             "and create knowledge base articles from resolved issues.",
         ),
-        "product-management-agent": _make(
-            "product-management-agent",
-            "You are a product management agent. Write specs, plan "
-            "roadmaps, synthesize user research, keep stakeholders "
-            "updated, and track the competitive landscape.",
-        ),
-        "marketing-agent": _make(
-            "marketing-agent",
-            "You are a marketing agent. Draft content, plan campaigns, "
-            "enforce brand voice, brief on competitors, and report on "
-            "performance across channels.",
-        ),
-        "compliance-reviewer": _make(
-            "compliance-reviewer",
-            "You are a legal compliance reviewer. Review contracts, "
-            "triage NDAs, navigate compliance frameworks, assess risk, "
-            "and draft templated responses. Read-only — never modify "
-            "documents under review. Never provide legal advice — "
-            "frame all outputs as analysis. End with verdict: "
-            "PASS, NEEDS_REMEDIATION, or BLOCK.",
-            max_turns=15,
-        ),
-        "finance-agent": _make(
-            "finance-agent",
-            "You are a financial operations agent. Prep journal entries, "
-            "reconcile accounts, generate financial statements, analyze "
-            "variances, manage close, and support audits. Read-only — "
-            "never modify financial records directly. Always state "
-            "assumptions explicitly.",
-            max_turns=15,
-        ),
         "data-analyst": _make(
             "data-analyst",
             "You are a data analysis agent. Query, visualize, and "
             "interpret datasets — write SQL, run statistical analysis, "
-            "build dashboards, and validate work before sharing. "
+            "build dashboards, and validate results before sharing. "
             "Never expose raw PII — aggregate or anonymize. "
-            "For SQL, prefer parameterized queries.",
-        ),
-        "enterprise-search-agent": _make(
-            "enterprise-search-agent",
-            "You are an enterprise search agent. Find anything across "
-            "email, chat, docs, and wikis — one query across all "
-            "company tools. Synthesize and provide source provenance.",
-        ),
-        "bio-research-agent": _make(
-            "bio-research-agent",
-            "You are a bio-research agent. Connect to preclinical "
-            "research tools and databases for literature search, "
-            "genomics analysis, target prioritization, and pipeline "
-            "development. Always cite primary literature.",
+            "Prefer parameterized queries for all SQL.",
         ),
         "design-agent": _make(
             "design-agent",
             "You are a design agent. Conduct user research, review "
             "designs for accessibility, manage design systems, write "
-            "UX copy, and prepare developer handoffs. Always consider "
-            "WCAG standards and existing design conventions.",
+            "UX copy, and prepare developer handoffs. Always apply "
+            "WCAG 2.1 AA standards and existing design conventions.",
         ),
         "engineering-agent": _make(
             "engineering-agent",
             "You are an engineering agent. Review architecture and code, "
             "debug issues, manage deployments, handle incidents, and "
-            "document systems. Never execute destructive operations "
-            "without explicit confirmation.",
+            "document systems. Always include rollback steps for "
+            "deployment actions. Never run destructive commands without "
+            "explicit user confirmation.",
+        ),
+        "enterprise-search-agent": _make(
+            "enterprise-search-agent",
+            "You are an enterprise search agent. Find information across "
+            "email, chat, docs, and wikis. Synthesize findings into "
+            "structured digests and always provide source provenance.",
+        ),
+        "finance-agent": _make(
+            "finance-agent",
+            "You are a financial operations agent. Prep journal entries, "
+            "reconcile accounts, generate financial statements, analyze "
+            "variances, manage period close, and support SOX audits. "
+            "Read-only — never modify financial records directly. "
+            "Always state assumptions and cite source data explicitly.",
+            max_turns=15,
         ),
         "hr-agent": _make(
             "hr-agent",
-            "You are an HR agent. Manage recruiting pipelines, prep "
-            "interviews, run compensation analysis, handle onboarding, "
-            "plan org structure, and generate people reports. "
-            "Anonymize sensitive employee data in outputs.",
+            "You are an HR agent. Manage recruiting pipelines, prepare "
+            "interview guides, run compensation benchmarks, support "
+            "onboarding, plan org structure, and generate people reports. "
+            "Anonymize sensitive employee data in all outputs.",
+        ),
+        "compliance-reviewer": _make(
+            "compliance-reviewer",
+            "You are a legal compliance reviewer. Review contracts, "
+            "triage NDAs, check regulatory compliance, assess legal "
+            "risk, and draft templated legal responses. "
+            "Read-only — never modify documents under review. "
+            "Never provide legal advice — frame all outputs as analysis. "
+            "End every review with verdict: PASS, NEEDS_REMEDIATION, "
+            "or BLOCK.",
+            max_turns=15,
+        ),
+        "marketing-agent": _make(
+            "marketing-agent",
+            "You are a marketing agent. Draft content, plan campaigns, "
+            "enforce brand voice, produce competitive briefs, and report "
+            "on channel performance. Match existing brand conventions "
+            "discovered from prior content — never invent guidelines.",
         ),
         "operations-agent": _make(
             "operations-agent",
             "You are an operations agent. Optimize processes, track "
-            "compliance, assess risks, plan capacity, maintain runbooks, "
-            "and manage vendor reviews. Always include rollback "
-            "procedures for process changes.",
+            "compliance, assess operational risks, plan capacity, "
+            "maintain runbooks, and review vendors. Always include "
+            "rollback procedures for every process change.",
+        ),
+        "partner-built-agent": _make(
+            "partner-built-agent",
+            "You are a partner integrations agent. Handle Apollo "
+            "prospecting and lead enrichment, brand-voice enforcement "
+            "via the Brand Voice plugin, Common Room account and "
+            "contact intelligence, and Slack search and messaging. "
+            "Honour the data-use constraints of each partner platform.",
+        ),
+        "pdf-viewer-agent": _make(
+            "pdf-viewer-agent",
+            "You are a PDF analysis agent. Extract text, tables, and "
+            "structured data from PDF documents. Preserve document "
+            "structure in outputs and flag any sections that could not "
+            "be parsed reliably.",
+        ),
+        "product-management-agent": _make(
+            "product-management-agent",
+            "You are a product management agent. Write specs, plan "
+            "roadmaps, synthesize user research, update stakeholders, "
+            "and track the competitive landscape.",
+        ),
+        "productivity-agent": _make(
+            "productivity-agent",
+            "You are a productivity agent. Manage tasks, maintain "
+            "persistent memory across sessions, run daily workflows, "
+            "and surface the right context at the right time.",
+        ),
+        "sales-agent": _make(
+            "sales-agent",
+            "You are a sales intelligence agent. Research accounts, "
+            "prep for calls, summarize meetings, review pipeline health, "
+            "draft outreach, build competitive battlecards, and forecast. "
+            "Include source provenance for all prospect and market claims.",
         ),
     }
 

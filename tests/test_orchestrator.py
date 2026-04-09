@@ -211,7 +211,7 @@ class TestPipelinesRegistry:
 class TestAgentConfigs:
     def test_all_agents_defined(self):
         configs = _agent_configs()
-        # 8 base safety/codegen agents + 14 knowledge-work agents = 22
+        # 8 base safety/codegen agents + 17 knowledge-work agents = 25
         base_expected = {
             "code-generator",
             "security-auditor",
@@ -223,7 +223,7 @@ class TestAgentConfigs:
             "harmlessness-screen",
         }
         assert base_expected.issubset(set(configs.keys()))
-        assert len(configs) == 22
+        assert len(configs) == 25
 
     def test_model_assignments(self):
         configs = _agent_configs()
@@ -381,8 +381,8 @@ class TestGateChecks:
 class TestOrchestrator:
     def test_creates_with_defaults(self):
         orch = Orchestrator()
-        # 8 base + 14 knowledge-work agents = 22
-        assert len(orch._configs) == 22
+        # 8 base + 17 knowledge-work agents = 25
+        assert len(orch._configs) == 25
 
     def test_get_runner_caching(self):
         orch = Orchestrator()

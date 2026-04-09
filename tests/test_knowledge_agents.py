@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from src.knowledge_agents import (
     CATEGORY_AGENTS,
-    KNOWLEDGE_PIPELINES,
     SKILL_CATALOG,
     KnowledgeAgentConfig,
     KnowledgeWorkRegistry,
@@ -42,7 +41,7 @@ class TestPluginCategory:
         assert PluginCategory.DATA.value == "data"
         assert PluginCategory.ENTERPRISE_SEARCH.value == "enterprise-search"
         assert PluginCategory.BIO_RESEARCH.value == "bio-research"
-        assert PluginCategory.COWORK_PLUGIN_MGMT.value == "cowork-plugin-management"
+        assert PluginCategory.COWORK_PLUGIN_MANAGEMENT.value == "cowork-plugin-management"
         assert PluginCategory.DESIGN.value == "design"
         assert PluginCategory.ENGINEERING.value == "engineering"
         assert PluginCategory.HUMAN_RESOURCES.value == "human-resources"
@@ -56,7 +55,6 @@ class TestPluginCategory:
 
 class TestSkillCatalog:
     def test_catalog_populated(self):
-        # 124 SKILL.md files, minus duplicates (first-registration wins)
         assert len(SKILL_CATALOG) >= 100
 
     def test_top_skill_by_installs(self):
@@ -72,17 +70,9 @@ class TestSkillCatalog:
         names = list(SKILL_CATALOG.keys())
         assert len(names) == len(set(names))
 
-    def test_first_party_plugins_have_skills(self):
-        """Each first-party plugin should have at least one skill."""
-        first_party = [
-            PluginCategory.PRODUCTIVITY, PluginCategory.SALES,
-            PluginCategory.CUSTOMER_SUPPORT, PluginCategory.PRODUCT_MANAGEMENT,
-            PluginCategory.MARKETING, PluginCategory.LEGAL,
-            PluginCategory.FINANCE, PluginCategory.DATA,
-            PluginCategory.ENTERPRISE_SEARCH, PluginCategory.BIO_RESEARCH,
-            PluginCategory.COWORK_PLUGIN_MGMT,
-        ]
-        for cat in first_party:
+    def test_all_plugins_have_skills(self):
+        """Every plugin category should have at least one skill."""
+        for cat in PluginCategory:
             skills = [m for m in SKILL_CATALOG.values() if m.category == cat]
             assert len(skills) > 0, f"Plugin {cat.value} has no skills"
 
@@ -109,18 +99,20 @@ class TestCategoryAgents:
         for cat in PluginCategory:
             assert cat in CATEGORY_AGENTS, f"{cat} not mapped to an agent"
 
-    def test_first_party_agent_names(self):
+    def test_one_to_one_mapping(self):
+        """Each plugin category has its own dedicated agent."""
+        agent_names = list(CATEGORY_AGENTS.values())
+        assert len(agent_names) == len(set(agent_names)), "Some categories share agents"
+
+    def test_key_agent_names(self):
         assert CATEGORY_AGENTS[PluginCategory.SALES] == "sales-agent"
         assert CATEGORY_AGENTS[PluginCategory.LEGAL] == "compliance-reviewer"
         assert CATEGORY_AGENTS[PluginCategory.FINANCE] == "finance-agent"
         assert CATEGORY_AGENTS[PluginCategory.DATA] == "data-analyst"
         assert CATEGORY_AGENTS[PluginCategory.ENGINEERING] == "engineering-agent"
-
-    def test_shared_agents(self):
-        """Some plugins share agents."""
-        assert CATEGORY_AGENTS[PluginCategory.COWORK_PLUGIN_MGMT] == "productivity-agent"
-        assert CATEGORY_AGENTS[PluginCategory.PARTNER_BUILT] == "sales-agent"
-        assert CATEGORY_AGENTS[PluginCategory.PDF_VIEWER] == "data-analyst"
+        assert CATEGORY_AGENTS[PluginCategory.PARTNER_BUILT] == "partner-built-agent"
+        assert CATEGORY_AGENTS[PluginCategory.PDF_VIEWER] == "pdf-viewer-agent"
+        assert CATEGORY_AGENTS[PluginCategory.COWORK_PLUGIN_MANAGEMENT] == "cowork-plugin-agent"
 
 
 # ── SkillMeta Tests ──────────────────────────────────────────
@@ -144,9 +136,9 @@ class TestSkillMeta:
 
 
 class TestKnowledgeAgentConfig:
-    def test_fourteen_unique_agents(self):
+    def test_seventeen_unique_agents(self):
         configs = _knowledge_agent_configs()
-        assert len(configs) == 14
+        assert len(configs) == 17
 
     def test_expected_agent_names(self):
         configs = _knowledge_agent_configs()
@@ -155,7 +147,8 @@ class TestKnowledgeAgentConfig:
             "product-management-agent", "marketing-agent", "compliance-reviewer",
             "finance-agent", "data-analyst", "enterprise-search-agent",
             "bio-research-agent", "design-agent", "engineering-agent",
-            "hr-agent", "operations-agent",
+            "hr-agent", "operations-agent", "cowork-plugin-agent",
+            "partner-built-agent", "pdf-viewer-agent",
         }
         assert set(configs.keys()) == expected
 
@@ -241,6 +234,11 @@ class TestKnowledgeWorkRegistry:
         agent = registry.resolve("content-creation")
         assert agent.name == "marketing-agent"
 
+    def test_resolve_partner_built_skill(self):
+        registry = KnowledgeWorkRegistry()
+        agent = registry.resolve("slack-messaging")
+        assert agent.name == "partner-built-agent"
+
     def test_resolve_unknown_skill(self):
         registry = KnowledgeWorkRegistry()
         try:
@@ -264,14 +262,14 @@ class TestKnowledgeWorkRegistry:
     def test_all_agent_configs(self):
         registry = KnowledgeWorkRegistry()
         configs = registry.all_agent_configs()
-        assert len(configs) == 14
+        assert len(configs) == 17
         for name, config in configs.items():
             assert config.name == name
 
     def test_all_managed_configs(self):
         registry = KnowledgeWorkRegistry()
         managed = registry.all_managed_configs()
-        assert len(managed) == 14
+        assert len(managed) == 17
         # compliance-reviewer and finance-agent should be read-only
         for ro_name in ("compliance-reviewer", "finance-agent"):
             ro = managed[ro_name]
@@ -285,8 +283,6 @@ class TestKnowledgeWorkRegistry:
 
 class TestKnowledgePipelines:
     def test_three_pipelines_available(self):
-        # KNOWLEDGE_PIPELINES is populated lazily when orchestrator loads.
-        # Use _build_knowledge_pipelines() for deterministic testing.
         pipelines = _build_knowledge_pipelines()
         assert len(pipelines) == 3
 
