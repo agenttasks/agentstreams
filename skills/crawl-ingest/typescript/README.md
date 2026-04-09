@@ -18,7 +18,7 @@ npm install @anthropic-ai/bedrock-sdk@0.26.4    # AWS Bedrock
 npm install @anthropic-ai/vertex-sdk@0.14.4      # Google Vertex
 npm install @anthropic-ai/foundry-sdk@0.2.3      # Anthropic Foundry
 
-# MCP SDK (modelcontextprotocol — 12k★)
+# MCP SDK (modelcontextprotocol)
 npm install @modelcontextprotocol/sdk
 
 # MCP Bundle Builder + Sandbox
@@ -50,7 +50,7 @@ npm install -D typescript-language-server@5.1.3
 | `@anthropic-ai/vertex-sdk` | 0.14.4 | Google Vertex variant of the SDK |
 | `@anthropic-ai/foundry-sdk` | 0.2.3 | Anthropic Foundry variant |
 | `@anthropic-ai/tokenizer` | 0.0.4 | Token counting |
-| `@modelcontextprotocol/sdk` | latest | Official MCP SDK — servers, clients, tools, resources (12k★) |
+| `@modelcontextprotocol/sdk` | latest | Official MCP SDK — servers, clients, tools, resources |
 | `@anthropic-ai/mcpb` | 2.1.2 | MCP Bundle builder |
 | `@anthropic-ai/sandbox-runtime` | 0.0.44 | Security sandbox (seatbelt/bubblewrap) |
 

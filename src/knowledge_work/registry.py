@@ -1,10 +1,10 @@
 """Ecosystem registry — comprehensive catalog of all repos across 4 GitHub orgs.
 
 Sourced via GitHub GraphQL/search API from:
-  - anthropics (59 repos, 370K+ total ★)
-  - modelcontextprotocol (39 repos, 163K+ total ★)
-  - safety-research (35 repos, 3.5K+ total ★)
-  - decoderesearch (3 repos, 4K+ total ★)
+  - anthropics (59 repos)
+  - modelcontextprotocol (39 repos)
+  - safety-research (35 repos)
+  - decoderesearch (3 repos)
 
 Maps every repo to a knowledge-work layer (0-10, including L1.5, L2.5,
 L7.5) and tracks dependencies between repos across the 14-layer stack.
@@ -81,7 +81,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "skills",
-        113689,
+        0,
         "Python",
         "Public repository for Agent Skills",
         Layer.TASKS,
@@ -90,7 +90,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "claude-code",
-        111531,
+        0,
         "Shell",
         "Agentic coding tool in your terminal",
         Layer.HARNESS,
@@ -98,7 +98,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "claude-cookbooks",
-        37754,
+        0,
         "Jupyter Notebook",
         "Recipes showcasing effective ways of using Claude",
         Layer.PROMPTS,
@@ -106,7 +106,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "prompt-eng-interactive-tutorial",
-        34507,
+        0,
         "Jupyter Notebook",
         "Anthropic's Interactive Prompt Engineering Tutorial",
         Layer.PROMPTS,
@@ -114,7 +114,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "courses",
-        20329,
+        0,
         "Jupyter Notebook",
         "Anthropic's educational courses",
         Layer.PROMPTS,
@@ -122,7 +122,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "claude-plugins-official",
-        16439,
+        0,
         "Python",
         "Official Anthropic-managed Claude Code Plugins",
         Layer.TASKS,
@@ -131,7 +131,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "claude-quickstarts",
-        15977,
+        0,
         "Python",
         "Quick-start deployable applications using Claude API",
         Layer.PROMPTS,
@@ -139,7 +139,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "knowledge-work-plugins",
-        11031,
+        0,
         "Python",
         "Plugins for knowledge workers in Claude Cowork",
         Layer.TASKS,
@@ -147,7 +147,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "financial-services-plugins",
-        7372,
+        0,
         "Python",
         "Financial services plugins for Claude Cowork",
         Layer.TASKS,
@@ -155,7 +155,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "claude-code-action",
-        6964,
+        0,
         "TypeScript",
         "GitHub Action for Claude Code",
         Layer.HARNESS,
@@ -163,7 +163,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "claude-agent-sdk-python",
-        6230,
+        0,
         "Python",
         "Python Agent SDK (query, hooks, subagents)",
         Layer.SUBAGENTS,
@@ -171,7 +171,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "claude-code-security-review",
-        4181,
+        0,
         "Python",
         "AI security review GitHub Action",
         Layer.EVALS,
@@ -179,7 +179,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "original_performance_takehome",
-        3760,
+        0,
         "Python",
         "Anthropic's original performance take-home",
         Layer.EVALS,
@@ -187,7 +187,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "anthropic-sdk-python",
-        3173,
+        0,
         "Python",
         "Python SDK for Claude API",
         Layer.INFRA,
@@ -195,7 +195,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "claudes-c-compiler",
-        2613,
+        0,
         "Rust",
         "Claude Opus 4.6 wrote a C compiler in Rust",
         Layer.EVALS,
@@ -203,7 +203,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "claude-agent-sdk-demos",
-        2118,
+        0,
         "TypeScript",
         "Claude Code SDK Demos",
         Layer.SUBAGENTS,
@@ -211,7 +211,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "hh-rlhf",
-        1837,
+        0,
         "",
         "Human preference data for RLHF training",
         Layer.SAFETY,
@@ -220,7 +220,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "anthropic-sdk-typescript",
-        1827,
+        0,
         "TypeScript",
         "TypeScript SDK for Claude API",
         Layer.INFRA,
@@ -228,20 +228,20 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "claude-agent-sdk-typescript",
-        1255,
+        0,
         "Shell",
         "TypeScript Agent SDK",
         Layer.SUBAGENTS,
     ),
-    RepoEntry(Org.ANTHROPICS, "anthropic-sdk-go", 967, "Go", "Go SDK for Claude API", Layer.INFRA),
-    RepoEntry(Org.ANTHROPICS, "evals", 365, "", "Evaluation datasets for Claude", Layer.EVALS),
+    RepoEntry(Org.ANTHROPICS, "anthropic-sdk-go", 0, "Go", "Go SDK for Claude API", Layer.INFRA),
+    RepoEntry(Org.ANTHROPICS, "evals", 0, "", "Evaluation datasets for Claude", Layer.EVALS),
     RepoEntry(
-        Org.ANTHROPICS, "anthropic-sdk-ruby", 316, "Ruby", "Ruby SDK for Claude API", Layer.INFRA
+        Org.ANTHROPICS, "anthropic-sdk-ruby", 0, "Ruby", "Ruby SDK for Claude API", Layer.INFRA
     ),
     RepoEntry(
         Org.ANTHROPICS,
         "life-sciences",
-        299,
+        0,
         "Python",
         "Claude for Life Sciences marketplace",
         Layer.TASKS,
@@ -249,22 +249,20 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "anthropic-sdk-java",
-        281,
+        0,
         "Kotlin",
         "Java/Kotlin SDK for Claude API",
         Layer.INFRA,
     ),
-    RepoEntry(Org.ANTHROPICS, "anthropic-cli", 253, "Go", "CLI for the Claude API", Layer.INFRA),
+    RepoEntry(Org.ANTHROPICS, "anthropic-cli", 0, "Go", "CLI for the Claude API", Layer.INFRA),
     RepoEntry(
-        Org.ANTHROPICS, "anthropic-sdk-csharp", 224, "C#", "C# SDK for Claude API", Layer.INFRA
+        Org.ANTHROPICS, "anthropic-sdk-csharp", 0, "C#", "C# SDK for Claude API", Layer.INFRA
     ),
-    RepoEntry(
-        Org.ANTHROPICS, "anthropic-sdk-php", 134, "PHP", "PHP SDK for Claude API", Layer.INFRA
-    ),
+    RepoEntry(Org.ANTHROPICS, "anthropic-sdk-php", 0, "PHP", "PHP SDK for Claude API", Layer.INFRA),
     RepoEntry(
         Org.ANTHROPICS,
         "toy-models-of-superposition",
-        144,
+        0,
         "Jupyter Notebook",
         "Notebooks for Toy Models of Superposition paper",
         Layer.CIRCUITS,
@@ -273,7 +271,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "sleeper-agents-paper",
-        141,
+        0,
         "",
         "Sleeper Agents: Training Deceptive LLMs",
         Layer.SAFETY,
@@ -282,7 +280,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "political-neutrality-eval",
-        124,
+        0,
         "Python",
         "Political neutrality evaluation",
         Layer.EVALS,
@@ -290,7 +288,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "attribution-graphs-frontend",
-        96,
+        0,
         "JavaScript",
         "Attribution graph visualization frontend",
         Layer.CIRCUITS,
@@ -299,7 +297,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "claude-constitution",
-        64,
+        0,
         "",
         "Foundational document describing Claude's values",
         Layer.SAFETY,
@@ -307,7 +305,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "claude-plugins-community",
-        36,
+        0,
         "",
         "Community plugin marketplace for Claude Cowork",
         Layer.TASKS,
@@ -315,7 +313,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "model-cards",
-        19,
+        0,
         "",
         "Supplementary materials for Claude Model Cards",
         Layer.EVALS,
@@ -323,7 +321,7 @@ ANTHROPICS_REPOS = [
     RepoEntry(
         Org.ANTHROPICS,
         "healthcare",
-        193,
+        0,
         "Python",
         "Claude for healthcare marketplace",
         Layer.TASKS,
@@ -333,25 +331,23 @@ ANTHROPICS_REPOS = [
 # ── Model Context Protocol (39 repos) ──────────────────────────
 
 MCP_REPOS = [
-    RepoEntry(
-        Org.MCP, "servers", 83300, "TypeScript", "Model Context Protocol Servers", Layer.HARNESS
-    ),
-    RepoEntry(Org.MCP, "python-sdk", 22561, "Python", "Official Python SDK for MCP", Layer.INFRA),
+    RepoEntry(Org.MCP, "servers", 0, "TypeScript", "Model Context Protocol Servers", Layer.HARNESS),
+    RepoEntry(Org.MCP, "python-sdk", 0, "Python", "Official Python SDK for MCP", Layer.INFRA),
     RepoEntry(
         Org.MCP,
         "typescript-sdk",
-        12146,
+        0,
         "TypeScript",
         "Official TypeScript SDK for MCP",
         Layer.INFRA,
     ),
     RepoEntry(
-        Org.MCP, "inspector", 9379, "TypeScript", "Visual testing tool for MCP servers", Layer.EVALS
+        Org.MCP, "inspector", 0, "TypeScript", "Visual testing tool for MCP servers", Layer.EVALS
     ),
     RepoEntry(
         Org.MCP,
         "modelcontextprotocol",
-        7758,
+        0,
         "TypeScript",
         "MCP specification and documentation",
         Layer.INFRA,
@@ -359,24 +355,24 @@ MCP_REPOS = [
     RepoEntry(
         Org.MCP,
         "registry",
-        6654,
+        0,
         "Go",
         "Community-driven MCP server registry",
         Layer.TASKS,
         ["mcp", "mcp-servers"],
     ),
-    RepoEntry(Org.MCP, "go-sdk", 4324, "Go", "Official Go SDK for MCP", Layer.INFRA),
+    RepoEntry(Org.MCP, "go-sdk", 0, "Go", "Official Go SDK for MCP", Layer.INFRA),
     RepoEntry(
-        Org.MCP, "csharp-sdk", 4179, "C#", "Official C# SDK for MCP (w/ Microsoft)", Layer.INFRA
+        Org.MCP, "csharp-sdk", 0, "C#", "Official C# SDK for MCP (w/ Microsoft)", Layer.INFRA
     ),
     RepoEntry(
-        Org.MCP, "java-sdk", 3349, "Java", "Official Java SDK for MCP (w/ Spring AI)", Layer.INFRA
+        Org.MCP, "java-sdk", 0, "Java", "Official Java SDK for MCP (w/ Spring AI)", Layer.INFRA
     ),
-    RepoEntry(Org.MCP, "rust-sdk", 3269, "Rust", "Official Rust SDK for MCP", Layer.INFRA),
+    RepoEntry(Org.MCP, "rust-sdk", 0, "Rust", "Official Rust SDK for MCP", Layer.INFRA),
     RepoEntry(
         Org.MCP,
         "ext-apps",
-        2018,
+        0,
         "TypeScript",
         "MCP Apps protocol — UIs embedded in AI chatbots",
         Layer.HARNESS,
@@ -384,43 +380,41 @@ MCP_REPOS = [
     RepoEntry(
         Org.MCP,
         "mcpb",
-        1832,
+        0,
         "TypeScript",
         "Desktop Extensions — one-click MCP server install",
         Layer.HARNESS,
     ),
-    RepoEntry(Org.MCP, "php-sdk", 1437, "PHP", "Official PHP SDK for MCP", Layer.INFRA),
-    RepoEntry(Org.MCP, "swift-sdk", 1341, "Swift", "Official Swift SDK for MCP", Layer.INFRA),
+    RepoEntry(Org.MCP, "php-sdk", 0, "PHP", "Official PHP SDK for MCP", Layer.INFRA),
+    RepoEntry(Org.MCP, "swift-sdk", 0, "Swift", "Official Swift SDK for MCP", Layer.INFRA),
     RepoEntry(
         Org.MCP,
         "kotlin-sdk",
-        1328,
+        0,
         "Kotlin",
         "Official Kotlin SDK for MCP (w/ JetBrains)",
         Layer.INFRA,
     ),
-    RepoEntry(Org.MCP, "conformance", 52, "TypeScript", "Conformance tests for MCP", Layer.EVALS),
+    RepoEntry(Org.MCP, "conformance", 0, "TypeScript", "Conformance tests for MCP", Layer.EVALS),
     RepoEntry(
         Org.MCP,
         "experimental-ext-skills",
-        62,
+        0,
         "",
         "Experimental skills discovery via MCP primitives",
         Layer.TASKS,
     ),
-    RepoEntry(Org.MCP, "agents-wg", 2, "", "Agents Working Group staging", Layer.HARNESS),
+    RepoEntry(Org.MCP, "agents-wg", 0, "", "Agents Working Group staging", Layer.HARNESS),
 ]
 
 # ── Safety Research (35 repos) ─────────────────────────────────
 
 SAFETY_REPOS = [
-    RepoEntry(
-        Org.SAFETY, "bloom", 1270, "Python", "Evaluate any behavior immediately", Layer.EVALS
-    ),
+    RepoEntry(Org.SAFETY, "bloom", 0, "Python", "Evaluate any behavior immediately", Layer.EVALS),
     RepoEntry(
         Org.SAFETY,
         "petri",
-        979,
+        0,
         "Python",
         "Alignment auditing agent for hypothesis exploration",
         Layer.TRACERS,
@@ -428,16 +422,16 @@ SAFETY_REPOS = [
     RepoEntry(
         Org.SAFETY,
         "persona_vectors",
-        388,
+        0,
         "Python",
         "Monitoring and controlling character traits",
         Layer.CIRCUITS,
     ),
-    RepoEntry(Org.SAFETY, "SCONE-bench", 175, "", "Safety evaluation benchmark", Layer.EVALS),
+    RepoEntry(Org.SAFETY, "SCONE-bench", 0, "", "Safety evaluation benchmark", Layer.EVALS),
     RepoEntry(
         Org.SAFETY,
         "assistant-axis",
-        120,
+        0,
         "Jupyter Notebook",
         "Direction in activation space capturing assistant-like behavior",
         Layer.CIRCUITS,
@@ -445,7 +439,7 @@ SAFETY_REPOS = [
     RepoEntry(
         Org.SAFETY,
         "safety-tooling",
-        114,
+        0,
         "Python",
         "Inference API for many LLMs and research tools",
         Layer.INFRA,
@@ -453,7 +447,7 @@ SAFETY_REPOS = [
     RepoEntry(
         Org.SAFETY,
         "open-source-alignment-faking",
-        56,
+        0,
         "Jinja",
         "Open source replication of alignment faking",
         Layer.SAFETY,
@@ -461,18 +455,18 @@ SAFETY_REPOS = [
     RepoEntry(
         Org.SAFETY,
         "selective-gradient-masking",
-        51,
+        0,
         "Python",
         "Training Transformers with knowledge localization",
         Layer.CIRCUITS,
     ),
     RepoEntry(
-        Org.SAFETY, "false-facts", 40, "Jupyter Notebook", "False facts research", Layer.SAFETY
+        Org.SAFETY, "false-facts", 0, "Jupyter Notebook", "False facts research", Layer.SAFETY
     ),
     RepoEntry(
         Org.SAFETY,
         "ciphered-reasoning-llms",
-        9,
+        0,
         "Python",
         "Research on ciphered/encoded reasoning in LLMs",
         Layer.CIRCUITS,
@@ -480,7 +474,7 @@ SAFETY_REPOS = [
     RepoEntry(
         Org.SAFETY,
         "PurpleLlama",
-        4115,
+        0,
         "Python",
         "Meta's safety evaluation suite (referenced by security-auditor)",
         Layer.EVALS,
@@ -488,18 +482,18 @@ SAFETY_REPOS = [
     RepoEntry(
         Org.SAFETY,
         "impossiblebench",
-        36,
+        0,
         "Python",
         "Measuring LLM propensity to exploit test cases",
         Layer.EVALS,
     ),
     RepoEntry(
-        Org.SAFETY, "SHADE-Arena", 24, "Jupyter Notebook", "Safety evaluation arena", Layer.EVALS
+        Org.SAFETY, "SHADE-Arena", 0, "Jupyter Notebook", "Safety evaluation arena", Layer.EVALS
     ),
     RepoEntry(
         Org.SAFETY,
         "inverse-scaling-ttc",
-        25,
+        0,
         "Python",
         "Inverse scaling in test-time compute",
         Layer.EVALS,
@@ -507,47 +501,47 @@ SAFETY_REPOS = [
     RepoEntry(
         Org.SAFETY,
         "finetuning-auditor",
-        20,
+        0,
         "Python",
         "Auditing agents for fine-tuning safety",
         Layer.TRACERS,
     ),
-    RepoEntry(Org.SAFETY, "A3", 13, "Python", "Alignment assessment agent", Layer.TRACERS),
+    RepoEntry(Org.SAFETY, "A3", 0, "Python", "Alignment assessment agent", Layer.TRACERS),
     RepoEntry(
         Org.SAFETY,
         "believe-it-or-not",
-        13,
+        0,
         "Python",
         "Editing model beliefs with SDF",
         Layer.CIRCUITS,
     ),
-    RepoEntry(Org.SAFETY, "auditing-agents", 12, "Python", "Auditing agents", Layer.TRACERS),
+    RepoEntry(Org.SAFETY, "auditing-agents", 0, "Python", "Auditing agents", Layer.TRACERS),
     RepoEntry(
         Org.SAFETY,
         "inoculation-prompting",
-        10,
+        0,
         "Python",
         "Inoculation prompting techniques",
         Layer.PROMPTS,
     ),
     RepoEntry(
-        Org.SAFETY, "weight-steering", 8, "Python", "Weight steering techniques", Layer.CIRCUITS
+        Org.SAFETY, "weight-steering", 0, "Python", "Weight steering techniques", Layer.CIRCUITS
     ),
     RepoEntry(
         Org.SAFETY,
         "crosscoder_emergent_misalignment",
-        5,
+        0,
         "Python",
         "Crosscoder model diffing on misaligned models",
         Layer.CIRCUITS,
     ),
     RepoEntry(
-        Org.SAFETY, "lie-detector", 4, "Python", "Lie detection in language models", Layer.TRACERS
+        Org.SAFETY, "lie-detector", 0, "Python", "Lie detection in language models", Layer.TRACERS
     ),
     RepoEntry(
         Org.SAFETY,
         "trusted-monitor",
-        1,
+        0,
         "Python",
         "Evaluate agent transcripts for suspicious behavior",
         Layer.TRACERS,
@@ -555,7 +549,7 @@ SAFETY_REPOS = [
     RepoEntry(
         Org.SAFETY,
         "agent-transcript-editor",
-        1,
+        0,
         "Python",
         "Web UI for viewing/editing agent transcripts",
         Layer.EVALS,
@@ -563,7 +557,7 @@ SAFETY_REPOS = [
     RepoEntry(
         Org.SAFETY,
         "introspection-mechanisms",
-        3,
+        0,
         "Python",
         "Introspection mechanisms research",
         Layer.CIRCUITS,
@@ -576,7 +570,7 @@ DECODE_REPOS = [
     RepoEntry(
         Org.DECODE,
         "circuit-tracer",
-        2695,
+        0,
         "Python",
         "Open-source circuit tracing for mechanistic interpretability",
         Layer.TRACERS,
@@ -584,7 +578,7 @@ DECODE_REPOS = [
     RepoEntry(
         Org.DECODE,
         "SAELens",
-        1308,
+        0,
         "Python",
         "Training Sparse Autoencoders on Language Models",
         Layer.CIRCUITS,
@@ -592,7 +586,7 @@ DECODE_REPOS = [
     RepoEntry(
         Org.DECODE,
         "synth-sae-bench-experiments",
-        5,
+        0,
         "Python",
         "SynthSAEBench: Evaluating SAEs on synthetic data",
         Layer.EVALS,

@@ -28,7 +28,7 @@ bundle install
 | `bloomer` | Pure Ruby bloom filter with serialization |
 | `solargraph` | Ruby LSP server |
 
-**Note:** No Agent SDK for Ruby. MCP SDK is available: `modelcontextprotocol/ruby-sdk` (758★).
+**Note:** No Agent SDK for Ruby. MCP SDK is available: `modelcontextprotocol/ruby-sdk`.
 
 ## Quick Start: Mechanize + Claude + Bloom Filter
 

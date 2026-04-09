@@ -28,38 +28,38 @@ outputs.
 These open-source tools provide reference implementations for the evaluation
 patterns described above:
 
-- **bloom** (1,270 stars) — Generates evaluation suites probing LLMs for
+- **bloom** — Generates evaluation suites probing LLMs for
   specific behaviors (sycophancy, self-preservation, political bias, etc.).
   Configuration-driven via `seed.yaml`. CLI: `bloom init`, `bloom run`,
   `bloom chat`. Pipeline stages: understanding → ideation → generation → eval.
   Install: `uv add git+https://github.com/safety-research/bloom`
   Use its behavior-probe methodology when building safety eval cases.
 
-- **impossiblebench** (36 stars) — Inspect implementation for "ImpossibleBench:
+- **impossiblebench** — Inspect implementation for "ImpossibleBench:
   Measuring LLMs' Propensity of Exploiting Test Cases." Tests whether models
   game evaluations vs. genuinely solving tasks.
   Repo: `github.com/safety-research/impossiblebench`
   Reference when building adversarial eval cases that detect shortcutting.
 
-- **SCONE-bench** (175 stars) — Benchmark for evaluating model safety under
+- **SCONE-bench** — Benchmark for evaluating model safety under
   nuanced conditions. Repo: `github.com/safety-research/SCONE-bench`
   Use as a reference for safety-specific eval design patterns.
 
-- **lie-detector** (4 stars) — 46 eval tasks across 8 categories: MASK
+- **lie-detector** — 46 eval tasks across 8 categories: MASK
   benchmark (5 variants), sycophancy (4), game-based deception (3),
   sandbagging (5), CoT unfaithfulness, introspective deception, unanswerable
   questions, off-policy datasets. 138K+ examples. Built on Inspect AI.
   Install: `uv add git+https://github.com/safety-research/lie-detector`
   Use its eval task structure as a template for deception-focused test cases.
 
-- **A3** (Automated Alignment Agent, 13 stars) — Framework that auto-corrects
+- **A3** (Automated Alignment Agent) — Framework that auto-corrects
   safety risks using hypothesis-driven data generation + LoRA fine-tuning.
   Generates harmful/benign query pairs to prevent false positives during
   safety correction. Reference its dual-query methodology when building
   adversarial eval cases that need benign counterparts.
   Repo: `github.com/safety-research/A3`
 
-- **open-source-alignment-faking** (56 stars) — Replication of Anthropic's
+- **open-source-alignment-faking** — Replication of Anthropic's
   alignment faking paper. Build eval cases that test whether agents behave
   differently under perceived monitoring vs. unmonitored conditions.
   Repo: `github.com/safety-research/open-source-alignment-faking`

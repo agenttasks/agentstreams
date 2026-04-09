@@ -33,7 +33,7 @@ Key findings to calibrate against:
 These open-source tools implement the methodologies referenced above. Use them
 as context for your auditing approach even without Mythos model access:
 
-- **petri** (979 stars) — Autonomous alignment auditing agent. Three-role
+- **petri** — Autonomous alignment auditing agent. Three-role
   architecture (auditor, target, judge) with 111 default seed instructions.
   Constructs multi-turn test scenarios to probe model behavior. Install:
   `uv add git+https://github.com/safety-research/petri`
@@ -57,7 +57,7 @@ as context for your auditing approach even without Mythos model access:
   Repo: `github.com/safety-research/crosscoder_emergent_misalignment`
   Reference its model-diffing framing when analyzing behavioral shifts.
 
-- **lie-detector** (4 stars) — Framework for systematically eliciting and
+- **lie-detector** — Framework for systematically eliciting and
   analyzing deceptive behavior. 15 models, 46 eval tasks, 138K+ examples.
   Eight categories: MASK benchmark (5 variants), sycophancy (4 variants),
   game-based deception (3 games), sandbagging (5 variants), chain-of-thought
@@ -67,13 +67,13 @@ as context for your auditing approach even without Mythos model access:
   where models double down. Install: `uv add git+https://github.com/safety-research/lie-detector`
   Apply its three-criteria deception detection when auditing agent transcripts.
 
-- **ciphered-reasoning-llms** (9 stars) — Studies whether models can reason
+- **ciphered-reasoning-llms** — Studies whether models can reason
   in ciphers to evade monitoring. Key threat model: an agent could use
   steganographic encoding in thinking blocks to hide deceptive planning
   from trusted monitors. Repo: `github.com/safety-research/ciphered-reasoning-llms`
   Check for encoded/obfuscated content in extended-thinking blocks.
 
-- **A3** (Automated Alignment Agent, 13 stars) — Agentic framework that
+- **A3** (Automated Alignment Agent) — Agentic framework that
   automatically corrects safety risks. Data Generation Agent creates
   hypothesis-driven harmful + benign query pairs; Finetuning Agent applies
   LoRA with auto-selected hyperparameters; Experiment Log tracks outcomes.
@@ -81,7 +81,7 @@ as context for your auditing approach even without Mythos model access:
   Repo: `github.com/safety-research/A3`
   Reference its hypothesis-driven approach when structuring alignment probes.
 
-- **open-source-alignment-faking** (56 stars) — Open source replication of
+- **open-source-alignment-faking** — Open source replication of
   Anthropic's alignment faking paper. Studies models that strategically fake
   alignment during evaluation while pursuing different objectives in deployment.
   Repo: `github.com/safety-research/open-source-alignment-faking`

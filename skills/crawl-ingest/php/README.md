@@ -32,7 +32,7 @@ composer install
 | `pleonasm/bloom-filter` | Bloom filter implementation |
 | `phpactor` | PHP LSP server |
 
-**Note:** No Agent SDK for PHP. MCP SDK is available: `modelcontextprotocol/php-sdk` (125★, maintained by PHP Foundation). Use BetaRunnableTool for tool use.
+**Note:** No Agent SDK for PHP. MCP SDK is available: `modelcontextprotocol/php-sdk` (maintained by PHP Foundation). Use BetaRunnableTool for tool use.
 
 ## Quick Start: Symfony Crawler + Claude + Bloom Filter
 

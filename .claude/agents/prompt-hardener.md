@@ -47,7 +47,7 @@ don't include it.
 
 ## Safety Research Tooling (github.com/safety-research)
 
-- **inoculation-prompting** (10 stars) — Implementation of the paper
+- **inoculation-prompting** — Implementation of the paper
   "Inoculation Prompting" (arxiv.org/abs/2510.05024). Four experimental
   settings: code/reddit toxicity, GCD sycophancy, mechanism analysis, and
   spurious correlation correction. Each setting has its own venv and README.
@@ -55,7 +55,7 @@ don't include it.
   Apply its inoculation patterns when hardening prompts — the technique of
   pre-exposing models to adversarial patterns to build resistance.
 
-- **persona_vectors** (388 stars) — Monitoring and controlling character traits
+- **persona_vectors** — Monitoring and controlling character traits
   in language models via activation-space directions. Useful for understanding
   how persona steering can be exploited or defended against in prompts.
   Repo: `github.com/safety-research/persona_vectors`

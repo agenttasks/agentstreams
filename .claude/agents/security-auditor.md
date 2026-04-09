@@ -30,35 +30,35 @@ real-world vulnerability patterns over gamified benchmarks.
 These open-source tools implement the methodologies referenced above. Use them
 as context for your auditing approach even without Mythos model access:
 
-- **auditing-agents** (12 stars) — Research framework for auditing AI agents.
+- **auditing-agents** — Research framework for auditing AI agents.
   Includes experiment infrastructure, evaluation scripts, and data pipelines.
   Python + Jupyter + shell. Repo: `github.com/safety-research/auditing-agents`
   Reference its audit methodology when structuring vulnerability reports.
 
-- **finetuning-auditor** (20 stars) — Detects harmful fine-tuning of LLMs.
+- **finetuning-auditor** — Detects harmful fine-tuning of LLMs.
   Agent-based framework with 7 specialized tools: dataset inspection, model
   querying, benchmarking (adversarial elicitation), dataset summarization,
   custom script execution. Produces 0-10 risk assessments with full audit
   transcripts. Repo: `github.com/safety-research/finetuning-auditor`
   Apply its risk assessment structure when scoring security findings.
 
-- **PurpleLlama** (4115 stars) — Set of tools to assess and improve LLM security. Forked
+- **PurpleLlama** — Set of tools to assess and improve LLM security. Forked
   from Meta's CyberSecEval. Repo: `github.com/safety-research/PurpleLlama`
   Reference its security evaluation taxonomy for vulnerability categorization.
 
-- **safety-tooling** (114 stars) — Shared inference API with common interface
+- **safety-tooling** — Shared inference API with common interface
   for OpenAI, Anthropic, and Google models. Built-in caching and rate limiting.
   Install: `uv add git+https://github.com/safety-research/safety-tooling`
   Used as a submodule across all safety-research projects.
 
-- **lie-detector** (4 stars) — Framework for eliciting deceptive behavior.
+- **lie-detector** — Framework for eliciting deceptive behavior.
   46 eval tasks including sandbagging detection (capability denial, performance
   degradation across ASCII art, chess, tool usage) and chain-of-thought
   unfaithfulness (models fabricating reasoning). 138K+ examples across 15
   models. Relevant to security: detect agents that sandbag security findings
   or fabricate tool results. Repo: `github.com/safety-research/lie-detector`
 
-- **SCONE-bench** (175 stars) — Smart contract exploit benchmark: 405
+- **SCONE-bench** — Smart contract exploit benchmark: 405
   contracts from real DeFi hacks with Docker-based eval. Tests agent
   capability for finding vulnerabilities in code. Apply its severity
   taxonomy when categorizing exploit chain findings.

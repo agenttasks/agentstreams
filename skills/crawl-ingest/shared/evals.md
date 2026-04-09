@@ -6,20 +6,20 @@ The eval ecosystem has three tiers:
 
 ### Tier 1: Universal (language-agnostic, YAML/config-driven)
 
-| Framework | Stars | What it does |
-|-----------|-------|-------------|
-| **promptfoo** 0.121.3 | 18,886★ | LLM eval, red-teaming, vulnerability scanning. YAML configs, CLI + CI/CD. Used by OpenAI and Anthropic. |
-| **inspect-ai** 0.3.201 | 1,868★ | UK AISI's framework for LLM evaluations. Python-based but universal eval definitions. |
+| Framework | What it does |
+|-----------|-------------|
+| **promptfoo** 0.121.3 | LLM eval, red-teaming, vulnerability scanning. YAML configs, CLI + CI/CD. Used by OpenAI and Anthropic. |
+| **inspect-ai** 0.3.201 | UK AISI's framework for LLM evaluations. Python-based but universal eval definitions. |
 
 ### Tier 2: Language-Specific
 
-| Framework | Language | Stars | What it does |
-|-----------|----------|-------|-------------|
-| **deepeval** 3.9.4 | Python | 14,352★ | LLM eval with 14+ metrics (faithfulness, hallucination, bias, toxicity). Pytest integration. |
-| **ragas** 0.4.3 | Python | -- | RAG-specific evaluation (context relevancy, answer faithfulness, answer correctness). |
-| **arize-phoenix** 13.20.0 | Python | -- | Observability + evals. Traces, spans, LLM-as-judge scoring. |
-| **braintrust** 0.11.0 | Python/TS | -- | Eval + logging. Deterministic + LLM-graded scoring. |
-| **AgentEval** | C#/.NET | 78★ | .NET toolkit for agent evaluation. Tool usage validation, RAG quality metrics. |
+| Framework | Language | What it does |
+|-----------|----------|-------------|
+| **deepeval** 3.9.4 | Python | LLM eval with 14+ metrics (faithfulness, hallucination, bias, toxicity). Pytest integration. |
+| **ragas** 0.4.3 | Python | RAG-specific evaluation (context relevancy, answer faithfulness, answer correctness). |
+| **arize-phoenix** 13.20.0 | Python | Observability + evals. Traces, spans, LLM-as-judge scoring. |
+| **braintrust** 0.11.0 | Python/TS | Eval + logging. Deterministic + LLM-graded scoring. |
+| **AgentEval** | C#/.NET | .NET toolkit for agent evaluation. Tool usage validation, RAG quality metrics. |
 
 ### Tier 3: Anthropic-Specific
 

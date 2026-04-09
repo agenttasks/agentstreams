@@ -148,10 +148,10 @@ class SkillMeta:
 SKILL_CATALOG: dict[str, SkillMeta] = {}
 
 
-def _register(name: str, category: PluginCategory, installs: int = 0) -> None:
+def _register(name: str, category: PluginCategory) -> None:
     """Register a skill. First registration wins (for cross-plugin skills)."""
     if name not in SKILL_CATALOG:
-        SKILL_CATALOG[name] = SkillMeta(name=name, category=category, installs=installs)
+        SKILL_CATALOG[name] = SkillMeta(name=name, category=category)
 
 
 # ── Skill Registration ───────────────────────────────────────
@@ -160,219 +160,219 @@ def _register(name: str, category: PluginCategory, installs: int = 0) -> None:
 # for skills that appear in multiple plugin directories.
 
 # bio-research (6 skills)
-for _n, _i in [
-    ("instrument-data-to-allotrope", 233),
-    ("nextflow-development", 241),
-    ("scientific-problem-selection", 258),
-    ("scvi-tools", 231),
-    ("single-cell-rna-qc", 244),
-    ("start", 620),
+for _n in [
+    "instrument-data-to-allotrope",
+    "nextflow-development",
+    "scientific-problem-selection",
+    "scvi-tools",
+    "single-cell-rna-qc",
+    "start",
 ]:
-    _register(_n, PluginCategory.BIO_RESEARCH, _i)
+    _register(_n, PluginCategory.BIO_RESEARCH)
 
 # cowork-plugin-management (2 skills)
-for _n, _i in [
-    ("cowork-plugin-customizer", 653),
-    ("create-cowork-plugin", 648),
+for _n in [
+    "cowork-plugin-customizer",
+    "create-cowork-plugin",
 ]:
-    _register(_n, PluginCategory.COWORK_PLUGIN_MANAGEMENT, _i)
+    _register(_n, PluginCategory.COWORK_PLUGIN_MANAGEMENT)
 
 # customer-support (5 skills)
-for _n, _i in [
-    ("customer-escalation", 472),
-    ("customer-research", 719),
-    ("draft-response", 483),
-    ("kb-article", 491),
-    ("ticket-triage", 664),
+for _n in [
+    "customer-escalation",
+    "customer-research",
+    "draft-response",
+    "kb-article",
+    "ticket-triage",
 ]:
-    _register(_n, PluginCategory.CUSTOMER_SUPPORT, _i)
+    _register(_n, PluginCategory.CUSTOMER_SUPPORT)
 
 # data (10 skills)
-for _n, _i in [
-    ("analyze", 690),
-    ("build-dashboard", 884),
-    ("create-viz", 653),
-    ("data-context-extractor", 710),
-    ("data-visualization", 3800),
-    ("explore-data", 697),
-    ("sql-queries", 1100),
-    ("statistical-analysis", 1100),
-    ("validate-data", 568),
-    ("write-query", 520),
+for _n in [
+    "analyze",
+    "build-dashboard",
+    "create-viz",
+    "data-context-extractor",
+    "data-visualization",
+    "explore-data",
+    "sql-queries",
+    "statistical-analysis",
+    "validate-data",
+    "write-query",
 ]:
-    _register(_n, PluginCategory.DATA, _i)
+    _register(_n, PluginCategory.DATA)
 
 # design (7 skills)
-for _n, _i in [
-    ("accessibility-review", 0),
-    ("design-critique", 796),
-    ("design-handoff", 643),
-    ("design-system", 647),
-    ("research-synthesis", 615),
-    ("user-research", 820),
-    ("ux-copy", 663),
+for _n in [
+    "accessibility-review",
+    "design-critique",
+    "design-handoff",
+    "design-system",
+    "research-synthesis",
+    "user-research",
+    "ux-copy",
 ]:
-    _register(_n, PluginCategory.DESIGN, _i)
+    _register(_n, PluginCategory.DESIGN)
 
 # engineering (10 skills)
-for _n, _i in [
-    ("architecture", 745),
-    ("code-review", 1400),
-    ("debug", 672),
-    ("deploy-checklist", 662),
-    ("documentation", 1100),
-    ("incident-response", 764),
-    ("standup", 621),
-    ("system-design", 1200),
-    ("tech-debt", 866),
-    ("testing-strategy", 855),
+for _n in [
+    "architecture",
+    "code-review",
+    "debug",
+    "deploy-checklist",
+    "documentation",
+    "incident-response",
+    "standup",
+    "system-design",
+    "tech-debt",
+    "testing-strategy",
 ]:
-    _register(_n, PluginCategory.ENGINEERING, _i)
+    _register(_n, PluginCategory.ENGINEERING)
 
 # enterprise-search (5 skills)
-for _n, _i in [
-    ("digest", 489),
-    ("knowledge-synthesis", 1200),
-    ("search", 633),
-    ("search-strategy", 848),
-    ("source-management", 778),
+for _n in [
+    "digest",
+    "knowledge-synthesis",
+    "search",
+    "search-strategy",
+    "source-management",
 ]:
-    _register(_n, PluginCategory.ENTERPRISE_SEARCH, _i)
+    _register(_n, PluginCategory.ENTERPRISE_SEARCH)
 
 # finance (8 skills)
-for _n, _i in [
-    ("audit-support", 690),
-    ("close-management", 648),
-    ("financial-statements", 1000),
-    ("journal-entry", 474),
-    ("journal-entry-prep", 666),
-    ("reconciliation", 682),
-    ("sox-testing", 466),
-    ("variance-analysis", 693),
+for _n in [
+    "audit-support",
+    "close-management",
+    "financial-statements",
+    "journal-entry",
+    "journal-entry-prep",
+    "reconciliation",
+    "sox-testing",
+    "variance-analysis",
 ]:
-    _register(_n, PluginCategory.FINANCE, _i)
+    _register(_n, PluginCategory.FINANCE)
 
 # human-resources (9 skills)
-for _n, _i in [
-    ("comp-analysis", 507),
-    ("draft-offer", 485),
-    ("interview-prep", 663),
-    ("onboarding", 504),
-    ("org-planning", 0),
-    ("people-report", 479),
-    ("performance-review", 545),
-    ("policy-lookup", 509),
-    ("recruiting-pipeline", 598),
+for _n in [
+    "comp-analysis",
+    "draft-offer",
+    "interview-prep",
+    "onboarding",
+    "org-planning",
+    "people-report",
+    "performance-review",
+    "policy-lookup",
+    "recruiting-pipeline",
 ]:
-    _register(_n, PluginCategory.HUMAN_RESOURCES, _i)
+    _register(_n, PluginCategory.HUMAN_RESOURCES)
 
 # legal (9 skills)
-for _n, _i in [
-    ("brief", 500),
-    ("compliance-check", 526),
-    ("legal-response", 565),
-    ("legal-risk-assessment", 1100),
-    ("meeting-briefing", 689),
-    ("review-contract", 617),
-    ("signature-request", 475),
-    ("triage-nda", 477),
-    ("vendor-check", 486),
+for _n in [
+    "brief",
+    "compliance-check",
+    "legal-response",
+    "legal-risk-assessment",
+    "meeting-briefing",
+    "review-contract",
+    "signature-request",
+    "triage-nda",
+    "vendor-check",
 ]:
-    _register(_n, PluginCategory.LEGAL, _i)
+    _register(_n, PluginCategory.LEGAL)
 
 # marketing (8 skills)
 # competitive-brief is also in product-management; marketing registers first.
-for _n, _i in [
-    ("brand-review", 537),
-    ("campaign-plan", 558),
-    ("competitive-brief", 574),
-    ("content-creation", 1500),
-    ("draft-content", 503),
-    ("email-sequence", 491),
-    ("performance-report", 523),
-    ("seo-audit", 569),
+for _n in [
+    "brand-review",
+    "campaign-plan",
+    "competitive-brief",
+    "content-creation",
+    "draft-content",
+    "email-sequence",
+    "performance-report",
+    "seo-audit",
 ]:
-    _register(_n, PluginCategory.MARKETING, _i)
+    _register(_n, PluginCategory.MARKETING)
 
 # operations (9 skills)
-for _n, _i in [
-    ("capacity-plan", 497),
-    ("change-request", 488),
-    ("compliance-tracking", 610),
-    ("process-doc", 517),
-    ("process-optimization", 653),
-    ("risk-assessment", 672),
-    ("runbook", 480),
-    ("status-report", 509),
-    ("vendor-review", 480),
+for _n in [
+    "capacity-plan",
+    "change-request",
+    "compliance-tracking",
+    "process-doc",
+    "process-optimization",
+    "risk-assessment",
+    "runbook",
+    "status-report",
+    "vendor-review",
 ]:
-    _register(_n, PluginCategory.OPERATIONS, _i)
+    _register(_n, PluginCategory.OPERATIONS)
 
 # partner-built — apollo, brand-voice, common-room, slack (13 unique slugs, 11 after dedup).
 # account-research, call-prep already registered under first-party sales
 # (common-room variants silently skipped by _register).
 # prospect appears in both apollo and common-room; apollo registers first.
-for _n, _i in [
+for _n in [
     # apollo
-    ("enrich-lead", 607),
-    ("prospect", 581),
-    ("sequence-load", 559),
+    "enrich-lead",
+    "prospect",
+    "sequence-load",
     # brand-voice
-    ("brand-voice-enforcement", 684),
-    ("discover-brand", 635),
-    ("guideline-generation", 608),
+    "brand-voice-enforcement",
+    "discover-brand",
+    "guideline-generation",
     # common-room (account-research and call-prep already registered)
-    ("compose-outreach", 600),
-    ("contact-research", 597),
-    ("weekly-prep-brief", 569),
+    "compose-outreach",
+    "contact-research",
+    "weekly-prep-brief",
     # slack
-    ("slack-messaging", 702),
-    ("slack-search", 607),
+    "slack-messaging",
+    "slack-search",
 ]:
-    _register(_n, PluginCategory.PARTNER_BUILT, _i)
+    _register(_n, PluginCategory.PARTNER_BUILT)
 
 # pdf-viewer (1 skill)
-_register("view-pdf", PluginCategory.PDF_VIEWER, 365)
+_register("view-pdf", PluginCategory.PDF_VIEWER)
 
 # product-management (8 raw, 7 after dedup; competitive-brief yields to marketing)
 # competitive-brief already registered under marketing; skipped here.
-for _n, _i in [
-    ("metrics-review", 511),
-    ("product-brainstorming", 622),
-    ("roadmap-update", 543),
-    ("sprint-planning", 520),
-    ("stakeholder-update", 510),
-    ("synthesize-research", 568),
-    ("write-spec", 621),
-    ("competitive-brief", 574),  # already taken by marketing; no-op
+for _n in [
+    "metrics-review",
+    "product-brainstorming",
+    "roadmap-update",
+    "sprint-planning",
+    "stakeholder-update",
+    "synthesize-research",
+    "write-spec",
+    "competitive-brief",  # already taken by marketing; no-op
 ]:
-    _register(_n, PluginCategory.PRODUCT_MANAGEMENT, _i)
+    _register(_n, PluginCategory.PRODUCT_MANAGEMENT)
 
 # productivity (4 raw, 3 after dedup; start yields to bio-research)
 # start already registered under bio-research; skipped here.
-for _n, _i in [
-    ("memory-management", 1400),
-    ("task-management", 1700),
-    ("update", 635),
-    ("start", 620),  # already taken by bio-research; no-op
+for _n in [
+    "memory-management",
+    "task-management",
+    "update",
+    "start",  # already taken by bio-research; no-op
 ]:
-    _register(_n, PluginCategory.PRODUCTIVITY, _i)
+    _register(_n, PluginCategory.PRODUCTIVITY)
 
 # sales (9 skills)
 # account-research and call-prep register here; partner-built/common-room
 # versions will be silently skipped when partner-built registers later.
-for _n, _i in [
-    ("account-research", 734),
-    ("call-prep", 686),
-    ("call-summary", 522),
-    ("competitive-intelligence", 1300),
-    ("create-an-asset", 659),
-    ("daily-briefing", 842),
-    ("draft-outreach", 796),
-    ("forecast", 503),
-    ("pipeline-review", 492),
+for _n in [
+    "account-research",
+    "call-prep",
+    "call-summary",
+    "competitive-intelligence",
+    "create-an-asset",
+    "daily-briefing",
+    "draft-outreach",
+    "forecast",
+    "pipeline-review",
 ]:
-    _register(_n, PluginCategory.SALES, _i)
+    _register(_n, PluginCategory.SALES)
 
 
 # ── financial-services-plugins ───────────────────────────────
@@ -380,74 +380,74 @@ for _n, _i in [
 # 5 plugins, 45 skills, 11 MCP integrations
 
 # financial-analysis (11 skills) — core plugin, all MCP connectors
-for _n, _i in [
-    ("3-statement-model", 261),
-    ("audit-xls", 247),
-    ("clean-data-xls", 236),
-    ("competitive-analysis", 327),
-    ("comps-analysis", 254),
-    ("dcf-model", 360),
-    ("deck-refresh", 211),
-    ("ib-check-deck", 219),
-    ("lbo-model", 271),
-    ("ppt-template-creator", 392),
-    ("skill-creator", 250),
+for _n in [
+    "3-statement-model",
+    "audit-xls",
+    "clean-data-xls",
+    "competitive-analysis",
+    "comps-analysis",
+    "dcf-model",
+    "deck-refresh",
+    "ib-check-deck",
+    "lbo-model",
+    "ppt-template-creator",
+    "skill-creator",
 ]:
-    _register(_n, PluginCategory.FSI_FINANCIAL_ANALYSIS, _i)
+    _register(_n, PluginCategory.FSI_FINANCIAL_ANALYSIS)
 
 # investment-banking (9 skills)
-for _n, _i in [
-    ("buyer-list", 0),
-    ("cim-builder", 0),
-    ("datapack-builder", 269),
-    ("deal-tracker", 0),
-    ("merger-model", 0),
-    ("pitch-deck", 290),
-    ("process-letter", 0),
-    ("strip-profile", 0),
-    ("teaser", 0),
+for _n in [
+    "buyer-list",
+    "cim-builder",
+    "datapack-builder",
+    "deal-tracker",
+    "merger-model",
+    "pitch-deck",
+    "process-letter",
+    "strip-profile",
+    "teaser",
 ]:
-    _register(_n, PluginCategory.FSI_INVESTMENT_BANKING, _i)
+    _register(_n, PluginCategory.FSI_INVESTMENT_BANKING)
 
 # equity-research (9 skills)
-for _n, _i in [
-    ("catalyst-calendar", 0),
-    ("earnings-analysis", 528),
-    ("earnings-preview", 0),
-    ("idea-generation", 0),
-    ("initiating-coverage", 310),
-    ("model-update", 0),
-    ("morning-note", 0),
-    ("sector-overview", 0),
-    ("thesis-tracker", 0),
+for _n in [
+    "catalyst-calendar",
+    "earnings-analysis",
+    "earnings-preview",
+    "idea-generation",
+    "initiating-coverage",
+    "model-update",
+    "morning-note",
+    "sector-overview",
+    "thesis-tracker",
 ]:
-    _register(_n, PluginCategory.FSI_EQUITY_RESEARCH, _i)
+    _register(_n, PluginCategory.FSI_EQUITY_RESEARCH)
 
 # private-equity (10 skills)
-for _n, _i in [
-    ("ai-readiness", 0),
-    ("dd-checklist", 0),
-    ("dd-meeting-prep", 0),
-    ("deal-screening", 0),
-    ("deal-sourcing", 0),
-    ("ic-memo", 0),
-    ("portfolio-monitoring", 0),
-    ("returns-analysis", 0),
-    ("unit-economics", 0),
-    ("value-creation-plan", 0),
+for _n in [
+    "ai-readiness",
+    "dd-checklist",
+    "dd-meeting-prep",
+    "deal-screening",
+    "deal-sourcing",
+    "ic-memo",
+    "portfolio-monitoring",
+    "returns-analysis",
+    "unit-economics",
+    "value-creation-plan",
 ]:
-    _register(_n, PluginCategory.FSI_PRIVATE_EQUITY, _i)
+    _register(_n, PluginCategory.FSI_PRIVATE_EQUITY)
 
 # wealth-management (6 skills)
-for _n, _i in [
-    ("client-report", 0),
-    ("client-review", 0),
-    ("financial-plan", 0),
-    ("investment-proposal", 0),
-    ("portfolio-rebalance", 0),
-    ("tax-loss-harvesting", 0),
+for _n in [
+    "client-report",
+    "client-review",
+    "financial-plan",
+    "investment-proposal",
+    "portfolio-rebalance",
+    "tax-loss-harvesting",
 ]:
-    _register(_n, PluginCategory.FSI_WEALTH_MANAGEMENT, _i)
+    _register(_n, PluginCategory.FSI_WEALTH_MANAGEMENT)
 
 
 # ── Knowledge Agent Configs ──────────────────────────────────

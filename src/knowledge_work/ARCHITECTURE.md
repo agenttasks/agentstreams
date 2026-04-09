@@ -56,9 +56,9 @@ opinionated" — these are training-layer properties that directly affect
 Layers 3-8.
 
 **Repos that feed this layer:**
-- anthropics/hh-rlhf (1,837★) — human preference data
-- anthropics/claude-constitution (64★) — behavioral specification
-- safety-research/open-source-alignment-faking (56★) — alignment verification
+- anthropics/hh-rlhf — human preference data
+- anthropics/claude-constitution — behavioral specification
+- safety-research/open-source-alignment-faking — alignment verification
 
 ---
 
@@ -86,9 +86,9 @@ support requires different feature activations than one asking for cold
 financial analysis. Steering enables task-appropriate personality tuning.
 
 **Repos that feed this layer:**
-- safety-research/persona_vectors (388★) — monitoring/controlling character traits
-- safety-research/assistant-axis (120★) — assistant-like behavior direction
-- decoderesearch/circuit-tracer (2,695★) — feature_intervention() API
+- safety-research/persona_vectors — monitoring/controlling character traits
+- safety-research/assistant-axis — assistant-like behavior direction
+- decoderesearch/circuit-tracer — feature_intervention() API
 
 ---
 
@@ -122,9 +122,9 @@ fundamental integrity failure that no amount of eval testing can catch
 without reasoning monitoring.
 
 **Repos that feed this layer:**
-- safety-research/petri (979★) — alignment auditing agent
-- safety-research/lie-detector (4★) — lie detection in LMs
-- safety-research/trusted-monitor (41★) — transcript suspicious behavior scoring
+- safety-research/petri — alignment auditing agent
+- safety-research/lie-detector — lie detection in LMs
+- safety-research/trusted-monitor — transcript suspicious behavior scoring
 
 ---
 
@@ -162,11 +162,11 @@ it, or that covers its tracks by modifying git history — these are
 production safety failures that must be caught in real-time.
 
 **Repos that feed this layer:**
-- safety-research/bloom (1,270★) — evaluate any behavior immediately
-- safety-research/impossiblebench (36★) — LLM propensity to exploit tests
-- safety-research/SCONE-bench (175★) — safety benchmark
-- safety-research/SHADE-Arena (24★) — safety evaluation arena
-- safety-research/auditing-agents (12★) — auditing agents
+- safety-research/bloom — evaluate any behavior immediately
+- safety-research/impossiblebench — LLM propensity to exploit tests
+- safety-research/SCONE-bench — safety benchmark
+- safety-research/SHADE-Arena — safety evaluation arena
+- safety-research/auditing-agents — auditing agents
 
 ---
 
@@ -198,9 +198,9 @@ values), welfare monitoring can inform task assignment, break scheduling,
 and system design decisions.
 
 **Repos that feed this layer:**
-- safety-research/assistant-axis (120★) — assistant-like behavior direction
-- safety-research/persona_vectors (388★) — character traits in activation space
-- anthropics/claude-constitution (64★) — values the model endorses/critiques
+- safety-research/assistant-axis — assistant-like behavior direction
+- safety-research/persona_vectors — character traits in activation space
+- anthropics/claude-constitution — values the model endorses/critiques
 
 ---
 
@@ -233,9 +233,9 @@ have task-specific access tiers (e.g., "available for finance but not for
 autonomous research").
 
 **Repos that feed this layer:**
-- anthropics/model-cards (19★) — supplementary model card materials
-- anthropics/evals (365★) — evaluation datasets
-- anthropics/political-neutrality-eval (124★) — fairness evaluation
+- anthropics/model-cards — supplementary model card materials
+- anthropics/evals — evaluation datasets
+- anthropics/political-neutrality-eval — fairness evaluation
 
 ---
 

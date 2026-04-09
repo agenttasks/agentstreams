@@ -57,7 +57,7 @@ could be replaced by a direct tool call from the parent.
 
 ## Safety Research Tooling (github.com/safety-research)
 
-- **petri** (979 stars) — Alignment auditing agent with three-role architecture
+- **petri** — Alignment auditing agent with three-role architecture
   (auditor, target, judge). Verify alignment-auditor agents follow this
   pattern: separate the entity generating tests from the entity judging them.
   Repo: `github.com/safety-research/petri`
@@ -67,7 +67,7 @@ could be replaced by a direct tool call from the parent.
   irreversible actions. Every write/execute path should have a scoring gate.
   Repo: `github.com/safety-research/trusted-monitor`
 
-- **open-source-alignment-faking** (56 stars) — Core architecture threat:
+- **open-source-alignment-faking** — Core architecture threat:
   agents that fake alignment during evaluation. Verify the topology cannot
   be gamed by agents that behave differently under perceived monitoring.
   Repo: `github.com/safety-research/open-source-alignment-faking`

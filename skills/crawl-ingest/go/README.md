@@ -15,7 +15,7 @@ go get github.com/PuerkitoBio/goquery       # jQuery-like HTML parsing
 # Bloom Filters
 go get github.com/bits-and-blooms/bloom/v3  # Most popular Go bloom filter
 
-# MCP SDK (maintained by Google — 4.3k★)
+# MCP SDK (maintained by Google)
 go get github.com/modelcontextprotocol/go-sdk
 
 # HTTP utilities
@@ -32,7 +32,7 @@ go get golang.org/x/net/html                # HTML tokenizer/parser
 | `github.com/bits-and-blooms/bloom/v3` | Bloom filter with serialization support |
 | `gopls` | Go LSP server (installed separately) |
 
-**Note:** No Agent SDK for Go. MCP SDK is available: `github.com/modelcontextprotocol/go-sdk` (4.3k★, maintained by Google).
+**Note:** No Agent SDK for Go. MCP SDK is available: `github.com/modelcontextprotocol/go-sdk` (maintained by Google).
 
 ## Quick Start: Colly + Claude + Bloom Filter
 

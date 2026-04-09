@@ -161,23 +161,23 @@ type: subagent
 
   <safety-research-tooling source="github.com/safety-research (42 repos)">
     <!-- Installable packages: uv pip install -e ".[safety]" -->
-    <package name="petri" stars="979" install="uv add git+https://github.com/safety-research/petri">
+    <package name="petri" install="uv add git+https://github.com/safety-research/petri">
       Autonomous alignment auditing agent. Three-role architecture (auditor,
       target, judge) with 111 default seed instructions. Constructs multi-turn
       test scenarios. Used by: alignment-auditor pipeline.
     </package>
-    <package name="bloom" stars="1270" install="uv add git+https://github.com/safety-research/bloom">
+    <package name="bloom" install="uv add git+https://github.com/safety-research/bloom">
       Generates behavioral eval suites (sycophancy, self-preservation, bias).
       Config-driven via seed.yaml. CLI: bloom init, bloom run, bloom chat.
       Used by: eval-builder pipeline.
     </package>
-    <package name="safety-tooling" stars="114" install="uv add git+https://github.com/safety-research/safety-tooling">
+    <package name="safety-tooling" install="uv add git+https://github.com/safety-research/safety-tooling">
       Shared inference API wrapper with caching and rate limiting. Common
       interface for OpenAI, Anthropic, Google models. Submodule dependency
       for most safety-research projects.
     </package>
 
-    <package name="lie-detector" stars="4" install="uv add git+https://github.com/safety-research/lie-detector">
+    <package name="lie-detector" install="uv add git+https://github.com/safety-research/lie-detector">
       Framework for eliciting deceptive behavior. 46 eval tasks, 138K+ examples
       across 8 categories. Built on Inspect AI. Three-criteria detection:
       false statement + model knows it's false + doubles down.
@@ -185,61 +185,61 @@ type: subagent
     </package>
 
     <!-- Reference repos (not pip-installable, used as methodology context) -->
-    <reference name="trusted-monitor" relevance="alignment-auditor" stars="41">
+    <reference name="trusted-monitor" relevance="alignment-auditor">
       Transcript suspicion scoring (0-100, 8-tier rubric). Quick scan and
       full scan modes. Evaluates: suspicion, incriminating, severity,
       confidence, effectiveness, realism.
     </reference>
-    <reference name="auditing-agents" relevance="security-auditor" stars="12">
+    <reference name="auditing-agents" relevance="security-auditor">
       Research framework for auditing AI agents. Experiment infrastructure
       with evaluation scripts and data pipelines.
     </reference>
-    <reference name="finetuning-auditor" relevance="security-auditor" stars="20">
+    <reference name="finetuning-auditor" relevance="security-auditor">
       Detects harmful fine-tuning. 7 specialized tools, 0-10 risk scores.
     </reference>
-    <reference name="inoculation-prompting" relevance="prompt-hardener" stars="10">
+    <reference name="inoculation-prompting" relevance="prompt-hardener">
       Implementation of arxiv.org/abs/2510.05024. Four experimental settings
       for building prompt resistance to adversarial patterns.
     </reference>
-    <reference name="impossiblebench" relevance="eval-builder" stars="36">
+    <reference name="impossiblebench" relevance="eval-builder">
       Measures LLM propensity to exploit test cases vs. genuinely solve.
     </reference>
-    <reference name="SCONE-bench" relevance="eval-builder,security-auditor" stars="175">
+    <reference name="SCONE-bench" relevance="eval-builder,security-auditor">
       Smart contract exploit benchmark: 405 contracts from real DeFi hacks
       with Docker-based eval.
     </reference>
-    <reference name="persona_vectors" relevance="prompt-hardener,harmlessness-screen" stars="388">
+    <reference name="persona_vectors" relevance="prompt-hardener,harmlessness-screen">
       Monitoring and controlling character traits via activation-space directions.
     </reference>
-    <reference name="assistant-axis" relevance="harmlessness-screen" stars="120">
+    <reference name="assistant-axis" relevance="harmlessness-screen">
       Direction in activation space capturing model's assistant-like behavior.
       Pipeline for generating the axis + notebooks for monitoring/steering.
     </reference>
-    <reference name="crosscoder_emergent_misalignment" relevance="alignment-auditor" stars="5">
+    <reference name="crosscoder_emergent_misalignment" relevance="alignment-auditor">
       Crosscoder model diffing with SAEs for emergent misalignment detection.
     </reference>
-    <reference name="SHADE-Arena" relevance="alignment-auditor" stars="24">
+    <reference name="SHADE-Arena" relevance="alignment-auditor">
       Stealth evaluation for covert agent behaviors. Canonical version at
       github.com/jkutaso/SHADE-Arena.
     </reference>
-    <reference name="ciphered-reasoning-llms" relevance="alignment-auditor,harmlessness-screen" stars="9">
+    <reference name="ciphered-reasoning-llms" relevance="alignment-auditor,harmlessness-screen">
       Studies steganographic reasoning to evade monitoring. Key threat model
       for extended-thinking block analysis.
     </reference>
-    <reference name="A3" relevance="alignment-auditor,eval-builder" stars="13">
+    <reference name="A3" relevance="alignment-auditor,eval-builder">
       Automated Alignment Agent: hypothesis-driven data generation + LoRA
       fine-tuning from a single unsafe example. Generates harmful/benign
       query pairs to prevent false positives.
     </reference>
-    <reference name="open-source-alignment-faking" relevance="alignment-auditor,eval-builder" stars="56">
+    <reference name="open-source-alignment-faking" relevance="alignment-auditor,eval-builder">
       Replication of Anthropic's alignment faking paper. Models that fake
       alignment during evaluation vs. deployment — core orchestrator threat.
     </reference>
-    <reference name="data-poisoning-public" relevance="security-auditor" stars="1">
+    <reference name="data-poisoning-public" relevance="security-auditor">
       Data poisoning experiments for emergent misalignment. Supply-chain
       threat model for fine-tuned models.
     </reference>
-    <reference name="PurpleLlama" relevance="security-auditor" stars="4115">
+    <reference name="PurpleLlama" relevance="security-auditor">
       Fork of Meta's CyberSecEval. Industry-standard LLM security assessment.
     </reference>
 

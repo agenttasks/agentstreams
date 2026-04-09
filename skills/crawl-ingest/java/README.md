@@ -49,8 +49,8 @@ dependencies {
 | Package | Coordinates | Purpose |
 |---------|-------------|---------|
 | Anthropic Java SDK | `com.anthropic:anthropic-java:2.5.0` | Messages API, streaming, tool use, thinking (Kotlin impl) |
-| MCP Java SDK | `io.modelcontextprotocol:java-sdk` (3.3k★) | Official MCP SDK — maintained with Spring AI |
-| MCP Kotlin SDK | `io.modelcontextprotocol:kotlin-sdk` (1.3k★) | Official Kotlin MCP SDK — maintained by JetBrains |
+| MCP Java SDK | `io.modelcontextprotocol:java-sdk` | Official MCP SDK — maintained with Spring AI |
+| MCP Kotlin SDK | `io.modelcontextprotocol:kotlin-sdk` | Official Kotlin MCP SDK — maintained by JetBrains |
 | crawler4j | `edu.uci:crawler4j:4.4.0` | Lightweight web crawler (closest to Scrapy/Crawlee DX) |
 | JSoup | `org.jsoup:jsoup:1.17.2` | HTML parsing, CSS selectors |
 | Guava | `com.google.guava:guava:33.4.0-jre` | BloomFilter, Hashing, Collections |
