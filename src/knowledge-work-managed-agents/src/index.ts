@@ -26,3 +26,33 @@ export {
   LAYER_REGISTRY,
   LAYER_IDS,
 } from "./layers.js";
+export {
+  GitHubGraphQL,
+  type RepoInfo,
+  type PullRequestInfo,
+  type CommitInfo,
+} from "./github.js";
+export {
+  createHttpCrawler,
+  crawlUrls,
+  HttpCrawler,
+  Dataset,
+  KeyValueStore,
+  RequestQueue,
+  sleep,
+  type CrawlResult,
+  type CrawlerConfig,
+} from "./crawler.js";
+export {
+  renderMarkdown,
+  parseMarkdown,
+  extractFrontmatter,
+  extractHeadings,
+  extractCodeBlocks,
+  extractLinks,
+  extractStructure,
+  type Heading,
+  type CodeBlock,
+  type Frontmatter,
+  type MarkdownStructure,
+} from "./markdown.js";

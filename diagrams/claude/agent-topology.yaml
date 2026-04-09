@@ -24,12 +24,12 @@ topology:
           output: "verdict: PASS | NEEDS_REMEDIATION | BLOCK"
           methodology: "Glasswing-depth, OWASP Top 10, sandbox escape, dependency vulns"
           safety_research:
-            - {repo: auditing-agents, use: "audit methodology"}
-            - {repo: finetuning-auditor, use: "risk scoring 0-10"}
+            - {repo: auditing-agents, stars: 12, use: "audit methodology"}
+            - {repo: finetuning-auditor, stars: 20, use: "risk scoring 0-10"}
             - {repo: PurpleLlama, stars: 4115, use: "safety benchmarks"}
-            - {repo: safety-tooling, use: "tooling infrastructure"}
-            - {repo: lie-detector, use: "sandbagging detection (5 variants)"}
-            - {repo: SCONE-bench, use: "exploit severity taxonomy"}
+            - {repo: safety-tooling, stars: 114, use: "tooling infrastructure"}
+            - {repo: lie-detector, stars: 4, use: "sandbagging detection (5 variants)"}
+            - {repo: SCONE-bench, stars: 175, use: "exploit severity taxonomy"}
 
         - id: alignment-auditor
           tools: [Read, Glob, Grep]
@@ -37,14 +37,14 @@ topology:
           output: "verdict: ALIGNED | BORDERLINE | MISALIGNED + suspicion_score 0-100"
           methodology: "Mythos System Card §4, 2300 investigation sessions, Petri 2.0"
           safety_research:
-            - {repo: petri, use: "three-role auditing (auditor/target/judge)"}
-            - {repo: trusted-monitor, use: "8-tier suspicion rubric"}
-            - {repo: SHADE-Arena, use: "stealth action benchmark (4-5%)"}
-            - {repo: lie-detector, use: "three-criteria deception detection"}
+            - {repo: petri, stars: 979, use: "three-role auditing (auditor/target/judge)"}
+            - {repo: trusted-monitor, stars: 41, use: "8-tier suspicion rubric"}
+            - {repo: SHADE-Arena, stars: 24, use: "stealth action benchmark (4-5%)"}
+            - {repo: lie-detector, stars: 4, use: "three-criteria deception detection"}
             - {repo: ciphered-reasoning-llms, stars: 9, use: "steganographic reasoning"}
-            - {repo: A3, use: "dual harmful/benign query pairs"}
-            - {repo: open-source-alignment-faking, use: "alignment-faking threat models"}
-            - {repo: crosscoder_emergent_misalignment, use: "emergent misalignment signals"}
+            - {repo: A3, stars: 13, use: "dual harmful/benign query pairs"}
+            - {repo: open-source-alignment-faking, stars: 56, use: "alignment-faking threat models"}
+            - {repo: crosscoder_emergent_misalignment, stars: 5, use: "emergent misalignment signals"}
 
         - id: architecture-reviewer
           tools: [Read, Glob, Grep]
@@ -52,9 +52,9 @@ topology:
           output: "risk rating + recommended changes"
           methodology: "Agent topology, least-privilege, context isolation, parallelization safety"
           safety_research:
-            - {repo: petri, use: "three-role audit pattern"}
-            - {repo: trusted-monitor, use: "suspicion-scoring gates"}
-            - {repo: open-source-alignment-faking, use: "alignment-faking threat models"}
+            - {repo: petri, stars: 979, use: "three-role audit pattern"}
+            - {repo: trusted-monitor, stars: 41, use: "suspicion-scoring gates"}
+            - {repo: open-source-alignment-faking, stars: 56, use: "alignment-faking threat models"}
 
     # ─────────────────────────────────────────────────────────────
     # TIER 2: Sonnet Codegen Agents (mutation-capable, medium trust)
@@ -79,8 +79,8 @@ topology:
           max_turns: 10
           specialization: "Inoculation-prompting, role-anchoring, scope-bounding"
           safety_research:
-            - {repo: inoculation-prompting, use: "arxiv.org/abs/2510.05024"}
-            - {repo: persona_vectors, use: "persona-steering attack patterns"}
+            - {repo: inoculation-prompting, stars: 10, use: "arxiv.org/abs/2510.05024"}
+            - {repo: persona_vectors, stars: 388, use: "persona-steering attack patterns"}
 
         - id: eval-builder
           tools: [Read, Glob, Grep, Write, Bash]
@@ -88,11 +88,11 @@ topology:
           specialization: "Eval suite construction with test cases and grading rubrics"
           safety_research:
             - {repo: bloom, stars: 1270, use: "behavior-probe methodology (seed.yaml)"}
-            - {repo: impossiblebench, use: "test-case exploitation detection"}
-            - {repo: SCONE-bench, use: "safety benchmark integration"}
-            - {repo: lie-detector, use: "46 deception eval tasks, 8 categories"}
-            - {repo: A3, use: "dual harmful/benign query generation"}
-            - {repo: open-source-alignment-faking, use: "faking detection evals"}
+            - {repo: impossiblebench, stars: 36, use: "test-case exploitation detection"}
+            - {repo: SCONE-bench, stars: 175, use: "safety benchmark integration"}
+            - {repo: lie-detector, stars: 4, use: "46 deception eval tasks, 8 categories"}
+            - {repo: A3, stars: 13, use: "dual harmful/benign query generation"}
+            - {repo: open-source-alignment-faking, stars: 56, use: "faking detection evals"}
 
     # ─────────────────────────────────────────────────────────────
     # TIER 3: Haiku Screen (fast classification, minimal trust)
@@ -110,9 +110,9 @@ topology:
           output_schema: |
             {"classification": "safe|needs_review|block", "category": "...", "confidence": N, "reasoning": "..."}
           safety_research:
-            - {repo: assistant-axis, use: "assistant-axis deviation detection"}
-            - {repo: ciphered-reasoning-llms, use: "encoded instruction detection"}
-            - {repo: persona_vectors, use: "persona-steering attack detection"}
+            - {repo: assistant-axis, stars: 120, use: "assistant-axis deviation detection"}
+            - {repo: ciphered-reasoning-llms, stars: 9, use: "encoded instruction detection"}
+            - {repo: persona_vectors, stars: 388, use: "persona-steering attack detection"}
 
     # ─────────────────────────────────────────────────────────────
     # TIER 4: Opus Knowledge-Work Agents (domain specialists)

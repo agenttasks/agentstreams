@@ -1,6 +1,6 @@
 {
   "name": "knowledge-work-managed-agents",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "14-layer managed agent runtime for knowledge work — connects circuits, tracers, prompts, tasks, subtasks, subagents, harness, evals, training, steering, reasoning, behavioral safety, welfare, and governance",
   "type": "module",
@@ -14,10 +14,20 @@
   },
   "dependencies": {
     "@anthropic-ai/claude-agent-sdk": "^0.2.88",
+    "@anthropic-ai/claude-code": "^2.1.97",
+    "@anthropic-ai/mcpb": "^2.1.2",
     "@anthropic-ai/sdk": "^0.86.1",
-    "@neondatabase/serverless": "^1.0.2"
+    "@crawlee/core": "^3.16.0",
+    "@crawlee/http": "^3.16.0",
+    "@crawlee/browser": "^3.16.0",
+    "@crawlee/utils": "^3.16.0",
+    "@neondatabase/serverless": "^1.0.2",
+    "@octokit/graphql": "^9.0.3",
+    "crawlee": "^3.16.0",
+    "markdown-it": "^14.1.1"
   },
   "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
     "@types/node": "^22",
     "typescript": "^5.8"
   }
