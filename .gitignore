@@ -35,5 +35,3 @@ webapp/node_modules/
 webapp/.next/
 webapp/out/
 
-# Skills plugin cache
-.agents/
