@@ -68,7 +68,7 @@ export async function complete<V extends boolean>(
       // Fan out semantic search across all supplied projects
       const searchResultSets = await Promise.all(
         request.projectIds.map((pid) =>
-          semanticSearch(pid, request.query, { limit: 5 }),
+          semanticSearch(pid, request.query, 5),
         ),
       );
 

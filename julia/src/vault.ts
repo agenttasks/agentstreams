@@ -12,10 +12,6 @@
  * TODO: Replace hashEmbedding() with real sentence-transformer embeddings
  *       (e.g. all-MiniLM-L6-v2 via @xenova/transformers) before production use.
  *       The pseudo-embeddings here are deterministic but not semantically meaningful.
- *
- * TODO: completion.ts currently calls semanticSearch(pid, query, { limit: 5 })
- *       with an object argument. That call site must be updated to pass a plain
- *       number: semanticSearch(pid, query, 5) to match this signature.
  */
 
 import { createHash } from "node:crypto";
