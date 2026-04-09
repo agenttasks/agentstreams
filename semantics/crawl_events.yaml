@@ -1,0 +1,426 @@
+# ═══════════════════════════════════════════════════════════
+# Cube.js Semantic Layer — Crawl-to-Markdown Pipeline
+# Kimball star schema over Neon Postgres 18
+# ═══════════════════════════════════════════════════════════
+
+cubes:
+  # ── Fact: Crawl Events ─────────────────────────────────
+  - name: crawl_events
+    sql_table: fact_crawl_events
+    title: Crawl Events
+    description: >
+      Grain: one row per URL crawl attempt. Tracks every page fetch
+      with dimensional context (domain, content type, extraction model,
+      session). Measures include response time, content size, token counts,
+      and deduplication flags.
+
+    joins:
+      - name: date_dim
+        relationship: many_to_one
+        sql: "{CUBE}.date_key = {date_dim}.date_key"
+      - name: domain_dim
+        relationship: many_to_one
+        sql: "{CUBE}.domain_key = {domain_dim}.domain_key"
+      - name: content_type_dim
+        relationship: many_to_one
+        sql: "{CUBE}.content_type_key = {content_type_dim}.content_type_key"
+      - name: extraction_dim
+        relationship: many_to_one
+        sql: "{CUBE}.extraction_key = {extraction_dim}.extraction_key"
+      - name: session_dim
+        relationship: many_to_one
+        sql: "{CUBE}.session_key = {session_dim}.session_key"
+
+    dimensions:
+      - name: url
+        sql: url
+        type: string
+        title: Page URL
+        primary_key: false
+
+      - name: content_hash
+        sql: content_hash
+        type: string
+        title: Content Hash (SHA-256:12)
+
+      - name: title
+        sql: title
+        type: string
+        title: Page Title
+
+      - name: is_new_url
+        sql: is_new_url
+        type: boolean
+        title: New URL (first crawl)
+
+      - name: is_duplicate_content
+        sql: is_duplicate_content
+        type: boolean
+        title: Duplicate Content (bloom hit)
+
+      - name: is_error
+        sql: is_error
+        type: boolean
+        title: Crawl Error
+
+      - name: orjson_cache_path
+        sql: orjson_cache_path
+        type: string
+        title: orjson Cache Path
+
+      - name: crawled_at
+        sql: crawled_at
+        type: time
+        title: Crawl Timestamp
+
+    measures:
+      - name: total_pages
+        sql: crawl_event_id
+        type: count
+        title: Total Pages Crawled
+
+      - name: new_pages
+        sql: crawl_event_id
+        type: count
+        title: New Pages
+        filters:
+          - sql: "{CUBE}.is_new_url = true"
+
+      - name: error_pages
+        sql: crawl_event_id
+        type: count
+        title: Error Pages
+        filters:
+          - sql: "{CUBE}.is_error = true"
+
+      - name: duplicate_pages
+        sql: crawl_event_id
+        type: count
+        title: Duplicate Content Pages
+        filters:
+          - sql: "{CUBE}.is_duplicate_content = true"
+
+      - name: total_bytes
+        sql: content_bytes
+        type: sum
+        title: Total Content Bytes
+
+      - name: total_markdown_bytes
+        sql: markdown_bytes
+        type: sum
+        title: Total Markdown Bytes
+
+      - name: total_tokens
+        sql: token_count
+        type: sum
+        title: Total Tokens (pg_tiktoken)
+
+      - name: total_chunks
+        sql: chunk_count
+        type: sum
+        title: Total Embedding Chunks
+
+      - name: avg_response_ms
+        sql: response_time_ms
+        type: avg
+        title: Avg Response Time (ms)
+
+      - name: p95_response_ms
+        sql: response_time_ms
+        type: number
+        title: P95 Response Time (ms)
+        sql: "PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY {CUBE}.response_time_ms)"
+
+      - name: success_rate
+        sql: "COUNT(*) FILTER (WHERE NOT {CUBE}.is_error)::FLOAT / NULLIF(COUNT(*), 0)"
+        type: number
+        title: Success Rate
+        format: percent
+
+      - name: dedup_rate
+        sql: "COUNT(*) FILTER (WHERE {CUBE}.is_duplicate_content)::FLOAT / NULLIF(COUNT(*), 0)"
+        type: number
+        title: Deduplication Rate
+        format: percent
+
+    pre_aggregations:
+      - name: daily_domain_rollup
+        dimensions:
+          - domain_dim.domain_name
+        measures:
+          - total_pages
+          - new_pages
+          - error_pages
+          - total_bytes
+          - total_tokens
+          - avg_response_ms
+        time_dimension: crawled_at
+        granularity: day
+        refresh_key:
+          every: "1 hour"
+
+  # ── Fact: Page Content ─────────────────────────────────
+  - name: page_content
+    sql_table: fact_page_content
+    title: Page Content
+    description: >
+      Grain: one row per unique page content version. Snapshot fact
+      linking markdown content to dimensional context. Measures include
+      content quality indicators and embedding metadata.
+
+    joins:
+      - name: date_dim
+        relationship: many_to_one
+        sql: "{CUBE}.date_key = {date_dim}.date_key"
+      - name: domain_dim
+        relationship: many_to_one
+        sql: "{CUBE}.domain_key = {domain_dim}.domain_key"
+      - name: content_type_dim
+        relationship: many_to_one
+        sql: "{CUBE}.content_type_key = {content_type_dim}.content_type_key"
+
+    dimensions:
+      - name: url
+        sql: url
+        type: string
+        primary_key: true
+
+      - name: title
+        sql: title
+        type: string
+
+      - name: content_hash
+        sql: content_hash
+        type: string
+
+      - name: embedding_wing
+        sql: embedding_wing
+        type: string
+        title: Mempalace Wing
+
+      - name: embedding_room
+        sql: embedding_room
+        type: string
+        title: Mempalace Room
+
+      - name: has_code_samples
+        sql: has_code_samples
+        type: boolean
+
+      - name: has_api_references
+        sql: has_api_references
+        type: boolean
+
+    measures:
+      - name: total_pages
+        sql: page_content_id
+        type: count
+        title: Total Unique Pages
+
+      - name: total_markdown_bytes
+        sql: markdown_bytes
+        type: sum
+        title: Total Markdown Size
+
+      - name: total_tokens
+        sql: token_count
+        type: sum
+
+      - name: avg_headings
+        sql: heading_count
+        type: avg
+        title: Avg Headings Per Page
+
+      - name: total_code_blocks
+        sql: code_block_count
+        type: sum
+
+      - name: total_links
+        sql: link_count
+        type: sum
+
+      - name: pages_with_code
+        sql: page_content_id
+        type: count
+        filters:
+          - sql: "{CUBE}.has_code_samples = true"
+
+      - name: pages_with_api_refs
+        sql: page_content_id
+        type: count
+        filters:
+          - sql: "{CUBE}.has_api_references = true"
+
+      - name: total_lance_records
+        sql: lance_record_count
+        type: sum
+        title: Total LanceDB Records
+
+  # ── Dimension: Date ────────────────────────────────────
+  - name: date_dim
+    sql_table: dim_date
+    title: Date
+    description: Role-playing date dimension (SCD Type 0)
+
+    dimensions:
+      - name: date_key
+        sql: date_key
+        type: number
+        primary_key: true
+
+      - name: full_date
+        sql: full_date
+        type: time
+
+      - name: day_of_week
+        sql: day_of_week
+        type: string
+
+      - name: month_name
+        sql: month_name
+        type: string
+
+      - name: quarter
+        sql: quarter
+        type: number
+
+      - name: year
+        sql: year
+        type: number
+
+      - name: is_weekend
+        sql: is_weekend
+        type: boolean
+
+  # ── Dimension: Domain ──────────────────────────────────
+  - name: domain_dim
+    sql_table: dim_domain
+    title: Domain
+    description: Website domain dimension (SCD Type 1)
+
+    dimensions:
+      - name: domain_key
+        sql: domain_key
+        type: number
+        primary_key: true
+
+      - name: domain_name
+        sql: domain_name
+        type: string
+        title: Domain Name
+
+      - name: tld
+        sql: tld
+        type: string
+        title: Top-Level Domain
+
+      - name: sitemap_url
+        sql: sitemap_url
+        type: string
+
+      - name: total_pages_discovered
+        sql: total_pages_discovered
+        type: number
+
+    measures:
+      - name: count
+        sql: domain_key
+        type: count
+        title: Total Domains
+
+  # ── Dimension: Content Type ────────────────────────────
+  - name: content_type_dim
+    sql_table: dim_content_type
+    title: Content Type
+    description: Page content classification (SCD Type 0)
+
+    dimensions:
+      - name: content_type_key
+        sql: content_type_key
+        type: number
+        primary_key: true
+
+      - name: content_type_code
+        sql: content_type_code
+        type: string
+        title: Content Type Code
+
+      - name: content_type_label
+        sql: content_type_label
+        type: string
+        title: Content Type
+
+    measures:
+      - name: count
+        sql: content_type_key
+        type: count
+
+  # ── Dimension: Extraction Model ────────────────────────
+  - name: extraction_dim
+    sql_table: dim_extraction
+    title: Extraction Model
+    description: Extraction pipeline version (SCD Type 2 — history tracked)
+
+    dimensions:
+      - name: extraction_key
+        sql: extraction_key
+        type: number
+        primary_key: true
+
+      - name: model_name
+        sql: model_name
+        type: string
+
+      - name: pipeline_version
+        sql: pipeline_version
+        type: string
+
+      - name: is_current
+        sql: is_current
+        type: boolean
+
+      - name: effective_date
+        sql: effective_date
+        type: time
+
+  # ── Dimension: Crawl Session ───────────────────────────
+  - name: session_dim
+    sql_table: dim_crawl_session
+    title: Crawl Session
+    description: Pipeline execution session
+
+    dimensions:
+      - name: session_key
+        sql: session_key
+        type: number
+        primary_key: true
+
+      - name: session_id
+        sql: session_id
+        type: string
+
+      - name: pipeline_name
+        sql: pipeline_name
+        type: string
+
+      - name: started_at
+        sql: started_at
+        type: time
+
+    measures:
+      - name: total_sessions
+        sql: session_key
+        type: count
+
+      - name: total_pages_crawled
+        sql: total_pages_crawled
+        type: sum
+
+      - name: total_errors
+        sql: total_errors
+        type: sum
+
+      - name: avg_bloom_fp_rate
+        sql: bloom_fp_rate
+        type: avg
+        title: Avg Bloom FP Rate

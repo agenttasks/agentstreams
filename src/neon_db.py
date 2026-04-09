@@ -437,6 +437,233 @@ async def record_evaluation_result(
     return row[0]
 
 
+# ── Kimball dimensional operations ──────────────────────
+
+
+async def upsert_dim_domain(
+    conn,
+    *,
+    domain_name: str,
+    tld: str,
+    sitemap_url: str = "",
+) -> int:
+    """Upsert a domain dimension record (SCD Type 1). Returns domain_key."""
+    row = await (
+        await conn.execute(
+            """INSERT INTO dim_domain (domain_name, tld, sitemap_url, last_crawled_at)
+               VALUES (%s, %s, %s, now())
+               ON CONFLICT (domain_name) DO UPDATE SET
+                   last_crawled_at = now(),
+                   sitemap_url = COALESCE(NULLIF(EXCLUDED.sitemap_url, ''), dim_domain.sitemap_url)
+               RETURNING domain_key""",
+            (domain_name, tld, sitemap_url),
+        )
+    ).fetchone()
+    return row[0]
+
+
+async def increment_domain_pages(conn, domain_key: int, discovered: int) -> None:
+    """Increment total_pages_discovered for a domain."""
+    await conn.execute(
+        """UPDATE dim_domain SET total_pages_discovered = total_pages_discovered + %s
+           WHERE domain_key = %s""",
+        (discovered, domain_key),
+    )
+
+
+async def get_or_create_content_type(conn, content_type_code: str) -> int:
+    """Get content_type_key, creating if needed. Returns content_type_key."""
+    row = await (
+        await conn.execute(
+            "SELECT content_type_key FROM dim_content_type WHERE content_type_code = %s",
+            (content_type_code,),
+        )
+    ).fetchone()
+    if row:
+        return row[0]
+    row = await (
+        await conn.execute(
+            """INSERT INTO dim_content_type (content_type_code, content_type_label)
+               VALUES (%s, %s) RETURNING content_type_key""",
+            (content_type_code, content_type_code.replace("-", " ").title()),
+        )
+    ).fetchone()
+    return row[0]
+
+
+async def get_or_create_extraction(
+    conn,
+    *,
+    model_name: str,
+    pipeline_version: str,
+    config_hash: str = "",
+) -> int:
+    """Get current extraction dimension key, creating if needed."""
+    row = await (
+        await conn.execute(
+            """SELECT extraction_key FROM dim_extraction
+               WHERE model_name = %s AND pipeline_version = %s AND is_current = true""",
+            (model_name, pipeline_version),
+        )
+    ).fetchone()
+    if row:
+        return row[0]
+    row = await (
+        await conn.execute(
+            """INSERT INTO dim_extraction (model_name, pipeline_version, config_hash)
+               VALUES (%s, %s, %s) RETURNING extraction_key""",
+            (model_name, pipeline_version, config_hash),
+        )
+    ).fetchone()
+    return row[0]
+
+
+async def create_crawl_session(
+    conn,
+    *,
+    session_id: str,
+    pipeline_name: str,
+    config: dict | None = None,
+) -> int:
+    """Create a crawl session dimension record. Returns session_key."""
+    row = await (
+        await conn.execute(
+            """INSERT INTO dim_crawl_session (session_id, pipeline_name, config)
+               VALUES (%s, %s, %s) RETURNING session_key""",
+            (session_id, pipeline_name, json.dumps(config or {})),
+        )
+    ).fetchone()
+    return row[0]
+
+
+async def complete_crawl_session(
+    conn,
+    session_key: int,
+    *,
+    total_urls: int,
+    total_pages: int,
+    total_new: int,
+    total_errors: int,
+    bloom_fp_rate: float = 0.0,
+) -> None:
+    """Mark a crawl session as completed with summary stats."""
+    await conn.execute(
+        """UPDATE dim_crawl_session SET
+               ended_at = now(),
+               total_urls_discovered = %s,
+               total_pages_crawled = %s,
+               total_pages_new = %s,
+               total_errors = %s,
+               bloom_fp_rate = %s
+           WHERE session_key = %s""",
+        (total_urls, total_pages, total_new, total_errors, bloom_fp_rate, session_key),
+    )
+
+
+async def insert_fact_crawl_event(
+    conn,
+    *,
+    date_key: int,
+    domain_key: int,
+    content_type_key: int | None,
+    extraction_key: int | None,
+    session_key: int,
+    url: str,
+    content_hash: str = "",
+    title: str = "",
+    status_code: int = 200,
+    response_time_ms: int | None = None,
+    content_bytes: int = 0,
+    markdown_bytes: int = 0,
+    token_count: int = 0,
+    chunk_count: int = 0,
+    is_new_url: bool = True,
+    is_duplicate_content: bool = False,
+    is_error: bool = False,
+    orjson_cache_path: str = "",
+) -> int:
+    """Insert a crawl event fact row. Returns crawl_event_id."""
+    row = await (
+        await conn.execute(
+            """INSERT INTO fact_crawl_events (
+                   date_key, domain_key, content_type_key, extraction_key,
+                   session_key, url, content_hash, title, status_code,
+                   response_time_ms, content_bytes, markdown_bytes,
+                   token_count, chunk_count, is_new_url,
+                   is_duplicate_content, is_error, orjson_cache_path)
+               VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+               RETURNING crawl_event_id""",
+            (
+                date_key, domain_key, content_type_key, extraction_key,
+                session_key, url, content_hash, title, status_code,
+                response_time_ms, content_bytes, markdown_bytes,
+                token_count, chunk_count, is_new_url,
+                is_duplicate_content, is_error, orjson_cache_path,
+            ),
+        )
+    ).fetchone()
+    return row[0]
+
+
+async def upsert_fact_page_content(
+    conn,
+    *,
+    date_key: int,
+    domain_key: int,
+    content_type_key: int | None,
+    url: str,
+    content_hash: str,
+    title: str = "",
+    markdown_bytes: int = 0,
+    raw_html_bytes: int = 0,
+    token_count: int = 0,
+    heading_count: int = 0,
+    link_count: int = 0,
+    code_block_count: int = 0,
+    image_count: int = 0,
+    has_structured_data: bool = False,
+    has_code_samples: bool = False,
+    has_api_references: bool = False,
+    embedding_wing: str = "docs",
+    embedding_room: str = "",
+    lance_record_count: int = 0,
+) -> int:
+    """Upsert a page content snapshot fact. Returns page_content_id."""
+    row = await (
+        await conn.execute(
+            """INSERT INTO fact_page_content (
+                   date_key, domain_key, content_type_key, url, content_hash,
+                   title, markdown_bytes, raw_html_bytes, token_count,
+                   heading_count, link_count, code_block_count, image_count,
+                   has_structured_data, has_code_samples, has_api_references,
+                   embedding_wing, embedding_room, lance_record_count)
+               VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+               ON CONFLICT (url) DO UPDATE SET
+                   content_hash = EXCLUDED.content_hash,
+                   title = EXCLUDED.title,
+                   markdown_bytes = EXCLUDED.markdown_bytes,
+                   token_count = EXCLUDED.token_count,
+                   heading_count = EXCLUDED.heading_count,
+                   link_count = EXCLUDED.link_count,
+                   code_block_count = EXCLUDED.code_block_count,
+                   image_count = EXCLUDED.image_count,
+                   has_code_samples = EXCLUDED.has_code_samples,
+                   has_api_references = EXCLUDED.has_api_references,
+                   lance_record_count = EXCLUDED.lance_record_count,
+                   last_updated_at = now()
+               RETURNING page_content_id""",
+            (
+                date_key, domain_key, content_type_key, url, content_hash,
+                title, markdown_bytes, raw_html_bytes, token_count,
+                heading_count, link_count, code_block_count, image_count,
+                has_structured_data, has_code_samples, has_api_references,
+                embedding_wing, embedding_room, lance_record_count,
+            ),
+        )
+    ).fetchone()
+    return row[0]
+
+
 async def complete_harness_run(
     conn,
     run_id: int,
