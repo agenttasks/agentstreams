@@ -10,7 +10,7 @@ Progression across models (from system cards):
   Mythos    → Emotion probes + activation steering + SAE feature interventions
 
 Repos: safety-research/persona_vectors, safety-research/assistant-axis,
-       safety-research/weight-steering, decoderesearch/circuit-tracer
+       decoderesearch/circuit-tracer
 """
 
 from __future__ import annotations

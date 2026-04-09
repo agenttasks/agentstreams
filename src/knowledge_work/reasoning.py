@@ -15,7 +15,7 @@ Progression across models:
   Mythos    → Unverbalized grader awareness, encoded content ruled out
 
 Repos: safety-research/petri, safety-research/lie-detector,
-       safety-research/trusted-monitor, safety-research/introspection-mechanisms
+       safety-research/trusted-monitor
 """
 
 from __future__ import annotations

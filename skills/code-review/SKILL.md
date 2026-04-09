@@ -20,9 +20,9 @@ PR diff → harmlessness-screen → parallel analysis → synthesis → verdict
 
 ## How to Use
 
-1. Point to a PR: `agentstreams eval review --pr 123`
-2. Or review local changes: `agentstreams eval review --diff HEAD~1`
-3. Or review specific files: `agentstreams eval review --files src/cli.py src/hooks.py`
+1. Use the /review slash command in a Claude Code session
+2. Or run the codegen eval: `agentstreams eval codegen --models sonnet`
+3. Or run promptfoo suites: `agentstreams eval promptfoo`
 
 ## Review Checklist
 
