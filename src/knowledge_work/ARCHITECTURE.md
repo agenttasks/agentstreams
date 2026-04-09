@@ -56,7 +56,7 @@ opinionated" — these are training-layer properties that directly affect
 Layers 3-8.
 
 **Repos that feed this layer:**
-- anthropics/hh-rlhf (1.8K★) — human preference data
+- anthropics/hh-rlhf (1,837★) — human preference data
 - anthropics/claude-constitution (64★) — behavioral specification
 - safety-research/open-source-alignment-faking (56★) — alignment verification
 
@@ -88,7 +88,7 @@ financial analysis. Steering enables task-appropriate personality tuning.
 **Repos that feed this layer:**
 - safety-research/persona_vectors (388★) — monitoring/controlling character traits
 - safety-research/assistant-axis (120★) — assistant-like behavior direction
-- decoderesearch/circuit-tracer (2.7K★) — feature_intervention() API
+- decoderesearch/circuit-tracer (2,695★) — feature_intervention() API
 
 ---
 

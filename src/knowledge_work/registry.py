@@ -6,8 +6,8 @@ Sourced via GitHub GraphQL/search API from:
   - safety-research (35 repos, 3.5K+ total ★)
   - decoderesearch (3 repos, 4K+ total ★)
 
-Maps every repo to a knowledge-work layer (1-8) and tracks dependencies
-between repos that are relevant to the abstraction stack.
+Maps every repo to a knowledge-work layer (0-10, including L1.5, L2.5,
+L7.5) and tracks dependencies between repos across the 14-layer stack.
 
 Uses CLAUDE_CODE_OAUTH_TOKEN for auth (never ANTHROPIC_API_KEY).
 """
@@ -27,18 +27,28 @@ class Org(Enum):
 
 
 class Layer(Enum):
-    """Which knowledge-work layer a repo maps to."""
+    """Which knowledge-work layer a repo maps to.
 
-    CIRCUITS = 1  # Feature circuits, interpretability
-    TRACERS = 2  # Circuit tracing, attribution
-    PROMPTS = 3  # Prompt engineering, templates
-    TASKS = 4  # Task definitions, routing
-    SUBTASKS = 5  # Subtask decomposition
-    SUBAGENTS = 6  # Subagent orchestration
-    HARNESS = 7  # Agent harness, runtime loop
-    EVALS = 8  # Evaluation, benchmarking
-    INFRA = 0  # Infrastructure (SDKs, MCP protocol)
-    SAFETY = -1  # Safety research (cross-cutting)
+    Values are 10× the layer ID so half-integer layers (1.5, 2.5, 7.5)
+    can be represented as ints. Use layer.value / 10 for display.
+    """
+
+    SAFETY = -10  # Safety research (cross-cutting)
+    TRAINING = 0  # L0: RLHF, Constitutional AI, character formation
+    INFRA = 1  # Infrastructure (SDKs, MCP protocol)
+    CIRCUITS = 10  # L1: Feature circuits, interpretability
+    STEERING = 15  # L1.5: Activation steering, persona vectors
+    TRACERS = 20  # L2: Circuit tracing, attribution
+    REASONING = 25  # L2.5: Scratchpad faithfulness, reasoning monitor
+    PROMPTS = 30  # L3: Prompt engineering, templates
+    TASKS = 40  # L4: Task definitions, routing
+    SUBTASKS = 50  # L5: Subtask decomposition
+    SUBAGENTS = 60  # L6: Subagent orchestration
+    HARNESS = 70  # L7: Agent harness, runtime loop
+    BEHAVIORAL_SAFETY = 75  # L7.5: Behavioral audit, reward hacking
+    EVALS = 80  # L8: Evaluation, benchmarking
+    WELFARE = 90  # L9: Model affect, distress detection
+    GOVERNANCE = 100  # L10: RSP, ASL levels, release decisions
 
 
 @dataclass

@@ -337,7 +337,7 @@ def layers_list() -> None:
         repos = reg.by_layer(layer)
         if repos:
             table.add_row(
-                str(layer.value),
+                str(layer.value / 10) if layer.value >= 10 else str(layer.value),
                 layer.name.lower(),
                 str(len(repos)),
                 f"{sum(r.stars for r in repos):,}",
