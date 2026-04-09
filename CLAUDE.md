@@ -25,7 +25,7 @@ When reviewing PRs, check:
 - Versions are consistent across `SKILL.md`, language READMEs, `package-matrix.md`, and setup scripts
 - Cross-references in "Further Reading" sections point to files that actually exist
 - Every language README mentions its MCP SDK availability
-- Star counts are consistent across files for the same repositories
+- Star counts intentionally omitted — they go stale immediately
 - SDK constructor patterns match the actual SDK API for each language
 - No `ANTHROPIC_API_KEY` anywhere except "never use" warnings
 

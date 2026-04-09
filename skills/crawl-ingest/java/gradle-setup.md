@@ -28,7 +28,7 @@ dependencies {
     // === Anthropic ===
     implementation 'com.anthropic:anthropic-java:2.5.0'
 
-    // === MCP SDK (maintained with Spring AI — 3.3k★) ===
+    // === MCP SDK (maintained with Spring AI) ===
     implementation 'io.modelcontextprotocol:java-sdk:0.9.0'
 
     // === Web Crawling ===

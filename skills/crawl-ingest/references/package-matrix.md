@@ -4,28 +4,28 @@
 
 | Capability | TypeScript | Python | Java/Kotlin | Go | Ruby | C# | PHP | cURL |
 |---|---|---|---|---|---|---|---|---|
-| **Messages API** | `anthropic-sdk-typescript` (1.8k★) | `anthropic-sdk-python` (3.1k★) | `anthropic-sdk-java` Kotlin (271★) | `anthropic-sdk-go` (943★) | `anthropic-sdk-ruby` (312★) | `anthropic-sdk-csharp` (212★) | `anthropic-sdk-php` (128★) | Raw HTTP |
-| **Agent SDK** | `claude-agent-sdk-typescript` (1.2k★) | `claude-agent-sdk-python` (6k★) | -- | -- | -- | -- | -- | -- |
+| **Messages API** | `anthropic-sdk-typescript` | `anthropic-sdk-python` | `anthropic-sdk-java` Kotlin | `anthropic-sdk-go` | `anthropic-sdk-ruby` | `anthropic-sdk-csharp` | `anthropic-sdk-php` | Raw HTTP |
+| **Agent SDK** | `claude-agent-sdk-typescript` | `claude-agent-sdk-python` | -- | -- | -- | -- | -- | -- |
 | **Bedrock** | `@anthropic-ai/bedrock-sdk` | via `anthropic` | via AWS SDK | via AWS SDK | -- | -- | -- | -- |
 | **Vertex** | `@anthropic-ai/vertex-sdk` | via `anthropic` | via Google SDK | via Google SDK | -- | -- | -- | -- |
 | **Tokenizer** | `@anthropic-ai/tokenizer` | -- | -- | -- | -- | -- | -- | -- |
 
 ## MCP SDK (github.com/modelcontextprotocol)
 
-| Language | Repo | Stars | Maintained by |
-|---|---|---|---|
-| **Python** | `python-sdk` | 22k★ | Anthropic |
-| **TypeScript** | `typescript-sdk` | 12k★ | Anthropic |
-| **Go** | `go-sdk` | 4.3k★ | Google |
-| **C#** | `csharp-sdk` | 4.2k★ | Microsoft |
-| **Java** | `java-sdk` | 3.3k★ | Spring AI |
-| **Rust** | `rust-sdk` | 3.2k★ | Community |
-| **Kotlin** | `kotlin-sdk` | 1.3k★ | JetBrains |
-| **Swift** | `swift-sdk` | 1.3k★ | Community |
-| **Ruby** | `ruby-sdk` | 758★ | Community |
-| **PHP** | `php-sdk` | 125★ | PHP Foundation |
+| Language | Repo | Maintained by |
+|---|---|---|
+| **Python** | `python-sdk` | Anthropic |
+| **TypeScript** | `typescript-sdk` | Anthropic |
+| **Go** | `go-sdk` | Google |
+| **C#** | `csharp-sdk` | Microsoft |
+| **Java** | `java-sdk` | Spring AI |
+| **Rust** | `rust-sdk` | Community |
+| **Kotlin** | `kotlin-sdk` | JetBrains |
+| **Swift** | `swift-sdk` | Community |
+| **Ruby** | `ruby-sdk` | Community |
+| **PHP** | `php-sdk` | PHP Foundation |
 
-Also: `ext-apps` (2k★) — MCP Apps protocol for embedded AI chatbot UIs.
+Also: `ext-apps` — MCP Apps protocol for embedded AI chatbot UIs.
 
 ## Web Crawling
 

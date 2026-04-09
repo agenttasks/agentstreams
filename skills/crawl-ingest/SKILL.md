@@ -43,9 +43,9 @@ Before reading setup docs, determine which language stack the user needs:
 
 | Capability | TypeScript | Python |
 |---|---|---|
-| **Anthropic SDK** | `anthropic-sdk-typescript` (1.8k★) | `anthropic-sdk-python` (3.1k★) |
-| **Agent SDK** | `claude-agent-sdk-typescript` 0.2.88 (1.2k★) | `claude-agent-sdk-python` 0.1.53 (6k★) |
-| **MCP SDK** | `@modelcontextprotocol/sdk` 1.29.0 (12k★) | `mcp` 1.26.0 (22k★) |
+| **Anthropic SDK** | `anthropic-sdk-typescript` | `anthropic-sdk-python` |
+| **Agent SDK** | `claude-agent-sdk-typescript` 0.2.88 | `claude-agent-sdk-python` 0.1.53 |
+| **MCP SDK** | `@modelcontextprotocol/sdk` 1.29.0 | `mcp` 1.26.0 |
 | **Web Crawler** | Crawlee 3.16.0 | Scrapy 2.14.2 |
 | **Bloom Filter** | `bloom-filters` 3.0.4 | `pybloom-live` 4.0.0 |
 | **LSP** | `typescript-language-server` 5.1.3 | `python-lsp-server` 1.14.0 |
@@ -56,8 +56,8 @@ Before reading setup docs, determine which language stack the user needs:
 
 | Capability | Java/Kotlin | Go | C# |
 |---|---|---|---|
-| **Anthropic SDK** | `anthropic-sdk-java` Kotlin (271★) | `anthropic-sdk-go` (943★) | `anthropic-sdk-csharp` (212★) |
-| **MCP SDK** | `mcp/java-sdk` (3.3k★) + `mcp/kotlin-sdk` (1.3k★) | `mcp/go-sdk` (4.3k★) | `mcp/csharp-sdk` (4.2k★) |
+| **Anthropic SDK** | `anthropic-sdk-java` Kotlin | `anthropic-sdk-go` | `anthropic-sdk-csharp` |
+| **MCP SDK** | `mcp/java-sdk` + `mcp/kotlin-sdk` | `mcp/go-sdk` | `mcp/csharp-sdk` |
 | **Web Crawler** | crawler4j + JSoup | Colly v2 + goquery | Abot + AngleSharp |
 | **Bloom Filter** | Guava `BloomFilter` | `bits-and-blooms/bloom` | `BloomFilter.NetCore` |
 | **LSP** | Eclipse JDT LS + LSP4J | gopls | OmniSharp |
@@ -68,8 +68,8 @@ Before reading setup docs, determine which language stack the user needs:
 
 | Capability | Ruby | PHP | cURL |
 |---|---|---|---|
-| **Anthropic SDK** | `anthropic-sdk-ruby` (312★) | `anthropic-sdk-php` (128★) | Raw HTTP |
-| **MCP SDK** | `mcp/ruby-sdk` (758★) | `mcp/php-sdk` (125★) | N/A |
+| **Anthropic SDK** | `anthropic-sdk-ruby` | `anthropic-sdk-php` | Raw HTTP |
+| **MCP SDK** | `mcp/ruby-sdk` | `mcp/php-sdk` | N/A |
 | **Web Crawler** | Mechanize + Nokogiri | Symfony HttpClient + DomCrawler | wget / curl |
 | **Bloom Filter** | `bloomer` | `pleonasm/bloom-filter` | sort -u / sqlite |
 | **LSP** | Solargraph | Phpactor | N/A |

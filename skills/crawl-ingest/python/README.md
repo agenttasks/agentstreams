@@ -35,7 +35,7 @@ uv add --dev python-lsp-ruff==2.3.0
 |---------|---------|---------|
 | `anthropic` | 0.86.0 | Official Python SDK — messages, streaming, tool use, structured outputs |
 | `claude-agent-sdk` | 0.1.53 | Headless agent — `query()`, `ClaudeSDKClient` |
-| `mcp` | 1.26.0 | Official MCP SDK — servers, clients, tools, resources (22k★) |
+| `mcp` | 1.26.0 | Official MCP SDK — servers, clients, tools, resources |
 | `scrapy` | 2.14.2 | Web crawling framework — spiders, middleware, pipelines |
 | `scrapy-playwright` | 0.0.46 | Playwright integration for JS-rendered pages |
 | `pybloom-live` | 4.0.0 | Bloom filter implementation — `BloomFilter`, `ScalableBloomFilter` |

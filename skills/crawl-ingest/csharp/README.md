@@ -33,7 +33,7 @@ dotnet restore
 | `BloomFilter.NetCore` | Bloom filter implementation |
 | `OmniSharp` | C# LSP server |
 
-**Note:** No Agent SDK for C#. MCP SDK is available: `modelcontextprotocol/csharp-sdk` (4.2k★, maintained by Microsoft). Manual tool loop only (no runner).
+**Note:** No Agent SDK for C#. MCP SDK is available: `modelcontextprotocol/csharp-sdk` (maintained by Microsoft). Manual tool loop only (no runner).
 
 ## Quick Start: Abot + Claude + Bloom Filter
 

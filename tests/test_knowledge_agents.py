@@ -56,10 +56,10 @@ class TestSkillCatalog:
     def test_catalog_populated(self):
         assert len(SKILL_CATALOG) >= 100
 
-    def test_top_skill_by_installs(self):
-        top = max(SKILL_CATALOG.values(), key=lambda m: m.installs)
-        assert top.name == "data-visualization"
-        assert top.installs == 3800
+    def test_all_installs_are_zero(self):
+        """Install counts intentionally omitted — they go stale immediately."""
+        for name, meta in SKILL_CATALOG.items():
+            assert meta.installs == 0, f"{name} has non-zero installs"
 
     def test_every_skill_has_category(self):
         for name, meta in SKILL_CATALOG.items():
@@ -421,9 +421,10 @@ class TestConvenienceFunctions:
         for s in skills:
             assert s.category == PluginCategory.LEGAL
 
-    def test_total_installs(self):
+    def test_total_installs_zero(self):
+        """Install counts intentionally omitted — they go stale immediately."""
         total = total_installs()
-        assert total > 50000
+        assert total == 0
 
 
 # ── Financial Services Plugin Tests ──────────────────────────

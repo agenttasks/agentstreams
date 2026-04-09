@@ -44,7 +44,7 @@ Before reading setup docs, determine which language stack the user needs:
 
 | Capability | TypeScript | Python |
 |---|---|---|
-| **Anthropic SDK** | `anthropic-sdk-typescript` (1.8k★) | `anthropic-sdk-python` (3.1k★) |
+| **Anthropic SDK** | `anthropic-sdk-typescript` | `anthropic-sdk-python` |
 | **HTTP Client** | `axios` 1.9 / native `fetch` | `httpx` 0.28 / `aiohttp` 3.11 |
 | **OpenAPI Codegen** | `openapi-typescript` 7.8 | `openapi-python-client` 0.24 |
 | **API Testing** | `vitest` 3.1 + `msw` 2.7 | `pytest` 8.4 + `respx` 0.22 |
@@ -56,7 +56,7 @@ Before reading setup docs, determine which language stack the user needs:
 
 | Capability | Java/Kotlin | Go | C# |
 |---|---|---|---|
-| **Anthropic SDK** | `anthropic-sdk-java` (271★) | `anthropic-sdk-go` (943★) | `anthropic-sdk-csharp` (212★) |
+| **Anthropic SDK** | `anthropic-sdk-java` | `anthropic-sdk-go` | `anthropic-sdk-csharp` |
 | **HTTP Client** | OkHttp 4.12 / Retrofit 2.11 | `net/http` + `resty` v2 | `HttpClient` / RestSharp 112 |
 | **OpenAPI Codegen** | openapi-generator (Java) | oapi-codegen 2.4 | NSwag 14 / Kiota |
 | **API Testing** | JUnit 5 + WireMock 3.12 | `net/http/httptest` | xUnit + WireMock.Net 1.6 |
@@ -67,7 +67,7 @@ Before reading setup docs, determine which language stack the user needs:
 
 | Capability | Ruby | PHP | cURL |
 |---|---|---|---|
-| **Anthropic SDK** | `anthropic-sdk-ruby` (312★) | `anthropic-sdk-php` (128★) | Raw HTTP |
+| **Anthropic SDK** | `anthropic-sdk-ruby` | `anthropic-sdk-php` | Raw HTTP |
 | **HTTP Client** | Faraday 2.12 | Guzzle 7.9 | curl |
 | **OpenAPI Codegen** | openapi-generator (Ruby) | openapi-generator (PHP) | N/A |
 | **API Testing** | RSpec 3.13 + WebMock 3.24 | PHPUnit 11 + MockHandler | Shell assertions |

@@ -194,10 +194,10 @@ stack:
     class: EcosystemRegistry
     description: "Maps 79 repos across 4 orgs to the 14-layer stack"
     orgs:
-      - {name: anthropics, repos: 35, stars: "370K+"}
-      - {name: modelcontextprotocol, repos: 18, stars: "163K+"}
-      - {name: safety-research, repos: 23, stars: "3.5K+"}
-      - {name: decoderesearch, repos: 3, stars: "4K+"}
+      - {name: anthropics, repos: 35}
+      - {name: modelcontextprotocol, repos: 18}
+      - {name: safety-research, repos: 23}
+      - {name: decoderesearch, repos: 3}
     exports: [EcosystemRegistry, RepoEntry, Org, Layer]
 
   dependency_flow: |
