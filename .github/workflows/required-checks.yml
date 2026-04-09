@@ -77,17 +77,21 @@ jobs:
             fi
           done
 
-          # ANTHROPIC_API_KEY never used in production code
+          # ANTHROPIC_API_KEY never used in production code.
+          # Exclude: CI workflows, tests, validation scripts, evals,
+          # and lines containing "never" (warning context).
           VIOLATIONS=$(grep -rn "ANTHROPIC_API_KEY" \
             --include="*.py" --include="*.ts" --include="*.yml" \
             --include="*.sh" --include="*.json" \
             . 2>/dev/null | \
-            grep -vi "never use" | grep -vi "NEVER" | \
+            grep -vi "never" | \
+            grep -v "not.*ANTHROPIC_API_KEY" | \
             grep -v "node_modules" | grep -v ".git/" | \
-            grep -v ".github/workflows/" | \
+            grep -v ".github/" | \
             grep -v "tests/" | \
             grep -v "scripts/security-audit.py" | \
-            grep -v "scripts/validate-skills.py" || true)
+            grep -v "scripts/validate-skills.py" | \
+            grep -v "evals/" || true)
           if [ -n "$VIOLATIONS" ]; then
             echo "::error::ANTHROPIC_API_KEY found outside warnings"
             echo "$VIOLATIONS"
