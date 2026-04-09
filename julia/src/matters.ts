@@ -9,7 +9,6 @@
  * Auth: CLAUDE_CODE_OAUTH_TOKEN (never ANTHROPIC_API_KEY).
  */
 
-import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
 import {
   Ok,
   Err,
@@ -18,25 +17,7 @@ import {
   type Result,
   type MatterUsageStats,
 } from "./types.js";
-
-// ── Lazy SQL connection ──────────────────────────────────────
-
-let _sql: NeonQueryFunction<false, false> | null = null;
-
-/**
- * Returns a cached Neon SQL function constructed from NEON_DATABASE_URL.
- * Throws if the environment variable is not set.
- */
-function getSql(): NeonQueryFunction<false, false> {
-  if (_sql === null) {
-    const url = process.env["NEON_DATABASE_URL"];
-    if (!url) {
-      throw new Error("NEON_DATABASE_URL is not set");
-    }
-    _sql = neon(url);
-  }
-  return _sql;
-}
+import { getSql } from "./db.js";
 
 // ── Public API ───────────────────────────────────────────────
 
@@ -57,7 +38,9 @@ export async function addMatters(
   }
 
   try {
-    const sql = getSql();
+    const sqlResult = getSql();
+    if (!sqlResult.ok) return sqlResult;
+    const sql = sqlResult.value;
 
     // Build a multi-row VALUES list with positional parameters.
     // Each matter produces 2 params (name, description); id and timestamps
@@ -111,7 +94,9 @@ export async function getMatters(): Promise<
   Result<Map<MatterId, ClientMatter & { usage: MatterUsageStats }>>
 > {
   try {
-    const sql = getSql();
+    const sqlResult = getSql();
+    if (!sqlResult.ok) return sqlResult;
+    const sql = sqlResult.value;
     const rows = await sql`
       SELECT
         id,
@@ -172,7 +157,9 @@ export async function deleteMatters(ids: MatterId[]): Promise<Result<void>> {
   }
 
   try {
-    const sql = getSql();
+    const sqlResult = getSql();
+    if (!sqlResult.ok) return sqlResult;
+    const sql = sqlResult.value;
     // Cast to text[] so Neon can bind the array parameter.
     await sql`
       UPDATE julia_client_matters
@@ -206,7 +193,9 @@ export async function associateQuery(
   tokens: number,
 ): Promise<Result<void>> {
   try {
-    const sql = getSql();
+    const sqlResult = getSql();
+    if (!sqlResult.ok) return sqlResult;
+    const sql = sqlResult.value;
     await sql`
       UPDATE julia_client_matters
       SET    query_count = query_count + 1,

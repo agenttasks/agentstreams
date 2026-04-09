@@ -17,16 +17,10 @@ import {
   type Verdict,
   type RiskScore,
   type LegalSkill,
-  type ProjectId,
-  type MatterId,
-  type FileId,
   type ReviewTableId,
-  type ReviewColumn,
   type Result,
   type AnalysisResult,
   Ok,
-  Err,
-  assertNever,
 } from "./types.js";
 
 // ── Pipeline Step Types (discriminated union) ────────────────
@@ -200,31 +194,28 @@ export async function executePipeline(
       }),
     );
 
-    // Collect results and check gate
+    // Collect all results from the order group first
     for (const { step, result, duration_ms } of groupResults) {
       if (result) {
         allResults.push(result);
       }
-      const gateDecision = checkGate(config.gate, allResults);
-      stepResults.push({ step, result, gateDecision, duration_ms });
+      stepResults.push({ step, result, gateDecision: "continue", duration_ms });
+    }
 
-      if (gateDecision === "abort") {
-        return Ok({
-          pipeline: config.name,
-          steps: stepResults,
-          finalGate: "abort",
-          total_duration_ms: Date.now() - t0,
-        });
+    // Gate check AFTER entire order group completes (not mid-group)
+    const gateDecision = checkGate(config.gate, allResults);
+    if (gateDecision !== "continue") {
+      // Update the last step's gate decision for reporting
+      const lastStep = stepResults[stepResults.length - 1];
+      if (lastStep) {
+        lastStep.gateDecision = gateDecision;
       }
-
-      if (gateDecision === "human_review") {
-        return Ok({
-          pipeline: config.name,
-          steps: stepResults,
-          finalGate: "human_review",
-          total_duration_ms: Date.now() - t0,
-        });
-      }
+      return Ok({
+        pipeline: config.name,
+        steps: stepResults,
+        finalGate: gateDecision,
+        total_duration_ms: Date.now() - t0,
+      });
     }
   }
 

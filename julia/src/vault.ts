@@ -15,7 +15,6 @@
  */
 
 import { createHash } from "node:crypto";
-import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
 import {
   Ok,
   Err,
@@ -35,26 +34,7 @@ import {
   type ReviewRow,
   type SearchResult,
 } from "./types.js";
-
-// ── Lazy SQL connection ───────────────────────────────────────
-
-let _sql: NeonQueryFunction<false, false> | null = null;
-
-/**
- * Returns a cached Neon SQL function constructed from NEON_DATABASE_URL.
- * Initialised once on first call (lazy singleton).
- * Throws if the environment variable is not set.
- */
-function getSql(): NeonQueryFunction<false, false> {
-  if (_sql === null) {
-    const url = process.env["NEON_DATABASE_URL"];
-    if (!url) {
-      throw new Error("NEON_DATABASE_URL is not set");
-    }
-    _sql = neon(url);
-  }
-  return _sql;
-}
+import { getSql } from "./db.js";
 
 // ── Helper: overlapping text chunker ─────────────────────────
 
@@ -175,7 +155,9 @@ export async function createProject(
   },
 ): Promise<Result<ReturnType<typeof ProjectId>>> {
   try {
-    const sql = getSql();
+    const sqlResult = getSql();
+    if (!sqlResult.ok) return sqlResult;
+    const sql = sqlResult.value;
     const description = opts?.description ?? "";
     const isKnowledgeBase = opts?.isKnowledgeBase ?? false;
     const clientMatterId = opts?.clientMatterId ?? null;
@@ -238,7 +220,9 @@ export async function uploadFile(
   mimeType: string,
 ): Promise<Result<ReturnType<typeof FileId>>> {
   try {
-    const sql = getSql();
+    const sqlResult = getSql();
+    if (!sqlResult.ok) return sqlResult;
+    const sql = sqlResult.value;
 
     // 1. Compute file-level content hash
     const fileHash = createHash("sha256").update(content, "utf8").digest("hex");
@@ -361,7 +345,9 @@ export async function semanticSearch(
   limit: number = 10,
 ): Promise<Result<SearchResult[]>> {
   try {
-    const sql = getSql();
+    const sqlResult = getSql();
+    if (!sqlResult.ok) return sqlResult;
+    const sql = sqlResult.value;
     const queryVec = hashEmbedding(query);
     const queryLiteral = `[${Array.from(queryVec).join(",")}]`;
 
@@ -424,7 +410,9 @@ export async function getFileDetails(
   }
 
   try {
-    const sql = getSql();
+    const sqlResult = getSql();
+    if (!sqlResult.ok) return sqlResult;
+    const sql = sqlResult.value;
 
     const rows = await sql`
       SELECT
@@ -485,7 +473,9 @@ export async function deleteFile(
   fileId: ReturnType<typeof FileId>,
 ): Promise<Result<void>> {
   try {
-    const sql = getSql();
+    const sqlResult = getSql();
+    if (!sqlResult.ok) return sqlResult;
+    const sql = sqlResult.value;
 
     // DELETE cascades to julia_vault_file_chunks via FK constraint
     await sql`
@@ -538,7 +528,9 @@ export async function createReviewTable(
   fileIds: Array<ReturnType<typeof FileId>>,
 ): Promise<Result<ReviewTableIdType>> {
   try {
-    const sql = getSql();
+    const sqlResult = getSql();
+    if (!sqlResult.ok) return sqlResult;
+    const sql = sqlResult.value;
     const columnsJson = JSON.stringify(columns);
     const fileIdsJson = JSON.stringify(fileIds);
 
@@ -604,7 +596,9 @@ export async function getReviewRow(
   fileId: ReturnType<typeof FileId>,
 ): Promise<Option<ReviewRow>> {
   try {
-    const sql = getSql();
+    const sqlResult = getSql();
+    if (!sqlResult.ok) return sqlResult;
+    const sql = sqlResult.value;
 
     const rows = await sql`
       SELECT

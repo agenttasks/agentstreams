@@ -13,7 +13,6 @@
  * Auth: CLAUDE_CODE_OAUTH_TOKEN (never ANTHROPIC_API_KEY).
  */
 
-import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
 import {
   Ok,
   Err,
@@ -28,25 +27,7 @@ import {
   type AuditLogEntry,
   type JuliaEvent,
 } from "./types.js";
-
-// ── Lazy SQL connection ──────────────────────────────────────
-
-let _sql: NeonQueryFunction<false, false> | null = null;
-
-/**
- * Returns a cached Neon SQL function constructed from NEON_DATABASE_URL.
- * Throws if the environment variable is not set.
- */
-function getSql(): NeonQueryFunction<false, false> {
-  if (_sql === null) {
-    const url = process.env["NEON_DATABASE_URL"];
-    if (!url) {
-      throw new Error("NEON_DATABASE_URL is not set");
-    }
-    _sql = neon(url);
-  }
-  return _sql;
-}
+import { getSql } from "./db.js";
 
 // ── Row shape written to the database ───────────────────────
 
@@ -219,7 +200,9 @@ export async function log(
   opts?: { userEmail?: string; model?: string },
 ): Promise<Result<AuditLogId>> {
   try {
-    const sql = getSql();
+    const sqlResult = getSql();
+    if (!sqlResult.ok) return sqlResult;
+    const sql = sqlResult.value;
     const r = eventToRow(event, opts);
 
     const rows = await sql`
@@ -260,77 +243,97 @@ export async function log(
 /**
  * Returns the earliest audit log entry (lowest id).
  *
- * @returns Some(AuditLogEntry) if any rows exist, None otherwise.
+ * @returns Ok(Some(AuditLogEntry)) if found, Ok(None) if empty, Err on failure.
  */
-export async function getEarliest(): Promise<Option<AuditLogEntry>> {
-  const sql = getSql();
-  const rows = await sql`
-    SELECT
-      id, event_type, user_email, client_matter_id, project_id,
-      input_summary, output_summary, model,
-      input_tokens, output_tokens, duration_ms,
-      metadata, created_at
-    FROM julia_audit_logs
-    ORDER BY id ASC
-    LIMIT 1
-  `;
-  const row = rows[0];
-  return row ? Some(rowToEntry(row as Record<string, unknown>)) : None;
+export async function getEarliest(): Promise<Result<Option<AuditLogEntry>>> {
+  try {
+    const sqlResult = getSql();
+    if (!sqlResult.ok) return sqlResult;
+    const sql = sqlResult.value;
+    const rows = await sql`
+      SELECT
+        id, event_type, user_email, client_matter_id, project_id,
+        input_summary, output_summary, model,
+        input_tokens, output_tokens, duration_ms,
+        metadata, created_at
+      FROM julia_audit_logs
+      ORDER BY id ASC
+      LIMIT 1
+    `;
+    const row = rows[0];
+    return Ok(row ? Some(rowToEntry(row as Record<string, unknown>)) : None);
+  } catch (err) {
+    return Err({
+      type: "database_error",
+      message: err instanceof Error ? err.message : String(err),
+    });
+  }
 }
 
 /**
  * Returns the latest audit log entry (highest id).
  *
- * @returns Some(AuditLogEntry) if any rows exist, None otherwise.
+ * @returns Ok(Some(AuditLogEntry)) if found, Ok(None) if empty, Err on failure.
  */
-export async function getLatest(): Promise<Option<AuditLogEntry>> {
-  const sql = getSql();
-  const rows = await sql`
-    SELECT
-      id, event_type, user_email, client_matter_id, project_id,
-      input_summary, output_summary, model,
-      input_tokens, output_tokens, duration_ms,
-      metadata, created_at
-    FROM julia_audit_logs
-    ORDER BY id DESC
-    LIMIT 1
-  `;
-  const row = rows[0];
-  return row ? Some(rowToEntry(row as Record<string, unknown>)) : None;
+export async function getLatest(): Promise<Result<Option<AuditLogEntry>>> {
+  try {
+    const sqlResult = getSql();
+    if (!sqlResult.ok) return sqlResult;
+    const sql = sqlResult.value;
+    const rows = await sql`
+      SELECT
+        id, event_type, user_email, client_matter_id, project_id,
+        input_summary, output_summary, model,
+        input_tokens, output_tokens, duration_ms,
+        metadata, created_at
+      FROM julia_audit_logs
+      ORDER BY id DESC
+      LIMIT 1
+    `;
+    const row = rows[0];
+    return Ok(row ? Some(rowToEntry(row as Record<string, unknown>)) : None);
+  } catch (err) {
+    return Err({
+      type: "database_error",
+      message: err instanceof Error ? err.message : String(err),
+    });
+  }
 }
 
 /**
- * Async generator that pages forward through audit logs starting after
- * the given cursor id.
+ * Pages forward through audit logs starting after the given cursor id.
  *
- * Usage:
- *   for await (const entry of queryForward(fromId, 50)) { ... }
- *
- * The generator fetches exactly one page of `take` rows per SQL call.
- * Callers control pagination by tracking the last yielded entry's id.
+ * Returns Result wrapping the entries array instead of an async generator,
+ * so SQL errors are captured in the Result rather than thrown from next().
  *
  * @param fromId - Exclusive lower-bound cursor (entries with id > fromId).
- * @param take   - Maximum number of entries to yield.
+ * @param take   - Maximum number of entries to return.
  */
-export async function* queryForward(
+export async function queryForward(
   fromId: AuditLogId,
   take: number,
-): AsyncGenerator<AuditLogEntry> {
-  const sql = getSql();
-  const rows = await sql`
-    SELECT
-      id, event_type, user_email, client_matter_id, project_id,
-      input_summary, output_summary, model,
-      input_tokens, output_tokens, duration_ms,
-      metadata, created_at
-    FROM julia_audit_logs
-    WHERE id > ${fromId as number}
-    ORDER BY id ASC
-    LIMIT ${take}
-  `;
-
-  for (const row of rows) {
-    yield rowToEntry(row as Record<string, unknown>);
+): Promise<Result<AuditLogEntry[]>> {
+  try {
+    const sqlResult = getSql();
+    if (!sqlResult.ok) return sqlResult;
+    const sql = sqlResult.value;
+    const rows = await sql`
+      SELECT
+        id, event_type, user_email, client_matter_id, project_id,
+        input_summary, output_summary, model,
+        input_tokens, output_tokens, duration_ms,
+        metadata, created_at
+      FROM julia_audit_logs
+      WHERE id > ${fromId as number}
+      ORDER BY id ASC
+      LIMIT ${take}
+    `;
+    return Ok(rows.map((row) => rowToEntry(row as Record<string, unknown>)));
+  } catch (err) {
+    return Err({
+      type: "database_error",
+      message: err instanceof Error ? err.message : String(err),
+    });
   }
 }
 
@@ -339,23 +342,39 @@ export async function* queryForward(
  * timestamp (i.e., the closest entry at or after that point in time).
  *
  * @param timestamp - Lower-bound timestamp for the search.
- * @returns Some(AuditLogEntry) if found, None otherwise.
+ * @returns Ok(Some(AuditLogEntry)) if found, Ok(None) otherwise, Err on failure.
  */
 export async function searchByTimestamp(
   timestamp: Date,
-): Promise<Option<AuditLogEntry>> {
-  const sql = getSql();
-  const rows = await sql`
-    SELECT
-      id, event_type, user_email, client_matter_id, project_id,
-      input_summary, output_summary, model,
-      input_tokens, output_tokens, duration_ms,
-      metadata, created_at
-    FROM julia_audit_logs
-    WHERE created_at >= ${timestamp.toISOString()}
-    ORDER BY created_at ASC
-    LIMIT 1
-  `;
-  const row = rows[0];
-  return row ? Some(rowToEntry(row as Record<string, unknown>)) : None;
+): Promise<Result<Option<AuditLogEntry>>> {
+  try {
+    if (isNaN(timestamp.getTime())) {
+      return Err({
+        type: "invalid_input",
+        field: "timestamp",
+        message: "Invalid date",
+      });
+    }
+    const sqlResult = getSql();
+    if (!sqlResult.ok) return sqlResult;
+    const sql = sqlResult.value;
+    const rows = await sql`
+      SELECT
+        id, event_type, user_email, client_matter_id, project_id,
+        input_summary, output_summary, model,
+        input_tokens, output_tokens, duration_ms,
+        metadata, created_at
+      FROM julia_audit_logs
+      WHERE created_at >= ${timestamp.toISOString()}
+      ORDER BY created_at ASC
+      LIMIT 1
+    `;
+    const row = rows[0];
+    return Ok(row ? Some(rowToEntry(row as Record<string, unknown>)) : None);
+  } catch (err) {
+    return Err({
+      type: "database_error",
+      message: err instanceof Error ? err.message : String(err),
+    });
+  }
 }

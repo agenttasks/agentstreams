@@ -188,12 +188,14 @@ export function createJuliaServer(): McpServer {
       file_id: z.string().describe("File ID"),
     },
     async ({ review_table_id, file_id }) => {
-      const result = await getReviewRow(
+      const opt = await getReviewRow(
         ReviewTableId(review_table_id),
         FileId(file_id),
       );
+      // Unwrap Option to a clean format for MCP clients (not raw _tag)
+      const value = opt._tag === "Some" ? opt.value : null;
       return {
-        content: [{ type: "text" as const, text: JSON.stringify(result) }],
+        content: [{ type: "text" as const, text: JSON.stringify(value) }],
       };
     },
   );
@@ -286,13 +288,8 @@ export function createJuliaServer(): McpServer {
       take: z.number().describe("Number of entries to fetch"),
     },
     async ({ from_id, take }) => {
-      const entries = [];
-      for await (const entry of queryForward(AuditLogId(from_id), take)) {
-        entries.push(entry);
-      }
-      return {
-        content: [{ type: "text" as const, text: JSON.stringify(entries) }],
-      };
+      const result = await queryForward(AuditLogId(from_id), take);
+      return resultToContent(result);
     },
   );
 
@@ -303,10 +300,15 @@ export function createJuliaServer(): McpServer {
       timestamp: z.string().describe("ISO 8601 timestamp to search from"),
     },
     async ({ timestamp }) => {
-      const result = await searchByTimestamp(new Date(timestamp));
-      return {
-        content: [{ type: "text" as const, text: JSON.stringify(result) }],
-      };
+      const date = new Date(timestamp);
+      if (isNaN(date.getTime())) {
+        return {
+          content: [{ type: "text" as const, text: JSON.stringify({ error: "Invalid timestamp" }) }],
+          isError: true,
+        };
+      }
+      const result = await searchByTimestamp(date);
+      return resultToContent(result);
     },
   );
 

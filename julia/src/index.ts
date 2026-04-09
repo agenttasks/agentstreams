@@ -109,3 +109,25 @@ export { log, getEarliest, getLatest, queryForward, searchByTimestamp } from "./
 
 // ── assistant ─────────────────────────────────────────────────
 export { JuliaSession, JuliaSessionBuilder } from "./assistant.js";
+
+// ── db ───────────────────────────────────────────────────────
+export { getSql } from "./db.js";
+
+// ── pipeline ─────────────────────────────────────────────────
+export {
+  checkGate,
+  executePipeline,
+  JULIA_LEGAL_WORKFLOW,
+  JULIA_VAULT_REVIEW,
+} from "./pipeline.js";
+export type {
+  PipelineStepResult,
+  GateDecision,
+  PipelineStep,
+  PipelineGate,
+  PipelineConfig,
+  PipelineExecutionResult,
+} from "./pipeline.js";
+
+// ── mcp-server ───────────────────────────────────────────────
+export { createJuliaServer, startStdioServer } from "./mcp-server.js";
