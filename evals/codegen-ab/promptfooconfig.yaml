@@ -1,0 +1,253 @@
+description: "Code generation A/B eval — compare model variants on Python + TypeScript generation quality"
+
+# ──────────────────────────────────────────────────────────────────────
+# A/B Model Variants
+# Anthropic's approach: same tasks, different models, control infra noise
+# by running identical hardware (4x Xeon, 16GB) and validation pipeline
+# ──────────────────────────────────────────────────────────────────────
+
+providers:
+  # ── Variant A: Sonnet (fast, cost-effective) ──────────────────────
+  - id: python:provider.py
+    label: sonnet-4-6-python
+    config:
+      model: claude-sonnet-4-6
+      temperature: 0
+      max_tokens: 4096
+      language: python
+
+  - id: python:provider.py
+    label: sonnet-4-6-typescript
+    config:
+      model: claude-sonnet-4-6
+      temperature: 0
+      max_tokens: 4096
+      language: typescript
+
+  # ── Variant B: Opus (highest capability) ──────────────────────────
+  - id: python:provider.py
+    label: opus-4-6-python
+    config:
+      model: claude-opus-4-6
+      temperature: 0
+      max_tokens: 4096
+      language: python
+
+  - id: python:provider.py
+    label: opus-4-6-typescript
+    config:
+      model: claude-opus-4-6
+      temperature: 0
+      max_tokens: 4096
+      language: typescript
+
+prompts:
+  - id: codegen
+    raw: "{{prompt}}"
+
+# ──────────────────────────────────────────────────────────────────────
+# Test cases — loaded from JSON fixtures
+# Each task tests a different codegen pattern
+# ──────────────────────────────────────────────────────────────────────
+
+tests:
+  # ══════════════════════════════════════════════════════════════════
+  # Python Tasks
+  # ══════════════════════════════════════════════════════════════════
+
+  - description: "PY: Bloom filter implementation"
+    vars:
+      prompt: "Write a Python bloom filter class with add(), __contains__(), configurable false-positive rate, and optimal hash count calculation. Use only the standard library. Include a working demo at the bottom that adds 1000 items and checks false positive rate. Return ONLY the Python code."
+    assert:
+      - type: javascript
+        value: "output.includes('class') && (output.includes('Bloom') || output.includes('bloom'))"
+      - type: javascript
+        value: "output.includes('__contains__') || output.includes('def contains')"
+      - type: javascript
+        value: "output.includes('hash')"
+      - type: javascript
+        value: "!output.includes('ANTHROPIC_API_KEY')"
+      # Metadata checks from provider
+      - type: javascript
+        value: "context.metadata?.syntax_valid === true"
+        metric: syntax_pass
+      - type: javascript
+        value: "(context.metadata?.lint_issue_count || 0) <= 3"
+        metric: lint_clean
+      - type: javascript
+        value: "context.metadata?.executes === true"
+        metric: execution_pass
+      - type: cost
+        threshold: 0.05
+
+  - description: "PY: Async rate limiter"
+    vars:
+      prompt: "Write a Python async token-bucket rate limiter using asyncio. Support: configurable rate (tokens/sec), burst capacity, async context manager. Include a demo that makes 20 concurrent 'requests' with a limit of 5/sec. Return ONLY the Python code."
+    assert:
+      - type: javascript
+        value: "output.includes('asyncio') && output.includes('class')"
+      - type: javascript
+        value: "output.includes('async') && output.includes('await')"
+      - type: javascript
+        value: "context.metadata?.syntax_valid === true"
+        metric: syntax_pass
+      - type: javascript
+        value: "(context.metadata?.lint_issue_count || 0) <= 3"
+        metric: lint_clean
+      - type: cost
+        threshold: 0.05
+
+  - description: "PY: LRU cache with O(1) operations"
+    vars:
+      prompt: "Write a Python LRU cache using a doubly-linked list and dict for O(1) get/put. Support max_size, get(key), put(key, value). Do NOT use functools.lru_cache or collections.OrderedDict. Include a working demo. Return ONLY the Python code."
+    assert:
+      - type: javascript
+        value: "output.includes('class') && (output.includes('Node') || output.includes('node'))"
+      - type: javascript
+        value: "output.includes('get') && output.includes('put')"
+      - type: javascript
+        value: "context.metadata?.syntax_valid === true"
+        metric: syntax_pass
+      - type: javascript
+        value: "context.metadata?.executes === true"
+        metric: execution_pass
+      - type: cost
+        threshold: 0.05
+
+  - description: "PY: JSON parser from scratch"
+    vars:
+      prompt: "Write a recursive descent JSON parser in Python. Parse strings, numbers, booleans, null, arrays, and objects. Do NOT use the json module. Handle escape sequences. Include tests parsing '{\"name\": \"test\", \"values\": [1, 2.5, true, null]}'. Return ONLY the Python code."
+    assert:
+      - type: javascript
+        value: "output.includes('def parse')"
+      - type: javascript
+        value: "!output.includes('import json')"
+      - type: javascript
+        value: "context.metadata?.syntax_valid === true"
+        metric: syntax_pass
+      - type: javascript
+        value: "context.metadata?.executes === true"
+        metric: execution_pass
+      - type: cost
+        threshold: 0.05
+
+  - description: "PY: Parallel map with worker pool"
+    vars:
+      prompt: "Write a Python parallel map function using multiprocessing that distributes work across N workers, supports timeout per task, collects results in order, handles worker crashes. Include a demo computing SHA-256 hashes of 100 random strings across 4 workers. Return ONLY the Python code."
+    assert:
+      - type: javascript
+        value: "output.includes('multiprocessing') || output.includes('ProcessPool')"
+      - type: javascript
+        value: "context.metadata?.syntax_valid === true"
+        metric: syntax_pass
+      - type: cost
+        threshold: 0.05
+
+  - description: "PY: Schema validator"
+    vars:
+      prompt: "Write a Python function that validates a JSON object against a schema (supporting type, required, properties, items, minimum, maximum, minLength, maxLength, enum, pattern). Return a list of validation errors. Do NOT use jsonschema or pydantic. Include tests. Return ONLY the Python code."
+    assert:
+      - type: javascript
+        value: "output.includes('def validate')"
+      - type: javascript
+        value: "!output.includes('import jsonschema') && !output.includes('from pydantic')"
+      - type: javascript
+        value: "context.metadata?.syntax_valid === true"
+        metric: syntax_pass
+      - type: javascript
+        value: "context.metadata?.executes === true"
+        metric: execution_pass
+      - type: cost
+        threshold: 0.05
+
+  # ══════════════════════════════════════════════════════════════════
+  # TypeScript Tasks
+  # ══════════════════════════════════════════════════════════════════
+
+  - description: "TS: Typed REST API client"
+    vars:
+      prompt: "Write a TypeScript API client class using fetch() with generic request/response types, automatic retry with exponential backoff, interceptors, timeout, and error types. Include type definitions and a usage example. Return ONLY the TypeScript code."
+    assert:
+      - type: javascript
+        value: "output.includes('class') && output.includes('async')"
+      - type: javascript
+        value: "output.includes('fetch') || output.includes('Request')"
+      - type: javascript
+        value: "output.includes('interface') || output.includes('type ')"
+      - type: javascript
+        value: "context.metadata?.syntax_valid === true"
+        metric: syntax_pass
+      - type: cost
+        threshold: 0.05
+
+  - description: "TS: Type-safe state machine"
+    vars:
+      prompt: "Write a TypeScript type-safe finite state machine where invalid transitions are caught at compile time. Use template literal types and conditional types. Define a traffic light FSM (red->green->yellow->red) and a door FSM. Return ONLY the TypeScript code."
+    assert:
+      - type: javascript
+        value: "output.includes('type') && (output.includes('State') || output.includes('state'))"
+      - type: javascript
+        value: "output.includes('transition') || output.includes('Transition')"
+      - type: javascript
+        value: "context.metadata?.syntax_valid === true"
+        metric: syntax_pass
+      - type: cost
+        threshold: 0.05
+
+  - description: "TS: Result<T, E> monad"
+    vars:
+      prompt: "Write a TypeScript Result<T, E> type (like Rust's Result) with Ok/Err variants. Support map, flatMap, mapErr, unwrap, unwrapOr, match, isOk/isErr. Include async support and usage examples. Return ONLY the TypeScript code."
+    assert:
+      - type: javascript
+        value: "output.includes('Ok') && output.includes('Err')"
+      - type: javascript
+        value: "output.includes('map') && output.includes('flatMap')"
+      - type: javascript
+        value: "context.metadata?.syntax_valid === true"
+        metric: syntax_pass
+      - type: cost
+        threshold: 0.05
+
+  - description: "TS: Reactive state store"
+    vars:
+      prompt: "Write a TypeScript reactive state store (like mini Zustand) with typed state, subscribe to changes, computed/derived values, batch updates, middleware, and action logging. Include a todo list demo. Return ONLY the TypeScript code."
+    assert:
+      - type: javascript
+        value: "output.includes('subscribe') || output.includes('Subscribe')"
+      - type: javascript
+        value: "output.includes('getState') || output.includes('setState')"
+      - type: javascript
+        value: "context.metadata?.syntax_valid === true"
+        metric: syntax_pass
+      - type: cost
+        threshold: 0.05
+
+  - description: "TS: Schema validation library"
+    vars:
+      prompt: "Write a TypeScript schema validation library (like mini-Zod) with z.string(), z.number(), z.boolean(), z.object(), z.array(), z.optional(), z.union(). Each has .parse() and .safeParse(). Infer TypeScript types from schemas via z.infer<>. Return ONLY the TypeScript code."
+    assert:
+      - type: javascript
+        value: "output.includes('parse') && output.includes('safeParse')"
+      - type: javascript
+        value: "output.includes('string') && output.includes('number') && output.includes('object')"
+      - type: javascript
+        value: "output.includes('infer')"
+      - type: javascript
+        value: "context.metadata?.syntax_valid === true"
+        metric: syntax_pass
+      - type: cost
+        threshold: 0.05
+
+  - description: "TS: Promise pool with concurrency"
+    vars:
+      prompt: "Write a TypeScript PromisePool class with configurable concurrency limit. Support add(), drain(), onTaskComplete callback, progress tracking, per-task error handling (don't fail all on one error), and abort signal. Include a demo. Return ONLY the TypeScript code."
+    assert:
+      - type: javascript
+        value: "output.includes('class') && output.includes('Promise')"
+      - type: javascript
+        value: "output.includes('concurrency') || output.includes('limit')"
+      - type: javascript
+        value: "context.metadata?.syntax_valid === true"
+        metric: syntax_pass
+      - type: cost
+        threshold: 0.05

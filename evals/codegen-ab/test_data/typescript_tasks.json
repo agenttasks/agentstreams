@@ -1,0 +1,66 @@
+[
+  {
+    "id": "ts-api-client",
+    "description": "Generate a typed REST API client",
+    "prompt": "Write a TypeScript API client class using fetch() with: generic request/response types, automatic retry with exponential backoff, request/response interceptors, timeout support, and proper error types. Include type definitions and a usage example that fetches users from a REST API. Return ONLY the TypeScript code.",
+    "language": "typescript",
+    "difficulty": "medium",
+    "expected_features": ["class", "async", "fetch", "generic", "retry", "interface"]
+  },
+  {
+    "id": "ts-state-machine",
+    "description": "Build a type-safe finite state machine",
+    "prompt": "Write a TypeScript type-safe finite state machine where invalid transitions are caught at compile time. Use template literal types and conditional types. Define a traffic light FSM (red->green->yellow->red) and a door FSM (locked->closed->open->closed->locked). Return ONLY the TypeScript code.",
+    "language": "typescript",
+    "difficulty": "hard",
+    "expected_features": ["type", "extends", "infer", "transition", "State"]
+  },
+  {
+    "id": "ts-event-bus",
+    "description": "Create a typed event bus with middleware",
+    "prompt": "Write a TypeScript event bus supporting: typed events via generics, subscribe/unsubscribe/emit, middleware pipeline (logging, validation, transformation), once() for single-fire, and wildcard listeners. Include a demo with 'user:login' and 'data:update' events. Return ONLY the TypeScript code.",
+    "language": "typescript",
+    "difficulty": "medium",
+    "expected_features": ["interface", "subscribe", "emit", "middleware", "generic"]
+  },
+  {
+    "id": "ts-result-type",
+    "description": "Implement a Result<T, E> monad",
+    "prompt": "Write a TypeScript Result<T, E> type (like Rust's Result) with Ok and Err variants. Support map, flatMap, mapErr, unwrap, unwrapOr, match, and isOk/isErr. Make it work with async operations via asyncMap. Include comprehensive usage examples showing error handling pipelines. Return ONLY the TypeScript code.",
+    "language": "typescript",
+    "difficulty": "medium",
+    "expected_features": ["type Result", "Ok", "Err", "map", "flatMap", "match"]
+  },
+  {
+    "id": "ts-di-container",
+    "description": "Build a dependency injection container",
+    "prompt": "Write a TypeScript dependency injection container supporting: singleton and transient lifetimes, constructor injection via decorators or manual registration, circular dependency detection, and typed resolution. Include a demo with UserService depending on DatabaseService and LoggerService. Return ONLY the TypeScript code.",
+    "language": "typescript",
+    "difficulty": "hard",
+    "expected_features": ["class Container", "register", "resolve", "singleton", "transient"]
+  },
+  {
+    "id": "ts-reactive-store",
+    "description": "Create a reactive state store",
+    "prompt": "Write a TypeScript reactive state store (similar to a minimal Zustand/Valtio) with: typed state, subscribe to changes, computed/derived values, batch updates, middleware support, and devtools-style action logging. Include a demo managing a todo list. Return ONLY the TypeScript code.",
+    "language": "typescript",
+    "difficulty": "hard",
+    "expected_features": ["interface", "subscribe", "getState", "setState", "middleware"]
+  },
+  {
+    "id": "ts-schema-builder",
+    "description": "Build a Zod-like schema builder",
+    "prompt": "Write a TypeScript schema validation library (like a mini-Zod) with: z.string(), z.number(), z.boolean(), z.object(), z.array(), z.optional(), z.union(). Each should have a .parse() method that throws on invalid input and a .safeParse() that returns {success, data, error}. Infer TypeScript types from schemas via z.infer<>. Return ONLY the TypeScript code.",
+    "language": "typescript",
+    "difficulty": "hard",
+    "expected_features": ["class", "parse", "safeParse", "infer", "string", "number", "object"]
+  },
+  {
+    "id": "ts-promise-pool",
+    "description": "Build a concurrent promise pool",
+    "prompt": "Write a TypeScript PromisePool class that executes async tasks with a configurable concurrency limit. Support: add(), drain(), onTaskComplete callback, progress tracking, error handling per task (don't fail all on one error), and abort signal. Include a demo that fetches 20 URLs with concurrency 4. Return ONLY the TypeScript code.",
+    "language": "typescript",
+    "difficulty": "medium",
+    "expected_features": ["class", "async", "Promise", "concurrency", "drain", "abort"]
+  }
+]

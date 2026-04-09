@@ -1,6 +1,7 @@
 .PHONY: help install install-safety install-webapp dev dev-webapp \
        lint lint-py lint-webapp format test test-py test-webapp \
        build build-webapp typecheck security-audit validate \
+       eval-codegen eval-codegen-quick eval-codegen-dry eval-promptfoo \
        clean ci ci-py ci-webapp
 
 # ── Help ─────────────────────────────────────────────────────
@@ -98,6 +99,24 @@ validate-agents: ## Validate agent boundaries (no recursive spawning, API key ba
 	  echo "$$VIOLATIONS"; exit 1; \
 	fi
 	@echo "All agent boundary checks passed."
+
+# ── Evals ────────────────────────────────────────────────────
+eval-codegen: ## Run A/B code generation eval (all models, all languages)
+	uv run scripts/run-codegen-eval.py
+
+eval-codegen-quick: ## Quick codegen eval (sonnet only, 1 sample)
+	uv run scripts/run-codegen-eval.py --models sonnet --samples 1
+
+eval-codegen-dry: ## Dry-run codegen eval (show task matrix)
+	uv run scripts/run-codegen-eval.py --dry-run
+
+eval-promptfoo: ## Run all promptfoo eval suites
+	@for dir in evals/*/; do \
+	  if [ -f "$$dir/promptfooconfig.yaml" ]; then \
+	    echo "Running: $$dir"; \
+	    cd "$$dir" && npx promptfoo eval && cd ../..; \
+	  fi; \
+	done
 
 # ── CI (mirrors GitHub Actions) ──────────────────────────────
 ci: ci-py ci-webapp validate validate-agents security-audit ## Run full CI locally
