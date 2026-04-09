@@ -472,7 +472,7 @@ SAFETY_REPOS = [
     RepoEntry(
         Org.SAFETY,
         "ciphered-reasoning-llms",
-        0,
+        9,
         "Python",
         "Research on ciphered/encoded reasoning in LLMs",
         Layer.CIRCUITS,
@@ -480,7 +480,7 @@ SAFETY_REPOS = [
     RepoEntry(
         Org.SAFETY,
         "PurpleLlama",
-        0,
+        4115,
         "Python",
         "Meta's safety evaluation suite (referenced by security-auditor)",
         Layer.EVALS,
