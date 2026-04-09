@@ -1,0 +1,1402 @@
+[
+  {
+    "id": "casehold_test_0",
+    "citing_prompt": "In United States Court of Appeals for the Second Circuit, the plaintiff argued that the defendant violated established principles of breach of contract under contractual obligations law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the breach of contract claim was properly analyzed under the contractual obligations framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the eminent domain analysis requires consideration of the property rights doctrine as applied to the specific circumstances of the case",
+      "holding that the wrongful termination analysis requires consideration of the employment discrimination doctrine as applied to the specific circumstances of the case",
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case",
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Second Circuit"
+  },
+  {
+    "id": "casehold_test_1",
+    "citing_prompt": "In United States Court of Appeals for the Third Circuit, the plaintiff argued that the defendant violated established principles of negligence under duty of care law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the eminent domain analysis requires consideration of the property rights doctrine as applied to the specific circumstances of the case",
+      "holding that the negligence claim was properly analyzed under the duty of care framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case",
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case",
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Third Circuit"
+  },
+  {
+    "id": "casehold_test_2",
+    "citing_prompt": "In United States Court of Appeals for the Seventh Circuit, the plaintiff argued that the defendant violated established principles of eminent domain under property rights law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the wrongful termination analysis requires consideration of the employment discrimination doctrine as applied to the specific circumstances of the case",
+      "holding that the eminent domain claim was properly analyzed under the property rights framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case",
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case",
+      "holding that the patent infringement analysis requires consideration of the trademark doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Seventh Circuit"
+  },
+  {
+    "id": "casehold_test_3",
+    "citing_prompt": "In United States Court of Appeals for the Second Circuit, the plaintiff argued that the defendant violated established principles of wrongful termination under employment discrimination law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case",
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case",
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case",
+      "holding that the patent infringement analysis requires consideration of the trademark doctrine as applied to the specific circumstances of the case",
+      "holding that the wrongful termination claim was properly analyzed under the employment discrimination framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Second Circuit"
+  },
+  {
+    "id": "casehold_test_4",
+    "citing_prompt": "In United States Court of Appeals for the Second Circuit, the plaintiff argued that the defendant violated established principles of due process under equal protection law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case",
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case",
+      "holding that the patent infringement analysis requires consideration of the trademark doctrine as applied to the specific circumstances of the case",
+      "holding that the agency deference analysis requires consideration of the regulatory authority doctrine as applied to the specific circumstances of the case",
+      "holding that the due process claim was properly analyzed under the equal protection framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Second Circuit"
+  },
+  {
+    "id": "casehold_test_5",
+    "citing_prompt": "In United States District Court for the Northern District of California, the plaintiff argued that the defendant violated established principles of search and seizure under Fourth Amendment law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the search and seizure claim was properly analyzed under the Fourth Amendment framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the patent infringement analysis requires consideration of the trademark doctrine as applied to the specific circumstances of the case",
+      "holding that the agency deference analysis requires consideration of the regulatory authority doctrine as applied to the specific circumstances of the case",
+      "holding that the Title VII analysis requires consideration of the Section 1983 doctrine as applied to the specific circumstances of the case",
+      "holding that the automatic stay analysis requires consideration of the discharge doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "federal",
+    "court": "United States District Court for the Northern District of California"
+  },
+  {
+    "id": "casehold_test_6",
+    "citing_prompt": "In United States Court of Appeals for the Ninth Circuit, the plaintiff argued that the defendant violated established principles of fiduciary duty under business judgment rule law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the fiduciary duty claim was properly analyzed under the business judgment rule framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the agency deference analysis requires consideration of the regulatory authority doctrine as applied to the specific circumstances of the case",
+      "holding that the Title VII analysis requires consideration of the Section 1983 doctrine as applied to the specific circumstances of the case",
+      "holding that the automatic stay analysis requires consideration of the discharge doctrine as applied to the specific circumstances of the case",
+      "holding that the insider trading analysis requires consideration of the securities fraud doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Ninth Circuit"
+  },
+  {
+    "id": "casehold_test_7",
+    "citing_prompt": "In United States Court of Appeals for the Seventh Circuit, the plaintiff argued that the defendant violated established principles of patent infringement under trademark law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the agency deference analysis requires consideration of the regulatory authority doctrine as applied to the specific circumstances of the case",
+      "holding that the patent infringement claim was properly analyzed under the trademark framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the automatic stay analysis requires consideration of the discharge doctrine as applied to the specific circumstances of the case",
+      "holding that the insider trading analysis requires consideration of the securities fraud doctrine as applied to the specific circumstances of the case",
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Seventh Circuit"
+  },
+  {
+    "id": "casehold_test_8",
+    "citing_prompt": "In United States Court of Appeals for the Fourth Circuit, the plaintiff argued that the defendant violated established principles of agency deference under regulatory authority law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the Title VII analysis requires consideration of the Section 1983 doctrine as applied to the specific circumstances of the case",
+      "holding that the automatic stay analysis requires consideration of the discharge doctrine as applied to the specific circumstances of the case",
+      "holding that the insider trading analysis requires consideration of the securities fraud doctrine as applied to the specific circumstances of the case",
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case",
+      "holding that the agency deference claim was properly analyzed under the regulatory authority framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Fourth Circuit"
+  },
+  {
+    "id": "casehold_test_9",
+    "citing_prompt": "In United States Court of Appeals for the Ninth Circuit, the plaintiff argued that the defendant violated established principles of Title VII under Section 1983 law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the automatic stay analysis requires consideration of the discharge doctrine as applied to the specific circumstances of the case",
+      "holding that the insider trading analysis requires consideration of the securities fraud doctrine as applied to the specific circumstances of the case",
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case",
+      "holding that the Sherman Act analysis requires consideration of the price fixing doctrine as applied to the specific circumstances of the case",
+      "holding that the Title VII claim was properly analyzed under the Section 1983 framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Ninth Circuit"
+  },
+  {
+    "id": "casehold_test_10",
+    "citing_prompt": "In United States Court of Appeals for the Seventh Circuit, the plaintiff argued that the defendant violated established principles of automatic stay under discharge law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the insider trading analysis requires consideration of the securities fraud doctrine as applied to the specific circumstances of the case",
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case",
+      "holding that the Sherman Act analysis requires consideration of the price fixing doctrine as applied to the specific circumstances of the case",
+      "holding that the asylum analysis requires consideration of the deportation doctrine as applied to the specific circumstances of the case",
+      "holding that the automatic stay claim was properly analyzed under the discharge framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Seventh Circuit"
+  },
+  {
+    "id": "casehold_test_11",
+    "citing_prompt": "In United States District Court for the Northern District of California, the plaintiff argued that the defendant violated established principles of insider trading under securities fraud law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case",
+      "holding that the insider trading claim was properly analyzed under the securities fraud framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the asylum analysis requires consideration of the deportation doctrine as applied to the specific circumstances of the case",
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case",
+      "holding that the coverage dispute analysis requires consideration of the bad faith doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "federal",
+    "court": "United States District Court for the Northern District of California"
+  },
+  {
+    "id": "casehold_test_12",
+    "citing_prompt": "In United States Court of Appeals for the Eleventh Circuit, the plaintiff argued that the defendant violated established principles of CERCLA under Clean Water Act law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the Sherman Act analysis requires consideration of the price fixing doctrine as applied to the specific circumstances of the case",
+      "holding that the asylum analysis requires consideration of the deportation doctrine as applied to the specific circumstances of the case",
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case",
+      "holding that the coverage dispute analysis requires consideration of the bad faith doctrine as applied to the specific circumstances of the case",
+      "holding that the CERCLA claim was properly analyzed under the Clean Water Act framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Eleventh Circuit"
+  },
+  {
+    "id": "casehold_test_13",
+    "citing_prompt": "In United States Court of Appeals for the Third Circuit, the plaintiff argued that the defendant violated established principles of Sherman Act under price fixing law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the Sherman Act claim was properly analyzed under the price fixing framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case",
+      "holding that the coverage dispute analysis requires consideration of the bad faith doctrine as applied to the specific circumstances of the case",
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case",
+      "holding that the hearsay analysis requires consideration of the expert testimony doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Third Circuit"
+  },
+  {
+    "id": "casehold_test_14",
+    "citing_prompt": "In United States Court of Appeals for the Fifth Circuit, the plaintiff argued that the defendant violated established principles of asylum under deportation law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case",
+      "holding that the coverage dispute analysis requires consideration of the bad faith doctrine as applied to the specific circumstances of the case",
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case",
+      "holding that the asylum claim was properly analyzed under the deportation framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 3,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Fifth Circuit"
+  },
+  {
+    "id": "casehold_test_15",
+    "citing_prompt": "In United States District Court for the Southern District of New York, the plaintiff argued that the defendant violated established principles of tax liability under IRS assessment law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the coverage dispute analysis requires consideration of the bad faith doctrine as applied to the specific circumstances of the case",
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case",
+      "holding that the tax liability claim was properly analyzed under the IRS assessment framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case",
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 2,
+    "jurisdiction": "federal",
+    "court": "United States District Court for the Southern District of New York"
+  },
+  {
+    "id": "casehold_test_16",
+    "citing_prompt": "In United States Court of Appeals for the Fifth Circuit, the plaintiff argued that the defendant violated established principles of coverage dispute under bad faith law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case",
+      "holding that the coverage dispute claim was properly analyzed under the bad faith framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case",
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case",
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Fifth Circuit"
+  },
+  {
+    "id": "casehold_test_17",
+    "citing_prompt": "In United States District Court for the Southern District of New York, the plaintiff argued that the defendant violated established principles of custody under child support law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the custody claim was properly analyzed under the child support framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case",
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case",
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case",
+      "holding that the eminent domain analysis requires consideration of the property rights doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "federal",
+    "court": "United States District Court for the Southern District of New York"
+  },
+  {
+    "id": "casehold_test_18",
+    "citing_prompt": "In United States Court of Appeals for the Second Circuit, the plaintiff argued that the defendant violated established principles of hearsay under expert testimony law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case",
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case",
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case",
+      "holding that the hearsay claim was properly analyzed under the expert testimony framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the wrongful termination analysis requires consideration of the employment discrimination doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 3,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Second Circuit"
+  },
+  {
+    "id": "casehold_test_19",
+    "citing_prompt": "In United States Court of Appeals for the Second Circuit, the plaintiff argued that the defendant violated established principles of standing under statute of limitations law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case",
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case",
+      "holding that the standing claim was properly analyzed under the statute of limitations framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the wrongful termination analysis requires consideration of the employment discrimination doctrine as applied to the specific circumstances of the case",
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 2,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Second Circuit"
+  },
+  {
+    "id": "casehold_test_20",
+    "citing_prompt": "In United States District Court for the Southern District of New York, the plaintiff argued that the defendant violated established principles of breach of contract under contractual obligations law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case",
+      "holding that the eminent domain analysis requires consideration of the property rights doctrine as applied to the specific circumstances of the case",
+      "holding that the wrongful termination analysis requires consideration of the employment discrimination doctrine as applied to the specific circumstances of the case",
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case",
+      "holding that the breach of contract claim was properly analyzed under the contractual obligations framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "federal",
+    "court": "United States District Court for the Southern District of New York"
+  },
+  {
+    "id": "casehold_test_21",
+    "citing_prompt": "In United States Court of Appeals for the Third Circuit, the plaintiff argued that the defendant violated established principles of negligence under duty of care law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the negligence claim was properly analyzed under the duty of care framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the wrongful termination analysis requires consideration of the employment discrimination doctrine as applied to the specific circumstances of the case",
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case",
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case",
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Third Circuit"
+  },
+  {
+    "id": "casehold_test_22",
+    "citing_prompt": "In United States Court of Appeals for the Eleventh Circuit, the plaintiff argued that the defendant violated established principles of eminent domain under property rights law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the wrongful termination analysis requires consideration of the employment discrimination doctrine as applied to the specific circumstances of the case",
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case",
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case",
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case",
+      "holding that the eminent domain claim was properly analyzed under the property rights framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Eleventh Circuit"
+  },
+  {
+    "id": "casehold_test_23",
+    "citing_prompt": "In United States Court of Appeals for the Second Circuit, the plaintiff argued that the defendant violated established principles of wrongful termination under employment discrimination law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case",
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case",
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case",
+      "holding that the wrongful termination claim was properly analyzed under the employment discrimination framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the agency deference analysis requires consideration of the regulatory authority doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 3,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Second Circuit"
+  },
+  {
+    "id": "casehold_test_24",
+    "citing_prompt": "In United States Court of Appeals for the Second Circuit, the plaintiff argued that the defendant violated established principles of due process under equal protection law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case",
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case",
+      "holding that the patent infringement analysis requires consideration of the trademark doctrine as applied to the specific circumstances of the case",
+      "holding that the agency deference analysis requires consideration of the regulatory authority doctrine as applied to the specific circumstances of the case",
+      "holding that the due process claim was properly analyzed under the equal protection framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Second Circuit"
+  },
+  {
+    "id": "casehold_test_25",
+    "citing_prompt": "In United States Court of Appeals for the Third Circuit, the plaintiff argued that the defendant violated established principles of search and seizure under Fourth Amendment law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case",
+      "holding that the patent infringement analysis requires consideration of the trademark doctrine as applied to the specific circumstances of the case",
+      "holding that the agency deference analysis requires consideration of the regulatory authority doctrine as applied to the specific circumstances of the case",
+      "holding that the Title VII analysis requires consideration of the Section 1983 doctrine as applied to the specific circumstances of the case",
+      "holding that the search and seizure claim was properly analyzed under the Fourth Amendment framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Third Circuit"
+  },
+  {
+    "id": "casehold_test_26",
+    "citing_prompt": "In United States District Court for the Southern District of New York, the plaintiff argued that the defendant violated established principles of fiduciary duty under business judgment rule law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the patent infringement analysis requires consideration of the trademark doctrine as applied to the specific circumstances of the case",
+      "holding that the agency deference analysis requires consideration of the regulatory authority doctrine as applied to the specific circumstances of the case",
+      "holding that the Title VII analysis requires consideration of the Section 1983 doctrine as applied to the specific circumstances of the case",
+      "holding that the automatic stay analysis requires consideration of the discharge doctrine as applied to the specific circumstances of the case",
+      "holding that the fiduciary duty claim was properly analyzed under the business judgment rule framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "federal",
+    "court": "United States District Court for the Southern District of New York"
+  },
+  {
+    "id": "casehold_test_27",
+    "citing_prompt": "In United States Court of Appeals for the Seventh Circuit, the plaintiff argued that the defendant violated established principles of patent infringement under trademark law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the patent infringement claim was properly analyzed under the trademark framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the Title VII analysis requires consideration of the Section 1983 doctrine as applied to the specific circumstances of the case",
+      "holding that the automatic stay analysis requires consideration of the discharge doctrine as applied to the specific circumstances of the case",
+      "holding that the insider trading analysis requires consideration of the securities fraud doctrine as applied to the specific circumstances of the case",
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Seventh Circuit"
+  },
+  {
+    "id": "casehold_test_28",
+    "citing_prompt": "In United States Court of Appeals for the Ninth Circuit, the plaintiff argued that the defendant violated established principles of agency deference under regulatory authority law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the Title VII analysis requires consideration of the Section 1983 doctrine as applied to the specific circumstances of the case",
+      "holding that the agency deference claim was properly analyzed under the regulatory authority framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the insider trading analysis requires consideration of the securities fraud doctrine as applied to the specific circumstances of the case",
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case",
+      "holding that the Sherman Act analysis requires consideration of the price fixing doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Ninth Circuit"
+  },
+  {
+    "id": "casehold_test_29",
+    "citing_prompt": "In United States Court of Appeals for the Third Circuit, the plaintiff argued that the defendant violated established principles of Title VII under Section 1983 law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the Title VII claim was properly analyzed under the Section 1983 framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the insider trading analysis requires consideration of the securities fraud doctrine as applied to the specific circumstances of the case",
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case",
+      "holding that the Sherman Act analysis requires consideration of the price fixing doctrine as applied to the specific circumstances of the case",
+      "holding that the asylum analysis requires consideration of the deportation doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Third Circuit"
+  },
+  {
+    "id": "casehold_test_30",
+    "citing_prompt": "In United States Court of Appeals for the Seventh Circuit, the plaintiff argued that the defendant violated established principles of automatic stay under discharge law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the automatic stay claim was properly analyzed under the discharge framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case",
+      "holding that the Sherman Act analysis requires consideration of the price fixing doctrine as applied to the specific circumstances of the case",
+      "holding that the asylum analysis requires consideration of the deportation doctrine as applied to the specific circumstances of the case",
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Seventh Circuit"
+  },
+  {
+    "id": "casehold_test_31",
+    "citing_prompt": "In United States District Court for the Northern District of California, the plaintiff argued that the defendant violated established principles of insider trading under securities fraud law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case",
+      "holding that the Sherman Act analysis requires consideration of the price fixing doctrine as applied to the specific circumstances of the case",
+      "holding that the insider trading claim was properly analyzed under the securities fraud framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case",
+      "holding that the coverage dispute analysis requires consideration of the bad faith doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 2,
+    "jurisdiction": "federal",
+    "court": "United States District Court for the Northern District of California"
+  },
+  {
+    "id": "casehold_test_32",
+    "citing_prompt": "In United States Court of Appeals for the Eleventh Circuit, the plaintiff argued that the defendant violated established principles of CERCLA under Clean Water Act law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the Sherman Act analysis requires consideration of the price fixing doctrine as applied to the specific circumstances of the case",
+      "holding that the asylum analysis requires consideration of the deportation doctrine as applied to the specific circumstances of the case",
+      "holding that the CERCLA claim was properly analyzed under the Clean Water Act framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the coverage dispute analysis requires consideration of the bad faith doctrine as applied to the specific circumstances of the case",
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 2,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Eleventh Circuit"
+  },
+  {
+    "id": "casehold_test_33",
+    "citing_prompt": "In United States Court of Appeals for the Fifth Circuit, the plaintiff argued that the defendant violated established principles of Sherman Act under price fixing law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the asylum analysis requires consideration of the deportation doctrine as applied to the specific circumstances of the case",
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case",
+      "holding that the Sherman Act claim was properly analyzed under the price fixing framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case",
+      "holding that the hearsay analysis requires consideration of the expert testimony doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 2,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Fifth Circuit"
+  },
+  {
+    "id": "casehold_test_34",
+    "citing_prompt": "In United States District Court for the Southern District of New York, the plaintiff argued that the defendant violated established principles of asylum under deportation law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case",
+      "holding that the asylum claim was properly analyzed under the deportation framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case",
+      "holding that the hearsay analysis requires consideration of the expert testimony doctrine as applied to the specific circumstances of the case",
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "federal",
+    "court": "United States District Court for the Southern District of New York"
+  },
+  {
+    "id": "casehold_test_35",
+    "citing_prompt": "In United States Court of Appeals for the Third Circuit, the plaintiff argued that the defendant violated established principles of tax liability under IRS assessment law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the tax liability claim was properly analyzed under the IRS assessment framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case",
+      "holding that the hearsay analysis requires consideration of the expert testimony doctrine as applied to the specific circumstances of the case",
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case",
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Third Circuit"
+  },
+  {
+    "id": "casehold_test_36",
+    "citing_prompt": "In United States Court of Appeals for the Sixth Circuit, the plaintiff argued that the defendant violated established principles of coverage dispute under bad faith law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case",
+      "holding that the coverage dispute claim was properly analyzed under the bad faith framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case",
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case",
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Sixth Circuit"
+  },
+  {
+    "id": "casehold_test_37",
+    "citing_prompt": "In United States Court of Appeals for the Fourth Circuit, the plaintiff argued that the defendant violated established principles of custody under child support law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the hearsay analysis requires consideration of the expert testimony doctrine as applied to the specific circumstances of the case",
+      "holding that the custody claim was properly analyzed under the child support framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case",
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case",
+      "holding that the eminent domain analysis requires consideration of the property rights doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Fourth Circuit"
+  },
+  {
+    "id": "casehold_test_38",
+    "citing_prompt": "In United States Court of Appeals for the Fifth Circuit, the plaintiff argued that the defendant violated established principles of hearsay under expert testimony law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case",
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case",
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case",
+      "holding that the hearsay claim was properly analyzed under the expert testimony framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the wrongful termination analysis requires consideration of the employment discrimination doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 3,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Fifth Circuit"
+  },
+  {
+    "id": "casehold_test_39",
+    "citing_prompt": "In United States District Court for the Northern District of California, the plaintiff argued that the defendant violated established principles of standing under statute of limitations law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case",
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case",
+      "holding that the standing claim was properly analyzed under the statute of limitations framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the wrongful termination analysis requires consideration of the employment discrimination doctrine as applied to the specific circumstances of the case",
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 2,
+    "jurisdiction": "federal",
+    "court": "United States District Court for the Northern District of California"
+  },
+  {
+    "id": "casehold_test_40",
+    "citing_prompt": "In United States Court of Appeals for the Fourth Circuit, the plaintiff argued that the defendant violated established principles of breach of contract under contractual obligations law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case",
+      "holding that the breach of contract claim was properly analyzed under the contractual obligations framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the wrongful termination analysis requires consideration of the employment discrimination doctrine as applied to the specific circumstances of the case",
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case",
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Fourth Circuit"
+  },
+  {
+    "id": "casehold_test_41",
+    "citing_prompt": "In United States District Court for the Southern District of New York, the plaintiff argued that the defendant violated established principles of negligence under duty of care law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the negligence claim was properly analyzed under the duty of care framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the wrongful termination analysis requires consideration of the employment discrimination doctrine as applied to the specific circumstances of the case",
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case",
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case",
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "federal",
+    "court": "United States District Court for the Southern District of New York"
+  },
+  {
+    "id": "casehold_test_42",
+    "citing_prompt": "In United States Court of Appeals for the Seventh Circuit, the plaintiff argued that the defendant violated established principles of eminent domain under property rights law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the eminent domain claim was properly analyzed under the property rights framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case",
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case",
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case",
+      "holding that the patent infringement analysis requires consideration of the trademark doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Seventh Circuit"
+  },
+  {
+    "id": "casehold_test_43",
+    "citing_prompt": "In United States District Court for the Southern District of New York, the plaintiff argued that the defendant violated established principles of wrongful termination under employment discrimination law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case",
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case",
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case",
+      "holding that the wrongful termination claim was properly analyzed under the employment discrimination framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the agency deference analysis requires consideration of the regulatory authority doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 3,
+    "jurisdiction": "federal",
+    "court": "United States District Court for the Southern District of New York"
+  },
+  {
+    "id": "casehold_test_44",
+    "citing_prompt": "In United States Court of Appeals for the Third Circuit, the plaintiff argued that the defendant violated established principles of due process under equal protection law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the due process claim was properly analyzed under the equal protection framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case",
+      "holding that the patent infringement analysis requires consideration of the trademark doctrine as applied to the specific circumstances of the case",
+      "holding that the agency deference analysis requires consideration of the regulatory authority doctrine as applied to the specific circumstances of the case",
+      "holding that the Title VII analysis requires consideration of the Section 1983 doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Third Circuit"
+  },
+  {
+    "id": "casehold_test_45",
+    "citing_prompt": "In United States Court of Appeals for the Seventh Circuit, the plaintiff argued that the defendant violated established principles of search and seizure under Fourth Amendment law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case",
+      "holding that the patent infringement analysis requires consideration of the trademark doctrine as applied to the specific circumstances of the case",
+      "holding that the agency deference analysis requires consideration of the regulatory authority doctrine as applied to the specific circumstances of the case",
+      "holding that the Title VII analysis requires consideration of the Section 1983 doctrine as applied to the specific circumstances of the case",
+      "holding that the search and seizure claim was properly analyzed under the Fourth Amendment framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Seventh Circuit"
+  },
+  {
+    "id": "casehold_test_46",
+    "citing_prompt": "In United States District Court for the Southern District of New York, the plaintiff argued that the defendant violated established principles of fiduciary duty under business judgment rule law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the patent infringement analysis requires consideration of the trademark doctrine as applied to the specific circumstances of the case",
+      "holding that the fiduciary duty claim was properly analyzed under the business judgment rule framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the Title VII analysis requires consideration of the Section 1983 doctrine as applied to the specific circumstances of the case",
+      "holding that the automatic stay analysis requires consideration of the discharge doctrine as applied to the specific circumstances of the case",
+      "holding that the insider trading analysis requires consideration of the securities fraud doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "federal",
+    "court": "United States District Court for the Southern District of New York"
+  },
+  {
+    "id": "casehold_test_47",
+    "citing_prompt": "In United States Court of Appeals for the Eleventh Circuit, the plaintiff argued that the defendant violated established principles of patent infringement under trademark law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the agency deference analysis requires consideration of the regulatory authority doctrine as applied to the specific circumstances of the case",
+      "holding that the Title VII analysis requires consideration of the Section 1983 doctrine as applied to the specific circumstances of the case",
+      "holding that the automatic stay analysis requires consideration of the discharge doctrine as applied to the specific circumstances of the case",
+      "holding that the patent infringement claim was properly analyzed under the trademark framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 3,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Eleventh Circuit"
+  },
+  {
+    "id": "casehold_test_48",
+    "citing_prompt": "In United States Court of Appeals for the Eleventh Circuit, the plaintiff argued that the defendant violated established principles of agency deference under regulatory authority law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the Title VII analysis requires consideration of the Section 1983 doctrine as applied to the specific circumstances of the case",
+      "holding that the agency deference claim was properly analyzed under the regulatory authority framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the insider trading analysis requires consideration of the securities fraud doctrine as applied to the specific circumstances of the case",
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case",
+      "holding that the Sherman Act analysis requires consideration of the price fixing doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Eleventh Circuit"
+  },
+  {
+    "id": "casehold_test_49",
+    "citing_prompt": "In United States Court of Appeals for the Third Circuit, the plaintiff argued that the defendant violated established principles of Title VII under Section 1983 law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the automatic stay analysis requires consideration of the discharge doctrine as applied to the specific circumstances of the case",
+      "holding that the Title VII claim was properly analyzed under the Section 1983 framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case",
+      "holding that the Sherman Act analysis requires consideration of the price fixing doctrine as applied to the specific circumstances of the case",
+      "holding that the asylum analysis requires consideration of the deportation doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "federal",
+    "court": "United States Court of Appeals for the Third Circuit"
+  },
+  {
+    "id": "casehold_test_50",
+    "citing_prompt": "In Supreme Court of Delaware, the plaintiff argued that the defendant violated established principles of automatic stay under discharge law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the insider trading analysis requires consideration of the securities fraud doctrine as applied to the specific circumstances of the case",
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case",
+      "holding that the Sherman Act analysis requires consideration of the price fixing doctrine as applied to the specific circumstances of the case",
+      "holding that the asylum analysis requires consideration of the deportation doctrine as applied to the specific circumstances of the case",
+      "holding that the automatic stay claim was properly analyzed under the discharge framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "delaware",
+    "court": "Supreme Court of Delaware"
+  },
+  {
+    "id": "casehold_test_51",
+    "citing_prompt": "In Court of Chancery of Delaware, the plaintiff argued that the defendant violated established principles of insider trading under securities fraud law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case",
+      "holding that the Sherman Act analysis requires consideration of the price fixing doctrine as applied to the specific circumstances of the case",
+      "holding that the asylum analysis requires consideration of the deportation doctrine as applied to the specific circumstances of the case",
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case",
+      "holding that the insider trading claim was properly analyzed under the securities fraud framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "delaware",
+    "court": "Court of Chancery of Delaware"
+  },
+  {
+    "id": "casehold_test_52",
+    "citing_prompt": "In Court of Chancery of Delaware, the plaintiff argued that the defendant violated established principles of CERCLA under Clean Water Act law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the Sherman Act analysis requires consideration of the price fixing doctrine as applied to the specific circumstances of the case",
+      "holding that the asylum analysis requires consideration of the deportation doctrine as applied to the specific circumstances of the case",
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case",
+      "holding that the coverage dispute analysis requires consideration of the bad faith doctrine as applied to the specific circumstances of the case",
+      "holding that the CERCLA claim was properly analyzed under the Clean Water Act framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "delaware",
+    "court": "Court of Chancery of Delaware"
+  },
+  {
+    "id": "casehold_test_53",
+    "citing_prompt": "In Court of Chancery of Delaware, the plaintiff argued that the defendant violated established principles of Sherman Act under price fixing law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the asylum analysis requires consideration of the deportation doctrine as applied to the specific circumstances of the case",
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case",
+      "holding that the Sherman Act claim was properly analyzed under the price fixing framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case",
+      "holding that the hearsay analysis requires consideration of the expert testimony doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 2,
+    "jurisdiction": "delaware",
+    "court": "Court of Chancery of Delaware"
+  },
+  {
+    "id": "casehold_test_54",
+    "citing_prompt": "In Supreme Court of Delaware, the plaintiff argued that the defendant violated established principles of asylum under deportation law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case",
+      "holding that the asylum claim was properly analyzed under the deportation framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case",
+      "holding that the hearsay analysis requires consideration of the expert testimony doctrine as applied to the specific circumstances of the case",
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "delaware",
+    "court": "Supreme Court of Delaware"
+  },
+  {
+    "id": "casehold_test_55",
+    "citing_prompt": "In Court of Chancery of Delaware, the plaintiff argued that the defendant violated established principles of tax liability under IRS assessment law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the tax liability claim was properly analyzed under the IRS assessment framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case",
+      "holding that the hearsay analysis requires consideration of the expert testimony doctrine as applied to the specific circumstances of the case",
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case",
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "delaware",
+    "court": "Court of Chancery of Delaware"
+  },
+  {
+    "id": "casehold_test_56",
+    "citing_prompt": "In Supreme Court of Delaware, the plaintiff argued that the defendant violated established principles of coverage dispute under bad faith law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the coverage dispute claim was properly analyzed under the bad faith framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the hearsay analysis requires consideration of the expert testimony doctrine as applied to the specific circumstances of the case",
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case",
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case",
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "delaware",
+    "court": "Supreme Court of Delaware"
+  },
+  {
+    "id": "casehold_test_57",
+    "citing_prompt": "In Supreme Court of Delaware, the plaintiff argued that the defendant violated established principles of custody under child support law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the hearsay analysis requires consideration of the expert testimony doctrine as applied to the specific circumstances of the case",
+      "holding that the custody claim was properly analyzed under the child support framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case",
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case",
+      "holding that the eminent domain analysis requires consideration of the property rights doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "delaware",
+    "court": "Supreme Court of Delaware"
+  },
+  {
+    "id": "casehold_test_58",
+    "citing_prompt": "In Court of Chancery of Delaware, the plaintiff argued that the defendant violated established principles of hearsay under expert testimony law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case",
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case",
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case",
+      "holding that the eminent domain analysis requires consideration of the property rights doctrine as applied to the specific circumstances of the case",
+      "holding that the hearsay claim was properly analyzed under the expert testimony framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "delaware",
+    "court": "Court of Chancery of Delaware"
+  },
+  {
+    "id": "casehold_test_59",
+    "citing_prompt": "In Supreme Court of Delaware, the plaintiff argued that the defendant violated established principles of standing under statute of limitations law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case",
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case",
+      "holding that the eminent domain analysis requires consideration of the property rights doctrine as applied to the specific circumstances of the case",
+      "holding that the standing claim was properly analyzed under the statute of limitations framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 3,
+    "jurisdiction": "delaware",
+    "court": "Supreme Court of Delaware"
+  },
+  {
+    "id": "casehold_test_60",
+    "citing_prompt": "In Court of Appeal of California, the plaintiff argued that the defendant violated established principles of breach of contract under contractual obligations law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case",
+      "holding that the eminent domain analysis requires consideration of the property rights doctrine as applied to the specific circumstances of the case",
+      "holding that the wrongful termination analysis requires consideration of the employment discrimination doctrine as applied to the specific circumstances of the case",
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case",
+      "holding that the breach of contract claim was properly analyzed under the contractual obligations framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "california",
+    "court": "Court of Appeal of California"
+  },
+  {
+    "id": "casehold_test_61",
+    "citing_prompt": "In Court of Appeal of California, the plaintiff argued that the defendant violated established principles of negligence under duty of care law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the eminent domain analysis requires consideration of the property rights doctrine as applied to the specific circumstances of the case",
+      "holding that the wrongful termination analysis requires consideration of the employment discrimination doctrine as applied to the specific circumstances of the case",
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case",
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case",
+      "holding that the negligence claim was properly analyzed under the duty of care framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "california",
+    "court": "Court of Appeal of California"
+  },
+  {
+    "id": "casehold_test_62",
+    "citing_prompt": "In Court of Appeal of California, the plaintiff argued that the defendant violated established principles of eminent domain under property rights law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the wrongful termination analysis requires consideration of the employment discrimination doctrine as applied to the specific circumstances of the case",
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case",
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case",
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case",
+      "holding that the eminent domain claim was properly analyzed under the property rights framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "california",
+    "court": "Court of Appeal of California"
+  },
+  {
+    "id": "casehold_test_63",
+    "citing_prompt": "In Supreme Court of California, the plaintiff argued that the defendant violated established principles of wrongful termination under employment discrimination law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the wrongful termination claim was properly analyzed under the employment discrimination framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case",
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case",
+      "holding that the patent infringement analysis requires consideration of the trademark doctrine as applied to the specific circumstances of the case",
+      "holding that the agency deference analysis requires consideration of the regulatory authority doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "california",
+    "court": "Supreme Court of California"
+  },
+  {
+    "id": "casehold_test_64",
+    "citing_prompt": "In Court of Appeal of California, the plaintiff argued that the defendant violated established principles of due process under equal protection law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case",
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case",
+      "holding that the due process claim was properly analyzed under the equal protection framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the agency deference analysis requires consideration of the regulatory authority doctrine as applied to the specific circumstances of the case",
+      "holding that the Title VII analysis requires consideration of the Section 1983 doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 2,
+    "jurisdiction": "california",
+    "court": "Court of Appeal of California"
+  },
+  {
+    "id": "casehold_test_65",
+    "citing_prompt": "In Supreme Court of California, the plaintiff argued that the defendant violated established principles of search and seizure under Fourth Amendment law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case",
+      "holding that the patent infringement analysis requires consideration of the trademark doctrine as applied to the specific circumstances of the case",
+      "holding that the search and seizure claim was properly analyzed under the Fourth Amendment framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the Title VII analysis requires consideration of the Section 1983 doctrine as applied to the specific circumstances of the case",
+      "holding that the automatic stay analysis requires consideration of the discharge doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 2,
+    "jurisdiction": "california",
+    "court": "Supreme Court of California"
+  },
+  {
+    "id": "casehold_test_66",
+    "citing_prompt": "In Court of Appeal of California, the plaintiff argued that the defendant violated established principles of fiduciary duty under business judgment rule law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the patent infringement analysis requires consideration of the trademark doctrine as applied to the specific circumstances of the case",
+      "holding that the fiduciary duty claim was properly analyzed under the business judgment rule framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the Title VII analysis requires consideration of the Section 1983 doctrine as applied to the specific circumstances of the case",
+      "holding that the automatic stay analysis requires consideration of the discharge doctrine as applied to the specific circumstances of the case",
+      "holding that the insider trading analysis requires consideration of the securities fraud doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "california",
+    "court": "Court of Appeal of California"
+  },
+  {
+    "id": "casehold_test_67",
+    "citing_prompt": "In Court of Appeal of California, the plaintiff argued that the defendant violated established principles of patent infringement under trademark law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the patent infringement claim was properly analyzed under the trademark framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the Title VII analysis requires consideration of the Section 1983 doctrine as applied to the specific circumstances of the case",
+      "holding that the automatic stay analysis requires consideration of the discharge doctrine as applied to the specific circumstances of the case",
+      "holding that the insider trading analysis requires consideration of the securities fraud doctrine as applied to the specific circumstances of the case",
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "california",
+    "court": "Court of Appeal of California"
+  },
+  {
+    "id": "casehold_test_68",
+    "citing_prompt": "In Court of Appeal of California, the plaintiff argued that the defendant violated established principles of agency deference under regulatory authority law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the Title VII analysis requires consideration of the Section 1983 doctrine as applied to the specific circumstances of the case",
+      "holding that the automatic stay analysis requires consideration of the discharge doctrine as applied to the specific circumstances of the case",
+      "holding that the insider trading analysis requires consideration of the securities fraud doctrine as applied to the specific circumstances of the case",
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case",
+      "holding that the agency deference claim was properly analyzed under the regulatory authority framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "california",
+    "court": "Court of Appeal of California"
+  },
+  {
+    "id": "casehold_test_69",
+    "citing_prompt": "In Supreme Court of California, the plaintiff argued that the defendant violated established principles of Title VII under Section 1983 law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the automatic stay analysis requires consideration of the discharge doctrine as applied to the specific circumstances of the case",
+      "holding that the insider trading analysis requires consideration of the securities fraud doctrine as applied to the specific circumstances of the case",
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case",
+      "holding that the Sherman Act analysis requires consideration of the price fixing doctrine as applied to the specific circumstances of the case",
+      "holding that the Title VII claim was properly analyzed under the Section 1983 framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "california",
+    "court": "Supreme Court of California"
+  },
+  {
+    "id": "casehold_test_70",
+    "citing_prompt": "In Court of Appeals of New York, the plaintiff argued that the defendant violated established principles of automatic stay under discharge law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the insider trading analysis requires consideration of the securities fraud doctrine as applied to the specific circumstances of the case",
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case",
+      "holding that the automatic stay claim was properly analyzed under the discharge framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the asylum analysis requires consideration of the deportation doctrine as applied to the specific circumstances of the case",
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 2,
+    "jurisdiction": "new_york",
+    "court": "Court of Appeals of New York"
+  },
+  {
+    "id": "casehold_test_71",
+    "citing_prompt": "In Court of Appeals of New York, the plaintiff argued that the defendant violated established principles of insider trading under securities fraud law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case",
+      "holding that the insider trading claim was properly analyzed under the securities fraud framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the asylum analysis requires consideration of the deportation doctrine as applied to the specific circumstances of the case",
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case",
+      "holding that the coverage dispute analysis requires consideration of the bad faith doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "new_york",
+    "court": "Court of Appeals of New York"
+  },
+  {
+    "id": "casehold_test_72",
+    "citing_prompt": "In Supreme Court of New York, the plaintiff argued that the defendant violated established principles of CERCLA under Clean Water Act law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the Sherman Act analysis requires consideration of the price fixing doctrine as applied to the specific circumstances of the case",
+      "holding that the CERCLA claim was properly analyzed under the Clean Water Act framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case",
+      "holding that the coverage dispute analysis requires consideration of the bad faith doctrine as applied to the specific circumstances of the case",
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "new_york",
+    "court": "Supreme Court of New York"
+  },
+  {
+    "id": "casehold_test_73",
+    "citing_prompt": "In Court of Appeals of New York, the plaintiff argued that the defendant violated established principles of Sherman Act under price fixing law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the asylum analysis requires consideration of the deportation doctrine as applied to the specific circumstances of the case",
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case",
+      "holding that the coverage dispute analysis requires consideration of the bad faith doctrine as applied to the specific circumstances of the case",
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case",
+      "holding that the Sherman Act claim was properly analyzed under the price fixing framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "new_york",
+    "court": "Court of Appeals of New York"
+  },
+  {
+    "id": "casehold_test_74",
+    "citing_prompt": "In Supreme Court of New York, the plaintiff argued that the defendant violated established principles of asylum under deportation law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case",
+      "holding that the coverage dispute analysis requires consideration of the bad faith doctrine as applied to the specific circumstances of the case",
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case",
+      "holding that the asylum claim was properly analyzed under the deportation framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 3,
+    "jurisdiction": "new_york",
+    "court": "Supreme Court of New York"
+  },
+  {
+    "id": "casehold_test_75",
+    "citing_prompt": "In Court of Appeals of New York, the plaintiff argued that the defendant violated established principles of tax liability under IRS assessment law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the tax liability claim was properly analyzed under the IRS assessment framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case",
+      "holding that the hearsay analysis requires consideration of the expert testimony doctrine as applied to the specific circumstances of the case",
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case",
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "new_york",
+    "court": "Court of Appeals of New York"
+  },
+  {
+    "id": "casehold_test_76",
+    "citing_prompt": "In Supreme Court of New York, the plaintiff argued that the defendant violated established principles of coverage dispute under bad faith law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case",
+      "holding that the hearsay analysis requires consideration of the expert testimony doctrine as applied to the specific circumstances of the case",
+      "holding that the coverage dispute claim was properly analyzed under the bad faith framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case",
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 2,
+    "jurisdiction": "new_york",
+    "court": "Supreme Court of New York"
+  },
+  {
+    "id": "casehold_test_77",
+    "citing_prompt": "In Court of Appeals of New York, the plaintiff argued that the defendant violated established principles of custody under child support law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the custody claim was properly analyzed under the child support framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case",
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case",
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case",
+      "holding that the eminent domain analysis requires consideration of the property rights doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "new_york",
+    "court": "Court of Appeals of New York"
+  },
+  {
+    "id": "casehold_test_78",
+    "citing_prompt": "In Supreme Court of Texas, the plaintiff argued that the defendant violated established principles of hearsay under expert testimony law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case",
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case",
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case",
+      "holding that the eminent domain analysis requires consideration of the property rights doctrine as applied to the specific circumstances of the case",
+      "holding that the hearsay claim was properly analyzed under the expert testimony framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "texas",
+    "court": "Supreme Court of Texas"
+  },
+  {
+    "id": "casehold_test_79",
+    "citing_prompt": "In Supreme Court of Texas, the plaintiff argued that the defendant violated established principles of standing under statute of limitations law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the standing claim was properly analyzed under the statute of limitations framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case",
+      "holding that the eminent domain analysis requires consideration of the property rights doctrine as applied to the specific circumstances of the case",
+      "holding that the wrongful termination analysis requires consideration of the employment discrimination doctrine as applied to the specific circumstances of the case",
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "texas",
+    "court": "Supreme Court of Texas"
+  },
+  {
+    "id": "casehold_test_80",
+    "citing_prompt": "In Court of Appeals of Texas, the plaintiff argued that the defendant violated established principles of breach of contract under contractual obligations law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the breach of contract claim was properly analyzed under the contractual obligations framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the eminent domain analysis requires consideration of the property rights doctrine as applied to the specific circumstances of the case",
+      "holding that the wrongful termination analysis requires consideration of the employment discrimination doctrine as applied to the specific circumstances of the case",
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case",
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "texas",
+    "court": "Court of Appeals of Texas"
+  },
+  {
+    "id": "casehold_test_81",
+    "citing_prompt": "In Supreme Court of Texas, the plaintiff argued that the defendant violated established principles of negligence under duty of care law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the eminent domain analysis requires consideration of the property rights doctrine as applied to the specific circumstances of the case",
+      "holding that the negligence claim was properly analyzed under the duty of care framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case",
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case",
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "texas",
+    "court": "Supreme Court of Texas"
+  },
+  {
+    "id": "casehold_test_82",
+    "citing_prompt": "In Court of Appeals of Texas, the plaintiff argued that the defendant violated established principles of eminent domain under property rights law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the wrongful termination analysis requires consideration of the employment discrimination doctrine as applied to the specific circumstances of the case",
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case",
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case",
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case",
+      "holding that the eminent domain claim was properly analyzed under the property rights framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "texas",
+    "court": "Court of Appeals of Texas"
+  },
+  {
+    "id": "casehold_test_83",
+    "citing_prompt": "In Supreme Court of Texas, the plaintiff argued that the defendant violated established principles of wrongful termination under employment discrimination law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case",
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case",
+      "holding that the wrongful termination claim was properly analyzed under the employment discrimination framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the patent infringement analysis requires consideration of the trademark doctrine as applied to the specific circumstances of the case",
+      "holding that the agency deference analysis requires consideration of the regulatory authority doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 2,
+    "jurisdiction": "texas",
+    "court": "Supreme Court of Texas"
+  },
+  {
+    "id": "casehold_test_84",
+    "citing_prompt": "In Court of Appeals of Texas, the plaintiff argued that the defendant violated established principles of due process under equal protection law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the search and seizure analysis requires consideration of the Fourth Amendment doctrine as applied to the specific circumstances of the case",
+      "holding that the due process claim was properly analyzed under the equal protection framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the patent infringement analysis requires consideration of the trademark doctrine as applied to the specific circumstances of the case",
+      "holding that the agency deference analysis requires consideration of the regulatory authority doctrine as applied to the specific circumstances of the case",
+      "holding that the Title VII analysis requires consideration of the Section 1983 doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "texas",
+    "court": "Court of Appeals of Texas"
+  },
+  {
+    "id": "casehold_test_85",
+    "citing_prompt": "In Supreme Court of Illinois, the plaintiff argued that the defendant violated established principles of search and seizure under Fourth Amendment law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the fiduciary duty analysis requires consideration of the business judgment rule doctrine as applied to the specific circumstances of the case",
+      "holding that the patent infringement analysis requires consideration of the trademark doctrine as applied to the specific circumstances of the case",
+      "holding that the search and seizure claim was properly analyzed under the Fourth Amendment framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the Title VII analysis requires consideration of the Section 1983 doctrine as applied to the specific circumstances of the case",
+      "holding that the automatic stay analysis requires consideration of the discharge doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 2,
+    "jurisdiction": "illinois",
+    "court": "Supreme Court of Illinois"
+  },
+  {
+    "id": "casehold_test_86",
+    "citing_prompt": "In Appellate Court of Illinois, the plaintiff argued that the defendant violated established principles of fiduciary duty under business judgment rule law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the patent infringement analysis requires consideration of the trademark doctrine as applied to the specific circumstances of the case",
+      "holding that the agency deference analysis requires consideration of the regulatory authority doctrine as applied to the specific circumstances of the case",
+      "holding that the fiduciary duty claim was properly analyzed under the business judgment rule framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the automatic stay analysis requires consideration of the discharge doctrine as applied to the specific circumstances of the case",
+      "holding that the insider trading analysis requires consideration of the securities fraud doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 2,
+    "jurisdiction": "illinois",
+    "court": "Appellate Court of Illinois"
+  },
+  {
+    "id": "casehold_test_87",
+    "citing_prompt": "In Appellate Court of Illinois, the plaintiff argued that the defendant violated established principles of patent infringement under trademark law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the agency deference analysis requires consideration of the regulatory authority doctrine as applied to the specific circumstances of the case",
+      "holding that the Title VII analysis requires consideration of the Section 1983 doctrine as applied to the specific circumstances of the case",
+      "holding that the automatic stay analysis requires consideration of the discharge doctrine as applied to the specific circumstances of the case",
+      "holding that the insider trading analysis requires consideration of the securities fraud doctrine as applied to the specific circumstances of the case",
+      "holding that the patent infringement claim was properly analyzed under the trademark framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "illinois",
+    "court": "Appellate Court of Illinois"
+  },
+  {
+    "id": "casehold_test_88",
+    "citing_prompt": "In Appellate Court of Illinois, the plaintiff argued that the defendant violated established principles of agency deference under regulatory authority law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the agency deference claim was properly analyzed under the regulatory authority framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the automatic stay analysis requires consideration of the discharge doctrine as applied to the specific circumstances of the case",
+      "holding that the insider trading analysis requires consideration of the securities fraud doctrine as applied to the specific circumstances of the case",
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case",
+      "holding that the Sherman Act analysis requires consideration of the price fixing doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "illinois",
+    "court": "Appellate Court of Illinois"
+  },
+  {
+    "id": "casehold_test_89",
+    "citing_prompt": "In Supreme Court of Illinois, the plaintiff argued that the defendant violated established principles of Title VII under Section 1983 law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the automatic stay analysis requires consideration of the discharge doctrine as applied to the specific circumstances of the case",
+      "holding that the Title VII claim was properly analyzed under the Section 1983 framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case",
+      "holding that the Sherman Act analysis requires consideration of the price fixing doctrine as applied to the specific circumstances of the case",
+      "holding that the asylum analysis requires consideration of the deportation doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "illinois",
+    "court": "Supreme Court of Illinois"
+  },
+  {
+    "id": "casehold_test_90",
+    "citing_prompt": "In Supreme Court of Pennsylvania, the plaintiff argued that the defendant violated established principles of automatic stay under discharge law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the insider trading analysis requires consideration of the securities fraud doctrine as applied to the specific circumstances of the case",
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case",
+      "holding that the automatic stay claim was properly analyzed under the discharge framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the asylum analysis requires consideration of the deportation doctrine as applied to the specific circumstances of the case",
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 2,
+    "jurisdiction": "pennsylvania",
+    "court": "Supreme Court of Pennsylvania"
+  },
+  {
+    "id": "casehold_test_91",
+    "citing_prompt": "In Supreme Court of Pennsylvania, the plaintiff argued that the defendant violated established principles of insider trading under securities fraud law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the CERCLA analysis requires consideration of the Clean Water Act doctrine as applied to the specific circumstances of the case",
+      "holding that the Sherman Act analysis requires consideration of the price fixing doctrine as applied to the specific circumstances of the case",
+      "holding that the asylum analysis requires consideration of the deportation doctrine as applied to the specific circumstances of the case",
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case",
+      "holding that the insider trading claim was properly analyzed under the securities fraud framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "pennsylvania",
+    "court": "Supreme Court of Pennsylvania"
+  },
+  {
+    "id": "casehold_test_92",
+    "citing_prompt": "In Supreme Court of Pennsylvania, the plaintiff argued that the defendant violated established principles of CERCLA under Clean Water Act law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the Sherman Act analysis requires consideration of the price fixing doctrine as applied to the specific circumstances of the case",
+      "holding that the asylum analysis requires consideration of the deportation doctrine as applied to the specific circumstances of the case",
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case",
+      "holding that the coverage dispute analysis requires consideration of the bad faith doctrine as applied to the specific circumstances of the case",
+      "holding that the CERCLA claim was properly analyzed under the Clean Water Act framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "pennsylvania",
+    "court": "Supreme Court of Pennsylvania"
+  },
+  {
+    "id": "casehold_test_93",
+    "citing_prompt": "In Supreme Court of Pennsylvania, the plaintiff argued that the defendant violated established principles of Sherman Act under price fixing law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the Sherman Act claim was properly analyzed under the price fixing framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the tax liability analysis requires consideration of the IRS assessment doctrine as applied to the specific circumstances of the case",
+      "holding that the coverage dispute analysis requires consideration of the bad faith doctrine as applied to the specific circumstances of the case",
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case",
+      "holding that the hearsay analysis requires consideration of the expert testimony doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "pennsylvania",
+    "court": "Supreme Court of Pennsylvania"
+  },
+  {
+    "id": "casehold_test_94",
+    "citing_prompt": "In Supreme Court of Pennsylvania, the plaintiff argued that the defendant violated established principles of asylum under deportation law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the asylum claim was properly analyzed under the deportation framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the coverage dispute analysis requires consideration of the bad faith doctrine as applied to the specific circumstances of the case",
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case",
+      "holding that the hearsay analysis requires consideration of the expert testimony doctrine as applied to the specific circumstances of the case",
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "pennsylvania",
+    "court": "Supreme Court of Pennsylvania"
+  },
+  {
+    "id": "casehold_test_95",
+    "citing_prompt": "In Supreme Court of Ohio, the plaintiff argued that the defendant violated established principles of tax liability under IRS assessment law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the tax liability claim was properly analyzed under the IRS assessment framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case",
+      "holding that the hearsay analysis requires consideration of the expert testimony doctrine as applied to the specific circumstances of the case",
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case",
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 0,
+    "jurisdiction": "ohio",
+    "court": "Supreme Court of Ohio"
+  },
+  {
+    "id": "casehold_test_96",
+    "citing_prompt": "In Supreme Court of Ohio, the plaintiff argued that the defendant violated established principles of coverage dispute under bad faith law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the custody analysis requires consideration of the child support doctrine as applied to the specific circumstances of the case",
+      "holding that the hearsay analysis requires consideration of the expert testimony doctrine as applied to the specific circumstances of the case",
+      "holding that the coverage dispute claim was properly analyzed under the bad faith framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case",
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 2,
+    "jurisdiction": "ohio",
+    "court": "Supreme Court of Ohio"
+  },
+  {
+    "id": "casehold_test_97",
+    "citing_prompt": "In Supreme Court of Ohio, the plaintiff argued that the defendant violated established principles of custody under child support law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the hearsay analysis requires consideration of the expert testimony doctrine as applied to the specific circumstances of the case",
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case",
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case",
+      "holding that the negligence analysis requires consideration of the duty of care doctrine as applied to the specific circumstances of the case",
+      "holding that the custody claim was properly analyzed under the child support framework and the court correctly applied the applicable legal standard to the facts presented"
+    ],
+    "label": 4,
+    "jurisdiction": "ohio",
+    "court": "Supreme Court of Ohio"
+  },
+  {
+    "id": "casehold_test_98",
+    "citing_prompt": "In Supreme Court of Ohio, the plaintiff argued that the defendant violated established principles of hearsay under expert testimony law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the standing analysis requires consideration of the statute of limitations doctrine as applied to the specific circumstances of the case",
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case",
+      "holding that the hearsay claim was properly analyzed under the expert testimony framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the eminent domain analysis requires consideration of the property rights doctrine as applied to the specific circumstances of the case",
+      "holding that the wrongful termination analysis requires consideration of the employment discrimination doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 2,
+    "jurisdiction": "ohio",
+    "court": "Supreme Court of Ohio"
+  },
+  {
+    "id": "casehold_test_99",
+    "citing_prompt": "In Court of Appeals of Ohio, the plaintiff argued that the defendant violated established principles of standing under statute of limitations law. The court, reviewing the record de novo, considered whether the lower court properly applied the standard set forth in prior precedent. After careful analysis of the facts presented and applicable law, the court concluded that <HOLDING>. This determination was consistent with the weight of authority in this jurisdiction and reflected the court's interpretation of the governing statutory and common law framework.",
+    "holdings": [
+      "holding that the breach of contract analysis requires consideration of the contractual obligations doctrine as applied to the specific circumstances of the case",
+      "holding that the standing claim was properly analyzed under the statute of limitations framework and the court correctly applied the applicable legal standard to the facts presented",
+      "holding that the eminent domain analysis requires consideration of the property rights doctrine as applied to the specific circumstances of the case",
+      "holding that the wrongful termination analysis requires consideration of the employment discrimination doctrine as applied to the specific circumstances of the case",
+      "holding that the due process analysis requires consideration of the equal protection doctrine as applied to the specific circumstances of the case"
+    ],
+    "label": 1,
+    "jurisdiction": "ohio",
+    "court": "Court of Appeals of Ohio"
+  }
+]

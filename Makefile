@@ -172,6 +172,18 @@ build-managed-agents: ## Build managed agents TypeScript
 check-managed-agents: ## Type-check managed agents
 	cd src/knowledge-work-managed-agents && npx tsc --noEmit
 
+eval-casehold: ## Run CaseHOLD legal holdings benchmark (100 sample)
+	uv run agentstreams eval casehold
+
+eval-casehold-full: ## Run CaseHOLD from Neon Postgres (requires ingest)
+	uv run agentstreams eval casehold --full --samples 1000
+
+eval-casehold-quick: ## Quick CaseHOLD eval (20 samples)
+	uv run agentstreams eval casehold --samples 20
+
+eval-casehold-ingest: ## Download CaseHOLD from HuggingFace and ingest to Neon
+	uv run python -m julia.evals.casehold.ingest
+
 eval-promptfoo: ## Run all promptfoo eval suites
 	@for dir in evals/*/ julia/evals/*/; do \
 	  if [ -f "$$dir/promptfooconfig.yaml" ]; then \
