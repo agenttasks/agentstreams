@@ -205,6 +205,113 @@ COMMENT ON COLUMN julia_audit_logs.input_tokens IS 'Fact: input token count';
 COMMENT ON COLUMN julia_audit_logs.output_tokens IS 'Fact: output token count';
 COMMENT ON COLUMN julia_audit_logs.duration_ms IS 'Fact: operation duration in milliseconds';
 
+-- ── CUAD Eval Runs (Transaction Fact) ───────────────────────
+-- Grain: one clause extraction attempt per contract per clause type.
+-- CUAD = Contract Understanding Atticus Dataset (510 contracts, 41 clause types).
+-- Scoring follows Harvey BigLaw Bench: Answer Score + Source Score.
+
+CREATE TABLE julia_cuad_eval_runs (
+    id BIGSERIAL PRIMARY KEY,
+    harness_run_id INTEGER,              -- FK to ontology harness_runs (optional)
+    contract_id TEXT NOT NULL,            -- CUAD contract identifier
+    contract_title TEXT NOT NULL DEFAULT '',
+    clause_type TEXT NOT NULL,            -- CUAD category name (41 types)
+    julia_category TEXT NOT NULL DEFAULT '',  -- mapped Julia category (12 types)
+    -- Extraction results
+    found BOOLEAN NOT NULL,              -- did Julia find the clause?
+    gold_found BOOLEAN NOT NULL,         -- does gold annotation have this clause?
+    extracted_text TEXT,                  -- Julia's extracted span
+    gold_text TEXT,                       -- CUAD gold annotation span
+    section_reference TEXT,
+    confidence REAL,
+    verification TEXT DEFAULT 'not_applicable'
+        CHECK (verification IN ('verified', 'retracted', 'not_applicable')),
+    -- Scoring (Harvey-style)
+    answer_score REAL,                   -- 0-1: correct presence/absence?
+    source_score REAL,                   -- 0-1: quote accuracy
+    f1_score REAL,                       -- token-level F1
+    hallucination_penalty REAL DEFAULT 0,
+    final_score REAL,                    -- answer_score - hallucination_penalty
+    -- Operational
+    model TEXT NOT NULL DEFAULT 'claude-opus-4-6',
+    input_tokens INTEGER,
+    output_tokens INTEGER,
+    duration_ms INTEGER,
+    metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX idx_cuad_eval_clause ON julia_cuad_eval_runs(clause_type);
+CREATE INDEX idx_cuad_eval_contract ON julia_cuad_eval_runs(contract_id);
+CREATE INDEX idx_cuad_eval_harness ON julia_cuad_eval_runs(harness_run_id);
+
+COMMENT ON TABLE julia_cuad_eval_runs IS 'CUAD benchmark clause extraction results (transaction fact)';
+COMMENT ON COLUMN julia_cuad_eval_runs.answer_score IS 'Harvey Answer Score: did Julia find the clause?';
+COMMENT ON COLUMN julia_cuad_eval_runs.source_score IS 'Harvey Source Score: is the extracted quote accurate?';
+COMMENT ON COLUMN julia_cuad_eval_runs.f1_score IS 'Token-level F1 between extracted and gold spans';
+COMMENT ON COLUMN julia_cuad_eval_runs.hallucination_penalty IS 'Penalty for fabricated clauses not in source text';
+
+-- ── CUAD Vault Recall (Transaction Fact) ────────────────────
+-- Grain: one search attempt per contract per clause type.
+-- Compares pgvector (hash), LanceDB (hybrid), pg_trgm (fuzzy), and RRF hybrid.
+
+CREATE TABLE julia_cuad_vault_recall (
+    id BIGSERIAL PRIMARY KEY,
+    harness_run_id INTEGER,
+    contract_id TEXT NOT NULL,
+    clause_type TEXT NOT NULL,
+    search_backend TEXT NOT NULL DEFAULT 'pgvector'
+        CHECK (search_backend IN ('pgvector', 'lancedb', 'pg_trgm', 'hybrid')),
+    -- Recall measurement
+    k INTEGER NOT NULL DEFAULT 10,
+    recall_at_k REAL,                    -- fraction of gold chunks in top-K
+    gold_chunk_count INTEGER,            -- how many chunks contain the clause
+    retrieved_chunk_ids TEXT[],          -- actual retrieved chunk IDs
+    gold_chunk_ids TEXT[],              -- chunks that contain the gold span
+    -- Operational
+    duration_ms INTEGER,
+    metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX idx_cuad_recall_backend ON julia_cuad_vault_recall(search_backend);
+CREATE INDEX idx_cuad_recall_contract ON julia_cuad_vault_recall(contract_id);
+
+COMMENT ON TABLE julia_cuad_vault_recall IS 'Vault semantic search recall@K for CUAD contracts';
+COMMENT ON COLUMN julia_cuad_vault_recall.search_backend IS 'Search backend: pgvector (hash), lancedb (hybrid), pg_trgm (fuzzy), hybrid (RRF)';
+
+-- ── CaseHOLD Eval Runs (Transaction Fact) ───────────────────
+-- Grain: one multiple-choice prediction per holding.
+-- CaseHOLD = 53K case law holdings for precedent ranking evaluation.
+
+CREATE TABLE julia_casehold_eval_runs (
+    id BIGSERIAL PRIMARY KEY,
+    harness_run_id INTEGER,
+    example_id TEXT NOT NULL,            -- CaseHOLD dataset ID
+    citing_prompt TEXT NOT NULL,          -- citing case context
+    holding_options TEXT[] NOT NULL,     -- 5 candidate holdings
+    -- Results
+    predicted_idx INTEGER,               -- Julia's predicted holding index (0-4)
+    gold_idx INTEGER NOT NULL,           -- correct holding index
+    correct BOOLEAN NOT NULL,
+    confidence REAL,
+    reasoning TEXT,                       -- Julia's reasoning for the selection
+    -- Operational
+    model TEXT NOT NULL DEFAULT 'claude-opus-4-6',
+    input_tokens INTEGER,
+    output_tokens INTEGER,
+    duration_ms INTEGER,
+    metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX idx_casehold_eval_correct ON julia_casehold_eval_runs(correct);
+CREATE INDEX idx_casehold_eval_harness ON julia_casehold_eval_runs(harness_run_id);
+
+COMMENT ON TABLE julia_casehold_eval_runs IS 'CaseHOLD precedent ranking benchmark results (transaction fact)';
+COMMENT ON COLUMN julia_casehold_eval_runs.gold_idx IS 'Correct holding index (0-4) from CaseHOLD annotations';
+COMMENT ON COLUMN julia_casehold_eval_runs.correct IS 'True if predicted_idx matches gold_idx';
+
 -- ── pg_cron: Periodic Snapshot Aggregation ───────────────────
 -- Aggregates daily usage stats into client matter dimension rows.
 
