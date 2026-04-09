@@ -23,7 +23,7 @@
 -- Kimball: natural key = id, surrogate key = (id, effective_date)
 
 CREATE TABLE julia_client_matters (
-    id TEXT NOT NULL,                  -- branded MatterId
+    id TEXT NOT NULL DEFAULT gen_random_uuid()::text,  -- branded MatterId
     name TEXT NOT NULL,
     description TEXT NOT NULL DEFAULT '',
     status TEXT NOT NULL DEFAULT 'active'
@@ -56,7 +56,7 @@ COMMENT ON COLUMN julia_client_matters.token_count IS 'Periodic snapshot: aggreg
 -- Document collections. SCD Type 1: overwrites on rename (no history).
 
 CREATE TABLE julia_vault_projects (
-    id TEXT PRIMARY KEY,               -- branded ProjectId (UUID)
+    id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,  -- branded ProjectId (UUID)
     name TEXT NOT NULL,
     description TEXT NOT NULL DEFAULT '',
     is_knowledge_base BOOLEAN NOT NULL DEFAULT false,
@@ -83,7 +83,7 @@ COMMENT ON COLUMN julia_vault_projects.client_matter_id IS 'FK to julia_client_m
 -- uploaded_at → chunked_at → embedded_at → processed_at
 
 CREATE TABLE julia_vault_files (
-    id TEXT PRIMARY KEY,               -- branded FileId (UUID)
+    id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,  -- branded FileId (UUID)
     project_id TEXT NOT NULL REFERENCES julia_vault_projects(id),
     filename TEXT NOT NULL,
     mime_type TEXT NOT NULL DEFAULT '',
@@ -118,7 +118,7 @@ COMMENT ON COLUMN julia_vault_files.processed_at IS 'Accumulating snapshot: comp
 -- ── Vault File Chunks (pgvector embeddings) ──────────────────
 
 CREATE TABLE julia_vault_file_chunks (
-    id TEXT PRIMARY KEY,               -- branded ChunkId
+    id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,  -- branded ChunkId
     file_id TEXT NOT NULL REFERENCES julia_vault_files(id) ON DELETE CASCADE,
     chunk_index INTEGER NOT NULL,
     content TEXT NOT NULL,
@@ -141,11 +141,11 @@ COMMENT ON COLUMN julia_vault_file_chunks.embedding IS '384-dim vector (hash_emb
 -- ── Review Tables ────────────────────────────────────────────
 
 CREATE TABLE julia_review_tables (
-    id TEXT PRIMARY KEY,               -- branded ReviewTableId
+    id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,  -- branded ReviewTableId
     project_id TEXT NOT NULL REFERENCES julia_vault_projects(id),
     title TEXT NOT NULL,
     columns JSONB NOT NULL,            -- [{name, type, description}]
-    file_ids TEXT[] NOT NULL,
+    file_ids JSONB NOT NULL,           -- array of FileId strings as JSON
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
@@ -157,7 +157,7 @@ COMMENT ON COLUMN julia_review_tables.columns IS 'Review column definitions: [{n
 -- ── Review Rows ──────────────────────────────────────────────
 
 CREATE TABLE julia_review_rows (
-    id TEXT PRIMARY KEY,
+    id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
     review_table_id TEXT NOT NULL REFERENCES julia_review_tables(id) ON DELETE CASCADE,
     file_id TEXT NOT NULL REFERENCES julia_vault_files(id),
     cells JSONB NOT NULL,              -- {column_name: extracted_value}

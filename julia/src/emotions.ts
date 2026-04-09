@@ -37,7 +37,7 @@ import type {
   EmotionDimension,
   EmotionValence,
 } from "./types.js";
-import type { GateDecision } from "./pipeline.js";
+import type { GateDecision } from "./types.js";
 
 // ── Valence Map (from paper's 171 emotion concept categorization) ──
 

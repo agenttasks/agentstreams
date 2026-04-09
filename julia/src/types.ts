@@ -126,6 +126,9 @@ export type RiskScore = "GREEN" | "YELLOW" | "ORANGE" | "RED";
 
 export type Verdict = "PASS" | "NEEDS_REMEDIATION" | "BLOCK";
 
+/** Pipeline gate decision — moved here from pipeline.ts to break circular import with emotions.ts. */
+export type GateDecision = "continue" | "human_review" | "abort";
+
 export type MatterStatus = "active" | "closed" | "archived";
 
 // ── Emotion Concepts (from transformer-circuits.pub/2026/emotions) ──

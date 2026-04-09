@@ -21,6 +21,7 @@ import {
   type Result,
   type AnalysisResult,
   type EmotionProbe,
+  type GateDecision,
   Ok,
 } from "./types.js";
 import { checkEmotionGate, DEFAULT_EMOTION_CONFIG } from "./emotions.js";
@@ -35,7 +36,7 @@ export type PipelineStepResult =
   | { type: "review_extraction"; reviewTableId: ReviewTableId; rowCount: number }
   | { type: "emotion_probe"; probe: EmotionProbe };
 
-export type GateDecision = "continue" | "human_review" | "abort";
+// GateDecision imported from types.ts (was here, moved to break circular import with emotions.ts)
 
 export interface PipelineStep {
   order: number;

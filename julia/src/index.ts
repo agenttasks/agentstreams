@@ -91,6 +91,7 @@ export type {
   EmotionAlert,
   EmotionAlertEvent,
   EmotionMonitorConfig,
+  GateDecision,
 } from "./types.js";
 
 // ── vault ─────────────────────────────────────────────────────
@@ -143,7 +144,6 @@ export {
 } from "./pipeline.js";
 export type {
   PipelineStepResult,
-  GateDecision,
   PipelineStep,
   PipelineGate,
   PipelineConfig,

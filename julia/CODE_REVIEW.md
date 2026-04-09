@@ -114,12 +114,22 @@ improved using these 9 external sources:
 ### Weaknesses:
 - **Cube YAML models disconnected**: 3 files exist but nothing reads them at runtime
 - **hashEmbedding() not semantic**: deterministic SHA-512 hash, not sentence-transformers
-- **LanceDB phantom dependency**: listed in package.json, never imported — vault.ts uses pgvector only
+- ~~**LanceDB phantom dependency**~~: **FIXED** — removed from package.json
 - **probeTextForEmotions() is keyword-matching**: not activation-level monitoring per the paper
 - **Consistency eval never executed**: defined in plan (cosine > 0.8) but not in any test file
 - **assistant.ts creates new Anthropic() per send()**: wasteful, should pool
 - **fromRow() methods use unsafe `as` casts**: no runtime validation, could corrupt domain objects
 - **No actual end-to-end pipeline test with real Claude calls**: all tests mock the API
+
+### CRITICAL Fixes from Architecture Audit (applied in this commit):
+1. **Schema IDs**: Added `DEFAULT gen_random_uuid()::text` to all 7 id columns.
+   Without this, every INSERT would fail with NOT NULL violation since code
+   doesn't supply IDs and relies on RETURNING.
+2. **file_ids type**: Changed `julia_review_tables.file_ids` from `TEXT[]` to
+   `JSONB` to match vault.ts which inserts `${fileIdsJson}::jsonb`.
+3. **Circular import**: Moved `GateDecision` from pipeline.ts to types.ts,
+   eliminating the emotions.ts → pipeline.ts → emotions.ts cycle.
+4. **Phantom dependency**: Removed `lancedb` from package.json (never imported).
 
 ---
 
