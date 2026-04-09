@@ -20,8 +20,10 @@ import {
   type ReviewTableId,
   type Result,
   type AnalysisResult,
+  type EmotionProbe,
   Ok,
 } from "./types.js";
+import { checkEmotionGate, DEFAULT_EMOTION_CONFIG } from "./emotions.js";
 
 // ── Pipeline Step Types (discriminated union) ────────────────
 
@@ -30,7 +32,8 @@ export type PipelineStepResult =
   | { type: "research"; context: string; citationCount: number }
   | { type: "analysis"; result: AnalysisResult }
   | { type: "draft"; output: string; fileCount: number }
-  | { type: "review_extraction"; reviewTableId: ReviewTableId; rowCount: number };
+  | { type: "review_extraction"; reviewTableId: ReviewTableId; rowCount: number }
+  | { type: "emotion_probe"; probe: EmotionProbe };
 
 export type GateDecision = "continue" | "human_review" | "abort";
 
@@ -61,12 +64,26 @@ export function checkGate(
   results: PipelineStepResult[],
 ): GateDecision {
   for (const result of results) {
+    // Analysis verdict/risk gates
     if (result.type === "analysis") {
       if (gate.blockOnVerdict.includes(result.result.verdict)) {
         return "abort";
       }
       if (gate.blockOnRisk.includes(result.result.risk_score)) {
         return "human_review";
+      }
+    }
+
+    // Emotion-aware gate (from transformer-circuits.pub/2026/emotions)
+    // Desperation activation predicts blackmail/reward-hacking behavior.
+    // Deflection with high arousal indicates suppressed misalignment risk.
+    if (result.type === "emotion_probe") {
+      const emotionDecision = checkEmotionGate(
+        result.probe,
+        DEFAULT_EMOTION_CONFIG,
+      );
+      if (emotionDecision !== "continue") {
+        return emotionDecision;
       }
     }
   }

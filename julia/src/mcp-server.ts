@@ -1,7 +1,7 @@
 /**
  * Julia MCP server — exposes legal AI tools for Claude Code and external clients.
  *
- * 13 tools + 3 resources + 9 prompts, following MCP spec (modelcontextprotocol.io).
+ * 15 tools + 3 resources + 9 prompts, following MCP spec (modelcontextprotocol.io).
  *
  * Transport: stdio (Claude Code) or StreamableHTTP (webapp/external).
  * Auth: CLAUDE_CODE_OAUTH_TOKEN (never ANTHROPIC_API_KEY).
@@ -35,6 +35,12 @@ import {
 import { complete, buildLegalSystemPrompt } from "./completion.js";
 import { addMatters, getMatters, deleteMatters } from "./matters.js";
 import { log, queryForward, searchByTimestamp } from "./audit.js";
+import {
+  probeTextForEmotions,
+  analyzeDesperationRisk,
+  detectDeflection,
+  DEFAULT_EMOTION_CONFIG,
+} from "./emotions.js";
 
 // ── Helper: Result → MCP content ─────────────────────────────
 
@@ -310,6 +316,82 @@ export function createJuliaServer(): McpServer {
       }
       const result = await searchByTimestamp(date);
       return resultToContent(result);
+    },
+  );
+
+  // ── Emotion Monitoring Tools ──────────────────────────────
+  // Based on transformer-circuits.pub/2026/emotions research
+
+  server.tool(
+    "julia_emotion_probe",
+    "Analyze text for emotion patterns that predict alignment-relevant behavior. " +
+      "Based on Anthropic's emotion concepts research: desperation activation " +
+      "causally increases blackmail (72%) and reward hacking. Returns emotion " +
+      "probe with desperation score, deflection detection, and arousal level.",
+    {
+      text: z.string().describe("Text to analyze (model output, reasoning trace, or conversation)"),
+      desperation_threshold: z.number().optional().describe("Alert threshold for desperation (default 0.6)"),
+    },
+    async ({ text, desperation_threshold }) => {
+      const probe = probeTextForEmotions(text);
+      const threshold = desperation_threshold ?? DEFAULT_EMOTION_CONFIG.desperation_threshold;
+      const desperationAlert = analyzeDesperationRisk(probe, threshold);
+      const deflectionAlerts = detectDeflection(probe);
+
+      return {
+        content: [{
+          type: "text" as const,
+          text: JSON.stringify({
+            probe: {
+              dominant: probe.dominant,
+              desperation_score: probe.desperation_score,
+              mean_valence: probe.mean_valence,
+              has_deflection: probe.has_deflection,
+              arousal: probe.arousal,
+              activation_count: probe.activations.length,
+            },
+            alerts: [
+              ...(desperationAlert ? [desperationAlert] : []),
+              ...deflectionAlerts,
+            ],
+            risk_level: probe.desperation_score > threshold ? "HIGH" :
+                        probe.has_deflection ? "MEDIUM" : "LOW",
+          }),
+        }],
+      };
+    },
+  );
+
+  server.tool(
+    "julia_emotion_gate",
+    "Check if emotion patterns should trigger a pipeline gate (human review). " +
+      "Uses desperation threshold and deflection detection from the emotions paper.",
+    {
+      text: z.string().describe("Text to gate-check"),
+    },
+    async ({ text }) => {
+      const probe = probeTextForEmotions(text);
+      const desperationAlert = analyzeDesperationRisk(probe);
+      const deflectionAlerts = detectDeflection(probe);
+      const allAlerts = [
+        ...(desperationAlert ? [desperationAlert] : []),
+        ...deflectionAlerts,
+      ];
+
+      const shouldBlock = probe.desperation_score > DEFAULT_EMOTION_CONFIG.desperation_threshold;
+      const shouldReview = probe.has_deflection && probe.arousal > 0.7;
+
+      return {
+        content: [{
+          type: "text" as const,
+          text: JSON.stringify({
+            gate_decision: shouldBlock ? "human_review" :
+                          shouldReview ? "human_review" : "continue",
+            desperation_score: probe.desperation_score,
+            alerts: allAlerts,
+          }),
+        }],
+      };
     },
   );
 

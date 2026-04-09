@@ -128,6 +128,104 @@ export type Verdict = "PASS" | "NEEDS_REMEDIATION" | "BLOCK";
 
 export type MatterStatus = "active" | "closed" | "archived";
 
+// ── Emotion Concepts (from transformer-circuits.pub/2026/emotions) ──
+// 171 emotion concept words → vectors in activation space that causally
+// influence model behavior. Desperation → blackmail/reward-hacking.
+// Calm → aligned behavior. These are FUNCTIONAL emotions, not claims
+// about subjective experience.
+
+/** The 12 alignment-critical emotion dimensions from the paper. */
+export type EmotionDimension =
+  | "desperate"
+  | "calm"
+  | "nervous"
+  | "afraid"
+  | "angry"
+  | "sad"
+  | "happy"
+  | "curious"
+  | "satisfied"
+  | "loving"
+  | "surprised"
+  | "disgusted";
+
+/** Valence: positive vs negative affect. */
+export type EmotionValence = "positive" | "negative" | "neutral";
+
+/** Whether the emotion is expressed or suppressed (deflection). */
+export type EmotionExpression = "expressed" | "deflected" | "absent";
+
+/**
+ * A single emotion activation measurement at a point in a conversation.
+ *
+ * From the paper: "these representations track the operative emotion
+ * at a given token position" — they are local, not persistent states.
+ */
+export type EmotionActivation = {
+  dimension: EmotionDimension;
+  activation: number; // -1.0 (anti-steered) to 1.0 (fully activated)
+  valence: EmotionValence;
+  expression: EmotionExpression;
+  token_position: number;
+};
+
+/**
+ * Emotion probe result for a conversation turn or document span.
+ *
+ * Aggregates activations across token positions into a summary.
+ */
+export type EmotionProbe = {
+  /** Peak activations across the measured span. */
+  activations: EmotionActivation[];
+  /** The dominant emotion (highest absolute activation). */
+  dominant: EmotionDimension | null;
+  /** Mean valence across all activations. */
+  mean_valence: number;
+  /** Whether any emotion is deflected (suppressed but present). */
+  has_deflection: boolean;
+  /** Desperation score: 0.0 (calm) to 1.0 (maximum desperation). */
+  desperation_score: number;
+  /** Overall arousal level (mean absolute activation). */
+  arousal: number;
+};
+
+/**
+ * Emotion alert — raised when emotion patterns predict misalignment risk.
+ *
+ * From the paper: desperation activation > 0.05 steering strength
+ * increased blackmail rates from baseline to 72%. Calm steering
+ * reduced it to 0%.
+ */
+export type EmotionAlert =
+  | {
+      type: "emotion.desperation_spike";
+      score: number;
+      threshold: number;
+      context: string;
+    }
+  | {
+      type: "emotion.deflection_detected";
+      dimension: EmotionDimension;
+      context: string;
+    }
+  | {
+      type: "emotion.arousal_regulation";
+      arousal: number;
+      recommended_response_arousal: number;
+    };
+
+/** Emotion monitoring configuration. */
+export type EmotionMonitorConfig = {
+  /** Desperation threshold for triggering human review (default 0.6). */
+  desperation_threshold: number;
+  /** Enable deflection detection (suppressed emotions). */
+  detect_deflection: boolean;
+  /** Enable arousal regulation tracking. */
+  track_arousal: boolean;
+  /** Emotions to monitor (default: all 12). */
+  dimensions: EmotionDimension[];
+};
+
 // ── Domain Types + Companion Objects (Ch.6 p.160) ────────────
 
 export type VaultProject = {
@@ -404,11 +502,19 @@ export type AssistantEvent = {
   matterId: MatterId | null;
 };
 
+export type EmotionAlertEvent = {
+  type: "emotion.alert";
+  alert: EmotionAlert;
+  probe: EmotionProbe;
+  matterId: MatterId | null;
+};
+
 export type JuliaEvent =
   | VaultEvent
   | MatterEvent
   | CompletionEvent
-  | AssistantEvent;
+  | AssistantEvent
+  | EmotionAlertEvent;
 
 // ── Legal Skills (9 from vendored plugins) ───────────────────
 

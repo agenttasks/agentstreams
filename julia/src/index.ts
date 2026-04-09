@@ -82,6 +82,15 @@ export type {
   // Analysis
   Finding,
   AnalysisResult,
+  // Emotion types (from transformer-circuits.pub/2026/emotions)
+  EmotionDimension,
+  EmotionValence,
+  EmotionExpression,
+  EmotionActivation,
+  EmotionProbe,
+  EmotionAlert,
+  EmotionAlertEvent,
+  EmotionMonitorConfig,
 } from "./types.js";
 
 // ── vault ─────────────────────────────────────────────────────
@@ -109,6 +118,18 @@ export { log, getEarliest, getLatest, queryForward, searchByTimestamp } from "./
 
 // ── assistant ─────────────────────────────────────────────────
 export { JuliaSession, JuliaSessionBuilder } from "./assistant.js";
+
+// ── emotions ─────────────────────────────────────────────────
+export {
+  createEmotionProbe,
+  analyzeDesperationRisk,
+  detectDeflection,
+  computeArousal,
+  checkEmotionGate,
+  probeTextForEmotions,
+  DEFAULT_EMOTION_CONFIG,
+  EMOTION_VALENCE_MAP,
+} from "./emotions.js";
 
 // ── db ───────────────────────────────────────────────────────
 export { getSql } from "./db.js";

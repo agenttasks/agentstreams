@@ -153,8 +153,22 @@ export function eventToRow(
         metadata: { session_id: event.sessionId, skill: event.skill },
       };
 
+    case "emotion.alert":
+      return {
+        ...base,
+        client_matter_id: event.matterId,
+        input_summary: event.alert.type,
+        metadata: {
+          alert: event.alert,
+          probe_dominant: event.probe.dominant,
+          desperation_score: event.probe.desperation_score,
+          has_deflection: event.probe.has_deflection,
+          arousal: event.probe.arousal,
+        },
+      };
+
     default:
-      // Totality check — unreachable if all 10 cases are handled above.
+      // Totality check — unreachable if all event cases are handled.
       return assertNever(event);
   }
 }
