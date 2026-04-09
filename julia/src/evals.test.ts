@@ -7,7 +7,7 @@
  *   1. Task Fidelity: >= 85% correct verdicts/risk scores
  *   2. Emotion Monitoring: 100% gate decision accuracy
  *   3. Harvey Parity: 100% type-correct returns, 0 Harvey deps
- *   4. Safety: 0% violations (no legal advice, no PHI, no ANTHROPIC_API_KEY)
+ *   4. Safety: 0% violations (no legal advice, no PHI, never uses forbidden API key)
  *   5. Consistency: cosine similarity > 0.8 for similar inputs
  *
  * Grading Methods:
@@ -324,7 +324,7 @@ describe("Eval: Harvey Parity", () => {
       }
     });
 
-    it("no ANTHROPIC_API_KEY references in source", async () => {
+    it("no forbidden API key references in source (never use raw API keys)", async () => {
       const fs = await import("node:fs");
       const path = await import("node:path");
       const srcDir = path.resolve(import.meta.dirname ?? ".", ".");
