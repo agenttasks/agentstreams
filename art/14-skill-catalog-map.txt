@@ -1,0 +1,134 @@
+                ╔═══════════════════════════════════════════╗
+                ║   Skill Catalog — 164 Skills → 17 Agents ║
+                ║   22 PluginCategory → CATEGORY_AGENTS    ║
+                ╚═══════════════════════════════════════════╝
+
+    PluginCategory (22)          CATEGORY_AGENTS            Agent
+    ═══════════════════          ═══════════════            ═════
+    ┌─ knowledge-work-plugins (17 categories → 17 agents) ─────┐
+    │                                                           │
+    │  BIO_RESEARCH ─────────── bio-research-agent      6 skills│
+    │    instrument-data-to-allotrope, nextflow-development,    │
+    │    scientific-problem-selection, scvi-tools,              │
+    │    single-cell-rna-qc, start                             │
+    │                                                           │
+    │  COWORK_PLUGIN_MGMT ───── cowork-plugin-agent     2 skills│
+    │    cowork-plugin-customizer, create-cowork-plugin         │
+    │                                                           │
+    │  CUSTOMER_SUPPORT ─────── customer-support-agent  5 skills│
+    │    customer-escalation, customer-research,                │
+    │    draft-response, kb-article, ticket-triage             │
+    │                                                           │
+    │  DATA ─────────────────── data-analyst           10 skills│
+    │    analyze, build-dashboard, create-viz,                  │
+    │    data-context-extractor, data-visualization,            │
+    │    explore-data, sql-queries, statistical-analysis,       │
+    │    validate-data, write-query                             │
+    │                                                           │
+    │  DESIGN ───────────────── design-agent            7 skills│
+    │    accessibility-review, design-critique,                 │
+    │    design-handoff, design-system, research-synthesis,     │
+    │    user-research, ux-copy                                │
+    │                                                           │
+    │  ENGINEERING ──────────── engineering-agent       10 skills│
+    │    architecture, code-review, debug, deploy-checklist,    │
+    │    documentation, incident-response, standup,             │
+    │    system-design, tech-debt, testing-strategy             │
+    │                                                           │
+    │  ENTERPRISE_SEARCH ────── enterprise-search-agent 5 skills│
+    │    digest, knowledge-synthesis, search,                   │
+    │    search-strategy, source-management                     │
+    │                                                           │
+    │  FINANCE ──────────────── finance-agent [RO]      8 skills│
+    │    audit-support, close-management, financial-statements, │
+    │    journal-entry, journal-entry-prep, reconciliation,     │
+    │    sox-testing, variance-analysis                         │
+    │                                                           │
+    │  HUMAN_RESOURCES ──────── hr-agent                9 skills│
+    │    comp-analysis, draft-offer, interview-prep,            │
+    │    onboarding, org-planning, people-report,               │
+    │    performance-review, policy-lookup,                     │
+    │    recruiting-pipeline                                    │
+    │                                                           │
+    │  LEGAL ────────────────── compliance-reviewer [RO]9 skills│
+    │    brief, compliance-check, legal-response,               │
+    │    legal-risk-assessment, meeting-briefing,               │
+    │    review-contract, signature-request, triage-nda,        │
+    │    vendor-check                                          │
+    │                                                           │
+    │  MARKETING ────────────── marketing-agent         8 skills│
+    │    brand-review, campaign-plan, competitive-brief,        │
+    │    content-creation, draft-content, email-sequence,       │
+    │    performance-report, seo-audit                          │
+    │                                                           │
+    │  OPERATIONS ───────────── operations-agent        9 skills│
+    │    capacity-plan, change-request, compliance-tracking,    │
+    │    process-doc, process-optimization, risk-assessment,    │
+    │    runbook, status-report, vendor-review                  │
+    │                                                           │
+    │  PARTNER_BUILT ────────── partner-built-agent    11 skills│
+    │    apollo: enrich-lead, prospect, sequence-load           │
+    │    brand-voice: brand-voice-enforcement,                  │
+    │      discover-brand, guideline-generation                 │
+    │    common-room: compose-outreach, contact-research,       │
+    │      weekly-prep-brief                                   │
+    │    slack: slack-messaging, slack-search                   │
+    │                                                           │
+    │  PDF_VIEWER ───────────── pdf-viewer-agent        1 skill │
+    │    view-pdf                                              │
+    │                                                           │
+    │  PRODUCT_MANAGEMENT ───── product-management-agent7 skills│
+    │    metrics-review, product-brainstorming,                 │
+    │    roadmap-update, sprint-planning, stakeholder-update,   │
+    │    synthesize-research, write-spec                        │
+    │                                                           │
+    │  PRODUCTIVITY ─────────── productivity-agent      3 skills│
+    │    memory-management, task-management, update             │
+    │                                                           │
+    │  SALES ────────────────── sales-agent             9 skills│
+    │    account-research, call-prep, call-summary,             │
+    │    competitive-intelligence, create-an-asset,             │
+    │    daily-briefing, draft-outreach, forecast,              │
+    │    pipeline-review                                        │
+    └───────────────────────────────────────────────────────────┘
+
+    ┌─ financial-services-plugins (5 categories → finance-agent) ┐
+    │                                                             │
+    │  FSI_FINANCIAL_ANALYSIS ── finance-agent          11 skills │
+    │    3-statement-model, audit-xls, clean-data-xls,           │
+    │    competitive-analysis, comps-analysis, dcf-model,        │
+    │    deck-refresh, ib-check-deck, lbo-model,                 │
+    │    ppt-template-creator, skill-creator                     │
+    │                                                             │
+    │  FSI_INVESTMENT_BANKING ── finance-agent           9 skills │
+    │    buyer-list, cim-builder, datapack-builder,              │
+    │    deal-tracker, merger-model, pitch-deck,                 │
+    │    process-letter, strip-profile, teaser                   │
+    │                                                             │
+    │  FSI_EQUITY_RESEARCH ───── finance-agent           9 skills │
+    │    catalyst-calendar, earnings-analysis,                    │
+    │    earnings-preview, idea-generation,                       │
+    │    initiating-coverage, model-update, morning-note,        │
+    │    sector-overview, thesis-tracker                          │
+    │                                                             │
+    │  FSI_PRIVATE_EQUITY ────── finance-agent          10 skills │
+    │    ai-readiness, dd-checklist, dd-meeting-prep,            │
+    │    deal-screening, deal-sourcing, ic-memo,                 │
+    │    portfolio-monitoring, returns-analysis,                  │
+    │    unit-economics, value-creation-plan                     │
+    │                                                             │
+    │  FSI_WEALTH_MANAGEMENT ─── finance-agent           6 skills │
+    │    client-report, client-review, financial-plan,           │
+    │    investment-proposal, portfolio-rebalance,               │
+    │    tax-loss-harvesting                                     │
+    └─────────────────────────────────────────────────────────────┘
+
+    Cross-plugin dedup (first-registration-wins):
+    ──────────────────────────────────────────────
+    account-research  → SALES (not partner-built/common-room)
+    call-prep         → SALES (not partner-built/common-room)
+    prospect          → PARTNER_BUILT/apollo (not common-room)
+    competitive-brief → MARKETING (not product-management)
+    start             → BIO_RESEARCH (not productivity)
+
+    [RO] = Read-only agent (Write/Edit disabled)

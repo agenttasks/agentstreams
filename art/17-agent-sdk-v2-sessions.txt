@@ -1,0 +1,91 @@
+                ╔═══════════════════════════════════════════╗
+                ║   Agent SDK V2 — Session Patterns        ║
+                ║   TypeScript: send() / stream() cycles   ║
+                ╚═══════════════════════════════════════════╝
+
+    V2 API Surface (3 concepts):
+    ────────────────────────────
+    createSession()  / resumeSession()  → start or continue
+    session.send()                      → dispatch user message
+    session.stream()                    → stream back response
+
+    ┌─────────────────────────────────────────────────────────────┐
+    │  One-Shot Prompt (single-turn)                               │
+    │                                                             │
+    │  unstable_v2_prompt("Analyze Q1 data", {model: "opus-4-6"})│
+    │  → Promise<SDKResultMessage>                                │
+    │                                                             │
+    │  Use for: single skill invocations (data-viz, sql-queries)  │
+    └─────────────────────────────────────────────────────────────┘
+
+    ┌─────────────────────────────────────────────────────────────┐
+    │  Multi-Turn Session (research → analysis → report)          │
+    │                                                             │
+    │  await using session = createSession({model})               │
+    │                                                             │
+    │  Turn 1: await session.send("Research Acme Corp")           │
+    │          for await (msg of session.stream()) { ... }        │
+    │          │                                                   │
+    │  Turn 2: await session.send("Produce SWOT matrix")          │
+    │          for await (msg of session.stream()) { ... }        │
+    │          │                                                   │
+    │  Turn 3: await session.send("Format competitive brief")     │
+    │          for await (msg of session.stream()) { ... }        │
+    │          │                                                   │
+    │  // session auto-closes via await using                      │
+    └─────────────────────────────────────────────────────────────┘
+
+    ┌─────────────────────────────────────────────────────────────┐
+    │  Resumable Session (long-running compliance workflows)      │
+    │                                                             │
+    │  Phase 1:                                                   │
+    │  session = createSession({model})                           │
+    │  await session.send("Review contract.pdf")                  │
+    │  for await (msg of session.stream()) {                      │
+    │    sessionId = msg.session_id;  // ← store this             │
+    │  }                                                          │
+    │  session.close()                                            │
+    │                                                             │
+    │  // ... hours/days later ...                                │
+    │                                                             │
+    │  Phase 2:                                                   │
+    │  resumed = resumeSession(sessionId, {model})                │
+    │  await resumed.send("Which clauses need remediation?")      │
+    │  for await (msg of resumed.stream()) { ... }               │
+    └─────────────────────────────────────────────────────────────┘
+
+    Knowledge Work Pipeline Mapping:
+    ─────────────────────────────────
+    Pipeline                    V2 Session Pattern
+    ────────────────────────    ──────────────────────
+    research-to-report          3-turn session:
+                                 send(research) → stream()
+                                 send(analyze)  → stream()
+                                 send(format)   → stream()
+
+    data-to-insight             3-turn session:
+                                 send(data_query) → stream()
+                                 send(business)   → stream()
+                                 send(format)     → stream()
+
+    compliance-review           Resumable session:
+                                 Phase 1: send(review) → store ID
+                                 Phase 2: resume(id) → send(verdict)
+
+    SDKSession Interface:
+    ─────────────────────
+    interface SDKSession {
+      readonly sessionId: string;
+      send(message: string): Promise<void>;
+      stream(): AsyncGenerator<SDKMessage, void>;
+      close(): void;
+    }
+
+    SDKMessage Types:
+    ─────────────────
+    msg.type === "assistant"  → text response (filter content blocks)
+    msg.type === "result"     → final result (subtype: "success"|"error")
+    msg.session_id            → session ID for resume
+
+    Auth: CLAUDE_CODE_OAUTH_TOKEN (never ANTHROPIC_API_KEY)
+    Package: @anthropic-ai/claude-agent-sdk (npm)

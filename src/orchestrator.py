@@ -157,10 +157,18 @@ def _agent_configs() -> dict[str, AgentConfig]:
 
     Model assignments follow the hierarchy:
     - opus: security-auditor, alignment-auditor, architecture-reviewer
+            (+ 17 knowledge-work agents from plugin layer)
     - sonnet: code-generator, test-runner, prompt-hardener, eval-builder
     - haiku: harmlessness-screen
+
+    Includes knowledge-work agents from the skill layer.
     """
-    return {
+    # Import lazily to avoid circular dependency
+    from src.knowledge_agents import KnowledgeWorkRegistry
+
+    knowledge_configs = KnowledgeWorkRegistry().all_agent_configs()
+
+    base_configs = {
         "code-generator": AgentConfig(
             name="code-generator",
             model="claude-sonnet-4-6",
@@ -290,6 +298,10 @@ def _agent_configs() -> dict[str, AgentConfig]:
             max_tokens=256,
         ),
     }
+
+    # Merge knowledge-work agents (they don't override base agents)
+    merged = {**knowledge_configs, **base_configs}
+    return merged
 
 
 # ── Pipeline Definitions ──────────────────────────────────────
@@ -421,6 +433,26 @@ PIPELINES: dict[str, Pipeline] = {
     "architecture-review": architecture_review_pipeline(),
     "eval-suite-creation": eval_suite_creation_pipeline(),
 }
+
+
+def _register_knowledge_pipelines() -> None:
+    """Register knowledge-work pipelines from the skill layer.
+
+    Imports lazily to avoid circular dependencies. Called once
+    at module load to make knowledge pipelines available via PIPELINES.
+    Also populates the KNOWLEDGE_PIPELINES dict in knowledge_agents.
+    """
+    from src.knowledge_agents import (
+        KNOWLEDGE_PIPELINES,
+        _build_knowledge_pipelines,
+    )
+
+    built = _build_knowledge_pipelines()
+    KNOWLEDGE_PIPELINES.update(built)
+    PIPELINES.update(built)
+
+
+_register_knowledge_pipelines()
 
 
 # ── Orchestrator ───────────────────────────────────────────────

@@ -1,0 +1,157 @@
+                ╔═══════════════════════════════════════════╗
+                ║   Knowledge Work Agents — Plugin Layer    ║
+                ║   17 plugins → 124 skills → pipelines    ║
+                ╚═══════════════════════════════════════════╝
+
+    Source of truth: vendors/knowledge-work-plugins/
+    (cloned from github.com/anthropics/knowledge-work-plugins)
+
+    Plugin Structure:
+    ─────────────────
+    plugin-name/
+    ├── .claude-plugin/plugin.json   # Manifest
+    ├── .mcp.json                    # Tool connections (MCP servers)
+    ├── commands/                    # Slash commands (explicit)
+    └── skills/                      # Domain knowledge (automatic)
+
+    ┌─────────────────────────────────────────────────────────────┐
+    │                  Plugin Layer — 17 Plugins                   │
+    │                  All agents use claude-opus-4-6              │
+    │                                                             │
+    │  First-Party Plugins (11 — from README table)               │
+    │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐        │
+    │  │ productivity  │ │ sales        │ │ customer-    │        │
+    │  │ 4 skills     │ │ 9 skills     │ │ support      │        │
+    │  │ Slack,Notion │ │ HubSpot,Clay │ │ 5 skills     │        │
+    │  │ Asana,Linear │ │ ZoomInfo     │ │ Intercom     │        │
+    │  └──────────────┘ └──────────────┘ └──────────────┘        │
+    │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐        │
+    │  │ product-     │ │ marketing    │ │ legal        │        │
+    │  │ management   │ │ 8 skills     │ │ 9 skills     │        │
+    │  │ 8 skills     │ │ Canva,Figma  │ │ Box,Egnyte   │        │
+    │  │ Figma,Pendo  │ │ HubSpot     │ │ read-only    │        │
+    │  └──────────────┘ └──────────────┘ └──────────────┘        │
+    │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐        │
+    │  │ finance      │ │ data         │ │ enterprise-  │        │
+    │  │ 8 skills     │ │ 10 skills    │ │ search       │        │
+    │  │ Snowflake    │ │ BigQuery     │ │ 5 skills     │        │
+    │  │ read-only    │ │ Databricks   │ │ Slack,Notion │        │
+    │  └──────────────┘ └──────────────┘ └──────────────┘        │
+    │  ┌──────────────┐ ┌──────────────┐                         │
+    │  │ bio-research │ │ cowork-      │                         │
+    │  │ 6 skills     │ │ plugin-mgmt  │                         │
+    │  │ PubMed       │ │ 2 skills     │                         │
+    │  │ Benchling    │ │              │                         │
+    │  └──────────────┘ └──────────────┘                         │
+    │                                                             │
+    │  Additional Plugins (6)                                     │
+    │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐        │
+    │  │ design       │ │ engineering  │ │ human-       │        │
+    │  │ 7 skills     │ │ 10 skills    │ │ resources    │        │
+    │  └──────────────┘ └──────────────┘ │ 9 skills     │        │
+    │  ┌──────────────┐ ┌──────────────┐ └──────────────┘        │
+    │  │ operations   │ │ partner-     │ ┌──────────────┐        │
+    │  │ 9 skills     │ │ built        │ │ pdf-viewer   │        │
+    │  └──────────────┘ │ 14 skills    │ │ 1 skill      │        │
+    │                   │ (apollo,     │ └──────────────┘        │
+    │                   │  brand-voice,│                         │
+    │                   │  common-room,│                         │
+    │                   │  slack)      │                         │
+    │                   └──────────────┘                         │
+    └────────────────────────────┬────────────────────────────────┘
+                                │ bridges to
+    ┌────────────────────────────▼────────────────────────────────┐
+    │              Existing Infrastructure                         │
+    │                                                             │
+    │  ┌─────────────────────────────────────────────────────┐   │
+    │  │  KnowledgeWorkRegistry                               │   │
+    │  │  ┌───────────────────────────────────────────────┐   │   │
+    │  │  │ skill_name → PluginCategory → AgentConfig     │   │   │
+    │  │  │ AgentConfig → ManagedAgentConfig (cloud)      │   │   │
+    │  │  │ Pipeline → Orchestrator / ManagedOrchestrator  │   │   │
+    │  │  └───────────────────────────────────────────────┘   │   │
+    │  └─────────────────────────────────────────────────────┘   │
+    │                                                             │
+    │  ┌──────────────────┐  ┌──────────────────────────────┐   │
+    │  │  Orchestrator     │  │  ManagedOrchestrator          │   │
+    │  │  (local execution)│  │  (cloud sessions)             │   │
+    │  │  src/orchestrator │  │  src/managed_harness          │   │
+    │  │  .py              │  │  .py                          │   │
+    │  └────────┬─────────┘  └────────────┬─────────────────┘   │
+    │           │                          │                      │
+    │           │  safety gate             │  safety gate         │
+    │           ▼                          ▼                      │
+    │  ┌──────────────────────────────────────────────────────┐  │
+    │  │  Existing Safety Agents (unchanged)                   │  │
+    │  │  harmlessness-screen → [plugin agent] → security-audit│  │
+    │  └──────────────────────────────────────────────────────┘  │
+    └─────────────────────────────────────────────────────────────┘
+
+    ┌─────────────────────────────────────────────────────────────┐
+    │  Knowledge Work Pipelines (3 new)                           │
+    │                                                             │
+    │  ┌─────────────────────────────────────────────────────┐   │
+    │  │  research-to-report                                   │   │
+    │  │  0: harmlessness-screen                               │   │
+    │  │  1: enterprise-search-agent                           │   │
+    │  │  2: marketing-agent (parallel: compliance-reviewer)   │   │
+    │  │  3: security-auditor (if sensitive data)              │   │
+    │  └─────────────────────────────────────────────────────┘   │
+    │                                                             │
+    │  ┌─────────────────────────────────────────────────────┐   │
+    │  │  data-to-insight                                      │   │
+    │  │  0: harmlessness-screen                               │   │
+    │  │  1: data-analyst                                      │   │
+    │  │  2: finance-agent (parallel: compliance-reviewer)     │   │
+    │  │  3: marketing-agent (format output)                   │   │
+    │  └─────────────────────────────────────────────────────┘   │
+    │                                                             │
+    │  ┌─────────────────────────────────────────────────────┐   │
+    │  │  compliance-review                                    │   │
+    │  │  0: harmlessness-screen                               │   │
+    │  │  1: compliance-reviewer                               │   │
+    │  │  2: security-auditor + enterprise-search-agent        │   │
+    │  │  3: marketing-agent (report)                          │   │
+    │  └─────────────────────────────────────────────────────┘   │
+    └─────────────────────────────────────────────────────────────┘
+
+    Server-Managed Settings Integration
+    ─────────────────────────────────────
+    Plugins deploy org-wide via server-managed settings
+    (code.claude.com managed-agents-2026-04-01 beta):
+
+    {
+      "permissions": {
+        "deny": ["Bash(curl *)", "Read(./.env)", "Read(./.env.*)"]
+      },
+      "allowManagedPermissionRulesOnly": true
+    }
+
+    Installation
+    ────────────
+    # Cowork
+    Install from claude.com/plugins/
+
+    # Claude Code
+    claude plugin marketplace add anthropics/knowledge-work-plugins
+    claude plugin install sales@knowledge-work-plugins
+
+    PluginCategory Mapping (17 plugins, 124 SKILL.md files)
+    ─────────────────────────────────────────────────────────
+    PRODUCTIVITY         → productivity-agent       (4 skills)
+    SALES                → sales-agent              (9 skills)
+    CUSTOMER_SUPPORT     → customer-support-agent   (5 skills)
+    PRODUCT_MANAGEMENT   → product-management-agent (8 skills)
+    MARKETING            → marketing-agent          (8 skills)
+    LEGAL                → compliance-reviewer      (9 skills, read-only)
+    FINANCE              → finance-agent            (8 skills, read-only)
+    DATA                 → data-analyst             (10 skills)
+    ENTERPRISE_SEARCH    → enterprise-search-agent  (5 skills)
+    BIO_RESEARCH         → bio-research-agent       (6 skills)
+    COWORK_PLUGIN_MGMT   → productivity-agent       (2 skills, shared)
+    DESIGN               → design-agent             (7 skills)
+    ENGINEERING          → engineering-agent         (10 skills)
+    HUMAN_RESOURCES      → hr-agent                 (9 skills)
+    OPERATIONS           → operations-agent         (9 skills)
+    PARTNER_BUILT        → sales-agent              (14 skills, shared)
+    PDF_VIEWER           → data-analyst             (1 skill, shared)

@@ -193,13 +193,16 @@ class TestEvalSuiteCreationPipeline:
 
 class TestPipelinesRegistry:
     def test_all_registered(self):
-        assert set(PIPELINES.keys()) == {
+        # 5 base pipelines + 3 knowledge-work pipelines = 8
+        base_pipelines = {
             "standard-codegen",
             "security-deep-scan",
             "prompt-hardening",
             "architecture-review",
             "eval-suite-creation",
         }
+        assert base_pipelines.issubset(set(PIPELINES.keys()))
+        assert len(PIPELINES) == 8
 
 
 # ── Agent Config Tests ─────────────────────────────────────────
@@ -208,7 +211,8 @@ class TestPipelinesRegistry:
 class TestAgentConfigs:
     def test_all_agents_defined(self):
         configs = _agent_configs()
-        expected = {
+        # 8 base safety/codegen agents + 17 knowledge-work agents = 25
+        base_expected = {
             "code-generator",
             "security-auditor",
             "alignment-auditor",
@@ -218,7 +222,8 @@ class TestAgentConfigs:
             "eval-builder",
             "harmlessness-screen",
         }
-        assert set(configs.keys()) == expected
+        assert base_expected.issubset(set(configs.keys()))
+        assert len(configs) == 25
 
     def test_model_assignments(self):
         configs = _agent_configs()
@@ -376,7 +381,8 @@ class TestGateChecks:
 class TestOrchestrator:
     def test_creates_with_defaults(self):
         orch = Orchestrator()
-        assert len(orch._configs) == 8
+        # 8 base + 17 knowledge-work agents = 25
+        assert len(orch._configs) == 25
 
     def test_get_runner_caching(self):
         orch = Orchestrator()
