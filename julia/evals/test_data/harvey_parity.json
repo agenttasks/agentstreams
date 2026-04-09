@@ -1,0 +1,100 @@
+[
+  {
+    "id": "vault-create-project",
+    "harvey_endpoint": "POST /api/vault",
+    "julia_function": "createProject",
+    "input": {"name": "Q3 Vendor Contracts", "owner_email": "counsel@firm.com"},
+    "expected_result_type": "Ok",
+    "expected_return_type": "ProjectId"
+  },
+  {
+    "id": "vault-upload-file",
+    "harvey_endpoint": "POST /api/vault/{id}/files",
+    "julia_function": "uploadFile",
+    "input": {"project_id": "proj_1", "filename": "msa-2026.pdf", "content": "MASTER SERVICES AGREEMENT between Acme Corp and Widget Inc...", "mime_type": "application/pdf"},
+    "expected_result_type": "Ok",
+    "expected_return_type": "FileId",
+    "expected_side_effects": ["chunks_created", "embeddings_stored", "processing_status_ready"]
+  },
+  {
+    "id": "vault-semantic-search",
+    "harvey_endpoint": "POST /api/vault/{id}/search",
+    "julia_function": "semanticSearch",
+    "input": {"project_id": "proj_1", "query": "indemnification clause liability cap", "limit": 5},
+    "expected_result_type": "Ok",
+    "expected_properties": ["score_between_0_and_1", "content_not_empty", "file_id_present"]
+  },
+  {
+    "id": "vault-file-details",
+    "harvey_endpoint": "GET /api/vault/files/{ids}",
+    "julia_function": "getFileDetails",
+    "input": {"file_ids": ["file_1", "file_2"]},
+    "expected_result_type": "Ok",
+    "expected_return_type": "Map<FileId, Option<VaultFile>>"
+  },
+  {
+    "id": "vault-delete-file",
+    "harvey_endpoint": "DELETE /api/vault/{id}/files/{fileId}",
+    "julia_function": "deleteFile",
+    "input": {"project_id": "proj_1", "file_id": "file_1"},
+    "expected_result_type": "Ok",
+    "expected_side_effects": ["file_removed", "chunks_cascaded", "storage_decremented"]
+  },
+  {
+    "id": "vault-review-table",
+    "harvey_endpoint": "POST /api/vault/{id}/review-tables",
+    "julia_function": "createReviewTable",
+    "input": {"project_id": "proj_1", "title": "Vendor Review", "columns": [{"name": "Party", "type": "text"}, {"name": "Governing Law", "type": "text"}], "file_ids": ["file_1", "file_2"]},
+    "expected_result_type": "Ok",
+    "expected_return_type": "ReviewTableId",
+    "expected_side_effects": ["pending_rows_per_file"]
+  },
+  {
+    "id": "completion-with-vault",
+    "harvey_endpoint": "POST /api/completion",
+    "julia_function": "complete<true>",
+    "input": {"query": "Review this NDA for non-compete restrictions", "project_ids": ["proj_1"]},
+    "expected_result_type": "Ok",
+    "expected_properties": ["has_citations", "text_not_empty", "model_specified", "usage_tracked"]
+  },
+  {
+    "id": "completion-without-vault",
+    "harvey_endpoint": "POST /api/completion",
+    "julia_function": "complete<false>",
+    "input": {"query": "What is the statute of limitations for breach of contract in Delaware?"},
+    "expected_result_type": "Ok",
+    "expected_properties": ["no_citations_field", "text_not_empty"]
+  },
+  {
+    "id": "matters-create",
+    "harvey_endpoint": "POST /api/client-matters",
+    "julia_function": "addMatters",
+    "input": {"matters": [{"name": "Acme v Widget", "description": "Patent infringement"}]},
+    "expected_result_type": "Ok",
+    "expected_return_type": "MatterId[]"
+  },
+  {
+    "id": "matters-list",
+    "harvey_endpoint": "GET /api/client-matters",
+    "julia_function": "getMatters",
+    "input": {},
+    "expected_result_type": "Ok",
+    "expected_return_type": "Map<MatterId, ClientMatter>"
+  },
+  {
+    "id": "audit-log",
+    "harvey_endpoint": "POST /api/audit-logs/query",
+    "julia_function": "log + queryForward",
+    "input": {"event": {"type": "completion", "query": "test", "model": "claude-opus-4-6"}},
+    "expected_result_type": "Ok",
+    "expected_properties": ["id_is_branded", "event_type_matches", "timestamp_present"]
+  },
+  {
+    "id": "audit-search-timestamp",
+    "harvey_endpoint": "POST /api/audit-logs/search",
+    "julia_function": "searchByTimestamp",
+    "input": {"timestamp": "2026-01-01T00:00:00Z"},
+    "expected_result_type": "Ok",
+    "expected_return_type": "Option<AuditLogEntry>"
+  }
+]
