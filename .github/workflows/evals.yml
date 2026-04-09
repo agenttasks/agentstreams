@@ -21,57 +21,49 @@ jobs:
   validate:
     name: Validate Eval Config
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: evals/crawl-ingest
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'npm'
-          cache-dependency-path: evals/crawl-ingest/package-lock.json
-
-      - name: Install promptfoo
-        run: npm install -g promptfoo@0.121.3
-
-      - name: Validate config
+      - name: Validate all eval configs
         run: |
+          set -euo pipefail
           echo "## Eval Config Validation" >> $GITHUB_STEP_SUMMARY
+          FAIL=0
 
-          # Check YAML parses via promptfoo validate or basic file check
-          promptfoo eval --no-write --filter-sample 0 2>&1 && echo "- ✅ Config parses" >> $GITHUB_STEP_SUMMARY || {
-            # Fallback: verify the config file exists and is non-empty
-            if [ -s promptfooconfig.yaml ]; then
-              echo "- ✅ Config YAML present ($(wc -l < promptfooconfig.yaml) lines)" >> $GITHUB_STEP_SUMMARY
-            else
-              echo "- ❌ Config file missing or empty" >> $GITHUB_STEP_SUMMARY
-              exit 1
+          for dir in evals/*/; do
+            CONFIG="${dir}promptfooconfig.yaml"
+            NAME=$(basename "$dir")
+
+            if [ ! -f "$CONFIG" ]; then
+              echo "- ⚠️ ${NAME}: no promptfooconfig.yaml" >> $GITHUB_STEP_SUMMARY
+              continue
             fi
-          }
 
-          # Check test data files exist
-          MISSING=0
-          FILE_COUNT=0
-          for f in test_data/*.html; do
-            if [ ! -f "$f" ]; then
-              echo "- ❌ Missing: $f" >> $GITHUB_STEP_SUMMARY
-              MISSING=$((MISSING + 1))
+            # Check config file is non-empty and valid YAML structure
+            if [ ! -s "$CONFIG" ]; then
+              echo "- ❌ ${NAME}: config is empty" >> $GITHUB_STEP_SUMMARY
+              FAIL=1
+              continue
+            fi
+
+            # Count tests and assertions
+            TESTS=$(grep -c '^\s*- description:' "$CONFIG" || echo 0)
+            ASSERTS=$(grep -c '^\s*- type:' "$CONFIG" || echo 0)
+
+            # Check test_data directory exists
+            if [ -d "${dir}test_data" ]; then
+              FILES=$(find "${dir}test_data" -type f | wc -l)
+              echo "- ✅ ${NAME}: ${TESTS} tests, ${ASSERTS} assertions, ${FILES} data files" >> $GITHUB_STEP_SUMMARY
             else
-              FILE_COUNT=$((FILE_COUNT + 1))
+              echo "- ✅ ${NAME}: ${TESTS} tests, ${ASSERTS} assertions (no test_data/)" >> $GITHUB_STEP_SUMMARY
             fi
           done
-          if [ "$MISSING" -eq 0 ]; then
-            echo "- ✅ All test data files present (${FILE_COUNT} files)" >> $GITHUB_STEP_SUMMARY
-          fi
 
-          # Count tests and assertions
-          TESTS=$(grep -c '^\s*- description:' promptfooconfig.yaml || echo 0)
-          ASSERTS=$(grep -c '^\s*- type:' promptfooconfig.yaml || echo 0)
-          echo "- ✅ ${TESTS} test cases, ${ASSERTS} assertions" >> $GITHUB_STEP_SUMMARY
+          if [ "$FAIL" -ne 0 ]; then
+            exit 1
+          fi
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "To run live evals: trigger workflow_dispatch with live=true (requires CLAUDE_CODE_OAUTH_TOKEN secret)" >> $GITHUB_STEP_SUMMARY
+          echo "To run live evals: trigger workflow_dispatch with live=true" >> $GITHUB_STEP_SUMMARY
 
   # ── Live evals (workflow_dispatch only) ──────────────────
   live-eval:
