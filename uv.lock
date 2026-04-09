@@ -20,6 +20,8 @@ dependencies = [
     { name = "psycopg", extra = ["binary"] },
     { name = "pymupdf" },
     { name = "pyyaml" },
+    { name = "rich" },
+    { name = "typer" },
 ]
 
 [package.optional-dependencies]
@@ -72,6 +74,8 @@ requires-dist = [
     { name = "pyarrow", marker = "extra == 'vector'", specifier = ">=15.0" },
     { name = "pymupdf", specifier = ">=1.27.2.2" },
     { name = "pyyaml", specifier = ">=6.0" },
+    { name = "rich", specifier = ">=14.3.3" },
+    { name = "typer", specifier = ">=0.24.1" },
 ]
 provides-extras = ["vector", "otel", "safety"]
 

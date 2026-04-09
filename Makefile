@@ -26,6 +26,18 @@ install-all: install install-webapp ## Install everything
 dev: ## Start Python dev environment
 	uv run python -c "print('agentstreams ready')"
 
+cli: ## Run the agentstreams CLI (pass ARGS, e.g., make cli ARGS="agents list")
+	uv run agentstreams $(ARGS)
+
+cli-help: ## Show agentstreams CLI help tree
+	@uv run agentstreams --help
+	@echo ""
+	@echo "Subcommands:"
+	@for cmd in agents eval pdf pipeline validate layers; do \
+	  echo ""; echo "  agentstreams $$cmd:"; \
+	  uv run agentstreams $$cmd --help 2>/dev/null | grep -E "^  [a-z]" || true; \
+	done
+
 dev-webapp: ## Start Next.js dev server
 	cd webapp && npm run dev
 
