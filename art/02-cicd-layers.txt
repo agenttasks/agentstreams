@@ -1,0 +1,56 @@
+                    ╔═══════════════════════════════════════╗
+                    ║   CI/CD — 4 Blocking Layers           ║
+                    ║   (required-checks.yml)                ║
+                    ╚═══════════════════════════════════════╝
+
+    PR opened / synchronized
+    │
+    ▼
+    ┌─────────────────────────────────────────────────────────┐
+    │  Layer 1: STATIC ANALYSIS                     [fast]    │
+    │  ┌───────────────┐  ┌────────────────────────┐          │
+    │  │ ruff check    │  │ ruff format --check    │          │
+    │  │ src/ scripts/ │  │ src/ scripts/ tests/   │          │
+    │  └───────────────┘  └────────────────────────┘          │
+    │  ┌───────────────────────────────────────────┐          │
+    │  │ pytest tests/ -v --tb=short               │          │
+    │  └───────────────────────────────────────────┘          │
+    └───────────────────────┬─────────────────────────────────┘
+                            │ PASS?
+    ┌───────────────────────▼─────────────────────────────────┐
+    │  Layer 2: WEBAPP BUILD                       [medium]   │
+    │  ┌───────────────┐  ┌──────────┐  ┌───────────────┐    │
+    │  │ npm ci        │  │ tsc      │  │ next build    │    │
+    │  │ (cached)      │  │ --noEmit │  │ (static out/) │    │
+    │  └───────────────┘  └──────────┘  └───────────────┘    │
+    └───────────────────────┬─────────────────────────────────┘
+                            │ PASS?
+    ┌───────────────────────▼─────────────────────────────────┐
+    │  Layer 3: AGENT BOUNDARIES                   [fast]     │
+    │  ┌────────────────────────────────────────────────┐     │
+    │  │ No recursive spawning (Agent tool)             │     │
+    │  │ ANTHROPIC_API_KEY ban in src/ .claude/ webapp/ │     │
+    │  │ Read-only enforcement for audit agents         │     │
+    │  │ Model hierarchy compliance                     │     │
+    │  │ Inoculation blocks present                     │     │
+    │  └────────────────────────────────────────────────┘     │
+    └───────────────────────┬─────────────────────────────────┘
+                            │ PASS?
+    ┌───────────────────────▼─────────────────────────────────┐
+    │  Layer 4: AI SECURITY REVIEW                 [deep]     │
+    │  ┌────────────────────────────────────────────────┐     │
+    │  │ anthropics/claude-code-security-review@main    │     │
+    │  │ + .github/security-instructions.txt            │     │
+    │  │ + .github/fp-filtering.txt                     │     │
+    │  │                                                │     │
+    │  │ Categories: injection, auth, crypto, XSS,      │     │
+    │  │ agent boundaries, prompt injection, sandbox     │     │
+    │  │ escape, Neon SQL, Next.js SSRF                 │     │
+    │  └────────────────────────────────────────────────┘     │
+    └───────────────────────┬─────────────────────────────────┘
+                            │ ALL PASS?
+                            ▼
+               ┌────────────────────────┐
+               │  ✓  MERGE ALLOWED      │
+               │  (squash + merge only) │
+               └────────────────────────┘

@@ -25,11 +25,13 @@ jobs:
       run:
         working-directory: evals/crawl-ingest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: evals/crawl-ingest/package-lock.json
 
       - name: Install promptfoo
         run: npm install -g promptfoo@0.121.3
@@ -78,11 +80,13 @@ jobs:
       run:
         working-directory: evals/crawl-ingest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: evals/crawl-ingest/package-lock.json
 
       - uses: actions/setup-python@v5
         with:
@@ -117,7 +121,7 @@ jobs:
 
       - name: Upload results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: eval-results
           path: |

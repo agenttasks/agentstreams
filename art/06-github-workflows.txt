@@ -1,0 +1,65 @@
+        ╔════════════════════════════════════════════════════════╗
+        ║   GitHub Actions — 9 Workflows                         ║
+        ╚════════════════════════════════════════════════════════╝
+
+    ┌─ On PR open/sync ──────────────────────────────────────────┐
+    │                                                            │
+    │  required-checks.yml ────── BLOCKING (must pass to merge)  │
+    │  ├─ python-lint         ruff check + pytest                │
+    │  ├─ webapp-build        tsc --noEmit + next build          │
+    │  ├─ agent-boundaries    tool grants + API key ban          │
+    │  ├─ security-review     claude-code-security-review@main   │
+    │  └─ all-checks-pass     gate (fails if any layer fails)   │
+    │                                                            │
+    │  claude-review.yml ─────── BLOCKING (security + advisory)  │
+    │  ├─ claude-security     claude-code-security-review@main   │
+    │  │                      + security-instructions.txt        │
+    │  │                      + fp-filtering.txt                 │
+    │  ├─ claude-consistency  claude-code-action@v1 (advisory)   │
+    │  └─ merge-gate          blocks on findings-count > 0       │
+    │                                                            │
+    │  validate-skills.yml ── on skills/ontology/scripts changes │
+    │  ├─ validate-skills     validate-skills.py --check-only    │
+    │  ├─ validate-ontology   validate-ontology.py               │
+    │  ├─ python-quality      ruff + pytest + security-audit.py  │
+    │  └─ mcp-server-quality  vitest (mcp-server/)               │
+    │                                                            │
+    │  agent-boundary-check.yml ── on .claude/ changes           │
+    │  ├─ no recursive spawning                                  │
+    │  ├─ read-only enforcement                                  │
+    │  ├─ model hierarchy                                        │
+    │  ├─ inoculation blocks                                     │
+    │  └─ ANTHROPIC_API_KEY ban                                  │
+    │                                                            │
+    │  webapp-ci.yml ──────── on webapp/ changes                 │
+    │  └─ tsc + ESLint + next build + output verify              │
+    │                                                            │
+    │  neon-preview.yml ───── on ontology/schema.sql changes     │
+    │  ├─ create Neon preview branch                             │
+    │  └─ delete on PR close                                     │
+    │                                                            │
+    │  evals.yml ──────────── on skills/evals changes            │
+    │  ├─ validate config (always)                               │
+    │  └─ live evals (workflow_dispatch with live=true)           │
+    │                                                            │
+    └────────────────────────────────────────────────────────────┘
+
+    ┌─ On push to main ─────────────────────────────────────────┐
+    │  deploy-webapp.yml      Cloudflare Pages via wrangler@v3  │
+    │                         → agentcrawls.com                 │
+    └───────────────────────────────────────────────────────────┘
+
+    ┌─ On @claude mention ──────────────────────────────────────┐
+    │  claude-interactive.yml  claude-code-action@v1            │
+    │                          max-turns 15, sonnet 4.6         │
+    └───────────────────────────────────────────────────────────┘
+
+    Action Versions (as of April 2026):
+    ────────────────────────────────────
+    actions/checkout@v6          actions/setup-python@v5
+    actions/setup-node@v4        actions/upload-artifact@v5
+    astral-sh/setup-uv@v6       cloudflare/wrangler-action@v3
+    anthropics/claude-code-action@v1
+    anthropics/claude-code-security-review@main
+    neondatabase/create-branch-action@v6.3.0
+    neondatabase/delete-branch-action@v3

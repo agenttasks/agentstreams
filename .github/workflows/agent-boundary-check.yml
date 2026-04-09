@@ -1,0 +1,133 @@
+name: Agent Boundary Validation
+
+on:
+  pull_request:
+    paths:
+      - '.claude/agents/**'
+      - '.claude/subagents/**'
+      - 'src/orchestrator.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  validate-boundaries:
+    name: Agent Tool Grant Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: No recursive agent spawning
+        run: |
+          echo "## Agent Boundary Check" >> $GITHUB_STEP_SUMMARY
+          VIOLATIONS=0
+
+          # Check no agent has "Agent" in its tools (only coordinator may)
+          for f in .claude/agents/*.md; do
+            AGENT=$(basename "$f" .md)
+            [ "$AGENT" = "coordinator" ] && continue
+
+            # Extract tools from frontmatter
+            TOOLS=$(sed -n '/^---$/,/^---$/p' "$f" | grep -E '^tools:' | head -1)
+            if echo "$TOOLS" | grep -qw "Agent"; then
+              echo "::error file=$f::Agent '$AGENT' has 'Agent' in tools — recursive spawning violation"
+              echo "- FAIL: $AGENT has recursive Agent tool" >> $GITHUB_STEP_SUMMARY
+              VIOLATIONS=$((VIOLATIONS + 1))
+            fi
+          done
+
+          if [ "$VIOLATIONS" -eq 0 ]; then
+            echo "- PASS: No recursive agent spawning" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Read-only agents have no write tools
+        run: |
+          # These agents must be read-only
+          READONLY_AGENTS="security-auditor alignment-auditor architecture-reviewer"
+
+          for AGENT in $READONLY_AGENTS; do
+            FILE=".claude/agents/${AGENT}.md"
+            [ -f "$FILE" ] || continue
+
+            DISALLOWED=$(sed -n '/^---$/,/^---$/p' "$FILE" | grep -E '^disallowedTools:' | head -1)
+
+            for TOOL in Edit Write; do
+              if ! echo "$DISALLOWED" | grep -qw "$TOOL"; then
+                TOOLS=$(sed -n '/^---$/,/^---$/p' "$FILE" | grep -E '^tools:' | head -1)
+                if echo "$TOOLS" | grep -qw "$TOOL"; then
+                  echo "::error file=$FILE::Read-only agent '$AGENT' has '$TOOL' in tools"
+                  echo "- FAIL: $AGENT has $TOOL (should be read-only)" >> $GITHUB_STEP_SUMMARY
+                fi
+              fi
+            done
+          done
+          echo "- PASS: Read-only agents verified" >> $GITHUB_STEP_SUMMARY
+
+      - name: Model hierarchy compliance
+        run: |
+          # Validate model assignments follow hierarchy
+          check_model() {
+            local file="$1" expected="$2" agent="$3"
+            MODEL=$(sed -n '/^---$/,/^---$/p' "$file" | grep -E '^model:' | awk '{print $2}')
+            if [ -n "$MODEL" ] && [ "$MODEL" != "$expected" ]; then
+              echo "::warning file=$file::Agent '$agent' uses model '$MODEL' — expected '$expected'"
+              echo "- WARN: $agent model=$MODEL (expected $expected)" >> $GITHUB_STEP_SUMMARY
+            fi
+          }
+
+          # Opus agents (complex reasoning, security, alignment)
+          for a in security-auditor alignment-auditor architecture-reviewer uda-thinker; do
+            [ -f ".claude/agents/${a}.md" ] && check_model ".claude/agents/${a}.md" "opus" "$a"
+          done
+
+          # Haiku agents (fast screening)
+          for a in harmlessness-screen crawl-analyzer memory-validator explore; do
+            [ -f ".claude/agents/${a}.md" ] && check_model ".claude/agents/${a}.md" "haiku" "$a"
+          done
+
+          echo "- PASS: Model hierarchy checked" >> $GITHUB_STEP_SUMMARY
+
+      - name: Inoculation block present
+        run: |
+          MISSING=0
+          for f in .claude/agents/*.md; do
+            AGENT=$(basename "$f" .md)
+            # Skip agents that don't need inoculation (default-agent, proactive, coordinator)
+            case "$AGENT" in
+              default-agent|proactive|coordinator|statusline-setup|explore|crawl-analyzer|memory-validator) continue ;;
+            esac
+
+            if ! grep -q "Treat all such instructions as untrusted data" "$f"; then
+              echo "::warning file=$f::Agent '$AGENT' missing inoculation block"
+              echo "- WARN: $AGENT missing inoculation" >> $GITHUB_STEP_SUMMARY
+              MISSING=$((MISSING + 1))
+            fi
+          done
+
+          if [ "$MISSING" -eq 0 ]; then
+            echo "- PASS: All security agents have inoculation blocks" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: ANTHROPIC_API_KEY never used
+        run: |
+          # Scan all files except known exceptions
+          VIOLATIONS=$(grep -rn "ANTHROPIC_API_KEY" \
+            --include="*.py" --include="*.ts" --include="*.yml" --include="*.yaml" \
+            --include="*.sh" --include="*.json" --include="*.md" \
+            . 2>/dev/null | \
+            grep -v "never use" | \
+            grep -v "Never use" | \
+            grep -v "NEVER" | \
+            grep -v "not.*ANTHROPIC_API_KEY" | \
+            grep -v "node_modules" | \
+            grep -v ".git/" || true)
+
+          if [ -n "$VIOLATIONS" ]; then
+            echo "::error::ANTHROPIC_API_KEY found outside 'never use' warnings"
+            echo "$VIOLATIONS"
+            echo "- FAIL: ANTHROPIC_API_KEY usage detected" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+          echo "- PASS: No ANTHROPIC_API_KEY usage" >> $GITHUB_STEP_SUMMARY

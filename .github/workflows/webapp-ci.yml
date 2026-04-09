@@ -1,0 +1,53 @@
+name: Webapp CI
+
+on:
+  pull_request:
+    paths:
+      - 'webapp/**'
+  push:
+    branches:
+      - main
+    paths:
+      - 'webapp/**'
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-lint:
+    name: Build & Lint
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: webapp
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: webapp/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript check
+        run: npx tsc --noEmit
+
+      - name: ESLint
+        run: npx next lint
+
+      - name: Build static export
+        run: npx next build
+
+      - name: Verify output
+        run: |
+          test -f out/index.html || { echo "::error::Missing out/index.html"; exit 1; }
+          test -d out/_next || { echo "::error::Missing out/_next assets"; exit 1; }
+          PAGE_COUNT=$(find out -name "*.html" | wc -l)
+          ASSET_SIZE=$(du -sh out | cut -f1)
+          echo "## Webapp Build" >> $GITHUB_STEP_SUMMARY
+          echo "- Pages: ${PAGE_COUNT} HTML files" >> $GITHUB_STEP_SUMMARY
+          echo "- Bundle size: ${ASSET_SIZE}" >> $GITHUB_STEP_SUMMARY
+          echo "- Static export: verified" >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,138 @@
+@import "tailwindcss";
+
+/* ── ASC11-inspired design tokens ─────────────────────────── */
+:root {
+  --bg: #050505;
+  --fg: #e8e6e3;
+  --accent: #c8ff00;
+  --accent-dim: #7a9900;
+  --muted: #6b6b6b;
+  --surface: #0d0d0d;
+  --surface-raised: #161616;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.12);
+  --glow: rgba(200, 255, 0, 0.08);
+
+  /* System font stacks — swap to Google Fonts in production:
+     Outfit (display), Crimson Pro (body), JetBrains Mono (mono).
+     Add to layout.tsx: import { Outfit, Crimson_Pro, JetBrains_Mono } from "next/font/google" */
+  --font-display: "Helvetica Neue", Helvetica, system-ui, -apple-system, sans-serif;
+  --font-body: Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-code: "SF Mono", "Cascadia Code", "Fira Code", Menlo, monospace;
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
+  --color-accent: var(--accent);
+  --color-accent-dim: var(--accent-dim);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-border: var(--border);
+  --color-border-hover: var(--border-hover);
+  --color-glow: var(--glow);
+  --font-sans: var(--font-display);
+  --font-serif: var(--font-body);
+  --font-mono: var(--font-code);
+}
+
+/* ── Base reset ───────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  cursor: crosshair;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* ── ASCII noise texture overlay ──────────────────────────── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px;
+}
+
+/* ── Scanline effect ──────────────────────────────────────── */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0.03;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.3) 2px,
+    rgba(0, 0, 0, 0.3) 4px
+  );
+}
+
+/* ── Typography scale ─────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+/* ── Monospace accents ────────────────────────────────────── */
+code, pre, .mono {
+  font-family: var(--font-code);
+}
+
+/* ── Custom scrollbar ─────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-dim);
+}
+
+/* ── Glow effect utility ──────────────────────────────────── */
+.glow-accent {
+  box-shadow: 0 0 40px var(--glow), 0 0 80px rgba(200, 255, 0, 0.03);
+}
+
+/* ── ASCII border utility ─────────────────────────────────── */
+.ascii-border {
+  border: 1px solid var(--border);
+  position: relative;
+}
+.ascii-border::before {
+  content: "┌" attr(data-label) "┐";
+  position: absolute;
+  top: -0.7em;
+  left: 1rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  color: var(--accent-dim);
+  background: var(--bg);
+  padding: 0 0.5rem;
+  letter-spacing: 0.05em;
+}

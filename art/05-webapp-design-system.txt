@@ -1,0 +1,65 @@
+                ╔═══════════════════════════════════════════╗
+                ║   Webapp Design System                    ║
+                ║   ASC11-Inspired Terminal Aesthetic        ║
+                ╚═══════════════════════════════════════════╝
+
+    Color Palette:
+    ──────────────
+    ██████  #050505  --bg           (deep black)
+    ██████  #e8e6e3  --fg           (warm white)
+    ██████  #c8ff00  --accent       (acid green)
+    ██████  #7a9900  --accent-dim   (muted green)
+    ██████  #6b6b6b  --muted        (gray)
+    ██████  #0d0d0d  --surface      (near-black)
+    ██████  #161616  --surface-raised
+
+    Typography Stack:
+    ─────────────────
+    Display:  "Helvetica Neue", Helvetica, system-ui, sans-serif
+              → Swap to Outfit when Google Fonts available
+    Body:     Georgia, Cambria, "Times New Roman", serif
+              → Swap to Crimson Pro when Google Fonts available
+    Code:     "SF Mono", "Cascadia Code", "Fira Code", monospace
+              → Swap to JetBrains Mono when Google Fonts available
+
+    Visual Effects:
+    ───────────────
+    ┌──────────────────────────────────────────┐
+    │  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  │  SVG noise texture
+    │  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  │  overlay (opacity 0.025)
+    │  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │  scanline effect
+    │  ┌─label─┐                               │  ASCII borders with
+    │  │       │  box-shadow: 0 0 40px glow   │  ┌label┐ decoration
+    │  └───────┘                               │
+    │  ╳ crosshair cursor on all elements      │
+    └──────────────────────────────────────────┘
+
+    Page Sections:
+    ──────────────
+    ┌─────────────────────────────────────────────────────┐
+    │  HERO         agent / streams                       │
+    │               italic serif description              │
+    │               [Explore agents →] [View pipelines]   │
+    ├─────────────────────────────────────────────────────┤
+    │  STATS BAR    18 repos │ 8 agents │ 5 pipes │ 0.3% │
+    ├─────────────────────────────────────────────────────┤
+    │  AGENTS       expandable cards with repo tags       │
+    │               ● security-auditor  [opus]            │
+    │               ● alignment-auditor [opus]            │
+    │               ● eval-builder      [sonnet]    ...   │
+    ├─────────────────────────────────────────────────────┤
+    │  PIPELINES    step → step → step flow               │
+    ├─────────────────────────────────────────────────────┤
+    │  MODEL HIERARCHY   opus │ sonnet │ haiku            │
+    ├─────────────────────────────────────────────────────┤
+    │  FOOTER       agentstreams · 18 repos · mythos      │
+    └─────────────────────────────────────────────────────┘
+
+    Motion Animations (motion/react):
+    ──────────────────────────────────
+    Hero:       staggered entrance (delay 0.1-0.6s)
+    Stats:      whileInView counter reveal
+    Agents:     AnimatePresence expand/collapse
+    Pipelines:  slide-in from left (delay per index)
+    Models:     gradient top-border accent cards
+    Scroll:     ↓ scroll indicator (y oscillation)

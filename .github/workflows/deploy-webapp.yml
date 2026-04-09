@@ -1,0 +1,68 @@
+name: Deploy Webapp to Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'webapp/**'
+  pull_request:
+    paths:
+      - 'webapp/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: webapp
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: webapp/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static export
+        run: npx next build
+
+      - name: Deploy to Cloudflare Pages
+        if: github.event_name != 'pull_request'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy webapp/out --project-name=agentstreams
+          workingDirectory: '.'
+
+      - name: Deploy preview (PR)
+        if: github.event_name == 'pull_request'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy webapp/out --project-name=agentstreams --branch=pr-${{ github.event.number }}
+          workingDirectory: '.'
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Webapp Deployment" >> $GITHUB_STEP_SUMMARY
+          echo "- Framework: Next.js 16 (static export)" >> $GITHUB_STEP_SUMMARY
+          echo "- Target: Cloudflare Pages (agentcrawls.com)" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "- Mode: Preview (pr-${{ github.event.number }})" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- Mode: Production" >> $GITHUB_STEP_SUMMARY
+          fi

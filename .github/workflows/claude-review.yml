@@ -11,48 +11,56 @@ permissions:
 
 jobs:
   # ═══════════════════════════════════════════════════════════
-  # 1. SECURITY REVIEW (Required — blocks merge)
+  # 1. SECURITY REVIEW — claude-code-security-review (official)
+  #    Semantic vulnerability scanning with false positive filtering.
+  #    Uses Claude Opus for deep code analysis + secondary filtering pass.
+  #    Docs: https://github.com/anthropics/claude-code-security-review
   # ═══════════════════════════════════════════════════════════
   claude-security:
     name: Security Review
     runs-on: ubuntu-latest
-    continue-on-error: true
+    outputs:
+      findings-count: ${{ steps.security-review.outputs.findings-count }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
-          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 2
 
-      - uses: anthropics/claude-code-action@v1
+      - name: Run security review
+        id: security-review
+        uses: anthropics/claude-code-security-review@main
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          prompt: |
-            SECURITY REVIEW — ${{ github.repository }}#${{ github.event.pull_request.number }}
+          claude-api-key: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          comment-pr: 'true'
+          upload-results: 'true'
+          claude-model: claude-sonnet-4-6
+          claudecode-timeout: '25'
+          exclude-directories: 'webapp/node_modules,webapp/out,webapp/.next,taxonomy,evals/crawl-ingest/test_data'
+          custom-security-scan-instructions: '.github/security-instructions.txt'
+          false-positive-filtering-instructions: '.github/fp-filtering.txt'
 
-            Review ONLY the files changed in this PR (use git diff to find them).
-
-            Check for:
-            1. ANTHROPIC_API_KEY usage (only allowed in "never use" warnings)
-            2. Hardcoded credentials in code examples
-            3. Unsafe shell patterns (unquoted vars, eval, command injection)
-            4. SQL injection in SQLite examples
-            5. SSRF patterns in crawler configs
-            6. Path traversal in file handling
-
-            If issues found, post a PR comment listing them.
-            If clean, post a brief approving comment.
-          claude_args: |
-            --max-turns 50
-            --model claude-sonnet-4-6
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Security Review" >> $GITHUB_STEP_SUMMARY
+          echo "- Findings: ${{ steps.security-review.outputs.findings-count }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Results: ${{ steps.security-review.outputs.results-file }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Model: claude-sonnet-4-6" >> $GITHUB_STEP_SUMMARY
+          echo "- Custom rules: .github/security-instructions.txt" >> $GITHUB_STEP_SUMMARY
+          echo "- FP filtering: .github/fp-filtering.txt" >> $GITHUB_STEP_SUMMARY
 
   # ═══════════════════════════════════════════════════════════
-  # 2. CONSISTENCY REVIEW (Advisory — runs in parallel)
+  # 2. CONSISTENCY REVIEW — claude-code-action (general purpose)
+  #    Checks version strings, model names, cross-references, SDK patterns.
+  #    Advisory only — does not block merge.
   # ═══════════════════════════════════════════════════════════
   claude-consistency:
     name: Consistency Review
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -60,23 +68,29 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
-            CONSISTENCY REVIEW — ${{ github.repository }}#${{ github.event.pull_request.number }}
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
 
-            1. Run `git diff origin/main --name-only` to find changed files.
-            2. For each changed file, check:
-               - Version numbers match SKILL.md
-               - Model names use hyphen format (claude-opus-4-6, claude-sonnet-4-6)
-               - Cross-references point to existing files
-               - SDK constructor patterns are correct
-            3. Only read files that are directly referenced by the changed files.
+            CONSISTENCY REVIEW — check changed files for:
+            1. Version numbers match SKILL.md
+            2. Model names use hyphen format (claude-opus-4-6, claude-sonnet-4-6)
+            3. Cross-references point to existing files
+            4. SDK constructor patterns are correct per language
+            5. safety-research repo star counts are consistent across files
+            6. Agent frontmatter matches orchestrator.py agent configs
 
-            Post inline comments on inconsistencies. If clean, post a brief approving comment.
+            Only read files directly referenced by the changed files.
+
+            Use `mcp__github_inline_comment__create_inline_comment` (with `confirmed: true`)
+            to post inline comments on inconsistencies.
+            Use `gh pr comment` for a summary.
           claude_args: |
             --max-turns 50
             --model claude-sonnet-4-6
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(git diff:*),Read,Glob,Grep"
 
   # ═══════════════════════════════════════════════════════════
-  # 3. MERGE GATE (Only security is blocking)
+  # 3. MERGE GATE — blocks on security findings
   # ═══════════════════════════════════════════════════════════
   merge-gate:
     name: Merge Gate
@@ -84,8 +98,23 @@ jobs:
     runs-on: ubuntu-latest
     if: always()
     steps:
-      - name: Review gate summary
+      - name: Evaluate gate
         run: |
-          echo "Security: ${{ needs.claude-security.result }}"
-          echo "Consistency: ${{ needs.claude-consistency.result }}"
-          echo "::notice::Reviews complete — check PR comments for findings"
+          SECURITY="${{ needs.claude-security.result }}"
+          CONSISTENCY="${{ needs.claude-consistency.result }}"
+          FINDINGS="${{ needs.claude-security.outputs.findings-count }}"
+
+          echo "## Merge Gate" >> $GITHUB_STEP_SUMMARY
+          echo "- Security: ${SECURITY} (${FINDINGS:-0} findings)" >> $GITHUB_STEP_SUMMARY
+          echo "- Consistency: ${CONSISTENCY}" >> $GITHUB_STEP_SUMMARY
+
+          if [ "$SECURITY" = "failure" ]; then
+            echo "::error::Security review failed — check PR comments for findings"
+            exit 1
+          fi
+
+          if [ -n "$FINDINGS" ] && [ "$FINDINGS" -gt 0 ] 2>/dev/null; then
+            echo "::warning::${FINDINGS} security finding(s) detected — review PR comments"
+          fi
+
+          echo "::notice::Reviews complete — check PR comments for details"

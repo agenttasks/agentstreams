@@ -2,7 +2,7 @@
 
 ## Project
 
-Multi-language skill system for Claude Code. Skills provide web crawling, Anthropic SDK integration, bloom filter deduplication, programmatic prompts (DSPy), LSP code intelligence, and evals — across 8 languages (TypeScript, Python, Java, Go, Ruby, C#, PHP, cURL).
+Safety-grounded multi-agent orchestration for Claude Code. Composable pipelines across codegen, security audit, alignment audit, and evaluation — powered by 18 open-source safety-research tools and Mythos System Card methodology.
 
 ## Auth
 
@@ -34,7 +34,80 @@ When reviewing PRs, check:
 - Markdown: ATX headings, fenced code blocks with language tags
 - Shell scripts: `set -euo pipefail`
 - No trailing whitespace
-- Python managed with `uv` exclusively — no `npm`/`node_modules`/`package.json` in this repo
+- Python managed with `uv` exclusively
+- Frontend webapp in `webapp/` managed with `npm`
+
+## Makefile
+
+All operations go through `make`. Key targets:
+- `make install-all` — Python (uv sync) + webapp (npm ci)
+- `make ci` — Full CI locally (lint + test + build + validate + security-audit)
+- `make lint` / `make test` / `make build` — Individual checks
+- `make validate-agents` — Agent boundary enforcement (tool grants, API key ban)
+- `make security-audit` — Run security-audit.py
+- `make dev-webapp` — Start Next.js dev server
+
+## Memory Palace Architecture
+
+File organization follows the MemPalace pattern (see `.gitattributes`):
+- **Wings**: ontology/, src/, scripts/, skills/, .claude/, webapp/, .github/, evals/
+- **Halls**: hall_facts, hall_tools, hall_agents, hall_skills, hall_evals, hall_ci, hall_webapp, hall_safety
+- **Tunnels**: Cross-wing connections (e.g., orchestrator.py ↔ agents/*.md)
+
+Memory sync (cloud-safe — all memory is in checked-in files):
+- `CLAUDE.md` — shared project memory (this file, checked in)
+- `.claude/settings.json` — hooks and permissions
+- `.claude/agents/*.md` — agent configs with YAML frontmatter
+- `.claude/subagents/opus-orchestrator.md` — pipeline definitions
+- `.gitattributes` — MemPalace wing/hall/tunnel map
+
+## Orchestrator
+
+8 agents, 5 pipelines, 4 model tiers. Defined in:
+- `src/orchestrator.py` — Python dataclasses + agent configs
+- `.claude/agents/*.md` — Agent frontmatter (tools, model, color)
+- `.claude/subagents/opus-orchestrator.md` — Pipeline XML + safety-research tooling
+
+Model hierarchy:
+- opus: security-auditor, alignment-auditor, architecture-reviewer, uda-thinker
+- sonnet: code-generator, test-runner, prompt-hardener, eval-builder
+- haiku: harmlessness-screen, crawl-analyzer, memory-validator, explore
+
+## Safety-Research Integration
+
+18 repos from github.com/safety-research referenced across 7 agents:
+- alignment-auditor: petri, trusted-monitor, SHADE-Arena, lie-detector, ciphered-reasoning-llms, A3, open-source-alignment-faking, crosscoder_emergent_misalignment
+- security-auditor: auditing-agents, finetuning-auditor, PurpleLlama, safety-tooling, lie-detector, SCONE-bench
+- eval-builder: bloom, impossiblebench, SCONE-bench, lie-detector, A3, open-source-alignment-faking
+- prompt-hardener: inoculation-prompting, persona_vectors
+- harmlessness-screen: assistant-axis, ciphered-reasoning-llms, persona_vectors
+- architecture-reviewer: petri, trusted-monitor, open-source-alignment-faking
+
+Install pip packages: `make install-safety` (petri, bloom)
+
+## SDK Ecosystem
+
+| Package | Purpose |
+|---------|---------|
+| `@anthropic-ai/claude-agent-sdk` | Agent runtime (query, hooks, subagents) |
+| `@anthropic-ai/sdk` | Direct Messages API client (v0.86+) |
+| `@anthropic-ai/claude-trace` | JSONL transcript capture |
+| `@anthropic-ai/mcpb` | MCP Bundle builder |
+| `@neondatabase/serverless` | Neon SQL over HTTPS/WebSocket |
+| `@neondatabase/neon-js` | Neon Auth + Data API |
+
+## CI/CD
+
+9 GitHub Actions workflows, 4 blocking layers before merge:
+1. Python lint + test (ruff, pytest)
+2. Webapp TypeScript + build (tsc, next build)
+3. Agent boundary enforcement (tool grants, API key ban, inoculation)
+4. AI security review (claude-code-security-review@main with custom rules)
+
+Branch protection config: `.github/BRANCH_PROTECTION.md`
+Security scan rules: `.github/security-instructions.txt`
+False positive filtering: `.github/fp-filtering.txt`
+PR template: `.github/pull_request_template.md`
 
 ## Neon Postgres
 
@@ -50,15 +123,17 @@ Environment variables available after session start:
 
 **Always use `NEON_DATABASE_URL` from env** — never hardcode credentials in scripts.
 
-Access patterns:
-- **psycopg (TCP)**: `src/neon_db.py` reads `NEON_DATABASE_URL` automatically
-- **SQL-over-HTTP (HTTPS)**: `scripts/neon-http-upsert.py` for proxy-only environments where TCP:5432 is blocked — uses `httpx` + Neon's `/sql` endpoint
-- **Crawl pipeline**: `scripts/crawl-sitemap.py` writes to Neon via `--neon-url` or `NEON_DATABASE_URL`
-
 Schema: `ontology/schema.sql` (12 tables, `resources.url` has UNIQUE constraint)
 
-## Stack
+## Webapp
 
-- Python only for executable code (managed with `uv`)
-- Claude Code CLI with `CLAUDE_CODE_OAUTH_TOKEN` (Pro Max)
-- Agent SDK: `claude-agent-sdk` run locally via scripts
+Next.js 16 + Tailwind CSS + Motion in `webapp/`. ASC11-inspired design:
+- Dark terminal aesthetic (#050505 bg, #c8ff00 accent)
+- Static export to Cloudflare Pages (agentcrawls.com)
+- `cd webapp && npm run dev` for local dev
+- Key deps: motion, @neondatabase/serverless, @anthropic-ai/sdk, clsx
+
+## Installed Skills
+
+- `frontend-design` — from anthropics/claude-plugins-official
+- `agent-development` — from anthropics/claude-code
