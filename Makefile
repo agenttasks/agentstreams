@@ -2,6 +2,7 @@
        lint lint-py lint-webapp format test test-py test-webapp \
        build build-webapp typecheck security-audit validate \
        eval-codegen eval-codegen-quick eval-codegen-dry eval-promptfoo \
+       install-managed-agents build-managed-agents check-managed-agents \
        clean ci ci-py ci-webapp
 
 # ── Help ─────────────────────────────────────────────────────
@@ -109,6 +110,16 @@ eval-codegen-quick: ## Quick codegen eval (sonnet only, 1 sample)
 
 eval-codegen-dry: ## Dry-run codegen eval (show task matrix)
 	uv run scripts/run-codegen-eval.py --dry-run
+
+## ── Managed Agents ──────────────────────────────────────────
+install-managed-agents: ## Install managed agents TS package deps
+	cd src/knowledge-work-managed-agents && npm install
+
+build-managed-agents: ## Build managed agents TypeScript
+	cd src/knowledge-work-managed-agents && npx tsc
+
+check-managed-agents: ## Type-check managed agents
+	cd src/knowledge-work-managed-agents && npx tsc --noEmit
 
 eval-promptfoo: ## Run all promptfoo eval suites
 	@for dir in evals/*/; do \

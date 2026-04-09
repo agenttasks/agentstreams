@@ -27,3 +27,4 @@ webapp/out/
 
 # Skills plugin cache
 .agents/
+src/knowledge-work-managed-agents/node_modules/
