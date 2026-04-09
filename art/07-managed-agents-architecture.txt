@@ -1,0 +1,65 @@
+                ╔═══════════════════════════════════════════╗
+                ║   Managed Agents — Cloud Session Flow     ║
+                ║   (managed-agents-2026-04-01 beta)        ║
+                ╚═══════════════════════════════════════════╝
+
+    ┌──────────────────────────────────────────────────────────────┐
+    │                   Your Application                           │
+    │                                                              │
+    │  ManagedAgentsClient                                         │
+    │  ┌────────────────────────────────────────────────────┐      │
+    │  │  create_agent()      → POST /v1/agents             │      │
+    │  │  create_environment() → POST /v1/environments      │      │
+    │  │  create_session()    → POST /v1/sessions           │      │
+    │  │  send_message()      → POST /v1/sessions/{id}/events│     │
+    │  │  stream_events()     → GET  /v1/sessions/{id}/stream│     │
+    │  │  run_with_custom_tools() → auto tool-call loop     │      │
+    │  └────────────────────────────────────────────────────┘      │
+    └──────────────┬─────────────────────────────────┬─────────────┘
+                   │ create once                     │ per task
+                   ▼                                 ▼
+    ┌──────────────────────┐          ┌──────────────────────────┐
+    │  Agent (versioned)   │          │  Session (stateful)      │
+    │  ┌────────────────┐  │          │  ┌────────────────────┐  │
+    │  │ model: opus/   │  │    ┌────▶│  │ status: idle       │  │
+    │  │  sonnet/haiku  │  │    │     │  │ → running          │  │
+    │  │ system prompt  │  │    │     │  │ → idle (done)      │  │
+    │  │ tools config   │  │    │     │  └────────────────────┘  │
+    │  │ MCP servers    │  │    │     │                          │
+    │  │ custom tools   │  │    │     │  Event Log (append-only) │
+    │  └────────────────┘  │    │     │  ┌────────────────────┐  │
+    │  version: 1, 2, ...  │    │     │  │ user.message       │  │
+    └──────────┬───────────┘    │     │  │ agent.message      │  │
+               │ ref            │     │  │ agent.tool_use     │  │
+               └────────────────┘     │  │ agent.tool_result  │  │
+                                      │  │ agent.custom_tool  │  │
+    ┌──────────────────────┐          │  │ session.status_*   │  │
+    │  Environment         │    ref   │  │ span.model_*       │  │
+    │  ┌────────────────┐  │◀────────▶│  └────────────────────┘  │
+    │  │ type: cloud    │  │          └──────────────────────────┘
+    │  │ packages:      │  │                     │
+    │  │   pip, npm,    │  │                     │ runs inside
+    │  │   apt, cargo   │  │                     ▼
+    │  │ networking:    │  │          ┌──────────────────────────┐
+    │  │  unrestricted  │  │          │  Container (isolated)    │
+    │  │  OR limited    │  │          │  ┌────────────────────┐  │
+    │  │  + allow_hosts │  │          │  │ bash  read  write  │  │
+    │  └────────────────┘  │          │  │ edit  glob  grep   │  │
+    │  shared across       │          │  │ web_fetch  web_src │  │
+    │  sessions            │          │  └────────────────────┘  │
+    └──────────────────────┘          │  pre-installed runtimes  │
+                                      │  Python, Node, Go, etc. │
+                                      └──────────────────────────┘
+
+    Agent Toolset: agent_toolset_20260401
+    ─────────────────────────────────────
+    bash │ read │ write │ edit │ glob │ grep │ web_fetch │ web_search
+
+    Custom Tools:
+    ─────────────
+    agent.custom_tool_use  ──►  your handler  ──►  user.custom_tool_result
+
+    MCP Tools:
+    ──────────
+    agent.mcp_tool_use  ──►  remote MCP server  ──►  agent.mcp_tool_result
+    Auth via vault_ids at session creation

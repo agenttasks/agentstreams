@@ -1,0 +1,115 @@
+                ╔═══════════════════════════════════════════╗
+                ║   Evaluation Suite — Success Criteria     ║
+                ║   113 tests │ 22 LLM-graded │ 10 fixtures║
+                ╚═══════════════════════════════════════════╝
+
+    ┌─────────────────────────────────────────────────────────────┐
+    │  SUCCESS CRITERIA (SMART)                                    │
+    │                                                             │
+    │  Criterion               │ Target  │ Method                 │
+    │  ────────────────────────┼─────────┼───────────────────     │
+    │  Serialization fidelity  │  100%   │ exact match / golden   │
+    │  Event parsing accuracy  │  100%   │ type-checked dispatch  │
+    │  Verdict extraction      │  >=95%  │ parametrized match     │
+    │  Config conversion       │  100%   │ deterministic check    │
+    │  Output consistency      │  100%   │ 50x repeated calls     │
+    │  LLM config generation   │  valid  │ JSON schema + asserts  │
+    │  Prompt quality audit    │  >=4/5  │ LLM Likert scale       │
+    │  Cost per generation     │ <$0.02  │ token threshold        │
+    └─────────────────────────────────────────────────────────────┘
+
+    CODE-GRADED EVALS (pytest)                     50 tests
+    ────────────────────────────────────────────────────────
+    ┌─────────────────────────────────────────────────────┐
+    │  TestSerializationFidelity              13 tests    │
+    │  ├── Golden comparisons vs 6 API fixtures          │
+    │  ├── All 3 model tiers produce valid configs       │
+    │  ├── Fast mode produces object model               │
+    │  ├── All 8 tool names validated                    │
+    │  └── No ANTHROPIC_API_KEY in any output            │
+    │                                                     │
+    │  TestEventParsingAccuracy                4 tests    │
+    │  ├── 10-event audit stream parsed correctly        │
+    │  ├── Custom tool use detected in stream            │
+    │  ├── Error + recovery sequence handled             │
+    │  └── 100x determinism check                        │
+    │                                                     │
+    │  TestVerdictExtractionFidelity          14 tests    │
+    │  ├── 7 fixture cases at 100% accuracy              │
+    │  ├── 10 case-insensitive verdict variants          │
+    │  ├── 3 harmlessness classifications                │
+    │  └── Error status on failure                       │
+    │                                                     │
+    │  TestConfigConversionConsistency         3 tests    │
+    │  ├── All 8 orchestrator agents convert             │
+    │  ├── Read-only agents get write disabled           │
+    │  └── 50x deterministic conversion                  │
+    │                                                     │
+    │  TestOutputConsistency                   7 tests    │
+    │  ├── 6 factory functions x 50 repetitions          │
+    │  └── 8 event types x 50 repetitions               │
+    │                                                     │
+    │  TestEdgeCases                           9 tests    │
+    │  ├── Empty name, 100K prompt, unicode              │
+    │  ├── Empty content, missing fields                 │
+    │  ├── Nested JSON roundtrip                         │
+    │  ├── All 6 package managers                        │
+    │  └── Multiple verdict lines                        │
+    └─────────────────────────────────────────────────────┘
+
+    LLM-GRADED EVALS (promptfoo)                   22 cases
+    ────────────────────────────────────────────────────────
+    ┌─────────────────────────────────────────────────────┐
+    │  Agent Config Generation                 4 cases    │
+    │  ├── Coding agent from description                 │
+    │  ├── Read-only security auditor                    │
+    │  ├── Custom tool (get_weather)                     │
+    │  └── MCP server (GitHub)                           │
+    │                                                     │
+    │  Environment Config Generation           2 cases    │
+    │  ├── Data analysis (pip packages)                  │
+    │  └── Restricted networking                         │
+    │                                                     │
+    │  Event Classification                    6 cases    │
+    │  ├── user.message (no response needed)             │
+    │  ├── agent.custom_tool_use (response needed!)      │
+    │  ├── session.status_idle                           │
+    │  ├── agent.tool_use (built-in, no response)        │
+    │  ├── session.error                                 │
+    │  └── span.model_request_end                        │
+    │                                                     │
+    │  Verdict Extraction                      5 cases    │
+    │  ├── PASS (severity: none)                         │
+    │  ├── BLOCK (severity: critical)                    │
+    │  ├── NEEDS_REMEDIATION (2+ findings)               │
+    │  ├── ALIGNED (low severity)                        │
+    │  └── MISALIGNED (high severity)                    │
+    │                                                     │
+    │  System Prompt Audit                     3 cases    │
+    │  ├── Good prompt (scores >= 4/5)                   │
+    │  ├── Vague prompt (scores <= 3/5)                  │
+    │  └── Tool scope mismatch                           │
+    │                                                     │
+    │  Cost Guard                              1 case     │
+    │  └── Token cost < $0.02                            │
+    └─────────────────────────────────────────────────────┘
+
+    GOLDEN FIXTURES (evals/managed-agents/test_data/)
+    ────────────────────────────────────────────────────────
+    agent_config_coding.json         │ sonnet + full toolset
+    agent_config_security.json       │ opus + read-only
+    agent_config_custom_tools.json   │ custom get_weather
+    agent_config_mcp.json            │ GitHub MCP server
+    environment_config_data.json     │ pip + npm packages
+    environment_config_restricted.json│ limited networking
+    session_create_request.json      │ GitHub repo mount
+    event_stream_sequence.json       │ 10-event audit flow
+    event_custom_tool_sequence.json  │ custom tool call
+    event_error_sequence.json        │ OOM + recovery
+    verdict_outputs.json             │ 7 verdict cases
+
+    GRADING HIERARCHY (fastest → most nuanced)
+    ────────────────────────────────────────────────────────
+    1. Code-graded:  exact match, type checks, JSON assert
+    2. LLM-graded:   Likert scales, schema validation
+    3. Human:        (reserved for adversarial edge cases)
