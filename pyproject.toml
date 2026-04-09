@@ -45,6 +45,9 @@ safety = [
     # lie-detector (github.com/safety-research/lie-detector) is not pip-installable;
     # referenced as methodology context in agent prompts only.
 ]
+lexglue = [
+    "datasets>=2.14.0",    # HuggingFace datasets for lex_glue benchmark
+]
 
 [dependency-groups]
 dev = [

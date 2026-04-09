@@ -31,6 +31,9 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
+lexglue = [
+    { name = "datasets" },
+]
 otel = [
     { name = "opentelemetry-api" },
     { name = "opentelemetry-exporter-otlp" },
@@ -73,6 +76,7 @@ requires-dist = [
     { name = "aiohttp", specifier = ">=3.10" },
     { name = "anthropic", specifier = ">=0.42" },
     { name = "bloom", marker = "extra == 'safety'", git = "https://github.com/safety-research/bloom" },
+    { name = "datasets", marker = "extra == 'lexglue'", specifier = ">=2.14.0" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "lancedb", marker = "extra == 'vector'", specifier = ">=0.6" },
     { name = "mcp", specifier = ">=1.0" },
@@ -87,7 +91,7 @@ requires-dist = [
     { name = "rich", specifier = ">=14.3.3" },
     { name = "typer", specifier = ">=0.24.1" },
 ]
-provides-extras = ["vector", "otel", "safety"]
+provides-extras = ["vector", "otel", "safety", "lexglue"]
 
 [package.metadata.requires-dev]
 dev = [

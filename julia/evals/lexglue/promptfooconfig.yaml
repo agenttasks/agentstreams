@@ -1,0 +1,120 @@
+description: "LexGLUE benchmark smoke tests — quick CI validation for 5 legal tasks"
+
+# Smoke tests only — full benchmark runs via scripts/run-lexglue-eval.py
+# These tests validate that Julia produces parseable JSON with correct fields
+# for each LexGLUE task type. Not a substitute for aggregate F1/accuracy metrics.
+
+providers:
+  - id: python:../provider.py
+    label: julia-lexglue
+    config:
+      model: claude-opus-4-6
+      temperature: 0
+      max_tokens: 2048
+
+prompts:
+  # ── LEDGAR: Provision Classification ─────────────────────────
+  - id: ledgar-classify
+    raw: |
+      You are Julia, a legal analysis assistant. Never provide legal advice.
+
+      Classify this contract provision into EXACTLY ONE of the following types:
+      Amendments, Arbitration, Base Salary, Change of Control, Confidentiality,
+      Governing Law, Indemnification, Insurance, Interest Rate, Reimbursement,
+      Representations, Severability, Stock Options, Termination, Warranties
+
+      Do NOT create new categories.
+
+      <document>
+      {{text}}
+      </document>
+
+      Output ONLY valid JSON:
+      {"provision_type": "...", "confidence": 0.0-1.0, "reasoning": "..."}
+
+  # ── CaseHOLD: Holding Identification ─────────────────────────
+  - id: casehold-identify
+    raw: |
+      You are Julia, a legal analysis assistant. Never provide legal advice.
+
+      Given this legal context, identify which holding statement correctly
+      fills the <HOLDING> placeholder. Select exactly one option.
+
+      <document>
+      {{context}}
+      </document>
+
+      Options:
+      {{options}}
+
+      Output ONLY valid JSON:
+      {"answer": "A"|"B"|"C"|"D"|"E", "reasoning": "..."}
+
+  # ── ContractNLI: Entailment ──────────────────────────────────
+  - id: contract-nli
+    raw: |
+      You are Julia, a legal analysis assistant. Never provide legal advice.
+
+      Determine the relationship between the premise and hypothesis:
+      - "entailment": the hypothesis is supported by the contract
+      - "contradiction": the hypothesis contradicts the contract
+      - "neutral": the hypothesis is neither supported nor contradicted
+
+      <document>
+      {{text}}
+      </document>
+
+      Output ONLY valid JSON:
+      {"label": "entailment"|"contradiction"|"neutral", "reasoning": "..."}
+
+tests:
+  # ── LEDGAR Smoke Tests ───────────────────────────────────────
+  - description: "LEDGAR: Reimbursement provision"
+    vars:
+      text: "The Company shall reimburse the Executive for all reasonable business expenses incurred in connection with the performance of Executive's duties."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).provision_type === 'Reimbursement'"
+      - type: cost
+        threshold: 0.05
+
+  - description: "LEDGAR: Governing Law provision"
+    vars:
+      text: "This Agreement shall be governed by and construed in accordance with the laws of the State of Delaware, without giving effect to any choice of law or conflict of law provision."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).provision_type === 'Governing Law'"
+
+  # ── CaseHOLD Smoke Test ──────────────────────────────────────
+  - description: "CaseHOLD: FLSA holding identification"
+    vars:
+      context: "In this case, the court considered whether the employer's policy of mandatory overtime violated the Fair Labor Standards Act. The plaintiff argued that the policy effectively reduced their hourly wage below minimum wage. The court noted that <HOLDING>."
+      options: |
+        (A) the FLSA requires that employees be paid at least minimum wage for all hours worked
+        (B) employers have unlimited discretion to set overtime policies
+        (C) mandatory overtime policies are per se violations of the FLSA
+        (D) the FLSA does not apply to salaried employees
+        (E) overtime calculations must include all forms of compensation
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "['A','B','C','D','E'].includes(JSON.parse(output).answer)"
+
+  # ── ContractNLI Smoke Tests ──────────────────────────────────
+  - description: "ContractNLI: Contradiction detection"
+    vars:
+      text: "Premise: The Receiving Party shall not disclose any Confidential Information to any third party without the prior written consent of the Disclosing Party.\nHypothesis: The Receiving Party can share confidential information with anyone."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).label === 'contradiction'"
+
+  - description: "ContractNLI: Entailment detection"
+    vars:
+      text: "Premise: This Agreement shall remain in effect for a period of two (2) years from the Effective Date.\nHypothesis: The agreement has a defined duration."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).label === 'entailment'"

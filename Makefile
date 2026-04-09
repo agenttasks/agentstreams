@@ -3,6 +3,7 @@
        build build-webapp typecheck security-audit validate \
        eval-codegen eval-codegen-quick eval-codegen-dry eval-promptfoo \
        eval-cuad eval-casehold eval-cuad-quick eval-cuad-recall eval-legal \
+       eval-lexglue eval-lexglue-quick eval-lexglue-dry ingest-lexglue \
        install-managed-agents build-managed-agents check-managed-agents \
        clean ci ci-py ci-webapp
 
@@ -138,6 +139,18 @@ eval-cuad-recall: ## CUAD vault recall@K (pgvector vs lancedb vs pg_trgm)
 
 eval-legal: ## Run all legal benchmarks (CUAD + CaseHOLD)
 	uv run julia/evals/cuad/runner.py
+
+eval-lexglue: ## Run LexGLUE legal benchmark (all 5 tasks)
+	uv run scripts/run-lexglue-eval.py
+
+eval-lexglue-quick: ## Quick LexGLUE eval (CaseHOLD, 10 samples)
+	uv run scripts/run-lexglue-eval.py --task casehold --samples 10
+
+eval-lexglue-dry: ## Dry-run LexGLUE eval (show task matrix)
+	uv run scripts/run-lexglue-eval.py --dry-run
+
+ingest-lexglue: ## Download LexGLUE from HuggingFace → Neon + local JSON
+	uv run --extra lexglue scripts/ingest-lexglue.py --task all --lance
 
 ## ── Managed Agents ──────────────────────────────────────────
 install-managed-agents: ## Install managed agents TS package deps

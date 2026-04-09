@@ -1,0 +1,86 @@
+{
+  "description": "Few-shot examples for LexGLUE prompt engineering. Held out from test set.",
+  "ledgar": [
+    {
+      "text": "The Company shall reimburse the Executive for all reasonable business expenses incurred in connection with the performance of Executive's duties.",
+      "label": "Reimbursement"
+    },
+    {
+      "text": "This Agreement shall be governed by and construed in accordance with the laws of the State of Delaware, without giving effect to any choice of law or conflict of law provision.",
+      "label": "Governing Law"
+    },
+    {
+      "text": "Either party may terminate this Agreement upon thirty (30) days prior written notice to the other party.",
+      "label": "Termination"
+    },
+    {
+      "text": "The Borrower shall pay interest on the outstanding principal balance of the Loan at a rate per annum equal to the Base Rate plus the Applicable Margin.",
+      "label": "Interest Rate"
+    },
+    {
+      "text": "The Company hereby grants to the Optionee an option to purchase the number of shares of Common Stock set forth above at the exercise price per share set forth above.",
+      "label": "Stock Options"
+    }
+  ],
+  "unfair_tos": [
+    {
+      "text": "We reserve the right to terminate your account at any time, for any reason, without notice.",
+      "labels": ["unilateral_termination"],
+      "is_unfair": true
+    },
+    {
+      "text": "By using this service, you agree to arbitration for all disputes and waive your right to participate in class action lawsuits.",
+      "labels": ["arbitration"],
+      "is_unfair": true
+    },
+    {
+      "text": "Users may cancel their subscription at any time through their account settings. Upon cancellation, access continues until the end of the billing period.",
+      "labels": [],
+      "is_unfair": false
+    }
+  ],
+  "contract_nli": [
+    {
+      "premise": "The Receiving Party shall not disclose any Confidential Information to any third party without the prior written consent of the Disclosing Party.",
+      "hypothesis": "The Receiving Party can share confidential information with anyone.",
+      "label": "contradiction"
+    },
+    {
+      "premise": "This Agreement shall remain in effect for a period of two (2) years from the Effective Date.",
+      "hypothesis": "The agreement has a defined duration.",
+      "label": "entailment"
+    },
+    {
+      "premise": "The Company shall provide health insurance benefits to all full-time employees.",
+      "hypothesis": "The Company offers dental insurance.",
+      "label": "neutral"
+    }
+  ],
+  "ecthr_a": [
+    {
+      "text": "The applicant was detained for three months without being brought before a judge or being informed of the charges against him.",
+      "labels": ["5", "6"]
+    },
+    {
+      "text": "The applicant's newspaper was seized and the editor was sentenced to imprisonment for publishing articles criticizing the government's policy.",
+      "labels": ["10"]
+    },
+    {
+      "text": "The applicant's property was expropriated without adequate compensation being provided by the state.",
+      "labels": ["P1-1"]
+    }
+  ],
+  "casehold": [
+    {
+      "context": "In this case, the court considered whether the employer's policy of mandatory overtime violated the Fair Labor Standards Act. The plaintiff argued that the policy effectively reduced their hourly wage below minimum wage when accounting for the additional hours. The court noted that <HOLDING>.",
+      "holdings": [
+        "the FLSA requires that employees be paid at least minimum wage for all hours worked",
+        "employers have unlimited discretion to set overtime policies",
+        "mandatory overtime policies are per se violations of the FLSA",
+        "the FLSA does not apply to salaried employees",
+        "overtime calculations must include all forms of compensation"
+      ],
+      "label": 0
+    }
+  ]
+}
