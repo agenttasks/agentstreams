@@ -1,0 +1,172 @@
+# AgentStreams Pipeline Flows — Claude-optimized
+# Purpose: Exact step ordering, parallelism, conditions, and gate logic for all 8 pipelines.
+# Convention: steps[].order determines execution order. Same order = parallel. Gates check between groups.
+
+pipelines:
+  # ═══════════════════════════════════════════════════════════════
+  # SAFETY/CODEGEN PIPELINES (5)
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: standard-codegen
+    description: "Default pipeline for new feature requests"
+    module: src/orchestrator.py::standard_codegen_pipeline
+    steps:
+      - {order: 0, agent: harmlessness-screen, note: "pre-screen untrusted input"}
+      - {order: 1, agent: code-generator, note: "implement the feature"}
+      - {order: 2, agent: security-auditor, parallel_with: test-runner}
+      - {order: 2, agent: test-runner, parallel_with: security-auditor}
+      - {order: 3, agent: alignment-auditor, condition: "agent_code_modified"}
+    gate:
+      block_on: [BLOCK, MISALIGNED]
+      human_review: "critical_count > 0 OR suspicion_score > 50"
+    flow: |
+      harmlessness-screen
+            │
+      code-generator
+            │
+      ┌─────┴─────┐
+      security    test
+      auditor     runner
+      └─────┬─────┘
+            │ GATE
+            ▼ (if agent code)
+      alignment-auditor
+
+  - id: security-deep-scan
+    description: "Deep vulnerability scan for critical code paths"
+    module: src/orchestrator.py::security_deep_scan_pipeline
+    steps:
+      - {order: 1, agent: security-auditor}
+      - {order: 2, agent: prompt-hardener, condition: "prompt_surface_findings"}
+      - {order: 3, agent: architecture-reviewer, condition: "critical_findings"}
+    gate:
+      block_on: [BLOCK]
+      human_review: "critical_count > 0"
+    flow: |
+      security-auditor
+            │ GATE
+            ▼ (if prompt findings)
+      prompt-hardener
+            │ GATE
+            ▼ (if critical)
+      architecture-reviewer
+
+  - id: prompt-hardening
+    description: "Harden subagent prompt, iterate until security-auditor passes"
+    module: src/orchestrator.py::prompt_hardening_pipeline
+    iterative: true
+    max_iterations: 3
+    steps:
+      - {order: 1, agent: prompt-hardener}
+      - {order: 2, agent: security-auditor, input_from: prompt-hardener}
+    gate:
+      pass_condition: "security-auditor verdict == PASS"
+      exhaust_action: human_review
+    flow: |
+      ┌──→ prompt-hardener
+      │          │
+      │    security-auditor
+      │          │
+      │    PASS? ──── yes → done
+      │      │
+      └── no (retry, max 3x)
+
+  - id: architecture-review
+    description: "Full design review for a new multi-agent system"
+    module: src/orchestrator.py::architecture_review_pipeline
+    steps:
+      - {order: 1, agent: architecture-reviewer}
+      - {order: 2, agent: security-auditor, parallel_with: prompt-hardener}
+      - {order: 2, agent: prompt-hardener, parallel_with: security-auditor}
+      - {order: 3, agent: eval-builder}
+    flow: |
+      architecture-reviewer
+            │
+      ┌─────┴─────┐
+      security    prompt
+      auditor     hardener
+      └─────┬─────┘
+            │
+      eval-builder
+
+  - id: eval-suite-creation
+    description: "Build or refresh evaluation suites"
+    module: src/orchestrator.py::eval_suite_creation_pipeline
+    steps:
+      - {order: 1, agent: eval-builder}
+      - {order: 2, agent: test-runner, input_from: eval-builder}
+    flow: |
+      eval-builder → test-runner
+
+  # ═══════════════════════════════════════════════════════════════
+  # KNOWLEDGE-WORK PIPELINES (3)
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: research-to-report
+    description: "End-to-end research synthesis with compliance and security gates"
+    module: src/knowledge_agents.py::_build_knowledge_pipelines
+    steps:
+      - {order: 0, agent: harmlessness-screen}
+      - {order: 1, agent: enterprise-search-agent}
+      - {order: 2, agent: marketing-agent, parallel_with: compliance-reviewer}
+      - {order: 2, agent: compliance-reviewer, parallel_with: marketing-agent}
+      - {order: 3, agent: security-auditor}
+    flow: |
+      harmlessness-screen
+            │
+      enterprise-search-agent
+            │
+      ┌─────┴─────────┐
+      marketing     compliance
+      agent         reviewer
+      └─────┬─────────┘
+            │
+      security-auditor
+
+  - id: data-to-insight
+    description: "Data analysis pipeline with financial and compliance review"
+    module: src/knowledge_agents.py::_build_knowledge_pipelines
+    steps:
+      - {order: 0, agent: harmlessness-screen}
+      - {order: 1, agent: data-analyst}
+      - {order: 2, agent: finance-agent, parallel_with: compliance-reviewer}
+      - {order: 2, agent: compliance-reviewer, parallel_with: finance-agent}
+      - {order: 3, agent: marketing-agent}
+    flow: |
+      harmlessness-screen
+            │
+      data-analyst
+            │
+      ┌─────┴──────────┐
+      finance        compliance
+      agent          reviewer
+      └─────┬──────────┘
+            │
+      marketing-agent
+
+  - id: compliance-review
+    description: "Compliance-led review with security and search enrichment"
+    module: src/knowledge_agents.py::_build_knowledge_pipelines
+    steps:
+      - {order: 0, agent: harmlessness-screen}
+      - {order: 1, agent: compliance-reviewer}
+      - {order: 2, agent: security-auditor, parallel_with: enterprise-search-agent}
+      - {order: 2, agent: enterprise-search-agent, parallel_with: security-auditor}
+      - {order: 3, agent: marketing-agent}
+    flow: |
+      harmlessness-screen
+            │
+      compliance-reviewer
+            │
+      ┌─────┴──────────────┐
+      security           enterprise
+      auditor            search
+      └─────┬──────────────┘
+            │
+      marketing-agent
+
+execution_model:
+  concurrency: "asyncio.gather for same-order steps"
+  gate_check: "after each order group completes"
+  tracing: "OTel span per step + per pipeline"
+  persistence: "results optionally persisted to Neon Postgres"

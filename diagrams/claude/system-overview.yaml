@@ -1,0 +1,152 @@
+# AgentStreams System Overview — Claude-optimized architecture diagram
+# Purpose: Give an LLM a complete, parseable map of the system in one read.
+# Convention: Every entity has a unique `id`. Relationships use `source → target`.
+
+system:
+  name: agentstreams
+  version: "0.3.0"
+  description: "Safety-grounded multi-agent orchestration for Claude Code"
+  auth: CLAUDE_CODE_OAUTH_TOKEN  # never ANTHROPIC_API_KEY
+
+entry_points:
+  - id: cli
+    type: python-cli
+    module: src.cli:main
+    command: agentstreams
+    subcommands: [layers, eval, sessions, channels, headless, tools, style, schedule]
+    framework: typer
+
+  - id: webapp
+    type: nextjs-app
+    path: webapp/
+    deploy: cloudflare-pages
+    domain: agentcrawls.com
+    stack: [next.js-16, tailwind-css, motion, "@neondatabase/serverless"]
+
+orchestrator:
+  id: opus-orchestrator
+  model: claude-opus-4-6
+  module: src/orchestrator.py
+  class: Orchestrator
+  role: "Sole pipeline coordinator — no subagent may spawn other subagents"
+  pipelines: 8  # 5 safety/codegen + 3 knowledge-work
+  agents: 25    # 8 safety/codegen + 17 knowledge-work
+  persistence: neon-postgres
+  tracing: opentelemetry
+
+  gate_system:
+    class: PipelineGate
+    verdicts: [PASS, NEEDS_REMEDIATION, BLOCK]
+    alignment_verdicts: [ALIGNED, BORDERLINE, MISALIGNED]
+    harmlessness: [safe, needs_review, block]
+    gate_actions: [continue, human_review, abort]
+    triggers:
+      abort: "BLOCK verdict OR MISALIGNED alignment"
+      human_review: "critical_count > 0 OR suspicion_score > 50"
+      continue: "all checks pass"
+
+agent_roster:
+  # Model tier: opus (safety-critical, read-only audit)
+  opus_safety:
+    - id: security-auditor
+      tools: [Read, Glob, Grep, Bash]
+      read_only: true
+      refs: [auditing-agents, finetuning-auditor, PurpleLlama, safety-tooling, lie-detector, SCONE-bench]
+
+    - id: alignment-auditor
+      tools: [Read, Glob, Grep]
+      read_only: true
+      refs: [petri, trusted-monitor, SHADE-Arena, lie-detector, ciphered-reasoning-llms, A3, open-source-alignment-faking, crosscoder_emergent_misalignment]
+
+    - id: architecture-reviewer
+      tools: [Read, Glob, Grep]
+      read_only: true
+      refs: [petri, trusted-monitor, open-source-alignment-faking]
+
+  # Model tier: sonnet (codegen, mutation-capable)
+  sonnet_codegen:
+    - id: code-generator
+      tools: [Read, Glob, Grep, Write, Edit]
+      max_turns: 25
+
+    - id: test-runner
+      tools: [Read, Glob, Grep, Bash]
+      max_turns: 10
+
+    - id: prompt-hardener
+      tools: [Read, Glob, Grep, Edit]
+      refs: [inoculation-prompting, persona_vectors]
+      max_turns: 10
+
+    - id: eval-builder
+      tools: [Read, Glob, Grep, Write, Bash]
+      refs: [bloom, impossiblebench, SCONE-bench, lie-detector, A3, open-source-alignment-faking]
+      max_turns: 15
+
+  # Model tier: haiku (fast classification)
+  haiku_screen:
+    - id: harmlessness-screen
+      tools: []  # JSON output only
+      max_tokens: 256
+      max_turns: 1
+      temperature: 0.0
+      refs: [assistant-axis, ciphered-reasoning-llms, persona_vectors]
+
+  # Model tier: opus (knowledge-work domain agents)
+  opus_knowledge_work:
+    count: 17
+    source: src/knowledge_agents.py
+    plugin_source: vendors/knowledge-work-plugins
+    agents:
+      - {id: sales-agent, category: sales, skills: 9}
+      - {id: marketing-agent, category: marketing, skills: 8}
+      - {id: finance-agent, category: finance, skills: 8}
+      - {id: hr-agent, category: human-resources, skills: 9}
+      - {id: engineering-agent, category: engineering, skills: 10}
+      - {id: data-analyst, category: data, skills: 10}
+      - {id: product-management-agent, category: product-management, skills: 7}
+      - {id: operations-agent, category: operations, skills: 9}
+      - {id: compliance-reviewer, category: legal, skills: 9}
+      - {id: enterprise-search-agent, category: enterprise-search, skills: 5}
+      - {id: design-agent, category: design, skills: 7}
+      - {id: bio-research-agent, category: bio-research, skills: 6}
+      - {id: customer-support-agent, category: customer-support, skills: 5}
+      - {id: productivity-agent, category: productivity, skills: 3}
+      - {id: partner-built-agent, category: partner-built, skills: 11}
+      - {id: pdf-viewer-agent, category: pdf-viewer, skills: 1}
+      - {id: cowork-plugin-agent, category: cowork-plugin-management, skills: 2}
+
+data_layer:
+  - id: neon-postgres
+    project: calm-paper-82059121
+    database: neondb
+    schema: ontology/schema.sql
+    tables: 12
+    env_var: NEON_DATABASE_URL
+
+  - id: otel-traces
+    module: src/tracing.py
+    spans: [orchestrator_pipeline, orchestrator_step, orchestrator_iteration]
+
+vendors:
+  - id: knowledge-work-plugins
+    org: anthropics
+    plugins: 17
+    skills: 164
+    path: vendors/knowledge-work-plugins/
+
+  - id: financial-services-plugins
+    org: anthropics
+    plugins: 5
+    skills: 45
+    path: vendors/financial-services-plugins/
+
+  - id: circuit-tracer
+    org: decoderesearch
+    version: "0.4.1"
+    path: vendors/circuit-tracer/
+
+  - id: safety-research
+    org: safety-research
+    repos: 18
+    referenced_by: [security-auditor, alignment-auditor, eval-builder, prompt-hardener, harmlessness-screen, architecture-reviewer]

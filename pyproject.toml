@@ -54,6 +54,9 @@ dev = [
     "aioresponses>=0.7",
     "ruff>=0.9",
 ]
+diagrams = [
+    "diagrams>=0.25.1",
+]
 eval = [
     "deepeval>=3.9.6",
     "promptfoo>=0.1.4",

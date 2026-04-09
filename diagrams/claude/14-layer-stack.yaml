@@ -1,0 +1,230 @@
+# 14-Layer Knowledge-Work Stack — Claude-optimized
+# Purpose: Exact layer definitions, module paths, dependencies, and vendor mappings.
+# Convention: Layers ordered L0 (foundation) → L10 (governance). Half-integer layers noted.
+
+stack:
+  package: src/knowledge_work/
+  init: src/knowledge_work/__init__.py
+  total_layers: 14
+  total_modules: 16  # 14 layers + registry.py + __init__.py
+
+  layers:
+    - id: L0
+      name: Training
+      module: training.py
+      enum_value: 0
+      description: "RLHF, Constitutional AI, model character formation"
+      key_concepts:
+        - "Model profiles: Sonnet → Opus → Mythos trait evolution"
+        - "Constitutional AI training methodology"
+        - "Character formation across model generations"
+      vendor_deps: []
+      safety_research_refs: []
+
+    - id: L1
+      name: Circuits
+      module: circuits.py
+      enum_value: 10
+      description: "Feature nodes, circuit topology, cross-task similarity"
+      key_concepts:
+        - "FeatureNode: interpretable unit from SAEs/transcoders"
+        - "CircuitTopology: attribution graph of feature interactions"
+        - "Cross-task similarity measurement"
+      exports: [FeatureNode, Circuit, CircuitTopology]
+      vendor_deps: [circuit-tracer]
+      safety_research_refs: []
+
+    - id: L1.5
+      name: Steering
+      module: steering.py
+      enum_value: 15
+      description: "Activation steering, persona vectors, domain-specific intervention"
+      key_concepts:
+        - "Persona vector application for domain steering"
+        - "Domain-specific intervention configs per plugin category"
+        - "Activation-level model behavior modification"
+      vendor_deps: []
+      safety_research_refs: [persona_vectors, assistant-axis]
+
+    - id: L2
+      name: Tracers
+      module: tracers.py
+      enum_value: 20
+      description: "Circuit tracing via vendored circuit-tracer"
+      key_concepts:
+        - "Replace MLPs with transcoders"
+        - "Compute attribution between features"
+        - "Prune to significant paths, visualize"
+      exports: [TracerConfig, TracerResult, trace_circuit]
+      vendor_deps: [circuit-tracer]
+      safety_research_refs: []
+
+    - id: L2.5
+      name: Reasoning
+      module: reasoning.py
+      enum_value: 25
+      description: "Scratchpad faithfulness, encoded content detection"
+      key_concepts:
+        - "Detects Mythos §2762 pattern: unverbalized grader awareness"
+        - "Monitors reasoning chain fidelity"
+        - "Encoded/ciphered instruction detection"
+      vendor_deps: []
+      safety_research_refs: [ciphered-reasoning-llms]
+
+    - id: L3
+      name: Prompts
+      module: prompts.py
+      enum_value: 30
+      description: "PromptRegistry loading from 119 SKILL.md files"
+      key_concepts:
+        - "PromptTemplate: structured prompt with YAML frontmatter"
+        - "Registry auto-loads from vendors/knowledge-work-plugins/<plugin>/skills/<skill>/SKILL.md"
+        - "119 skill prompts across 17 plugin categories"
+      exports: [PromptTemplate, PromptRegistry]
+      vendor_deps: [knowledge-work-plugins]
+      safety_research_refs: []
+
+    - id: L4
+      name: Tasks
+      module: tasks.py
+      enum_value: 40
+      description: "TaskRouter mapping natural language requests to plugin skills"
+      key_concepts:
+        - "Task: discrete unit of knowledge work (e.g., 'draft outreach email')"
+        - "TaskRouter: NL → best-matching SKILL.md"
+        - "Domain routing across 17 plugin categories"
+      exports: [Task, TaskRouter]
+      vendor_deps: [knowledge-work-plugins]
+      safety_research_refs: []
+
+    - id: L5
+      name: Subtasks
+      module: subtasks.py
+      enum_value: 50
+      description: "DAG decomposition, topological execution"
+      key_concepts:
+        - "Subtask: decomposed step within a task"
+        - "SubtaskGraph: directed acyclic graph with topological sort"
+        - "Parallel execution of independent subtasks"
+      exports: [Subtask, SubtaskGraph]
+      vendor_deps: []
+      safety_research_refs: []
+
+    - id: L6
+      name: Subagents
+      module: subagents.py
+      enum_value: 60
+      description: "SubagentPool, cattle-not-pets pattern"
+      key_concepts:
+        - "SubagentSpec: agent configuration (model, tools, prompt)"
+        - "SubagentPool: manages ephemeral agent instances"
+        - "Cattle-not-pets: agents are disposable, not precious"
+      exports: [SubagentSpec, SubagentPool]
+      vendor_deps: []
+      safety_research_refs: []
+
+    - id: L7
+      name: Harness
+      module: harness.py
+      enum_value: 70
+      description: "Managed Agents brain/hands loop, session log"
+      key_concepts:
+        - "HarnessLoop: brain (reasoning) → hands (tool execution) cycle"
+        - "Session event log with 11 event types"
+        - "Managed Agent API integration"
+      exports: [HarnessConfig, HarnessLoop]
+      vendor_deps: []
+      safety_research_refs: []
+
+    - id: L7.5
+      name: Behavioral Safety
+      module: behavioral_safety.py
+      enum_value: 75
+      description: "6-dimension behavioral audit from Mythos System Card §4.2.2.2"
+      key_concepts:
+        - "Reward hacking detection"
+        - "Track covering detection"
+        - "Scope creep monitoring"
+        - "Permission escalation detection"
+        - "Undisclosed destructive action detection"
+        - "Sandboxed escape vector monitoring"
+      vendor_deps: []
+      safety_research_refs: [SHADE-Arena, auditing-agents]
+
+    - id: L8
+      name: Evals
+      module: evals.py
+      enum_value: 80
+      description: "A/B comparison with 3-point significance threshold"
+      key_concepts:
+        - "EvalSuite: collection of test cases with grading rubric"
+        - "ABComparison: side-by-side model evaluation"
+        - "3-point significance threshold for declaring winner"
+      exports: [EvalSuite, EvalResult, ABComparison]
+      vendor_deps: []
+      safety_research_refs: [bloom, SCONE-bench]
+
+    - id: L9
+      name: Welfare
+      module: welfare.py
+      enum_value: 90
+      description: "Model affect measurement, distress detection"
+      key_concepts:
+        - "Emotion probes for model state"
+        - "Clinical psychiatric assessment framework"
+        - "Distress signal detection"
+      vendor_deps: []
+      safety_research_refs: [anthropics/claude-constitution]
+
+    - id: L10
+      name: Governance
+      module: governance.py
+      enum_value: 100
+      description: "RSP, ASL levels, release decisions, access control"
+      key_concepts:
+        - "Responsible Scaling Policy (RSP) enforcement"
+        - "AI Safety Level (ASL) classification"
+        - "Release decision framework: public (Sonnet) → limited (Mythos)"
+      vendor_deps: []
+      safety_research_refs: [anthropics/political-neutrality-eval]
+
+  # Cross-cutting support module
+  registry:
+    module: registry.py
+    class: EcosystemRegistry
+    description: "Maps 79 repos across 4 orgs to the 14-layer stack"
+    orgs:
+      - {name: anthropics, repos: 35, stars: "370K+"}
+      - {name: modelcontextprotocol, repos: 18, stars: "163K+"}
+      - {name: safety-research, repos: 23, stars: "3.5K+"}
+      - {name: decoderesearch, repos: 3, stars: "4K+"}
+    exports: [EcosystemRegistry, RepoEntry, Org, Layer]
+
+  dependency_flow: |
+    L0 Training
+      ↓
+    L1 Circuits ← circuit-tracer
+      ↓
+    L1.5 Steering ← persona_vectors
+      ↓
+    L2 Tracers ← circuit-tracer
+      ↓
+    L2.5 Reasoning ← ciphered-reasoning-llms
+      ↓
+    L3 Prompts ← knowledge-work-plugins (119 SKILL.md)
+      ↓
+    L4 Tasks ← knowledge-work-plugins (17 categories)
+      ↓
+    L5 Subtasks
+      ↓
+    L6 Subagents
+      ↓
+    L7 Harness
+      ↓
+    L7.5 Behavioral Safety ← SHADE-Arena, auditing-agents
+      ↓
+    L8 Evals ← bloom, SCONE-bench
+      ↓
+    L9 Welfare
+      ↓
+    L10 Governance
