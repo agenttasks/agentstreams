@@ -86,6 +86,8 @@ READ_ONLY_AGENTS = frozenset(
         "alignment-auditor",
         "architecture-reviewer",
         "harmlessness-screen",
+        "compliance-reviewer",
+        "finance-agent",
     }
 )
 
@@ -400,3 +402,48 @@ async def run_managed_security_scan(
         agent_ids=agent_ids,
     )
     return await orch.run("security-deep-scan", prompt)
+
+
+# ── Knowledge Work Pipeline Runners ──────────────────────────
+
+
+async def run_managed_research(
+    prompt: str,
+    *,
+    environment_id: str = "",
+    agent_ids: dict[str, str] | None = None,
+) -> PipelineResult:
+    """Run the research-to-report knowledge-work pipeline via managed sessions."""
+    orch = ManagedOrchestrator(
+        environment_id=environment_id,
+        agent_ids=agent_ids,
+    )
+    return await orch.run("research-to-report", prompt)
+
+
+async def run_managed_data_insight(
+    prompt: str,
+    *,
+    environment_id: str = "",
+    agent_ids: dict[str, str] | None = None,
+) -> PipelineResult:
+    """Run the data-to-insight knowledge-work pipeline via managed sessions."""
+    orch = ManagedOrchestrator(
+        environment_id=environment_id,
+        agent_ids=agent_ids,
+    )
+    return await orch.run("data-to-insight", prompt)
+
+
+async def run_managed_compliance_review(
+    prompt: str,
+    *,
+    environment_id: str = "",
+    agent_ids: dict[str, str] | None = None,
+) -> PipelineResult:
+    """Run the compliance-review knowledge-work pipeline via managed sessions."""
+    orch = ManagedOrchestrator(
+        environment_id=environment_id,
+        agent_ids=agent_ids,
+    )
+    return await orch.run("compliance-review", prompt)
