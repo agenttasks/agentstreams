@@ -39,21 +39,18 @@
       "is_unfair": false
     }
   ],
-  "contract_nli": [
+  "scotus": [
     {
-      "premise": "The Receiving Party shall not disclose any Confidential Information to any third party without the prior written consent of the Disclosing Party.",
-      "hypothesis": "The Receiving Party can share confidential information with anyone.",
-      "label": "contradiction"
+      "text": "The defendant was convicted of robbery and sentenced under the federal sentencing guidelines. On appeal, the defendant argued that the district court erred in calculating his criminal history category.",
+      "label": "Criminal Procedure"
     },
     {
-      "premise": "This Agreement shall remain in effect for a period of two (2) years from the Effective Date.",
-      "hypothesis": "The agreement has a defined duration.",
-      "label": "entailment"
+      "text": "The petitioner challenged the constitutionality of a state statute that prohibited the publication of certain types of political advertisements within 30 days of an election.",
+      "label": "First Amendment"
     },
     {
-      "premise": "The Company shall provide health insurance benefits to all full-time employees.",
-      "hypothesis": "The Company offers dental insurance.",
-      "label": "neutral"
+      "text": "The case involved a dispute over the interpretation of the Commerce Clause as it applied to state regulations affecting interstate trucking companies.",
+      "label": "Interstate Relations"
     }
   ],
   "ecthr_a": [

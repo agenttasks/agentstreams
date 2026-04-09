@@ -235,16 +235,17 @@ class TestResponseParsing:
         assert result.predicted_label == "2"
         assert result.is_correct is True
 
-    def test_parse_contract_nli(self):
+    def test_parse_scotus(self):
         Task, parse, _ = self._import_parser()
         task = Task(
-            task_id="nli_0",
-            task_type="contract_nli",
-            text="Premise: X\nHypothesis: Y",
-            label="entailment",
+            task_id="scotus_0",
+            task_type="scotus",
+            text="The defendant was convicted of robbery...",
+            label="Criminal Procedure",
+            label_set=["Criminal Procedure", "Civil Rights", "First Amendment"],
         )
-        result = parse(task, '{"label": "entailment", "reasoning": "supported"}')
-        assert result.predicted_label == "entailment"
+        result = parse(task, '{"issue_area": "Criminal Procedure", "confidence": 0.9, "reasoning": "x"}')
+        assert result.predicted_label == "Criminal Procedure"
         assert result.is_correct is True
 
     def test_parse_unfair_tos(self):
@@ -293,7 +294,7 @@ class TestPromptBuilding:
         return _mod.LexGLUETask, {
             "ledgar": _mod.build_ledgar_prompt,
             "unfair_tos": _mod.build_unfair_tos_prompt,
-            "contract_nli": _mod.build_contract_nli_prompt,
+            "scotus": _mod.build_scotus_prompt,
             "ecthr_a": _mod.build_ecthr_a_prompt,
             "casehold": _mod.build_casehold_prompt,
         }
@@ -326,17 +327,18 @@ class TestPromptBuilding:
         assert "holding A" in prompt
         assert "holding E" in prompt
 
-    def test_contract_nli_prompt_has_labels(self):
+    def test_scotus_prompt_has_labels(self):
         Task, builders = self._import_builders()
         task = Task(
             task_id="test",
-            task_type="contract_nli",
-            text="Premise: X\nHypothesis: Y",
+            task_type="scotus",
+            text="The defendant was convicted of robbery...",
+            label_set=["Criminal Procedure", "Civil Rights", "First Amendment"],
         )
-        prompt = builders["contract_nli"](task, 0)
-        assert "entailment" in prompt
-        assert "contradiction" in prompt
-        assert "neutral" in prompt
+        prompt = builders["scotus"](task, 0)
+        assert "Criminal Procedure" in prompt
+        assert "Civil Rights" in prompt
+        assert "First Amendment" in prompt
 
     def test_unfair_tos_prompt_has_document_tags(self):
         Task, builders = self._import_builders()
@@ -399,16 +401,16 @@ class TestTaskMetrics:
         assert metrics["total"] == 3
         assert metrics["score"] > 0
 
-    def test_contract_nli_metrics(self):
+    def test_scotus_metrics(self):
         Result, compute = self._import_compute()
         results = [
-            Result(task_id="0", task_type="contract_nli", gold_label="entailment",
-                   predicted_label="entailment", is_correct=True),
-            Result(task_id="1", task_type="contract_nli", gold_label="contradiction",
-                   predicted_label="neutral", is_correct=False),
+            Result(task_id="0", task_type="scotus", gold_label="Criminal Procedure",
+                   predicted_label="Criminal Procedure", is_correct=True),
+            Result(task_id="1", task_type="scotus", gold_label="Civil Rights",
+                   predicted_label="First Amendment", is_correct=False),
         ]
-        metrics = compute("contract_nli", results)
-        assert metrics["metric"] == "accuracy"
+        metrics = compute("scotus", results)
+        assert metrics["metric"] == "micro_f1"
         assert metrics["score"] == 50.0
 
     def test_errors_excluded(self):

@@ -97,13 +97,18 @@ TASK_CONFIGS = {
             "contract_by_using",
         ],
     },
-    "contract_nli": {
-        "hf_name": "contract_nli",
+    "scotus": {
+        "hf_name": "scotus",
         "label_type": "single",
         "label_field": "label",
-        "text_field": "premise",
-        "hypothesis_field": "hypothesis",
-        "label_names": ["entailment", "contradiction", "neutral"],
+        "text_field": "text",
+        "label_names": [
+            "Criminal Procedure", "Civil Rights", "First Amendment",
+            "Due Process", "Privacy", "Attorneys", "Unions",
+            "Economic Activity", "Judicial Power", "Federalism",
+            "Interstate Relations", "Federal Taxation", "Miscellaneous",
+            "Private Action",
+        ],
     },
     "ecthr_a": {
         "hf_name": "ecthr_a",
@@ -137,7 +142,17 @@ def load_hf_dataset(task: str, split: str, limit: int) -> list[dict]:
     from datasets import load_dataset
 
     config = TASK_CONFIGS[task]
-    ds = load_dataset("lex_glue", config["hf_name"], split=split)
+    hf_dataset = config.get("hf_dataset", "lex_glue")
+    hf_name = config["hf_name"]
+    try:
+        ds = load_dataset(hf_dataset, hf_name, split=split)
+    except Exception:
+        # Some datasets may not have test split — try validation
+        if split == "test":
+            print(f"  [warn] No '{split}' split for {task}, trying 'validation'", file=sys.stderr)
+            ds = load_dataset(hf_dataset, hf_name, split="validation")
+        else:
+            raise
 
     samples = []
     for i, row in enumerate(ds):

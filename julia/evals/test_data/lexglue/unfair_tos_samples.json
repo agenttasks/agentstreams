@@ -1,0 +1,1012 @@
+[
+  {
+    "task": "unfair_tos",
+    "hf_index": 0,
+    "text": "last updated date : may 15 , 2017 \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "a2a3dd18b95375ba4fda7dd467866c8e"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 1,
+    "text": "academia , inc. ( `` academia.edu '' or `` we '' ) offers a social networking service which enables its users , including graduate students and academics , to create academic profile pages and to connect with other users , including graduate students and academics , around the world with the same research interests ( the `` services '' ) through our website , accessible at academia.edu ( the `` site '' ) . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "537d53e135e685afe5e6165e1839ca86"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 2,
+    "text": "please read carefully the following terms and conditions ( `` terms '' ) and our privacy policy , which may be found at academia.edu/privacy and which is incorporated by reference into these terms . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "93c04fb13b928ba3472b857fc3bb7b4f"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 3,
+    "text": "these terms govern your access to and use of the site , services and collective content ( defined below ) , and constitute a binding legal agreement between you and academia.edu . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "63bfaf5e6f5927ff35326983aa1dcdab"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 4,
+    "text": "arbitration notice : unless you opt out of arbitration within 30 days of the date you first agree to these terms by following the opt-out procedure specified in the `` arbitration '' section below , and except for certain types of disputes described in the `` arbitration `` section below , you agree that disputes between you and academia.edu will be resolved by binding , individual arbitration and you are waiving your right to a trial by jury or to participate as a plaintiff or class member in any purported class action or representative proceeding . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [
+      "contract_by_using"
+    ],
+    "label": null,
+    "content_hash": "458b7f3b0ba9f8a99ef2dd733fec9a2b"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 5,
+    "text": "`` content '' means text , graphics , images , music , software , audio , video , information or other works of authorship . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "a8fbf169d2044968864a941a5e4884d5"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 6,
+    "text": "`` academia.edu content '' means content that academia.edu makes available through the site or services , including any content licensed from a third party , but excluding member content . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "afc5d87c266759359dafe0e304c85557"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 7,
+    "text": "`` member '' means a person who completes academia.edu 's account registration process , as described under the `` account registration '' section below . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "e0cd664aa45b73bb4f35cb3c313cdde7"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 8,
+    "text": "`` member content '' means content that a member posts , uploads , publishes , submits or transmits to be made available through the site or services . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "e28ac73c563cc254fe72820eb016772c"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 9,
+    "text": "`` collective content '' means , collectively , academia.edu content and member content . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "5d62eec211aa6da0f53a59387a089340"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 10,
+    "text": "certain areas of the site ( and your access to or use of certain services or collective content ) may have different terms and conditions posted or may require you to agree with and accept additional terms and conditions . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "8e1d15927e1759f2710563e396c3bf31"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 11,
+    "text": "if there is a conflict between these terms and terms and conditions posted for a specific area of the site , services or collective content , the latter terms and conditions will take precedence with respect to your use of or access to that area of the site , services or collective content , as applicable . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "15196db481142befe27827203a953097"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 12,
+    "text": "you acknowledge and agree that , by accessing or using the site or services or by downloading or posting any content from or on the site or through the services , you are indicating that you have read , and that you understand and agree to be bound by , these terms , whether or not you have registered on or through the site . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [
+      "jurisdiction"
+    ],
+    "label": null,
+    "content_hash": "4c93d290032e17d9254c0d7eab2146f0"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 13,
+    "text": "if you do not agree to these terms , then you have no right to access or use the site , services or collective content . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "5a1912d17e09b070a5a92ecc718a70fd"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 14,
+    "text": "if you accept or agree to these terms on behalf of a company , university or other legal entity , you represent and warrant that you have the authority to bind that company , university or other legal entity to these terms and , in such event , `` you '' and `` your '' will refer and apply to that company or other legal entity . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "2c401f1190ee37fe4070a4b282ec7ec4"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 15,
+    "text": "academia.edu reserves the right , at its sole discretion , to modify the site , services and these terms , at any time and without prior notice . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [
+      "unilateral_change"
+    ],
+    "label": null,
+    "content_hash": "272fd4271f1df39b042e0c2114f25430"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 16,
+    "text": "if we modify these terms we will post the modification on the site or provide you with notice of the modification . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "d16fbdc77e970ccaa25da88cd28a66fe"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 17,
+    "text": "we will also update the `` last updated date '' at the top of these terms . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "20af17f32b2d6fc871fa7a8704f293ff"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 18,
+    "text": "by continuing to access or use the site or services after we have posted a modification on the site or have provided you with notice of a modification , you are indicating that you agree to be bound by the modified terms . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [
+      "jurisdiction"
+    ],
+    "label": null,
+    "content_hash": "6dab88de71c96afebce067b39aa3f2b0"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 19,
+    "text": "if the modified terms are not acceptable to you , your only recourse is to cease using the site and services . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "22447697365b83eb8ff94c4c915e6584"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 20,
+    "text": "the site and services are intended solely for persons who are 13 years of age or older . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "a9da9ca836f3e945ef81db59940d596c"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 21,
+    "text": "any access to or use of the site or services by anyone under the age of 13 is expressly prohibited . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "26b22a2193d66a651cf2b54d512addec"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 22,
+    "text": "by accessing or using the site or services you represent and warrant that you are 13 years of age or older . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "6d12ec4ffcfb52adc1a9e7f2a6fcb339"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 23,
+    "text": "in order to access certain features of the site and services and to post any member content on the site or through the services you must register to create an account ( `` account '' ) and become a member . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "a096e504aa7fcecfd0382ccbedfe77c3"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 24,
+    "text": "you may register directly via the site or by logging into your account with certain third party social media or social networking sites ( `` sns '' ) ( including , but not limited to , facebook ) via the site , as described herein . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "2a46bcda8e158427b4d345d954daafab"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 25,
+    "text": "if you decide to register through an sns , we will extract the personal information you have provided to the sns ( such as your `` real '' name , email address and other information you make publicly available via the sns ) from the account you have with the applicable sns and use that information to create your account . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "acedfd7170de6687fea962ef30a4e6a3"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 26,
+    "text": "the specific information that we extract may depend on the privacy settings you have with the sns . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "2418f41f348559ad1bdc9e8898fad00e"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 27,
+    "text": "you hereby consent to our access to and collection of such personal information about you . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "a7d3a553ce16ad1d8bf71c15d79743c9"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 28,
+    "text": "during the registration process , you will be required to provide certain information and you will establish a username and a password . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "1b7805b9c5616527947b3d58a6e0ec6b"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 29,
+    "text": "you agree to provide accurate , current and complete information during the registration process and to update such information to keep it accurate , current and complete . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "f09a64dd20cfdf1065cef56ce438a561"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 30,
+    "text": "academia.edu reserves the right to suspend or terminate your account if any information provided during the registration process or thereafter proves to be inaccurate , not current or incomplete . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [
+      "unilateral_termination"
+    ],
+    "label": null,
+    "content_hash": "ce37ba7d3f3a88fa9a20a0b416063c9d"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 31,
+    "text": "you are responsible for safeguarding your password . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "eb2fb629c29d9ef3fd49db870f68f419"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 32,
+    "text": "you agree that you will not disclose your password to any third party and that you will take sole responsibility for any activities or actions under your account , whether or not you have authorized such activities or actions . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "799d43cbf71c234ce58eadb83f156dec"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 33,
+    "text": "you will immediately notify academia.edu of any unauthorized use of your account . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "26b3380a3bdbd0ebc5b35a966f658895"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 34,
+    "text": "see academia.edu 's privacy policy at academia.edu/privacy for information and notices concerning academia.edu 's collection and use of your personal information . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "66aac21242f4f4c47a3d62ae0868dea1"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 35,
+    "text": "academia.edu may offer you the ability to access certain features through purchase of a recurring subscription ( `` subscription '' ) . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "13f17b07a5ee84a5546b7495a1f24138"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 36,
+    "text": "when you purchase a subscription or make any other paid feature related purchase via the services ( each , a `` transaction '' ) , you expressly authorize us ( or our third party payment processor , e.g. stripe ) to charge you for such transaction . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "1ce7a9d38cfded75c96485ac2297820b"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 37,
+    "text": "we may ask you to supply additional information relevant to your transaction , including , without limitation , your credit card number , the expiration date of your credit card , your billing address and additional information to verify your identity before completing your transaction ( such information , `` payment information '' ) . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "9e3293543b95f1b7ccea282f323169fb"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 38,
+    "text": "you represent and warrant that you have the legal right to use all payment method ( s ) represented by any such payment information . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "2ebe2fa4166b6849b3bc306b3e73304f"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 39,
+    "text": "when you initiate a transaction , you authorize us to store and continue billing you using your payment information and to provide your payment information to our third party payment processors as needed to complete your transactions . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "34fd82673efa67d608cde10999595396"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 40,
+    "text": "we may also periodically authorize your payment method in anticipation of applicable fees or related charges . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "53d802d8b28fb64574a781ea7d515097"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 41,
+    "text": "further , as part of our order processing procedures , we may screen orders for fraud or other undesirable activity . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "2d3313f77751928297e5d646ae799cda"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 42,
+    "text": "if we feel an order could be fraudulent , unauthorized , or illegal , we reserve the right to refuse to process that order . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "5cca1b76e083d58a32a18801decd9dcc"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 43,
+    "text": "your subscription continues until cancelled by you or we terminate your access to or use of the services or the subscription in accordance with these terms . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "dbc04af2cc90fcd492dc79f560ff14fb"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 44,
+    "text": "if you elect to purchase an annual or monthly subscription , you will be charged the annual or monthly subscription fee ( `` subscription fee '' ) plus any applicable taxes , at the beginning of your subscription and each year or month thereafter , respectively , at the then-current rate . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "573d937befc9c55423cda567b4845a7a"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 45,
+    "text": "if you elect to purchase an annual subscription , we ( or our third party payment processor ) will automatically charge you on the anniversary of the commencement of your subscription using the payment information you have provided . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "05f2ce9b9123a34d5b85d6fcf73ffa31"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 46,
+    "text": "if you elect to purchase a monthly subscription , we ( or our third party payment processor ) will automatically charge you each month , on the calendar day corresponding to the commencement of your subscription , using the payment information you have provided . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "6783d178de45141d624f365eb8fd7ac1"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 47,
+    "text": "in the event your subscription began on a day not contained in a given month , your payment method will be charged on a day in the applicable month or such other day as we deem appropriate . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "8897ef411616c60fdcf07377e6ebd0b6"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 48,
+    "text": "for example , if you started your subscription on january 31st , your next payment date is likely to be february 28th , and your payment method would be billed on that date . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "e89a0aa5a4f7b8fe1a8d6e896c318f14"
+  },
+  {
+    "task": "unfair_tos",
+    "hf_index": 49,
+    "text": "by agreeing to these terms and electing to purchase a subscription , you acknowledge that your subscription has recurring payment features and you accept responsibility for all recurring payment obligations prior to cancellation of your subscription by you or academia.edu . \n",
+    "label_set": [
+      "limitation_of_liability",
+      "unilateral_termination",
+      "unilateral_change",
+      "content_removal",
+      "jurisdiction",
+      "choice_of_law",
+      "arbitration",
+      "contract_by_using"
+    ],
+    "split": "test",
+    "metadata": {},
+    "labels": [],
+    "label": null,
+    "content_hash": "82797fb550f4e649ccd23c89cbb3396a"
+  }
+]

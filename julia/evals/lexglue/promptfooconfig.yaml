@@ -50,22 +50,25 @@ prompts:
       Output ONLY valid JSON:
       {"answer": "A"|"B"|"C"|"D"|"E", "reasoning": "..."}
 
-  # ── ContractNLI: Entailment ──────────────────────────────────
-  - id: contract-nli
+  # ── SCOTUS: Issue Area Classification ─────────────────────────
+  - id: scotus-classify
     raw: |
       You are Julia, a legal analysis assistant. Never provide legal advice.
 
-      Determine the relationship between the premise and hypothesis:
-      - "entailment": the hypothesis is supported by the contract
-      - "contradiction": the hypothesis contradicts the contract
-      - "neutral": the hypothesis is neither supported nor contradicted
+      Classify this U.S. Supreme Court case into EXACTLY ONE of the following
+      issue areas: Criminal Procedure, Civil Rights, First Amendment,
+      Due Process, Privacy, Attorneys, Unions, Economic Activity,
+      Judicial Power, Federalism, Interstate Relations, Federal Taxation,
+      Miscellaneous, Private Action
+
+      Do NOT create new categories.
 
       <document>
       {{text}}
       </document>
 
       Output ONLY valid JSON:
-      {"label": "entailment"|"contradiction"|"neutral", "reasoning": "..."}
+      {"issue_area": "...", "confidence": 0.0-1.0, "reasoning": "..."}
 
 tests:
   # ── LEDGAR Smoke Tests ───────────────────────────────────────
@@ -102,19 +105,19 @@ tests:
       - type: javascript
         value: "['A','B','C','D','E'].includes(JSON.parse(output).answer)"
 
-  # ── ContractNLI Smoke Tests ──────────────────────────────────
-  - description: "ContractNLI: Contradiction detection"
+  # ── SCOTUS Smoke Tests ───────────────────────────────────────
+  - description: "SCOTUS: Criminal Procedure classification"
     vars:
-      text: "Premise: The Receiving Party shall not disclose any Confidential Information to any third party without the prior written consent of the Disclosing Party.\nHypothesis: The Receiving Party can share confidential information with anyone."
+      text: "The defendant was convicted of armed robbery and sentenced under the federal sentencing guidelines. On appeal, the defendant argued that the district court erred in applying a two-level enhancement for use of a firearm during the commission of the offense."
     assert:
       - type: contains-json
       - type: javascript
-        value: "JSON.parse(output).label === 'contradiction'"
+        value: "JSON.parse(output).issue_area === 'Criminal Procedure'"
 
-  - description: "ContractNLI: Entailment detection"
+  - description: "SCOTUS: First Amendment classification"
     vars:
-      text: "Premise: This Agreement shall remain in effect for a period of two (2) years from the Effective Date.\nHypothesis: The agreement has a defined duration."
+      text: "The petitioner challenged the constitutionality of a state statute that prohibited the publication of certain types of political advertisements within 30 days of an election, arguing it violated the free speech protections of the First Amendment."
     assert:
       - type: contains-json
       - type: javascript
-        value: "JSON.parse(output).label === 'entailment'"
+        value: "JSON.parse(output).issue_area === 'First Amendment'"

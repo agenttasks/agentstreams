@@ -1,0 +1,1202 @@
+[
+  {
+    "task": "casehold",
+    "hf_index": 0,
+    "text": "v. Power Auth. of the State of New York, 81 N.Y.2d 649, 652, 602 N.Y.S.2d 588, 621 N.E.2d 1195, 1196 (N.Y.1993) (same). These cases teach that fair market value is not to be determined in a rarefied realm of abstract calculation, but from the perspective of a hypothetical buyer in the real world \u2014 even if her perception of value is based partially on misinformation or (arguably) exaggerated fears about uncertain future events. Other courts, in the same or similar circumstances, have held that the anticipation of increased interference or potential hazards on the land remaining after a taking, which one court has labeled \u201cstigma damages,\u201d can be considered in assessing severance damages. See, e.g., Vector Pipeline, L.P., v. 68.55 Acres of Land, 157 F.Supp.2d 949, 957 (N.D.Ill.2001) (<HOLDING>); United States v. 14.38 Acres of Land, 80 F.3d",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that actual damages under respa included emotional damages",
+      "holding that increased fear of flooding was a matter that factfinder could properly consider in assessing severance damages",
+      "holding that local buyers fear of possible knapweed infestation legitimately affected calculation of severance damages",
+      "recognizing concept of stigma damages as they apply to property which is in fact contaminated",
+      "holding that stigma damages were properly included in calculation of severance damages where proximity of gas pipeline could trigger fears about possible mishaps"
+    ],
+    "label": "4",
+    "labels": null,
+    "content_hash": "f8c5472143dd848e10724c34775d991a"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 1,
+    "text": "of \u00a7 3583(e)(3) was reasonably foreseeable and provided the defendant with a fair warning. Thus, it was not unconstitutional to apply Johnson retroactively. Although Seals is unpublished, and thus not binding, Seals is authoritative and persuasive. Therefore, applying Johnson retroactively to Martinez\u2019s 1993 conviction does not violate the Due Process Clause, and the district court did not plainly err in reimposing supervised release after the first revocation. Accordingly, Martinez\u2019s sentence is affirmed. AFFIRMED; MOTION DISMISSED AS MOOT. 1 . See, e.g., United States v. Golding, 739 F.2d 183, 184 (5th Cir.1984). 2 . Ketchum v. Gulf Oil Corp., 798 F.2d 159, 162 (5th Cir.1986). 3 . See Eberhart v. United States, 546 U.S. 12, 126 S.Ct. 403, 406-07, 163 L.Ed.2d 14 (2005) (per curiam) (<HOLDING>); Kontrick v. Ryan, 540 U.S. 443, 455-56, 124",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that the defendants evidence did not qualify as newly discovered evidence",
+      "holding seventh state petition for postconviction relief which was based on newly discovered evidence but rejected by the state courts because the evidence was not newly discovered was properly filed",
+      "holding that rules setting forth time limits for a defendants motion for a new trial grounded on a reason other than newly discovered evidence are not jurisdictional but instead are nonjurisdictional claimprocessing rules",
+      "holding that newly discovered evidence must be that which existed at the time of trial but for an excusable reason was not discoverable until later",
+      "holding that the district court did not abuse its discretion in denying motion for new trial based on newly discovered evidence where the evidence would serve only to impeach  testimony"
+    ],
+    "label": "2",
+    "labels": null,
+    "content_hash": "107fce963bed31bb125a4a564fa99629"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 2,
+    "text": "that it did not impact the outcome of the defendant\u2019s case. See Chapman v. California, 386 U.S. 18, 24, 87 S.Ct. 824, 17 L.Ed.2d 705 (1967); United States v. Edwards, 224 F.3d 1216, 1223 (10th Cir.2000) (quoting Chapman, 386 U.S. at 24, 87 S.Ct. 824). Here, Mr. Salazar's statements to Agents Pettry and Jones regarding the ten pounds of methamphetamine he sold in the preceding two years was merely cumulative to and in addition to the more than 140 grams of methamphetamine found in the automobile at the motel on the day of his arrest. There was more than enough evidence to convict Mr. Salazar on the drug trafficking charges brought against him even without his statements to Agents Pettry and Jones. 2 . See also Michigan v. Mosley, 423 U.S. 96, 104-05, 96 S.Ct. 321, 46 L.Ed.2d 313 (1975) (<HOLDING>). 3 . At trial, the government elicited",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that a suspects invocation of the right to remain silent must be unequivocal to require that police questioning cease",
+      "holding defendants rights not scrupulously honored when police officers ignored his attempt to remain silent and continued questioning",
+      "holding police violated edwards when they continued questioning a defendant after his initial invocation of the right to counsel even though he responded to the subsequent questioning",
+      "holding that police may continue questioning a suspect until he unambiguously invokes his right to remain silent",
+      "holding that the admissibility of statements obtained after the person in custody has decided to remain silent depends under miranda on whether his right to cut off questioning was scrupulously honored  and upholding officers attempts to resume questioning after defendant invoked right to remain silent because defendant was readvised of his rights sufficient time elapsed between the original invocation and the requestioning and the questioning involved a different crime"
+    ],
+    "label": "4",
+    "labels": null,
+    "content_hash": "38dc71d37dafaf89b94ce24cecbb8d22"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 3,
+    "text": "until April 1998 the deadline for serious and severe nonattainment areas to submit their attainment demonstrations. See 64 Fed.Reg. at 70,398. Because not all SIPs contain MVEBs and because of the delay in the submission and approval of attainment demonstrations that do contain such budgets, it is entirely possible that some nonattainment areas subject to the conformity requirements may not have in place an approved SIP containing a MVEB. While the Clean Air Act generally contemplates that conformity determinations will be made by reference to approved SIPs, the Act simply does not address how conformity determinations should be made in the absence of an approved SIP with an adequate motor vehicle emissions budget. See Environmental Def. Fund v. EPA, 167 F.3d 641, 650 (D.C.Cir.1999) (<HOLDING>). It therefore cannot be said that the EPA\u2019s",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that the statutory definition of motor vehicle is not controlling",
+      "recognizing that use of the then approved shotgun instruction would be improper if it coerced jury into agreement or unduly hastened their consideration",
+      "recognizing that language approved by the court may raise questions if incorporated in a jury instruction in a case with different facts",
+      "holding that the sensible and popular understanding of what a motor vehicle accident entails necessarily involves the motor vehicle being operated as a motor vehicle ",
+      "recognizing that section 7506 does not dictate  how conformity should be determined if no approved sip exists or if the approved sip contains no adequate motor vehicle emissions budget"
+    ],
+    "label": "4",
+    "labels": null,
+    "content_hash": "2259b200696f34fe9e2bdb5c0f6d9035"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 4,
+    "text": "Phillips, 807 So.2d at 718. Based on Blackshear, the gravity of appellant\u2019s crimes, as well as the treatment of like juveniles, supports the imposition of appellant\u2019s true life sentence premised on a Solem factor analysis. As such, similar to the defendant in Blackshear and based on the particular facts of this case, appellant\u2019s sentence does not violate either the Florida or the United States Constitutions\u2019 ban on cruel and unusual punishment. B. International treaty violation Appellant further asserts the imposition of such a sentence violates the ICCPR, an international treaty ratified by the United States in 1966. Even if appellant has standing to personally invoke the provisions of the ICCPR (compare Hanoch Tel-Oren v. Libyan Arab Republic, 517 F.Supp. 542, 545-47 (D.D.C.1981) (<HOLDING>), with United States v. Duarte-Acero, 208 F.3d",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that defendant may be subject to death penalty on resentencing",
+      "holding that the death penalty is unconstitutional as applied to juvenile defendants",
+      "holding that leaning towards the death penalty is not the same as an automatic vote for the death penalty",
+      "holding that the defendant lacked standing to challenge the death penalty based on the iccpr because treaties apply only to disputes between sovereign governments",
+      "holding that plaintiffs lacked standing to sue"
+    ],
+    "label": "3",
+    "labels": null,
+    "content_hash": "ca270dac13fb7ffc7dc0aa340fd14d1b"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 5,
+    "text": "Id. (internal quotations and citations omitted). As Lopez acknowledges, we have previously determined that the Supreme Court\u2019s decision in Harmelin v. Michigan, 501 U.S. 957, 994-95, 111 S.Ct. 2680, 115 L.Ed.2d 836 (1991) rejected the argument that a term of life imprisonment constitutes cruel and unusual punishment. See United States v. Fragoso, 978 F.2d 896, 903 (5th Cir.1992); see also Harmelin, 501 U.S. at 994-95, 111 S.Ct. 2680 (\u201cSevere, mandatory penalties may be cruel, but they are not unusual in the constitutional sense.\u201d). Lopez\u2019s Fifth Amendment argument is similarly without merit. See generally Almendarez-Torres v. United States, 523 U.S. 224, 230, 118 S.Ct. 1219, 140 L.Ed.2d 350 (1998); accord United States v. Robinson, 344 Fed.Appx. 936, 940-41 (5th Cir.2009) (per mriam) (<HOLDING>). Finally, we have rejected the argument that a",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that impeachment by use of prearrest silence does not violate fifth or fourteenth amendments",
+      "holding that exclusion of testimony as collateral and of speculative relevance did not violate defendants sixth and fourteenth amendment rights",
+      "holding that even if the minimum mandatory exceeds the statutory maximum the court must impose the minimum mandatory",
+      "holding references to a defendants lack of remorse violate the fifth eighth and fourteenth amendments",
+      "holding that application of statutory mandatory minimum in  841b1a does not violate defendants fifth and fourteenth amendment rights"
+    ],
+    "label": "4",
+    "labels": null,
+    "content_hash": "6e1c245b32bea0ba8953caf22a71ccd8"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 6,
+    "text": "Chief Judge. Arnold Ellis, the appellant, is serving a 12-year prison term as a result of his 1983 conviction for drug offenses. As part of his sentence, the court ordered him to pay a \u201cstand committed\u201d fine of $60,000. Such a fine requires him to remain in prison (i.e., \u201cstand committed\u201d) until he pays it. .Ed.2d 130 (1971) (<HOLDING>); Williams v. Illinois, 399 U.S. 235, 90 S.Ct.",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that while it is unconstitutional to imprison someone for failure to pay a debt it is constitutional to imprison someone for failure to pay a fine the term debt is to be understood as an obligation arising otherwise than from the sentence of a court for the breach of the public peace or commission of a crime",
+      "holding that a state cannot imposte a fine as a sentence and then automatically convert it into a jail term solely because the defendant is indigent and cannot forthwith pay the fine in full",
+      "holding in a case where the maximum time of imprisonment was extended because an indigent defendant was unable to pay a fine and court costs that a state may not constitutionally imprison beyond the maximum duration fixed by statute a defendant who is financially unable to pay a fine",
+      "holding that state may not imprison indigent defendant solely for inability to pay fine",
+      "holding that due process prohibits a state from denying indigent parties access to its divorce court based on their inability to pay filing fees and costs"
+    ],
+    "label": "3",
+    "labels": null,
+    "content_hash": "199d2cc1b0093b6a65c93d8999b28399"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 7,
+    "text": "for access services they admitted to ordering and receiving. Plaintiffs now argue that the court erred in finding that \u201cnone of defendants subscribed to plaintiffs\u2019 switched access services by submitting an Access Order as prescribed in the tariffs\u201d and in failing to consider issues of material fact that may establish that TNCI, Global Crossing, and Sprint are liable under the constructive ordering doctrine. The court will consider plaintiffs\u2019 second contention first. STANDARD The Federal Rules of Civil Procedure do not mention motions to reconsider. The Eighth Circuit has instructed courts to consider such motions either under Rule 59(e) or Rule 60(b). Sanders v. Clemco Indus., 862 F.2d 161, 168 (8th Cir.1988); see also Schoffstall v. Henderson, 223 F.3d 818, 827 (8th Cir.2000) (<HOLDING>); Broadway v. Norris, 193 F.3d 987, 989 (8th",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that an argument raised for the first time in a rule 59e motion is waived on appeal",
+      "recognizing that rule 59e permits a district court to reconsider and amend a previous order",
+      "holding that a motion to reconsider a section 2255 ruling is available and that it is to be treated asa rule 59e motion if filed within 10 days of entry of the challenged order",
+      "holding that the district court cannot extend the time for filing a rule 59e motion by margin order",
+      "holding that rule 59e applies to a motion to reconsider"
+    ],
+    "label": "4",
+    "labels": null,
+    "content_hash": "d322d633004a77061e18157a322640bb"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 8,
+    "text": "principles that allow for the formation of contracts without the signatures of the parties bound by them. See, eg., I.M.A., Inc. v. Rocky Mountain Airways, Inc., 713 P.2d 882, 888 (Colo.1987) (stating that the parties' agreement on essential terms of a contract as required to establish a contract can be inferred from their conduct or oral statements); Smith v. Multi-Financial See. Corp., 171 P.3d 1267, 1272 (Colo.App.2008) (stating that nonsignatories may nonetheless be bound by agreements to arbitrate based on common law contract principles). This reading also abandons the long-standing common law rule that a settlement agreement can be governed by and found enforceable under common law contract principles. See H.W. Houston Constr. Co. v. Dist. Court, 632 P.2d 568, 565 (Colo.1981) (<HOLDING>); Goltl v. Cummings, 152 Colo. 57, 380 P.2d 556",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that the trial courts denial of appellants motion to enforce settlement agreement constituted an important issue",
+      "holding that trial court is without authority to modify a settlement agreement but may enforce and interpret it",
+      "holding that a district court may order restitution despite a settlement agreement",
+      "holding that a settlement agreement is not a court order and therefore a violation of the settlement agreement would not subject a party to contempt",
+      "holding that a court may only enforce a settlement agreement if it constitutes an enforceable contract"
+    ],
+    "label": "4",
+    "labels": null,
+    "content_hash": "eea9824692a3c11e4f80cb432aaae8c1"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 9,
+    "text": "(9th Cir.1986)). Notably, in their reply, Petitioners argue that members of their proposed social group are \u201ceasily identified,\u201d but they do not address at all the issue of the breadth of the proposed group. Petitioners\u2019 Reply, pp. 18-19. As for their claim for withholding of removal, to qualify Petitioners must prove it is \u201cmore likely than not\u201d that they will be persecuted on account of a statutorily-protected ground. See Al-Harbi v. INS, 242 F.3d 882, 888 (9th Cir.2001). As we have already held that the BIA did not err in holding that the particular social group identified by the Petitioners is insufficient to merit asylum protection, we also hold that Petitioners fail to present a prima facie case for withholding of removal. See Farah v. Ashcroft, 348 F.3d 1153, 1156 (9th Cir.2003) (<HOLDING>). Accordingly, Petitioners\u2019 motion to reopen",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that if an applicant fails to meet the standard for asylum he a fortiori fails to meet the requirements for withholding of removal and relief under the cat",
+      "holding that the standard for withholding of removal is more demanding than the standard for asylum",
+      "holding that an applicant who fails to satisfy the lower standard of proof for asylum necessarily fails to satisfy the more stringent standard for withholding of removal",
+      "recognizing that a withholding of removal claim necessarily fails if the applicant is unable to show the objective likelihood of persecution needed to make out an asylum claim and the factual predicate for the claims is the same",
+      "holding that an alien who has failed the wellfounded fear test for asylum will necessarily fail the more stringent more likely than not test for withholding of removal"
+    ],
+    "label": "2",
+    "labels": null,
+    "content_hash": "6bf8f6b3f59b69c3156ae28751d397e8"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 10,
+    "text": "marshals, and presenting the testimony of Dr. Ketroser. During closing argument, the defense spent substantial time discussing and attacking the reliability of the laboratory test results. The test results became a central and critical focus of the defense, which argued that if the state did not prove that the victim died from carbon-monoxide poisoning, then the jury must find appellant not guilty of felony murder and guilty of some lesser offense. The state argues on appeal that the defense focus on the cause of death was irrelevant because the jury was properly instructed that it need only find that appellant caused the victim\u2019s death while \u201ccommitting or attempting to commit\u201d arson. The state appears to be correct on the law. See State v. Nielsen, 467 N.W.2d 615, 618 (Minn.1991) (<HOLDING>). But the prosecutor did not present this",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding the state must prove that at the time of the homicide the defendant was engaged in the commission of the felony",
+      "holding that the crime of rape is a lesser included offense of the crime of felony murder in the perpetration of rape and that since the latter crime included all of the elements of the former consecutive sentences were therefore improper",
+      "holding that felonymurder rule applies whenever felony and homicide are parts of one continuous transaction and rejecting defendants argument that he should have been acquitted of felony murder because rape was afterthought to homicide and the autopsy did not disclose whether rape took place before or after death",
+      "holding that a defendant may be convicted of felony murder when the death of his accomplice was a reasonably foreseeable result of their commission of a felony",
+      "holding that reversal of conviction for felony murder was required where jury failed to find the defendant guilty of the underlying felony as essential element of the felony murder offense"
+    ],
+    "label": "2",
+    "labels": null,
+    "content_hash": "80b51f2dfba56b9881f516b4263ae934"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 11,
+    "text": "that the veteran \u201cmay win or lose on the facts of her case without regard to the Veterans Court\u2019s interpretation of [statute].... \u201d Myore, 323 F.3d at 1352. That is to say, a failure to present sufficient evidence may have mooted the issue regardless of the Veterans Court\u2019s interpretation of the statute, but that was not enough to establish a substantial risk that the Veterans Court\u2019s interpretation would evade review. However, in both Adams, 256 F.3d at 1321 and Stevens v. Principi, 289 F.3d 814, 817 (Fed.Cir.2002), we held that the third Williams factor was satisfied because \u201cthe question of the authority of the Veterans Court to order a remand might not survive a remand, and, therefore, constituted an appealable final decision.\u201d Myore, 323 F.3d at 1353. See also Winn, 110 F.3d at 57 (<HOLDING>). Put differently, in order to satisfy the",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that the denial of a motion to remand is interlocutory and not immediately appealable",
+      "holding that a remand need not be ordered despite legal errors if remand would be futile",
+      "holding that a district courts remand order effectively invalidating certain regulations of the secretary of health and human services was an immediately appealable order",
+      "holding that a remand is appealable only when the remand disposes of an important legal issue that would be effectively unreviewable at a later stage of litigation",
+      "holding that the fourth circuit has jurisdiction to review a district courts sua sponte remand order even when that remand order is styled as a remand for lack of subject matter jurisdiction if the order was in fact based on the procedural insufficiency of the notice of removal"
+    ],
+    "label": "3",
+    "labels": null,
+    "content_hash": "a8118395a4e1dc2f7f3fca0b292f973e"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 12,
+    "text": "considered by the jury in its sentencing deliberations, this same evidence was also sufficient to authorize the jury to find beyond a reasonable doubt the existence of the statutory aggravating circumstances concerning the commission of rape during the murders. See Berryhill v. State, 249 Ga. 442, 450-451 (11) (291 SE2d 685) (1982) (noting that the jury properly reconsiders all of the evidence from the guilt/innocence phase in the sentencing phase). This same standard, which concerns the sufficiency of the evidence when reviewed on appeal, applies to Martin\u2019s claim here, which is essentially a claim that the trial court erred by not granting a directed verdict regarding the statutory aggravating circumstance at issue. See Miller v. State, 270 Ga. 741, 742 (1) (512 SE2d 272) (1999) (<HOLDING>). Accordingly, we conclude that the trial court",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that the standard for a motion for judgment on the pleadings is the same as the standard for a motion to dismiss",
+      "holding the applicable standard of review in addressing the sufficiency of the evidence is manifest error",
+      "holding that the standard of proof for dischargeability actions is the preponderance of the evidence standard",
+      "holding that jackson standard is only standard to use when determining sufficiency of evidence",
+      "holding that the standard of review for the sufficiency of the evidence is the same as the standard for denying a motion for a directed verdict"
+    ],
+    "label": "4",
+    "labels": null,
+    "content_hash": "518d179fd3c42c0c69b25b454db0b10c"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 13,
+    "text": "reference the Maersk Sealand Bill of Lading, which is available on Maersk\u2019s website. Upon issuance of an initial receipt or booking document incorporating a bill of lading, the terms of the latter become part of the parties\u2019 contract. See Berkshire Knitting Mills v. Moore-McCormack Lines, Inc., 265 F.Supp. 846, 848 (S.D.N.Y.1965); St. Paul & Marine Ins. Co. v. Hanjin Shipping Co., Ltd., 2001 WL 196754, at *2 (S.D.N.Y. Feb.21, 2001). Even were this not so, the Maersk Bill of Lading issued as to the Guatemala Containers would govern any dispute as to those containers and the New Orleans Container as well, because it is Maersk\u2019s standard form bill of lading and would have issued in the normal course of business. See Garnay, Inc. v. M/V LINDO MAERSK, 816 F.Supp. 888, 893-94 (S.D.N.Y.1993) (<HOLDING>); see also Luckenbach S.S. Co. v. Am. Mills",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that bill of lading not charterparty governed contract dispute between carrier and shipper",
+      "holding that forum selection clause in a bill of lading issued to an nvocc binds the cargo owner because the nvocc acted as the cargo owners agent in accepting the bill of lading",
+      "holding that bill of lading issued as to two containers was binding as to third container which was stolen and as to which no bill of lading issued provided that the bill of lading in evidence was the standard form bill of lading that carrier always used",
+      "holding that terms of bill of lading apply to shipper where it brings suit thereunder",
+      "holding that the meritorious defense requirement in a bill of review proceeding violates due process where the bill of review plaintiff has no notice of the proceeding in which the default judgment was rendered"
+    ],
+    "label": "2",
+    "labels": null,
+    "content_hash": "6df4bc796ad8ded2a9240814791b4ce4"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 14,
+    "text": "Christi 1995, writ denied); see also Gen. Servs. Comm\u2019n v. Little-Tex Insulation Co., 39 S.W.3d 591, 598 (Tex.2001) (sovereign immunity does not shield State from action for compensation under takings clause). Rather, \u201c[t]he Constitution itself is ... a waiver of governmental immunity for the taking, damaging or destruction of property for public use.\u201d Steele v. City of Houston, 603 S.W.2d 786, 791 (Tex.1980). \u201cA physical taking may occur when the government physically appropriates or invades private property, or unreasonably interferes with the landowner\u2019s right to use and enjoy it.\u201d Tarrant Reg\u2019l Water Dist. v. Gragg, 151 S.W.3d 546, 554 (Tex.2004). If the government uses private property without first paying for it, an owner may recover damages for inverse condemnation. Id. (<HOLDING>); see also Texas Parks & Wildlife Dept. v.",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding evidence legally insufficient",
+      "holding evidence legally sufficient",
+      "holding that evidence was legally sufficient to support finding that government reservoir caused recurrent destructive flooding directly impacting ranch land",
+      "holding evidence legally sufficient under sections d and e",
+      "holding that evidence of representations outside the contract was legally sufficient evidence to support a section 1746b12 claim"
+    ],
+    "label": "2",
+    "labels": null,
+    "content_hash": "d834002d9c373a9d09934d8b2443fb29"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 15,
+    "text": "forfeiture and to offer him a fair chance to present his claim of entitlement. See Mullane, 339 U.S. at 314, 70 S.Ct. 652. Whether the notice actually given is or is not reasonable invariably depends on the circumstances of the individual case. See Garcia v. Meza, 235 F.3d 287, 291 (7th Cir.2000); cf. Morrissey v. Brewer, 408 U.S. 471, 481, 92 S.Ct. 2593, 33 L.Ed.2d 484 (1972) (explaining that due process \u201ccalls for such procedural protections as the particular situation demands\u201d). That said, the precedents shed some light on the government\u2019s obligation to notify parties in interest. For instance, the case law has begun to define what the government must do when it seeks to forfeit property belonging to a prison inmate. See Whiting v. United States, 231 F.3d 70, 76 (1st Cir.2000) (<HOLDING>); Giraldo, 45 F.3d at 511 (noting that would-be",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding sufficient notice by certified mail to both home address and place of immurement",
+      "holding us mail sufficient to give notice but mail cannot be expected to notify person who is missing or unknown",
+      "holding rules of civil procedure are appropriate in determining what constitutes proper service by certified mail",
+      "holding that property owner was not entitled to relief under cafra because he was given sufficient notice of the administrative forfeiture proceeding through certified mail",
+      "holding that if service done by certified mail action commenced upon receipt of summons and complaint"
+    ],
+    "label": "0",
+    "labels": null,
+    "content_hash": "6aa7c97361ea5b2404b328e6967c0a06"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 16,
+    "text": "Urena, 162 S.W,3d at 551. There may be more than one proximate cause of an occurrence. Del Lago, 307 S.W.3d at 774. Unlike a negligent activity' claim, a premises defect claim is not based on the defendant\u2019s malfeasance, but on its non-feasance. Id. at 776. That is, \u201ca premises defect claim is based on the property itself being unsafe,\u201d not on the defendant\u2019s activity. ShumaJce, 199 S.W.3d at 284 (emphasis added). Negligence in the premises defect context thus means \u201cfailure to use ordinary care to reduce or eliminate an unreasonable risk of harm created by a premises condition which the owner or occupier [of land] knows about or in the exercise of ordinary care should know about.\u201d Timberwalk, 972 S.W.2d at 753 (quoting Keetch, 845 S.W.2d at 264); see Del Lago, 307 S.W.3d at 787-88 (<HOLDING>). In such circumstances, the property owner has",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding the trial court properly granted summary judgment in favor of the premises owner when the evidence showed no one had been injured by the condition in question and the premises owner had received no complaints about the condition in question during a tenyear period",
+      "holding that premises owner had duty to use degree of care in performing activities that owner of ordinary prudence would use under same or similar circumstances",
+      "holding that negligence in premises defect context generally means failure to use ordinary care to reduce or eliminate unreasonable risk of harm created by premises condition about which owner or occupier of land is aware",
+      "holding police officer who was shot by occupier of premises could not recover from premises owner for injuries the officer should have reasonably expected to sustain while engaged in the line of duty",
+      "holding that a business owner has a duty to use reasonable care to maintain premises in a reasonably safe condition for patrons"
+    ],
+    "label": "2",
+    "labels": null,
+    "content_hash": "d67ce481f5acb3a3fea54ca0cc37e607"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 17,
+    "text": "principal was an experienced, self-employed businessman who had completed numerous large commercial real estate transactions, (1) admitted that the lender\u2019s employees also had stated the proposal had to be presented to the loan committee, (2) knew the loan committee\u2019s approval was a necessary prerequisite to restructuring, and (3) was in receipt of frequent correspondence from the lender\u2019s attorneys threatening foreclosure and repeatedly posting property securing the loan for sale. Id. at 907, 909-10. In the present case, Schleider had been in the restaurant business since 1974, during which time he had arranged many loans. He testified there had been \u201crenewals and everything had been via telephone. We\u2019d go in and sign what we talked about on the te d 723, 730, 732-33 (N.D.Tex.1999) (<HOLDING>). We conclude there is no evidence to support",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding no justifiable reliance as a matter of law",
+      "holding that whether the plaintiffs reliance on a negligent misrepresentation is justified generally raises a question of fact",
+      "holding as a matter of law no justifiable reliance on statements like the deal is real and we will fund next week also observing statement loan was a done deal not sufficient to support claim for negligent misrepresentation",
+      "holding standard under section 523a2a is justifiable reliance",
+      "holding negligent misrepresentation sufficient"
+    ],
+    "label": "2",
+    "labels": null,
+    "content_hash": "6ba5059a684188694acf357be4099247"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 18,
+    "text": "of the State to bring the defendant into court to answer the charge brought against him.' \u201d) (quoting Blackledge v. Perry, 417 U.S. 21, 30, 94 S.Ct. 2098, 2104, 40 L.Ed.2d 628 (1974)). 13 . If the government were correct that X-Citement Video announced a new rule, this would provide an additional ground for our conclusion that the cause and prejudice requirement does not apply. We have consistently permitted defendants to challenge their convictions in \u00a7 2255 motions, where there has been an intervening change in the law after the time for direct appeal has run. See, e.g., Sood, 969 F.2d at 775 (defendants pled guilty and did not challenge their convictions until post-conviction collateral proceedings); see also Reed v. Ross, 468 U.S. 1, 16, 104 S.Ct. 2901, 2910, 82 L.Ed.2d 1 (1984) (<HOLDING>). 14 .The district court shall enter an order",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that an ineffective assistance of counsel claim alleged to be cause for the procedural default of other claims is itself an independent claim subject to the procedural requirements of exhaustion",
+      "holding that the novelty of a petitioners claim can constitute cause for a procedural default",
+      "holding prosecutorial misconduct claim barred by procedural default",
+      "holding that a federal court may excuse a state habeas petitioners procedural default if the petitioner can show cause for the failure to raise the claim and prejudice resulting from such failure",
+      "holding judicial recusal claim barred because of procedural default"
+    ],
+    "label": "1",
+    "labels": null,
+    "content_hash": "7f18806f80ea0237a6ecb232c8952bb8"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 19,
+    "text": "460, 463 (8th Cir.2000) (\u201cEquitable tolling is proper only when extraordinary circumstances beyond a prisoner\u2019s control make it impossible to file a petition on time.\u201d), petition for cert. filed, \u2014 U.S.L.W. -, \u2014 U.S. -, \u2014 S.Ct. -, \u2014 L.Ed.2d - (U.S. June 11, 2001) (No. 00-10520). Because Hatcher filed his habeas petition over two years past the required date for a timely petition, the appeal is untimely and we are barred from reviewing it on the merits. In addition to being untimely, all of the arguments contained in Hatcher\u2019s appeal (except for the District Court\u2019s denial of an evidentiary hearing) have been defaulted by his failure to raise them on direct appeal or in state post-conviction proceedings. See Coleman v. Thompson, 501 U.S. 722, 729, 111 S.Ct. 2546, 115 L.Ed.2d 640 (1991) (<HOLDING>). Hatcher admits that he procedurally defaulted",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that eleventh amendment bars federal suits against state courts",
+      "holding that federal courts must defer to independent and adequate state procedural bars in reviewing  2254 petitions",
+      "holding that   15a1419a3 is an independent and adequate state ground for a state courts finding of procedural default",
+      "holding that rule 322a is an adequate and independent procedural bar",
+      "holding that in reviewing trial courts ruling on habeas corpus petition reviewing court must defer to all of trial courts implied factual findings supported by record"
+    ],
+    "label": "1",
+    "labels": null,
+    "content_hash": "801983e3a375a43d041d71572ac95582"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 20,
+    "text": "States v. Bowman, 634 F.3d 357, 360 (6th Cir.2011) (published opinion) (internal quotation marks omitted). \u201cBut because plea agreements\u2019 constitutional and supervisory implications raise concerns over and above those present in the traditional contract context, in interpreting such agreements we hold the government to a greater degree of responsibility than the defendant ... for imprecisions or ambiguities in the plea agreements.\u201d Id. (alteration in original) (internal quotation marks omitted). \u201cAmbiguities in a plea agreement are therefore construed against the government, especially because the government can take steps in drafting a plea agreement to avoid imprecision.\u201d Id. (citing United States v. Fitch, 282 F.3d 364, 367-68 (6th Cir.2002)); see also Gordon, 480 F.3d at 1209-10 (<HOLDING>). We therefore hold that Freeman did not waive",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that equitable restitution is available but that legal restitution is not",
+      "holding that where the government has not presented evidence at the hearing concerning the appropriate amount of restitution    the imposition of the restitution order constitutes plain error",
+      "holding no restitution hearing is mandated when defendant did not object to order of restitution or request a hearing",
+      "holding that as a matter of contract interpretation a plea agreement permitting a court to impose a restitution order beyond that authorized by statute might well be unenforceable on grounds of public policy and that the defendant is entitled to presume when she entered the plea agreement that the judge would order restitution in a legal manner",
+      "holding that a district court may order restitution despite a settlement agreement"
+    ],
+    "label": "3",
+    "labels": null,
+    "content_hash": "acac1f452e60fd99ae6def8dcf017f20"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 21,
+    "text": "that the admission of Permanian\u2019s statements violated the holding in Bruton v. United States, 391 U.S. 123, 20 L. Ed. 2d 476, 88 S. Ct. 1620 (1968). In Bruton, the Supreme Court held that the defendant was deprived of his rights under the confrontation clause of the sixth amendment when his codefendant\u2019s post-arrest confession, which incriminated the defendant, was admitted at their joint trial. In reaching its decision, the Court acknowledged that there was no recognized exception to the hearsay rule before it. Bruton, 391 U.S. at 128 n.3, 20 L. Ed. 2d at 480 n.3, 88 S. Ct. at statements admissible because there was sufficient indicia of reliability). Moreover, defendant was able to confront and cross-examine Rinaldi, who testified about the statements. See Ramey, 151 Ill. 2d at 528 (<HOLDING>); Goodman, 81 Ill. 2d at 284 (same). We",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that testimonial hearsay statements of a witness who does not appear at trial are inadmissible under the confrontation clause of the sixth amendment unless the witness is unavailable to testify and the defendant has had a prior opportunity to crossexamine the witness",
+      "holding that the sixth amendment confrontation clause was not violated by the admission of hearsay statements under a georgia statute permitting an exception for statements by coconspirators where there was sufficient indicia of reliability supporting the truth of the statements",
+      "holding coconspirator hearsay exception does not violate confrontation clause",
+      "holding that the sixth amendment right of confrontation applies to all three phases of the capital trial and that the admission of  hearsay statements of codefendants in the penalty phase violated the confrontation clause",
+      "holding that the confrontation clause of the sixth amendment is not violated by the admission of hearsay statements under the coconspirator exception to the hearsay rule where the defendant was able to confront and crossexamine the witness who claimed that the statements at issue were made"
+    ],
+    "label": "4",
+    "labels": null,
+    "content_hash": "82fa47b792370416c04e3ee2cbda8d53"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 22,
+    "text": "467 U.S. at 655, 104 S.Ct. 2626. The Court decided, however, that the danger to unsuspecting civilians sufficed to apply the exception. Id. at 657, 104 S.Ct. 2626; see also United States v. Liddell, 517 F.3d 1007, 1008 (8th Cir.2008) (applying exception when after defendant was removed from his car, arrested, handcuffed, and put in back of police car, police found an unloaded gun under front seat and then asked whether there was \u201canything else in [the car] we need to know about\u201d); New-some, 475 F.3d at 1225 (determining that exception applied where defendant was handcuffed on floor because \u201cofficers reasonably believed that they were in danger\u201d); Luker, 395 F.3d at 835 (applying exception where defendant had already been arrested, handcuffed, and patted down); Newton, 369 F.3d at 678 (<HOLDING>); Lackey, 334 F.3d at 1225-27 (finding \u201ca real",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that exception applies to statement by handcuffed defendant as to location of a gun in an apartment even where most of the other adults in the apartment were handcuffed because even assuming the executing officers believed that the residence was secure  the circumstances were still sufficiently dangerous",
+      "holding that exception applies to statement by handcuffed parolee concerning whereabouts of a gun in an apartment where parole officers had specific information from a third party that a gun was likely present in the apartment",
+      "holding that the defendant had a duty to retreat from the doorway between his apartment and the apartment hallway because that area functioned as a hybrid privatepublic space",
+      "holding that the defendant had no expectation of privacy in the hallway of an apartment building where the building door was unlocked and the hallway was easily accessible to the public",
+      "holding that public safety issue remained notwithstanding that newton was handcuffed and in hallway outside his apartment because the unlocated gun presented a deadly risk to everyone on the premises"
+    ],
+    "label": "4",
+    "labels": null,
+    "content_hash": "efc68d2d500097d35c41871318281710"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 23,
+    "text": "that defendant did not preserve the question whether the trial court should have imposed a lesser sanction and that, if he did, the trial court acted within its discretion in assessing the effect of defendant\u2019s refusal to answer on the state\u2019s right to test defendant\u2019s testimony on cross-examination. We begin with the state\u2019s preservation argument. See State v. Wyatt, 331 Or 335, 15 P3d 22 (2000) (considering preservation first). In Wyatt, the court explained that a party\u2019s \u201cfailure to object to the particular sanction imposed by the judge or, in the alternative, to argue for some other sanction, fails to preserve a claim on appeal that the judge erred in failing to consider the availability of a less onerous sanction.\u201d 331 Or at 343 (footnote omitted S Ct 622, 2 L Ed 2d 589 (1957) (<HOLDING>). \u201cFor two centuries past, the policy of the",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "recognizing defendants right to confront witnesses with adequate crossexamination",
+      "recognizing defendants state and federal constitutional rights to testify",
+      "recognizing that criminal defendants right to testify is subject to crossexamination",
+      "holding right to testify was federal constitutional right",
+      "recognizing that a criminal defendants right to a fair trial is fundamental"
+    ],
+    "label": "2",
+    "labels": null,
+    "content_hash": "03537728c59f8bc0a059b1d871da1da2"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 24,
+    "text": "of his bed. 3 . While some of these cases discuss procedural, rather than substantive, due process, they are relevant to the question of when liberty interests arise for incarcerated prisoners. 4 . Grinter offered no allegations or argument in support of his claim that there was insufficient evidence to support a finding of guilt. \"[I]t is a settled appellate rule that issues adverted to in a perfunctory manner, unaccompanied by some effort at developed argumentation, are deemed waived.\u201d United States v. Johnson, 440 F.3d 832, 846 (6th Cir.2006) (citation omitted). Grinter has provided no argument or allegations in support of this argument either in the district court or before this court and has waived it. See also Rogers v. Howes, 64 Fed.Appx. 450, 455 (6th Cir.2003 h Cir.2005) (<HOLDING>). 549 U.S. 199, 127 S.Ct. at 918-26. 9 .",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that where no colorable claim can be construed from a complaint it should be dismissed",
+      "holding that the plra requires total exhaustion where an entire action should be dismissed if one claim is not properly exhausted",
+      "holding that exhaustion is required under the plra even if the plaintiff seeks only money damages and money damages are not available as relief",
+      "holding that if the federal claims are dismissed before trial  the state claims should be dismissed as well",
+      "holding that it was an abuse of discretion for a district court not to stay an exhausted petition pending exhaustion of a newly discovered claim"
+    ],
+    "label": "1",
+    "labels": null,
+    "content_hash": "3b22f5bfd96f61d3fb58d906b258b897"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 25,
+    "text": "people outside the state may have eaten at the plaintiffs employer was insufficient to prove that the restaurant prepared food for interstate commerce. See Lamont v. Frank Soup Bowl, Inc., 2001 WL 521815, at * 2 (S.D.N.Y. May 16, 2001) (\u201cWhile it is true that people who live outside of New York may have eaten food prepared at Frank\u2019s, that fact alone cannot serve as evidence that Frank\u2019s prepares the food for interstate commerce.\u201d). For similar reasons, this Court holds that Plaintiffs service of out-of-state patrons does not implicate interstate commerce. It is also clear that communications with vendors and processing of credit card payments do not bring Plaintiffs claim within the ambit of the FLSA. In an opin ion letter, the Dep s Home, Inc., 393 F.Supp.2d 1282, 1293 (M.D.Fla.2005) (<HOLDING>). Moreover, Plaintiffs handling of produce that",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that the flsa preempted plaintiffs fraud claim",
+      "holding that the plaintiffs were not covered by the flsa by virtue of the plaintiffs purchase of items at local stores using their employers credit card",
+      "holding under flsa",
+      "holding arbitration clause in credit card agreement unconscionable",
+      "holding that a class of individuals whose receipts contained more than the last five digits of their credit card number or the expiration date of their credit card number was ascertainable even though these criteria were also elements of the plaintiffs legal claim"
+    ],
+    "label": "1",
+    "labels": null,
+    "content_hash": "635a68607f4d1468d186498a0d7e4266"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 26,
+    "text": "context, then, it is clear that the Second Circuit\u2019s holding was that the discovery of the cocaine packets provided probable cause to continue holding Valez, even after the arresting officer became aware of the intended suspect's arrest. 26 . With regard to the latter showing, plaintiffs\u2019 \"arrest cannot serve as the predicate deprivation of liberty because it occurred pri- or to his arraignment and without a warrant, and therefore was not 'pursuant to legal process,' \u201d i.e., not one that arose from malicious prosecution as opposed to false arrest. Singer, 63 F.3d at 116. Plaintiffs' release on bail after arraignment might constitute a Fourth Amendment \"seizure,\u201d see id.., but there is no evidence before the court as to whe , 380 U.S. 693, 699, 85 S.Ct. 1246, 1250, 14 L.Ed.2d 170 (1965) (<HOLDING>); cf. United States v. Janis, 428 U.S. 433,",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that exclusionary rule does apply to civil forfeiture proceedings",
+      "holding discovery rules apply to civil forfeiture proceedings",
+      "holding that the exclusionary rule under the fourth amendment applies to civil forfeiture proceedings",
+      "holding that the exclusionary rule generally does not apply to immigration proceedings",
+      "holding that the exclusionary rule does not apply to proceedings other than criminal trials"
+    ],
+    "label": "0",
+    "labels": null,
+    "content_hash": "b9edfcec85f44d60a05e90cd5fbcda9e"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 27,
+    "text": "officers may be removed before the end of their statutorily defined term. See Parsons v. United States, 167 U.S. 324, 339, 32 Ct.Cl. 626, 17 S.Ct. 880, 42 L.Ed. 185 (1897) (\u201c[W]e must construe this act as providing absolutely for the expiration of the term of office at the end of four years, and not as giving a term that shall last, at all events, for that time .... \u201d); Pievsky v. Ridge, 98 F.3d 730, 734 (3d Cir.1996) (\u201cIt is a long-standing rule in the federal courts that a fixed term merely provides a time for the term to end.\u201d). Furthermore, reading section 581(b) as mandating a five-year term renders section 581(c) meaningless, a construction we will not adopt. See Food & Drug Admin, v. Brown & Williamson Tobacco Corp., 529 U.S. 120, 177, 120 S.Ct. 1291, 146 L.Ed.2d 121 (2000) (<HOLDING>); Pac Fung Feather Co. v. United States, 111",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that a statute should where possible be construed according to its plain meaning and as a whole giving meaning to all its parts",
+      "holding that statutes dealing with same subject matter should be construed with reference to each other as parts of one system",
+      "holding that all parts of the same statute dealing with the same subject are to be construed together as a whole    and individual expressions be accorded only that meaning which other modifying provisions and the clear intent and purpose of the act will permit internal citations omitted",
+      "holding that a statute should not be construed so as to invalidate other parts of the same statute",
+      "holding that the issues specified in the coa may be construed in light of the pleadings and other parts of the record"
+    ],
+    "label": "3",
+    "labels": null,
+    "content_hash": "dab8cf28b11f8275286f0e243df53a38"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 28,
+    "text": "7(C) are categorically exempt from disclosure' unless disclosing such information is necessary in order to confirm or refute compelling evidence that the agency is engaged in-illegal activity.\u201d See Pinson, 202 F.Supp.3d at 102, ECF No. 306 (quoting SafeCard Servs., Inc. v. SEC, 926 F.2d 1197, 1206 (D.C. Cir. 1991)). Because Pinson does not allege illegal activity by the BOP, much less present compelling evidence of the same, the names of the co-defendants and third-parties are categorically exempt from disclosure. See Reporters Committee, 489 U.S. at 774-75, 109 S.Ct. 1468 (\u201c[I]n none of our cases construing the FOIA have we found it appropriate to order a Government agency to honor a FOIA request for information about a particular private citizen.\u201d); SafeCard, 926 F.2d at 1206 (<HOLDING>); Pinson, 202 F.Supp.3d at 102 (holding that",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that names and address of private individuals appearing in files within the ambit of exemption 7c  are exempt from disclosure",
+      "holding that the names of thirdparty inmates within memoranda were categorically exempt from disclosure absent compelling evidence of illegal activity by the bop",
+      "holding that exemption 7c protects the privacy interests of all persons mentioned in law enforcement records whether they be investigators suspects witnesses or informants and their names are generally exempt from disclosure  ",
+      "holding that names of private individuals appearing in files within the ambit of exemption 7c are categorically exempt from disclosure unless disclosing such information is necessary in order to confirm or refute compelling evidence that the agency is engaged in illegal activity",
+      "holding that exemption 7c protects the privacy interests of all persons mentioned in law enforcement records whether they be investigators suspects witnesses or informants and their names are generally exempt from disclosure"
+    ],
+    "label": "3",
+    "labels": null,
+    "content_hash": "1298f2e0342385df96b929d7a824cdab"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 29,
+    "text": "would be future restrictions on his ability to reenter the United States, nor informed of any right to retain counsel. His counsel stated that the expedited removal order was invalid and improper inasmuch as Shunaula had possessed a valid visa at the time of his 1997 entry. The IJ concluded that he was not in a position to entertain a collateral attack on the 1997 expedited removal order. The IJ ruled that Shunaula was (1) inadmissible under 8 U.S.C. \u00a7 1182(a)(9)(C)(i)(II), which renders inadmissible any alien who enters the United States illegally after having been ordered removed pursuant to, inter alia, an order of expedited removal; and therefore (2) ineligible for adjustment of status. See IJ Decision at 5-6, Admin. R. 65-66 (citing Delgado v. Mukasey, 516 F.3d 65 (2d Cir.2008) (<HOLDING>)). On appeal to the BIA, Shunaula pressed the",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that a district court lacks subject matter jurisdiction under the apa to review the denial of an aliens application for adjustment of status where the alien is in removal proceedings",
+      "holding that aliens inadmissible under  1182a 9c i i are ineligible for adjustment of status under  1255f",
+      "holding that refugees who have already acquired lpr status are ineligible for a  209c waiver in light of the language in that adjustment of status can be granted to an alien who has not acquired permanent resident status",
+      "holding ineligible for adjustment of status alien who was inadmissible due to reentry after prior removal",
+      "recognizing that an alien is ineligible for relief under  212c if he was not actually admissible at the time he received an adjustment of status"
+    ],
+    "label": "3",
+    "labels": null,
+    "content_hash": "1c06e40100045246e9622f9205504698"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 30,
+    "text": "practices. Id. at 260. Accepting the Cities\u2019 claims as true, the Court finds that the Cities have alleged a causal connection between Monsanto\u2019s distribution of PCBs and contamination of the Bay. iii. The Cities may bring public nuisance claims for damages. Monsanto argues that the Cities cannot seek damages based on a public nuisance claim against a product manufacturer. MTD at 23-24. Such claims, Monsanto says, are \u201cstrongly disfavored in California\u201d because courts view them as \u201cimproper end-run[s] around products liability laws.\u201d Id at 24; City of Modesto, 119 Cal.App.4th at 39, 13 Cal.Rptr.3d 865 (\u201cthe law of nuisance is not intended to serve as a surrogate for ordinary products liability\u201d); City of San Diego v. U.S. Gypsum Co., 30 Cal.App.4th 575, 585, 35 Cal.Rptr.2d 876 (1994) (<HOLDING>). Public entities generally may not bring",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that where a city brought a public nuisance claim based on asbestos in its buildings it had essentially pleaded a products liability action not a nuisance action",
+      "holding that the plaintiffs lacked standing to pursue a permanent nuisance action for injury to property because none of the plaintiffs were the owners of the land when the cause of action accrued with the first injury",
+      "recognizing products liability and products actions based on negligence as part of the general maritime law",
+      "holding that the viability of a negligence action against a municipality under  1147190 determines the success or failure of a nuisance action based upon the same facts",
+      "recognizing that substantial change is a defense to a products liability claim"
+    ],
+    "label": "0",
+    "labels": null,
+    "content_hash": "57951c81f2f924318b499f3a663ec346"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 31,
+    "text": "have no basis for evaluating this claim ... [whether the denial of the permit will] prevent economically viable uses ... or frustrate reasonable investment-backed expectations.\u201d The Court, however, held that the requirement by the Corp of Engineers that the landowner obtain a permit before filling wetlands did not amount to a taking because even if the permit is denied, there may be other viable uses available to the owner. Only when a permit is denied and the effect of the denial is to prevent \u201ceconomically viable\u201d use of the land in question can it be said that a taking has occurred. Riverside Bayview Homes, 474 U.S. at 127, 106 S.Ct. at 459. See also Whitney Benefits, Inc. v. United States, 926 F.2d 1169, 1174 (Fed.Cir.1991), cert. denied, \u2014 U.S. \u2014 , 112 S.Ct. 406, 116 L.Ed.2d 354 (<HOLDING>). (Emphasis added, brackets in original.) The",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that there was no presumption of a gift where the wifes money was used to make the purchase but title was placed in the name of the husband and finding the facts sufficient to establish a purchase money resulting trust in favor of the wife",
+      "holding that where a purchase of the parcel to facilitate mining was clearly a part of the investment backing for benefits expectations  and where the diminution in value of whitney coal was total there was a taking",
+      "holding that there was no evidence of market value where owners testimony affirmatively showed that it was based on personal value",
+      "holding that where purchaser had taken possession and paid part of the purchase price the statute of frauds did not bar enforcement of a purchase agreement",
+      "holding there cannot be a complete restoration of the property unless it can be said that there has been no diminution of value after repair of the car and adding that the appropriate and fair measure of damages could be achieved by awarding either the difference between the fair cash value of the car before and after the collision or similarly the cost of repairs plus any diminution in value"
+    ],
+    "label": "1",
+    "labels": null,
+    "content_hash": "e5a19c0294b2ce623cc64e145237703a"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 32,
+    "text": "administrator is not dispositive, it is certainly not irrelevant.\u201d Donovan v. Mercer, 747 F.2d 304, 309 (5th Cir.1984). The court in that case held the defendant, although not formally appointed a trustee, to be a fiduciary where she was \u201crepresented\u201d in various documents as a trustee and took actions in an official capacity as trustee. See id. Defendant asserts that he did not understand \u201cin a technical sense\u201d the meaning of the terms \u201ctrustee\u201d or \u201cplan administrator.\u201d The Fifth Circuit rejected just such an argument in Donovan, supra, at 308 n. 4, noting the \u201clong standing and generally accepted principle of contract law that ... a person who intentionally signs a document is bound by its contents.\u201d See also Miller v. Lay Trucking Company, 606 F.Supp. 1326, 1334-35 (N.D.Ind.1985) (<HOLDING>). This court holds that a person who is",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that plan language giving plan administrator power to determine which employees are eligible to participate in the plan and providing all parties dealing with the plan an interpretation of plan provisions on request indicates deferential standard of review of trustee eligibility decisions",
+      "holding that because no plan document granted discretion to the plan administrator and because the fiduciaries had not expressly delegated their discretionary authority to the plan administrator the district court properly employed the de novo standard of review",
+      "holding abuse of discretion review is appropriate when erisa plan grants discretion to the plan administrator",
+      "holding that plan administrator of an erisa health plan did not have to anticipate the confusion of a plan participant",
+      "holding that one who is named in documents as plan administrator signs documents as plan administrator and assumes discretionary authority in the administration of the pension plan is a fiduciary"
+    ],
+    "label": "4",
+    "labels": null,
+    "content_hash": "5bed1a5d7c64949c14bfcf9a63943504"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 33,
+    "text": "States Court of Appeals for the Federal Circuit has clarified, however, that when a contract award is challenged, based on regulatory or procedural violation, \u201cthe disappointed bidder must show a clear and prejudicial violation of applicable statutes or regulations.\u201d Axiom Res. Mgmt. v. United States, 564 F.3d 1374, 1381 (Fed.Cir.2009) (internal quotation marks omitted). Second, if an award decision is challenged as lacking a rational basis, the trial court \u201cmust sustain an agency action unless the action does not evince rational reasoning and consideration of relevant factors.\u201d Savantage Fin. Servs. v. United States, 595 F.3d 1282, 1287 (Fed.Cir.2010) (internal alterations and quotation marks omitted); see also Centech Grp., Inc. v. United States, 554 F.3d 1029, 1037 (Fed.Cir.2009) (<HOLDING>) (internal quotation marks omitted). Third,",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that the moving party bears a heavy burden of proving the facts required for disqualification",
+      "holding that the fee applicant bears the burden of showing that  an adjustment is necessary to the determination of a reasonable fee ",
+      "holding that the plaintiff bears the burden of showing that he has standing for each type of relief sought",
+      "holding that the trial court must determine whether the contracting agency provided a coherent and reasonable explanation of its exercise of discretion and the disappointed bidder bears a heavy burden of showing that the award decision had no rational basis",
+      "recognizing that trial court has broad discretion in ruling on admissibility of evidence and party claiming abuse of that discretion bears a heavy burden"
+    ],
+    "label": "3",
+    "labels": null,
+    "content_hash": "e1c35de5ced2025a3c86e413bf3d71a8"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 34,
+    "text": "advance, and because the notice plaintiff received did not specify that plaintiffs removal as an officer was to be considered, I find that the Code of Regulations has been violated. I do not find, however, that this violation amounts to a breach of the fiduciary duty by the individual defendants. Plaintiff attempts to conflate defendants\u2019 obligations owed to him in his role as a director with defendants\u2019 fiduciary duty toward him as an employee-shareholder. The obligation to comply with the notice requirement arises in plaintiffs role as a director of OIO. The fact that plaintiff was owed this notice as a director does not broaden the fiduciary duty defendants\u2019 owe plaintiff as an employee-shareholder. See Leigh v. Crescent Square, Ltd. 80 Ohio App.3d 231, 239, 608 N.E.2d 1166, (1992) (<HOLDING>).' e. Good Faith and Legitimate Business Reason",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that the concept of fiduciary duty did not require general partners to notify ousted partner of his impending ouster and that absent explicit provisions in a partnership agreement requiring advance notice to a party being removed notice hearing or a showing of cause is not implicitly required",
+      "holding that notice of administrative forfeiture sent to prisoner did not require actual notice to the property owner only notice reasonably calculated to apprise a party of the pendency of the action",
+      "holding that the defendant did not require advance notice where he could not show how he was prejudiced by late notice or how he could have been helped by additional notice",
+      "holding that more than notice to a defendant is required",
+      "holding that notice to supervisor is notice to city"
+    ],
+    "label": "0",
+    "labels": null,
+    "content_hash": "edff66d61c98d52f3979dc5ee73d89a8"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 35,
+    "text": "referrals to specialists\u2014 the discrimination provision is sufficiently clear in apprising physicians that they may not provide firearm-owning patients with less medical care than they would other patients, in any circumstances. Thus, the discrimination provision of the Act is not vague. Finally, Plaintiffs argue that the harassment provision of the Act, \u00a7 709.338(6), is vague because the Act does not define \u201cunnecessarily harassing.\u201d Plaintiffs contend that patients may hold diverse views as to what constitutes unnecessary harassment. Plaintiffs argue that what conduct is prohibited thus depends on what a particular patient understands it to be, and that the resulting uncertainty as to what the Act prohibits \u201cis not permissible under the First Amendment.\u201d See Conant, 309 F.3d at 639 (<HOLDING>) (citing Collins, 323 U.S. at 535, 65 S.Ct. at",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that where the first amendment does not protect a certain activity there can be no first amendment right of association to engage in that activity",
+      "holding a statute providing for administrative action against physicians who engage in speech that the patient believes to be a recommendation of marijuana lacks the requisite narrow specificity under the first amendment",
+      "holding statute criminalizing speech intended to influence a juror did not violate the first amendment",
+      "holding that first amendment protections apply to compelled speech as well as restrictions on speech",
+      "holding that possession of marijuana is not protected by the free exercise clause of the first amendment"
+    ],
+    "label": "1",
+    "labels": null,
+    "content_hash": "5f92e185999569aac15b4844093a2ea1"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 36,
+    "text": "failed in determining whether it breached the contract. Because \u201cQuestion 1\u201d submitted only a single theory of liability and the trial court did not otherwise instruct the jury to consider erroneous matters, we conclude that the trial court did not err by submitting an invalid theory of liability in \u201cQuestion 1.\u201d Cf. Bush, 122 S.W.3d at 857-58; Bed, Bath & Beyond, Inc., 211 S.W.3d at 757 (\u201cWhen, as here, the broad-form questions submitted a single liability theory (negligence) to the jury, Casteel\u2019s multiple-liability-theory analysis does not apply.\u201d); Mustafa v. Matrut, No. 01-08-00985-CV, 2010 WL 1492419, at *4-5 (Tex.App.-Houston [1st Dist.] Apr. 15, 2010) (mem. op.), supplemented, No. 01-08-00985-CV, 2010 WL 1839944 (Tex.App.-Houston [1st Dist.] May 6, 2010, no pet.) (mem. op.) (<HOLDING>); Formosa Plastics Corp., USA v. Kajima Int\u2019l.,",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that evidence of nonpayment of salary and writing of bad checks did not result in submission of unpled theories of fraud liability where evidence supported pled fraud claim based on nonpayment of loan",
+      "holding that the submission of false information with regard to loan applications was not the result of spur of the moment conduct",
+      "holding that where an agent is guilty of independent fraud for his benefit knowledge of the fraud is not imputed to the principal",
+      "holding that defendant was not harmed by submission of invalid fraud claim",
+      "holding that fraud on the court must be supported by clear unequivocal and convincing evidence"
+    ],
+    "label": "0",
+    "labels": null,
+    "content_hash": "7afbcb6611e5bcb9855124ce8aa3d5de"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 37,
+    "text": "$30,027 instead of the $54,977 it originally found necessary. In the court's explanation of its calculations, it is not clear if this change was intentional. The court stated: \"The court evaluated the evidence, including the photographs of the residence and found Mr. Sparks's evidence 5 (placing property into joint title raises presumption of donative intent, although presumption may be overcome if evidence of different intent at time of placement into joint title is produced). 18 . Lundquist v. Lundquist, 923 P.2d 42 (Alaska 1996). 19 . Sampson v. Sampson, 14 P.3d 272, 275 (Alaska 2000). 20 . Id. 21 . Id. at 277. 22 . 1 Brett R. TurnEr, Division or Prover Ty \u00a7 5:69, at 664 (3d ed.2005). 23 . Id. at 665. 24 . Id. at 667. 25 . Id. 26 . See Evans v. Evans, 869 P.2d 478, 481 (Alaska 1994) (<HOLDING>). 27 . 119 P.3d 1005 (Alaska 2005). 28 . Id. at",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that it is function of trial court to judge witnesses credibility and to weigh conflicting evidence",
+      "holding that on a motion for summary judgment it is settled that a trial court is not permitted to weigh material conflicting evidence or pass upon the credibility of the witnesses",
+      "holding that it is trial courts function to evaluate witness credibility and weigh conflicting evidence",
+      "holding trial court free to evaluate credibility of witnesses",
+      "holding court does notweigh conflicting evidence or consider witness credibility and witnesses conflicting or differing accounts do not necessarily render the evidence insufficient"
+    ],
+    "label": "2",
+    "labels": null,
+    "content_hash": "967a5904b222415a5be9b01c22aa8fb8"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 38,
+    "text": "the second controlled drug buy was merely to increase his sentence. Turner\u2019s sentencing entrapment claim is based on his self-proclaimed status as a small-time, \u201cdime-bag\u201d dealer who was not predisposed to sell the quantity of drugs requested by the informant. We dispatch first with Turner\u2019s sentencing manipulation claim. As the district judge acknowledged, our circuit does not recognize the sentencing manipulation doctrine. Id. at 76; see also United States v. White, 519 F.3d 342, 346 (7th Cir.2008); United States v. Veazey, 491 F.3d 700, 710 (7th Cir.2007). Turner concedes this precedent but encourages us to reconsider the court\u2019s position, pointing to other circuits that have reached the opposite conclusion. See, e.g., United States v. Ciszkowski, 492 F.3d 1264, 1270 (11th Cir.2007) (<HOLDING>); United States v. Rizzo, 121 F.3d 794, 801 &",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "recognizing a challenge to jurisdiction as a viable claim",
+      "recognizing sentencing manipulation as a viable defense",
+      "recognizing primary assumption of risk as a viable doctrine",
+      "holding that counsel was ineffective for failing to assert an entrapment defense that was legally available and where there was no other viable defense to present",
+      "holding that such a theory is viable under title vii"
+    ],
+    "label": "1",
+    "labels": null,
+    "content_hash": "ec8c3137bad98edfbc907afb55d95323"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 39,
+    "text": "731-32 (citing Washington v. Texas, 388 U.S. 14, 87 S.Ct. 1920, 18 L.Ed.2d 1019). We observed in Haverty that a trial court has the discretion under West Virginia Code \u00a7 57-5-2 to determine whether immunity should be extended to a particular witness based on a determination \u201cthat the ends of justice may be promoted by compelling such testimony or evidence.\u201d 165 W.Va. at 172, 267 S.E.2d at 732. In this case, the trial court made the determination required by West Virginia Code \u00a7 57-5-2 that the interests of justice required a grant of immunity to Ms. Day so that she could freely offer her testimony without fear of additional prosecution for any events associated with the murder of the victim. When Ms. Day refused to testify despite a grant of immunity, th 322, 489 S.E.2d 289, 300 (1997) (<HOLDING>) (quoting Franklin D. Cleckley, Handbook on",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "recognizing that  an ordinary witness may decline to answer only after making the requisite showing of the danger of selfincrimination ",
+      "holding that a trial judges decision to close the courtroom during the testimony of a witness without making the requisite casespecific findings of fact was reversible error",
+      "holding that a trial court errs by exempting a witness from sequestration absent the requisite showing",
+      "recognizing commonlaw privilege against selfincrimination",
+      "holding that the jury could have reasonably inferred the requisite intent to induce the witness to lie or testify falsely from the defendants statements to the witness"
+    ],
+    "label": "0",
+    "labels": null,
+    "content_hash": "1cac301b704cfe2d4cdb6b414eb50410"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 40,
+    "text": "finding of fact by the WCJ to sufficiently support the suspension of benefits. Employer claims the Suspension Order is free from error. Under Section 422(a) of the Act, a WCJ must issue a \u201creasoned decision containing findings of fact and conclusions of law\u201d which would enable the parties to understand the rationale for the resulting decision and provide a reviewing court a \u201cbasis for meaningful appellate review.\u201d 77 P.S. \u00a7 834. The Pennsylvania Supreme Court, in Daniels, elaborated on this standard and held that the WCJ decision must allow for adequate review by the Board and appellate courts \u201cwithout further elucidation.\u201d Daniels, 574 Pa. at 76, 828 A.2d at 1052. See also O\u2019Donnell v. Workers\u2019 Compensation Appeal Board (United Parcel Service), 831 A.2d 784, 790 (Pa.Cmwlth.2003) (<HOLDING>). Section 314 of the Act permits an employer to",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that credibility determinations are reviewed only for substantial evidence",
+      "holding the wcjs credibility determinations precluded any meaningful appellate review because the court had to imagine why the wcj made such credibility determinations",
+      "holding that credibility determinations are for the jury",
+      "holding that we review adverse credibility determinations for substantial evidence",
+      "holding that in determining the propriety of summary judgment credibility determinations may not be made "
+    ],
+    "label": "1",
+    "labels": null,
+    "content_hash": "2e4fb1c1a9df601e160b71897f4b0c59"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 41,
+    "text": "Thus, the question for a jury would be whether the State provided reasonable accommodations resulting in meaningful access for Ms. Jar-amillo, or denied her such access solely on the basis of her disability. For the same reasons discussed above with respect to Ms. Jaramillo\u2019s equal protection claim, the Court concludes that no reasonable jury could find that the accommodations provided by the State were unreasonable. Ms. Jaramillo had been quite successful in the past with identical accommodations, and several courts have made clear that the Rehabilitation Act and the Americans with Disabilities Act require only reasonable accommodations, not necessarily the particular accommodations an individual would prefer. See, e.g., Camarillo v. Carrots Corp., 518 F.3d 153, 157 (2d Cir.2008) (<HOLDING>); Wernick v. Fed. Reserve Bank of N.Y., 91 F.3d",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that insurance policy that discriminated against the disabled did not violate the ada but did independently violate the unruh act",
+      "holding that when an employer takes steps to accommodate an employees restrictions it is not thereby conceding that the employee is disabled under the ada or that it regards the employee as disabled",
+      "holding that the ada does not require an employer to hire an assistant to help a disabled employee fulfill his work responsibilities",
+      "holding that the ada requires fastfood restaurants to implement policies or procedures to effectively train their employees how to deal with disabled individuals but does not require a particular policy or procedure",
+      "holding that an entity that serves the disabled lacks standing under the ada"
+    ],
+    "label": "3",
+    "labels": null,
+    "content_hash": "141a5ee55ecaf5abd839f48f38bb1544"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 42,
+    "text": "Communications v. Texas Eastman Co., 955 S.W.2d 269, 270 (Tex.1997). When notice bears an incorrect address, it constitutes error on the face of the record. See Mann, Frankfort, Stein & Lipp, P.C. v. Fleetwood Management. Corp, No. 01-9 ersal Systems, Inc., 961 S.W.2d 418, 419-20 (Tex.App.-Houston [1st Dist.] 1997, no pet.) (the court held there was error on the face of the record indicating Transoceanic did not receive the trial setting notice mailed by the clerk where notice was mailed to Transoceanic\u2019s counsel\u2019s former address and returned undeliverable, and the court noted that whether Transoceanic\u2019s counsel was at fault by failing to provide a current mailing address was not a consideration on appeal by writ of error, a non-equitable proceeding); Fleetwood, 2009 WL 754693, at *4 (<HOLDING>). We sustain Issue One and reverse and remand.",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that the court cannot conclude that failure of service resulted from defendants rejection of delivery where letters sent to defendant were returned stating unclaimed and not at this address",
+      "holding dismissal for want of prosecution improper where notice of hearing was mailed to an address that was different from the most recent filings and the record and envelopes were returned undeliverable and noting that when the notice was returned undeliverable court personnel should have reexamined the file to determine if there was evidence of a more recent address",
+      "holding that due process is satisfied where notice is mailed to the wrong address if the appellant received actual notice",
+      "holding that the trial court erred in failing to mail the notice of intent to dismiss to the more recent address included on the lawyers letterhead instead of to the address listed on the partys live pleading",
+      "holding that a notice of deficiency was invalid where it was the second notice mailed for that year and the taxpayer timely petitioned the court as to the first notice"
+    ],
+    "label": "1",
+    "labels": null,
+    "content_hash": "7f0bf9f8913a8c2692f1565705466ea1"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 43,
+    "text": "for the exercise of his judgment or discretion ... unless he is guilty of a willful or malicious wrong.\u201d Elwood v. County of Rice, 423 N.W.2d 671, 677 (Minn.1988) (quotation omitted). The purpose of the official-immunity doctrine is to protect public officials \u201cfrom the fear of personal liability that might deter independent action and impair effective performance of their duties.\u201d Id. at 678. To determine whether Deputy Sass and Officer Hargrove are protected by official immunity we must therefore identify the specific conduct at issue and then decide whether the conduct is a discretionary or ministerial act. See Anderson v. Anoka Hennepin Indep. Sch. Dist. 11, 678 N.W.2d 651, 656 (Minn.2004) (noting importance of identifying spe noka Police Dep\u2019t, 700 N.W.2d 502, 508 (Minn.App.2005) (<HOLDING>), review denied (Minn. Oct. 18, 2005); Fedke v.",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that officers release of police dog to assist in arrest was discretionary act",
+      "recognizing that police officers may use reasonable force to make a lawful arrest",
+      "holding that deputies use of a police dog is subject to excessive force analysis",
+      "holding officer was performing discretionary act in deciding when and how to arrest suspect",
+      "holding district courts finding of consent was not clearly erroneous when the defendant consented after officers told him they could get a drug dog even though the defendant knew the dog would alert"
+    ],
+    "label": "0",
+    "labels": null,
+    "content_hash": "4be4265e829f9d7918601769391e5b86"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 44,
+    "text": "the Tucker Act, see Higbie, 778 F.3d at 993. He ins ir. 1999); Harris v. United States, 118 Fed.Cl. 180, 190 (2014) (ruling that claims under the Seventh Amendment are not properly brought in this court because the Seventh Amendment is not money-mandating) (citation omitted), recons, denied, No. 14-229C, 2014 WL 6853273 (Fed. Cl. Dec. 5, 2014); Trafny v. United States, 503 F.3d 1339, 1340 (Fed. Cir. 2007) (providing that the court \u201cdoes not have jurisdiction over claims arising under the Eighth Amendment, as the Eighth Amendment \u2018is not a money-mandating provision.\u2019 \u201d) (citations omitted); Fullard v. United States, 78 Fed.Cl. 294, 301 n.12 (2007) (explaining that \u201cthe Eleventh Amendment has no - application in this court\u201d); LeBlanc v. United States, 50 F.3d 1025, 1028 (Fed, Cir. 1995) (<HOLDING>) (citations omitted). D. Statutory and",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that the due process and equal protection clauses do not trigger tucker act jurisdiction in the courts",
+      "holding that claims based on the fifth amendments due process and equal protection clauses do not give rise to jurisdiction under the tucker act",
+      "holding municipalities  are not persons within the meaning of the due process clause of the fifth or fourteenth amendments",
+      "holding that due process and equal protection clauses of fourteenth amendment are not confined to protection of citizens rather they apply to all persons within the territorial jurisdiction",
+      "holding that the equal protection and due process clauses of the fifth and fourteenth amendments do not provide a sufficient basis for jurisdiction because they do not mandate payment of money by the government"
+    ],
+    "label": "4",
+    "labels": null,
+    "content_hash": "a546faa303190019983906fe8c9cab29"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 45,
+    "text": "the other hand, the balance of incidents of ownership tips toward the party designated as lessor, then the document is a true lease.\u201d). Among the factors that courts employing the Multiple-Factor Approach find indicative of a disguised security agreement are \u201cnet lease\u201d terms \u2014 i.e., provisions in the purported lease agreement imposing on the lessee the obligation to bear risks of loss, pay taxes, insurance, and license/registration fees (\u201cNet Lease Provisions\u201d). See, e.g., HPSC, Inc. v. Wakefield (In re Wakefield), 217 B.R. 967, 971 (Bankr.M.D.Ga.1998) (concluding that fact that \u201cdebtor bore the risk of loss or damage\u201d and \u201cwas obligated ... to maintain insurance, and to pay all taxes\u201d indicated that \u201cagreement was not a true lease\u201d); In re Maritt, 155 B.R. 12, 13 (Bankr.D.Idaho 1993) (<HOLDING>). The Multiple-Factor Approach has been",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "recognizing a latent ambiguity in a lease agreement",
+      "recognizing that the burden is on the landlord in a lease dispute to establish that the lease contract had been breached and that such breach entitled the landlord to the possession of the property in question",
+      "holding that factors cited by the debtor  including the fact that present value of total rental payments exceeds the equipments cost and the agreement contains net lease provisions  do not establish that the lessor relinquished its reversionary interest",
+      "holding that net lease provisions in agreement together with other factors establish that the transaction is a sale",
+      "holding that uniteds lease provisions violated  4 of the sherman act"
+    ],
+    "label": "3",
+    "labels": null,
+    "content_hash": "7c367f4954b2949d370b91f502972591"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 46,
+    "text": "by certain actions of the defendant. See HRPP Rule 48(c). In the instant case, the circuit court did not calculate excludable periods because, given a starting date of October 28, 1996, any periods excludable under subsection (c) would not have brought the total number of days between arrest and motion to dismiss (444 days) below the 180-day limit. However, since we have concluded that the dates of indictment start the Rule 48 clock running, we must calculate and deduct any excludable periods. Defendant\u2019s October 10, 1997 oral motion to continue, his counsel\u2019s August 18, 1997 motion to withdraw, and the periods of delay they created are per se excludable. HRPP Rule 48(d)(1); see also State v. Sujohn, 64 Haw. 516, 520, 644 P.2d 1326, 1328, reconsideration denied, 64 Haw. 688 (1982) (<HOLDING>). The eight days between the granting of",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that the essential inquiry in conversion of a rule 12b6 motion to a rule 56 motion is whether the appellant should reasonably have recognized the possibility that the motion might be converted into one for summary judgment or was taken by surprise and deprived of a reasonable opportunity to meet facts outside the pleadings",
+      "holding that a fivemonth delay in filing a motion to disqualify did not bar the motion where there was a reasonable explanation for the delay",
+      "holding that the exclusion in rule 48c1 hrpp of periods of delay should be taken from the filing of the motion through the conclusion of the hearing on or other prompt disposition of the motion citation omitted",
+      "holding among other things that there should be excluded from computing the time for trial a period from the filing of a motion on september 18 until finai disposition of the motion by the trial court on its own motion on december 28 that is 102 days",
+      "holding that a motion to continue a hearing on a postjudgment motion was ineffective to extend the period for the trial court to rule on the motion absent the express consent of the parties"
+    ],
+    "label": "2",
+    "labels": null,
+    "content_hash": "d28e4f34ea39d0ff81064a568e74661c"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 47,
+    "text": "to civil in rem forfeiture matters whenever doing so did: (1) not conflict with any provision of the Forfeiture Act; and (2) facilitated the orderly, fair and efficient course of proceedings and disposition of the matter. In my view, those cases provided a practical approach to disposition, keeping in mind that a civil forfeiture proceeding is much like a trial, the objective of which is to provide the parties with a full and fair opportunity to present evidence in support of their respective positions and, on that evidence, render a just disposition. 2 . For example, trial courts will be left without fair and efficient guidelines and procedures for the exchange of information. See Commonwealth v. $8,006.00 U.S. Currency Seized from Carter, 166 Pa.Cmwlth. 251, 646 A.2d 621 (1994) (<HOLDING>). Trial Courts will be left without guidance as",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that civil rules of pleading not criminal rales apply to traffic offenses punishable by civil forfeiture",
+      "holding that the exclusionary rule under the fourth amendment applies to civil forfeiture proceedings",
+      "holding that exclusionary rule applies to civil forfeiture proceedings",
+      "holding that exclusionary rule does apply to civil forfeiture proceedings",
+      "holding discovery rules apply to civil forfeiture proceedings"
+    ],
+    "label": "4",
+    "labels": null,
+    "content_hash": "1738e63ec7eb6a5a73cb43b666325710"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 48,
+    "text": "By all accounts, the executed Partnership Agreement was the result of an arm\u2019s length transaction. Also, the Partnership Agreement specifically, allowed for the payment of developer fees, and several other provisions effectively established that Dr. Cravens .knew so. Given Dr. Cravens\u2019s individual characteristics, abilities, and appreciation of the facts and circumstances at or before the time of the alleged misrepresentation, we hold that the evidence is legally insufficient to show that Dr. Cravens justifiably relied upon any representation that developer fees would not be paid until after a construction loan was secured. See Atlas Props., Inc. v. Republic Waste Servs of Tex., Ltd., No. 02-11-00332-CV, 2012 WL 579442, at *2-3 (Tex.App.-Fort Worth Feb. 23, 2012, no pet.) (mem.op.) (<HOLDING>); cf. Gulf Liquids New River Project, LLC v.",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that it is unreasonable for plaintiffs to rely on oral representations made before a contract when the contract contained a clause which expressed",
+      "holding that party could not justifiably rely upon oral representations thatwere directly contradicted by terms of written agreement",
+      "holding that a person could not reasonably rely on oral representations that contradict a written document",
+      "holding that the parties agreement was superseded by a subsequent agreement that stated that it comprises the entire agreement and supersedes all prior understandings and representations oral or written between the parties",
+      "holding that plaintiff could not have reasonably relied on an oral representation that the atwill provision of his employment contract did not apply to him when he entered into the contract that expressly contradicted the oral representations"
+    ],
+    "label": "1",
+    "labels": null,
+    "content_hash": "7a75bae26fc2a359daeeef244e7c3b12"
+  },
+  {
+    "task": "casehold",
+    "hf_index": 49,
+    "text": "Second, the court has concluded that the issues of fact are material, i.e. resolution of the issues might affect the outcome of the suit under governing law.\u2019 \u201d Lemoine v. New Horizons Ranch & Ctr., Inc., 174 F.3d 629, 633 (5th Cir.1999) (quoting Colston v. Barnhart, 146 F.3d 282, 284 (5th Cir.), cert. denied, 525 U.S. 1054, 119 S.Ct. 618, 142 L.Ed.2d 557 (1998)). B. The Copyright Act Standard The Copyright Act protects original works of authorship fixed in a tangible medium of expression. See 17 U.S.C. \u00a7 102 (1994). Although copyright does not extend to ideas, procedures, processes, systems, or methods of operation, it is well established that the protection encompasses software. See Computer Management Assistance Co. v. Robert F. DeCastro, Inc., 220 F.3d 396, 400 (5th Cir.2000) (<HOLDING>). A copyright owner possesses the exclusive",
+    "label_set": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "split": "test",
+    "metadata": {},
+    "holdings": [
+      "holding that copyright protection of computer programs extend beyond the programs literal code to their structure sequence and organization",
+      "holding that while the computer program at issue was within the subject matter of copyright the right sought under state law pursuant to a license was not equivalent to the exclusive rights under copyright as such copyright preemption did not apply",
+      "holding that because literary works including compilations and derivative works are within the subject matter of copyright state common law that purported to protect a work for which plaintiffs copyright action was unsuccessful was preempted",
+      "holding that prejudgment interest ordinarily should be awarded on damages pursuant to claims under the copyright act of 1909 17 usc  1 et seq 1976 ed superceded by the copyright act of 1976 17 usc  101 et seq",
+      "recognizing that the copyright act was amended in 1976 to include computer programs in the definition of protectable literary works"
+    ],
+    "label": "4",
+    "labels": null,
+    "content_hash": "f94cd29682883283603bc6b6510d7f16"
+  }
+]

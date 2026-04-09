@@ -21,7 +21,7 @@
 CREATE TABLE IF NOT EXISTS julia_lexglue_samples (
     id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
     task TEXT NOT NULL CHECK (task IN (
-        'ledgar', 'unfair_tos', 'contract_nli', 'ecthr_a', 'casehold'
+        'ledgar', 'unfair_tos', 'scotus', 'ecthr_a', 'casehold'
     )),
     hf_index INTEGER NOT NULL,           -- HuggingFace dataset index
     text TEXT NOT NULL,                   -- document/premise text

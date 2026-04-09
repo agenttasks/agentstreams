@@ -58,7 +58,7 @@ MAX_TOKENS = 2048
 TEMPERATURE = 0
 API_CONCURRENCY = 4
 
-ALL_TASKS = ["ledgar", "unfair_tos", "contract_nli", "ecthr_a", "casehold"]
+ALL_TASKS = ["ledgar", "unfair_tos", "scotus", "ecthr_a", "casehold"]
 
 DATA_DIR = PROJECT_ROOT / "julia" / "evals" / "test_data" / "lexglue"
 BASELINES_PATH = DATA_DIR / "baselines.json"
@@ -71,7 +71,7 @@ FEW_SHOT_PATH = DATA_DIR / "few_shot_examples.json"
 TASK_METRICS = {
     "ledgar": "micro_f1",
     "unfair_tos": "macro_f1",
-    "contract_nli": "accuracy",
+    "scotus": "micro_f1",
     "ecthr_a": "micro_f1",
     "casehold": "accuracy",
 }
@@ -210,22 +210,24 @@ Output ONLY valid JSON (no markdown, no extra text):
 {{"is_unfair": true/false, "unfairness_types": ["type1", ...], "reasoning": "brief explanation"}}"""
 
 
-def build_contract_nli_prompt(task: LexGLUETask, few_shot: int) -> str:
-    """Build ContractNLI entailment prompt."""
-    few_shot_text = _build_few_shot("contract_nli", few_shot)
+def build_scotus_prompt(task: LexGLUETask, few_shot: int) -> str:
+    """Build SCOTUS case issue area classification prompt."""
+    label_list = "\n".join(f"- {lb}" for lb in task.label_set)
+    few_shot_text = _build_few_shot("scotus", few_shot)
 
-    return f"""Given the following contract text, determine the relationship between
-the premise and hypothesis:
-- "entailment": the hypothesis is supported by the contract
-- "contradiction": the hypothesis contradicts the contract
-- "neutral": the hypothesis is neither supported nor contradicted
+    return f"""Classify this U.S. Supreme Court case into EXACTLY ONE of the following
+issue areas:
+
+{label_list}
+
+Do NOT create new categories.
 {few_shot_text}
 <document>
-{task.text}
+{task.text[:4000]}
 </document>
 
 Output ONLY valid JSON (no markdown, no extra text):
-{{"label": "entailment"|"contradiction"|"neutral", "reasoning": "brief explanation"}}"""
+{{"issue_area": "...", "confidence": 0.0-1.0, "reasoning": "brief explanation"}}"""
 
 
 def build_ecthr_a_prompt(task: LexGLUETask, few_shot: int) -> str:
@@ -274,7 +276,7 @@ Output ONLY valid JSON (no markdown, no extra text):
 PROMPT_BUILDERS = {
     "ledgar": build_ledgar_prompt,
     "unfair_tos": build_unfair_tos_prompt,
-    "contract_nli": build_contract_nli_prompt,
+    "scotus": build_scotus_prompt,
     "ecthr_a": build_ecthr_a_prompt,
     "casehold": build_casehold_prompt,
 }
@@ -459,8 +461,8 @@ def parse_response(task: LexGLUETask, raw_output: str) -> LexGLUEResult:
         pred = set(pred_types)
         result.is_correct = gold == pred
 
-    elif task.task_type == "contract_nli":
-        pred = parsed.get("label", "")
+    elif task.task_type == "scotus":
+        pred = parsed.get("issue_area", "")
         result.predicted_label = pred
         result.is_correct = pred == task.label
 
