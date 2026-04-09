@@ -6,7 +6,7 @@ topology:
   total_agents: 25
   model_tiers: 4
   orchestrator_rule: "Only the Opus 4.6 orchestrator may spawn agents. No subagent may spawn other subagents."
-  auth_rule: "All agents use CLAUDE_CODE_OAUTH_TOKEN. ANTHROPIC_API_KEY is forbidden."
+  auth_rule: "All agents use CLAUDE_CODE_OAUTH_TOKEN — never ANTHROPIC_API_KEY."
 
   tiers:
     # ─────────────────────────────────────────────────────────────
@@ -224,7 +224,7 @@ topology:
     1. Only the orchestrator spawns agents (no recursive spawning)
     2. Read-only agents (security-auditor, alignment-auditor, architecture-reviewer, compliance-reviewer, finance-agent) NEVER modify files
     3. harmlessness-screen has zero tool access and 256-token output cap
-    4. All auth via CLAUDE_CODE_OAUTH_TOKEN (ANTHROPIC_API_KEY banned)
+    4. All auth via CLAUDE_CODE_OAUTH_TOKEN (never ANTHROPIC_API_KEY)
     5. Safety agents use temperature 0.0 for deterministic output
     6. Gate checks happen BETWEEN order groups, not within
     7. Same-order steps run in parallel via asyncio.gather
