@@ -66,9 +66,7 @@ class ChannelMessage:
     source: str
     type: str
     payload: dict[str, Any] = field(default_factory=dict)
-    timestamp: str = field(
-        default_factory=lambda: datetime.now(UTC).isoformat()
-    )
+    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
 
     def to_json(self) -> str:
         """Serialise the message to a compact JSON string."""
@@ -145,9 +143,12 @@ class ChannelBridge:
             "claude",
             "mcp",
             "send-event",
-            "--channel", message.source,
-            "--type", message.type,
-            "--data", message.to_json(),
+            "--channel",
+            message.source,
+            "--type",
+            message.type,
+            "--data",
+            message.to_json(),
         ]
 
         return subprocess.run(
@@ -229,7 +230,8 @@ class ChannelBridge:
             source="github",
             type="pr.comment",
             payload={
-                "pr_number": pull_request.get("number") or webhook_payload.get("issue", {}).get("number"),
+                "pr_number": pull_request.get("number")
+                or webhook_payload.get("issue", {}).get("number"),
                 "pr_title": pull_request.get("title", ""),
                 "repo": repo.get("full_name", ""),
                 "author": comment.get("user", {}).get("login", ""),

@@ -77,21 +77,16 @@ class SubtaskGraph:
     @property
     def ready_subtasks(self) -> list[Subtask]:
         """Subtasks whose dependencies are all completed — can run in parallel."""
-        completed = {
-            s.id for s in self.subtasks if s.status == SubtaskStatus.COMPLETED
-        }
+        completed = {s.id for s in self.subtasks if s.status == SubtaskStatus.COMPLETED}
         return [
-            s
-            for s in self.subtasks
-            if s.status == SubtaskStatus.PENDING and s.is_ready(completed)
+            s for s in self.subtasks if s.status == SubtaskStatus.PENDING and s.is_ready(completed)
         ]
 
     @property
     def is_complete(self) -> bool:
         """All subtasks completed or skipped."""
         return all(
-            s.status in (SubtaskStatus.COMPLETED, SubtaskStatus.SKIPPED)
-            for s in self.subtasks
+            s.status in (SubtaskStatus.COMPLETED, SubtaskStatus.SKIPPED) for s in self.subtasks
         )
 
     @property
@@ -100,9 +95,7 @@ class SubtaskGraph:
         if not self.subtasks:
             return 1.0
         done = sum(
-            1
-            for s in self.subtasks
-            if s.status in (SubtaskStatus.COMPLETED, SubtaskStatus.SKIPPED)
+            1 for s in self.subtasks if s.status in (SubtaskStatus.COMPLETED, SubtaskStatus.SKIPPED)
         )
         return done / len(self.subtasks)
 

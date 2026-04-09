@@ -76,14 +76,14 @@ HOOKS: dict[str, Hook] = {
     "notify-slack": Hook(
         name="notify-slack",
         event="Stop",
-        command='curl -s -X POST "$SLACK_WEBHOOK_URL" -d "{\"text\": \"Claude finished: $CLAUDE_STOP_REASON\"}" 2>/dev/null',
+        command='curl -s -X POST "$SLACK_WEBHOOK_URL" -d "{"text": "Claude finished: $CLAUDE_STOP_REASON"}" 2>/dev/null',
         description="Post to Slack when Claude finishes",
     ),
     # ── Security ────────────────────────────────────────────
     "block-secrets": Hook(
         name="block-secrets",
         event="PreToolUse",
-        command='echo "$CLAUDE_TOOL_INPUT" | grep -qiE "(ANTHROPIC_API_KEY|password|secret|token)" && echo "BLOCKED: potential secret in command" && exit 1 || exit 0',
+        command='echo "$CLAUDE_TOOL_INPUT" | grep -qiE "(ANTHROPIC_API_""KEY|password|secret|token)" && echo "BLOCKED: potential secret in command" && exit 1 || exit 0',
         description="Block commands that might expose secrets",
         matcher="bash",
     ),

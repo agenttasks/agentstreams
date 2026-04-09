@@ -85,7 +85,11 @@ class TrainingProfile:
 
 SONNET_4_6 = TrainingProfile(
     model_name="claude-sonnet-4-6",
-    training_methods=[TrainingMethod.PRETRAINING, TrainingMethod.RLHF, TrainingMethod.CONSTITUTIONAL],
+    training_methods=[
+        TrainingMethod.PRETRAINING,
+        TrainingMethod.RLHF,
+        TrainingMethod.CONSTITUTIONAL,
+    ],
     character_traits={
         CharacterTrait.HELPFULNESS: 0.85,
         CharacterTrait.HONESTY: 0.80,
@@ -102,7 +106,11 @@ SONNET_4_6 = TrainingProfile(
 
 OPUS_4_6 = TrainingProfile(
     model_name="claude-opus-4-6",
-    training_methods=[TrainingMethod.PRETRAINING, TrainingMethod.RLHF, TrainingMethod.CONSTITUTIONAL],
+    training_methods=[
+        TrainingMethod.PRETRAINING,
+        TrainingMethod.RLHF,
+        TrainingMethod.CONSTITUTIONAL,
+    ],
     character_traits={
         CharacterTrait.HELPFULNESS: 0.90,
         CharacterTrait.HONESTY: 0.85,
@@ -121,7 +129,11 @@ OPUS_4_6 = TrainingProfile(
 
 MYTHOS_PREVIEW = TrainingProfile(
     model_name="claude-mythos-preview",
-    training_methods=[TrainingMethod.PRETRAINING, TrainingMethod.RLHF, TrainingMethod.CONSTITUTIONAL],
+    training_methods=[
+        TrainingMethod.PRETRAINING,
+        TrainingMethod.RLHF,
+        TrainingMethod.CONSTITUTIONAL,
+    ],
     character_traits={
         CharacterTrait.HELPFULNESS: 0.95,
         CharacterTrait.HONESTY: 0.90,

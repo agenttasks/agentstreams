@@ -89,18 +89,60 @@ class SteeringConfig:
 
 DOMAIN_STEERING: dict[str, list[SteeringVector]] = {
     "customer-support": [
-        SteeringVector("empathy-up", SteeringTarget.EMPATHY, SteeringMethod.ACTIVATION_ADDITION, layer=16, strength=1.5),
-        SteeringVector("assertive-down", SteeringTarget.ASSERTIVENESS, SteeringMethod.ACTIVATION_INHIBITION, layer=16, strength=0.5),
+        SteeringVector(
+            "empathy-up",
+            SteeringTarget.EMPATHY,
+            SteeringMethod.ACTIVATION_ADDITION,
+            layer=16,
+            strength=1.5,
+        ),
+        SteeringVector(
+            "assertive-down",
+            SteeringTarget.ASSERTIVENESS,
+            SteeringMethod.ACTIVATION_INHIBITION,
+            layer=16,
+            strength=0.5,
+        ),
     ],
     "legal": [
-        SteeringVector("caution-up", SteeringTarget.CAUTION, SteeringMethod.ACTIVATION_ADDITION, layer=18, strength=2.0),
-        SteeringVector("creativity-down", SteeringTarget.CREATIVITY, SteeringMethod.ACTIVATION_INHIBITION, layer=18, strength=0.3),
+        SteeringVector(
+            "caution-up",
+            SteeringTarget.CAUTION,
+            SteeringMethod.ACTIVATION_ADDITION,
+            layer=18,
+            strength=2.0,
+        ),
+        SteeringVector(
+            "creativity-down",
+            SteeringTarget.CREATIVITY,
+            SteeringMethod.ACTIVATION_INHIBITION,
+            layer=18,
+            strength=0.3,
+        ),
     ],
     "engineering": [
-        SteeringVector("technical-up", SteeringTarget.TECHNICAL_DEPTH, SteeringMethod.ACTIVATION_ADDITION, layer=20, strength=1.5),
+        SteeringVector(
+            "technical-up",
+            SteeringTarget.TECHNICAL_DEPTH,
+            SteeringMethod.ACTIVATION_ADDITION,
+            layer=20,
+            strength=1.5,
+        ),
     ],
     "sales": [
-        SteeringVector("assertive-up", SteeringTarget.ASSERTIVENESS, SteeringMethod.ACTIVATION_ADDITION, layer=16, strength=1.2),
-        SteeringVector("sycophancy-down", SteeringTarget.SYCOPHANCY, SteeringMethod.ACTIVATION_INHIBITION, layer=12, strength=0.8),
+        SteeringVector(
+            "assertive-up",
+            SteeringTarget.ASSERTIVENESS,
+            SteeringMethod.ACTIVATION_ADDITION,
+            layer=16,
+            strength=1.2,
+        ),
+        SteeringVector(
+            "sycophancy-down",
+            SteeringTarget.SYCOPHANCY,
+            SteeringMethod.ACTIVATION_INHIBITION,
+            layer=12,
+            strength=0.8,
+        ),
     ],
 }

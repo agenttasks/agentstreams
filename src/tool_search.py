@@ -343,9 +343,7 @@ def _build_default_index() -> ToolIndex:
         index._tools[tool.name] = tool  # noqa: SLF001
 
     # Merge vendors/knowledge-work-plugins/ tree
-    vendor_index = ToolIndex.from_skills(
-        _PROJECT_ROOT / "vendors" / "knowledge-work-plugins"
-    )
+    vendor_index = ToolIndex.from_skills(_PROJECT_ROOT / "vendors" / "knowledge-work-plugins")
     for tool in vendor_index.list_all():
         # Prefix vendor tools to avoid name collisions with first-party skills.
         prefixed_name = f"kwp:{tool.name}"

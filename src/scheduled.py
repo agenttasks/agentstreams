@@ -35,9 +35,9 @@ class ScheduledTask:
 
     def as_cron_command(self) -> str:
         """Generate a crontab entry."""
-        cmd = f"cd {self.cwd or PROJECT_ROOT} && claude -p \"{self.prompt}\""
+        cmd = f'cd {self.cwd or PROJECT_ROOT} && claude -p "{self.prompt}"'
         if self.agent:
-            cmd = f"cd {self.cwd or PROJECT_ROOT} && claude --agent {self.agent} -p \"{self.prompt}\""
+            cmd = f'cd {self.cwd or PROJECT_ROOT} && claude --agent {self.agent} -p "{self.prompt}"'
         # Convert interval to cron syntax
         cron_map = {
             "5m": "*/5 * * * *",

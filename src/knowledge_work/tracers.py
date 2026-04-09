@@ -207,11 +207,13 @@ def trace_circuit(prompt: str, config: TracerConfig | None = None) -> TracerResu
                     continue
                 weight = float(adj[i, j])
                 if abs(weight) > 1e-6:
-                    edges.append(CircuitEdge(
-                        source=node_map[src_key],
-                        target=node_map[tgt_key],
-                        weight=weight,
-                    ))
+                    edges.append(
+                        CircuitEdge(
+                            source=node_map[src_key],
+                            target=node_map[tgt_key],
+                            weight=weight,
+                        )
+                    )
 
     circuit = Circuit(
         name=f"{config.plugin_category}-{config.skill_name}" if config.skill_name else prompt[:40],

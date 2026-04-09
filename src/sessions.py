@@ -210,14 +210,15 @@ def _run_claude(
     # Ensure auth token is present — never fall back to ANTHROPIC_API_KEY
     if not env.get("CLAUDE_CODE_OAUTH_TOKEN"):
         raise RuntimeError(
-            "CLAUDE_CODE_OAUTH_TOKEN is not set. "
-            "Set it before calling SessionManager methods."
+            "CLAUDE_CODE_OAUTH_TOKEN is not set. Set it before calling SessionManager methods."
         )
 
     cmd = [
         "claude",
-        "-p", prompt,
-        "--output-format", "json",
+        "-p",
+        prompt,
+        "--output-format",
+        "json",
     ] + args
 
     try:
@@ -237,8 +238,7 @@ def _run_claude(
 
     if result.returncode != 0:
         raise RuntimeError(
-            f"claude exited with code {result.returncode}.\n"
-            f"stderr: {result.stderr[:1000]}"
+            f"claude exited with code {result.returncode}.\nstderr: {result.stderr[:1000]}"
         )
 
     # claude --output-format json writes one JSON object to stdout
@@ -265,9 +265,7 @@ def _run_claude(
         try:
             parsed = json.loads(stdout)
         except json.JSONDecodeError as exc:
-            raise RuntimeError(
-                f"Could not parse claude output as JSON: {stdout[:500]}"
-            ) from exc
+            raise RuntimeError(f"Could not parse claude output as JSON: {stdout[:500]}") from exc
 
     return SessionRunResult(
         session_id=parsed.get("session_id", ""),
@@ -402,6 +400,7 @@ class SessionManager:
 
             # Decode the URL-encoded project path stored as the directory name
             from urllib.parse import unquote
+
             project_path = unquote(project_dir.name)
 
             for session_dir in project_dir.iterdir():
@@ -419,9 +418,7 @@ class SessionManager:
                 if transcript is None:
                     candidates = list(session_dir.glob("*.jsonl"))
                     if candidates:
-                        transcript = sorted(
-                            candidates, key=lambda p: p.stat().st_mtime
-                        )[-1]
+                        transcript = sorted(candidates, key=lambda p: p.stat().st_mtime)[-1]
                 if transcript is None:
                     continue
 
@@ -431,7 +428,8 @@ class SessionManager:
                 # Count non-empty lines as a proxy for message count
                 try:
                     lines = [
-                        line for line in transcript.read_text(encoding="utf-8").splitlines()
+                        line
+                        for line in transcript.read_text(encoding="utf-8").splitlines()
                         if line.strip()
                     ]
                     message_count = len(lines)

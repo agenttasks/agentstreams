@@ -91,9 +91,7 @@ def download_pdf(url: str) -> Path:
 
                     redirect_url = urljoin(url, redirect_url)
                 print(f"  [redirect] {redirect_url}", file=sys.stderr)
-                req2 = urllib.request.Request(
-                    redirect_url, headers={"User-Agent": "pdf-read/1.0"}
-                )
+                req2 = urllib.request.Request(redirect_url, headers={"User-Agent": "pdf-read/1.0"})
                 with urllib.request.urlopen(req2, timeout=60) as resp2:
                     data = resp2.read()
 
@@ -230,9 +228,7 @@ def print_stats(data: dict) -> None:
     cumulative = 0
     for page in data["pages"]:
         cumulative += page["est_tokens"]
-        print(
-            f"{page['number']:>6}  {page['chars']:>8}  {page['est_tokens']:>8}  {cumulative:>10}"
-        )
+        print(f"{page['number']:>6}  {page['chars']:>8}  {page['est_tokens']:>8}  {cumulative:>10}")
     print("-" * 40)
     print(f"{'Total':>6}  {data['total_chars']:>8}  {data['total_est_tokens']:>8}")
 
@@ -259,9 +255,7 @@ def process_url(
                 # Re-extract for display but don't re-download
                 pdf_path = CACHE_DIR / f"{slug}.pdf"
                 if pdf_path.exists():
-                    page_indices = (
-                        parse_page_range(pages, 99999) if pages else None
-                    )
+                    page_indices = parse_page_range(pages, 99999) if pages else None
                     data = extract_pdf(pdf_path, page_indices)
                     if toc_only:
                         print_toc(data)
@@ -317,15 +311,9 @@ def main():
         default=str(TAXONOMY_DIR),
         help="Output directory (default: taxonomy/)",
     )
-    parser.add_argument(
-        "--no-cache", action="store_true", help="Force re-download"
-    )
-    parser.add_argument(
-        "--toc", action="store_true", help="Print table of contents only"
-    )
-    parser.add_argument(
-        "--stats", action="store_true", help="Print per-page token estimates"
-    )
+    parser.add_argument("--no-cache", action="store_true", help="Force re-download")
+    parser.add_argument("--toc", action="store_true", help="Print table of contents only")
+    parser.add_argument("--stats", action="store_true", help="Print per-page token estimates")
     args = parser.parse_args()
 
     bloom = load_bloom()

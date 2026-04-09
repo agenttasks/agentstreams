@@ -144,7 +144,9 @@ def eval_promptfoo(
     if suite:
         dirs = [evals_dir / suite]
     else:
-        dirs = [d for d in evals_dir.iterdir() if d.is_dir() and (d / "promptfooconfig.yaml").exists()]
+        dirs = [
+            d for d in evals_dir.iterdir() if d.is_dir() and (d / "promptfooconfig.yaml").exists()
+        ]
 
     for d in dirs:
         if (d / "promptfooconfig.yaml").exists():
@@ -420,7 +422,9 @@ def teams_list() -> None:
 @teams_app.command("run")
 def teams_run(
     team: str = typer.Argument(..., help="Team name (e.g., security-team, research-team)"),
-    task: str = typer.Option(..., "--task", "-t", help="Task description to broadcast to all members"),
+    task: str = typer.Option(
+        ..., "--task", "-t", help="Task description to broadcast to all members"
+    ),
     member: str = typer.Option("", "--member", "-m", help="Target a single member instead of all"),
     parallel: bool = typer.Option(True, help="Run members in parallel (default: True)"),
 ) -> None:
@@ -444,7 +448,9 @@ def teams_run(
         # Single-member assignment
         names = [m.agent_name for m in config.members]
         if member not in names:
-            console.print(f"[red]Member '{member}' not in team '{team}'. Members: {', '.join(names)}[/red]")
+            console.print(
+                f"[red]Member '{member}' not in team '{team}'. Members: {', '.join(names)}[/red]"
+            )
             raise typer.Exit(1) from None
         console.print(f"[bold]Assigning task to {member}...[/bold]")
         result = orch.assign_task(member, task)
@@ -645,8 +651,12 @@ def channels_list() -> None:
 
 @channels_app.command("push")
 def channels_push(
-    source: str = typer.Option(..., "--source", "-s", help="Channel name / source (e.g., ci, github)"),
-    type_: str = typer.Option(..., "--type", "-t", help="Event type (e.g., ci.failure, pr.comment)"),
+    source: str = typer.Option(
+        ..., "--source", "-s", help="Channel name / source (e.g., ci, github)"
+    ),
+    type_: str = typer.Option(
+        ..., "--type", "-t", help="Event type (e.g., ci.failure, pr.comment)"
+    ),
     payload: str = typer.Option("{}", "--payload", "-p", help="JSON payload string"),
 ) -> None:
     """Push an event into the active Claude Code session.
@@ -746,7 +756,9 @@ def headless_run(
     _configs = {"codegen": CODEGEN_CONFIG, "review": REVIEW_CONFIG, "research": RESEARCH_CONFIG}
     base = _configs.get(config_name)
     if base is None:
-        console.print(f"[red]Unknown config '{config_name}'. Choose: codegen, review, research[/red]")
+        console.print(
+            f"[red]Unknown config '{config_name}'. Choose: codegen, review, research[/red]"
+        )
         raise typer.Exit(1) from None
 
     cfg = HeadlessConfig(
@@ -824,7 +836,9 @@ def headless_batch(
     _configs = {"codegen": CODEGEN_CONFIG, "review": REVIEW_CONFIG, "research": RESEARCH_CONFIG}
     base = _configs.get(config_name)
     if base is None:
-        console.print(f"[red]Unknown config '{config_name}'. Choose: codegen, review, research[/red]")
+        console.print(
+            f"[red]Unknown config '{config_name}'. Choose: codegen, review, research[/red]"
+        )
         raise typer.Exit(1) from None
 
     cfg = HeadlessConfig(
@@ -836,8 +850,7 @@ def headless_batch(
     )
 
     console.print(
-        f"[bold]Running {len(all_prompts)} prompts "
-        f"({parallel} parallel, {cfg.model})...[/bold]"
+        f"[bold]Running {len(all_prompts)} prompts ({parallel} parallel, {cfg.model})...[/bold]"
     )
 
     results = run_batch(all_prompts, cfg, parallel=parallel)
@@ -1054,7 +1067,9 @@ def info() -> None:
     table.add_row("Project root", str(PROJECT_ROOT))
     table.add_row("Agents", str(len(list((PROJECT_ROOT / ".claude" / "agents").glob("*.md")))))
     table.add_row("Skills", str(len(list((PROJECT_ROOT / "skills").glob("*/SKILL.md")))))
-    table.add_row("Eval suites", str(len(list((PROJECT_ROOT / "evals").glob("*/promptfooconfig.yaml")))))
+    table.add_row(
+        "Eval suites", str(len(list((PROJECT_ROOT / "evals").glob("*/promptfooconfig.yaml"))))
+    )
     table.add_row("Scripts", str(len(list((PROJECT_ROOT / "scripts").glob("*.py")))))
 
     # Check Claude Code
@@ -1064,7 +1079,12 @@ def info() -> None:
     except (FileNotFoundError, subprocess.TimeoutExpired):
         table.add_row("Claude Code", "[red]not found[/red]")
 
-    table.add_row("Auth", "CLAUDE_CODE_OAUTH_TOKEN" if os.environ.get("CLAUDE_CODE_OAUTH_TOKEN") else "[red]not set[/red]")
+    table.add_row(
+        "Auth",
+        "CLAUDE_CODE_OAUTH_TOKEN"
+        if os.environ.get("CLAUDE_CODE_OAUTH_TOKEN")
+        else "[red]not set[/red]",
+    )
 
     console.print(table)
 
@@ -1077,18 +1097,26 @@ def status() -> None:
     checks = []
 
     # Git
-    result = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True, cwd=PROJECT_ROOT)
+    result = subprocess.run(
+        ["git", "status", "--porcelain"], capture_output=True, text=True, cwd=PROJECT_ROOT
+    )
     dirty = len(result.stdout.strip().split("\n")) if result.stdout.strip() else 0
     checks.append(("Git", "clean" if dirty == 0 else f"{dirty} dirty files", dirty == 0))
 
     # Python deps
-    checks.append(("Python (uv)", "available" if shutil.which("uv") else "missing", bool(shutil.which("uv"))))
+    checks.append(
+        ("Python (uv)", "available" if shutil.which("uv") else "missing", bool(shutil.which("uv")))
+    )
 
     # Node
-    checks.append(("Node.js", "available" if shutil.which("node") else "missing", bool(shutil.which("node"))))
+    checks.append(
+        ("Node.js", "available" if shutil.which("node") else "missing", bool(shutil.which("node")))
+    )
 
     # Ruff
-    checks.append(("Ruff", "available" if shutil.which("ruff") else "missing", bool(shutil.which("ruff"))))
+    checks.append(
+        ("Ruff", "available" if shutil.which("ruff") else "missing", bool(shutil.which("ruff")))
+    )
 
     table = Table(title="Status")
     table.add_column("Check", style="cyan")

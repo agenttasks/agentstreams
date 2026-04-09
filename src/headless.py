@@ -94,10 +94,13 @@ def _build_cmd(
     """
     cmd: list[str] = [
         "claude",
-        "--model", config.model,
-        "--max-turns", str(config.max_turns),
-        "--output-format", config.output_format,
-        "--print",          # Non-interactive: print response then exit
+        "--model",
+        config.model,
+        "--max-turns",
+        str(config.max_turns),
+        "--output-format",
+        config.output_format,
+        "--print",  # Non-interactive: print response then exit
     ]
 
     if config.system_prompt:

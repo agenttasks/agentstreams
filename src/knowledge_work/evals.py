@@ -58,7 +58,7 @@ class EvalResult:
     @property
     def quality_score(self) -> float:
         """Weighted average of quality dimensions."""
-        return (self.completeness * 0.4 + self.correctness * 0.4 + self.style * 0.2)
+        return self.completeness * 0.4 + self.correctness * 0.4 + self.style * 0.2
 
     def to_dict(self) -> dict[str, Any]:
         return {

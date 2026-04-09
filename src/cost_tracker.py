@@ -44,8 +44,14 @@ class UsageEntry:
 class CostTracker:
     entries: list[UsageEntry] = field(default_factory=list)
 
-    def record(self, model: str, input_tokens: int, output_tokens: int,
-               session_id: str = "", task: str = "") -> UsageEntry:
+    def record(
+        self,
+        model: str,
+        input_tokens: int,
+        output_tokens: int,
+        session_id: str = "",
+        task: str = "",
+    ) -> UsageEntry:
         pricing = PRICING.get(model, PRICING["claude-sonnet-4-6"])
         cost = (input_tokens * pricing["input"] + output_tokens * pricing["output"]) / 1_000_000
 
@@ -80,11 +86,20 @@ class CostTracker:
         p.parent.mkdir(parents=True, exist_ok=True)
         with p.open("a") as f:
             for e in self.entries:
-                f.write(json.dumps({
-                    "ts": e.timestamp, "model": e.model,
-                    "in": e.input_tokens, "out": e.output_tokens,
-                    "cost": e.cost_usd, "session": e.session_id, "task": e.task,
-                }) + "\n")
+                f.write(
+                    json.dumps(
+                        {
+                            "ts": e.timestamp,
+                            "model": e.model,
+                            "in": e.input_tokens,
+                            "out": e.output_tokens,
+                            "cost": e.cost_usd,
+                            "session": e.session_id,
+                            "task": e.task,
+                        }
+                    )
+                    + "\n"
+                )
 
     @classmethod
     def load(cls, path: Path | None = None) -> CostTracker:
@@ -94,12 +109,17 @@ class CostTracker:
             for line in p.read_text().strip().split("\n"):
                 if line:
                     d = json.loads(line)
-                    tracker.entries.append(UsageEntry(
-                        timestamp=d["ts"], model=d["model"],
-                        input_tokens=d["in"], output_tokens=d["out"],
-                        cost_usd=d["cost"], session_id=d.get("session", ""),
-                        task=d.get("task", ""),
-                    ))
+                    tracker.entries.append(
+                        UsageEntry(
+                            timestamp=d["ts"],
+                            model=d["model"],
+                            input_tokens=d["in"],
+                            output_tokens=d["out"],
+                            cost_usd=d["cost"],
+                            session_id=d.get("session", ""),
+                            task=d.get("task", ""),
+                        )
+                    )
         return tracker
 
     def summary(self) -> dict:

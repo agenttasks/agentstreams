@@ -178,15 +178,23 @@ def map_doc_to_layer(url: str, title: str, desc: str) -> tuple[float, str]:
         return 5, "subtasks"
     if any(w in text for w in ["subagent", "agent team", "custom tool"]):
         return 6, "subagents"
-    if any(w in text for w in ["hook", "permission", "sandbox", "agent loop", "harness", "channel", "schedule"]):
+    if any(
+        w in text
+        for w in ["hook", "permission", "sandbox", "agent loop", "harness", "channel", "schedule"]
+    ):
         return 7, "harness"
     if any(w in text for w in ["security", "behavioral", "destructive"]):
         return 7.5, "behavioral_safety"
-    if any(w in text for w in ["eval", "benchmark", "review", "cost", "analytics", "observ", "monitor"]):
+    if any(
+        w in text for w in ["eval", "benchmark", "review", "cost", "analytics", "observ", "monitor"]
+    ):
         return 8, "evals"
     if any(w in text for w in ["welfare", "affect", "distress"]):
         return 9, "welfare"
-    if any(w in text for w in ["deploy", "enterprise", "compliance", "legal", "bedrock", "vertex", "foundry"]):
+    if any(
+        w in text
+        for w in ["deploy", "enterprise", "compliance", "legal", "bedrock", "vertex", "foundry"]
+    ):
         return 10, "governance"
     if any(w in text for w in ["rlhf", "constitutional", "training"]):
         return 0, "training"
@@ -199,7 +207,6 @@ def generate_backlog_items(docs: list[DimDoc]) -> list[BacklogItem]:
     items: list[BacklogItem] = []
 
     for idx, (gap_key, gap_desc) in enumerate(TOOLKIT_COVERAGE["gaps"].items(), 1):
-
         # Find the most relevant doc for this gap
         best_doc = ""
         for doc in docs:
@@ -218,44 +225,70 @@ def generate_backlog_items(docs: list[DimDoc]) -> list[BacklogItem]:
 
         # Map to layer
         layer_map = {
-            "agent-teams": 6, "channels": 7, "checkpointing-integration": 5,
-            "chrome-integration": 7, "code-review-skill": 8, "context-window-management": 3,
-            "cost-tracking": 8, "headless-recipes": 7, "hook-library": 7,
-            "observability": 8, "output-styles": 3, "plugin-marketplace": 4,
-            "remote-control": 7, "scheduled-tasks": 7, "sessions-management": 5,
-            "slash-commands": 4, "structured-output": 6, "tool-search": 4,
-            "typescript-v2-sdk": 6, "ultraplan": 7, "voice": 7,
+            "agent-teams": 6,
+            "channels": 7,
+            "checkpointing-integration": 5,
+            "chrome-integration": 7,
+            "code-review-skill": 8,
+            "context-window-management": 3,
+            "cost-tracking": 8,
+            "headless-recipes": 7,
+            "hook-library": 7,
+            "observability": 8,
+            "output-styles": 3,
+            "plugin-marketplace": 4,
+            "remote-control": 7,
+            "scheduled-tasks": 7,
+            "sessions-management": 5,
+            "slash-commands": 4,
+            "structured-output": 6,
+            "tool-search": 4,
+            "typescript-v2-sdk": 6,
+            "ultraplan": 7,
+            "voice": 7,
         }
         layer = layer_map.get(gap_key, 7)
 
         # Determine effort
         effort_map = {
-            "agent-teams": "large", "channels": "medium", "hook-library": "medium",
-            "code-review-skill": "large", "headless-recipes": "small",
-            "structured-output": "medium", "tool-search": "medium",
-            "voice": "small", "chrome-integration": "large",
+            "agent-teams": "large",
+            "channels": "medium",
+            "hook-library": "medium",
+            "code-review-skill": "large",
+            "headless-recipes": "small",
+            "structured-output": "medium",
+            "tool-search": "medium",
+            "voice": "small",
+            "chrome-integration": "large",
         }
         effort = effort_map.get(gap_key, "medium")
 
         # Determine category
         cat_map = {
-            "agent-teams": "agent", "channels": "mcp", "hook-library": "hook",
-            "code-review-skill": "eval", "headless-recipes": "cli",
-            "structured-output": "cli", "tool-search": "mcp",
-            "slash-commands": "cli", "plugin-marketplace": "skill",
+            "agent-teams": "agent",
+            "channels": "mcp",
+            "hook-library": "hook",
+            "code-review-skill": "eval",
+            "headless-recipes": "cli",
+            "structured-output": "cli",
+            "tool-search": "mcp",
+            "slash-commands": "cli",
+            "plugin-marketplace": "skill",
         }
         category = cat_map.get(gap_key, "cli")
 
-        items.append(BacklogItem(
-            id=f"BL-{idx:03d}",
-            title=gap_key.replace("-", " ").title(),
-            description=gap_desc,
-            priority=priority,
-            layer=layer,
-            doc_url=best_doc,
-            category=category,
-            effort=effort,
-        ))
+        items.append(
+            BacklogItem(
+                id=f"BL-{idx:03d}",
+                title=gap_key.replace("-", " ").title(),
+                description=gap_desc,
+                priority=priority,
+                layer=layer,
+                doc_url=best_doc,
+                category=category,
+                effort=effort,
+            )
+        )
 
     return sorted(items, key=lambda x: (x.priority, x.layer))
 
@@ -270,11 +303,17 @@ def parse_docs_index(text: str) -> list[DimDoc]:
             category, surface = categorize_doc(url, title)
             sdk_relevant = "agent-sdk" in url or "headless" in url or "sdk" in title.lower()
             plugin_relevant = "plugin" in url or "skill" in title.lower() or "mcp" in url
-            docs.append(DimDoc(
-                url=url, title=title, description=desc,
-                category=category, surface=surface,
-                sdk_relevant=sdk_relevant, plugin_relevant=plugin_relevant,
-            ))
+            docs.append(
+                DimDoc(
+                    url=url,
+                    title=title,
+                    description=desc,
+                    category=category,
+                    surface=surface,
+                    sdk_relevant=sdk_relevant,
+                    plugin_relevant=plugin_relevant,
+                )
+            )
     return docs
 
 
@@ -286,7 +325,11 @@ def main():
     args = parser.parse_args()
 
     # Read the cached docs index
-    index_text = (PROJECT_ROOT / "docs-index.txt").read_text() if (PROJECT_ROOT / "docs-index.txt").exists() else ""
+    index_text = (
+        (PROJECT_ROOT / "docs-index.txt").read_text()
+        if (PROJECT_ROOT / "docs-index.txt").exists()
+        else ""
+    )
 
     if not index_text:
         # Parse from the user's provided list (hardcoded fallback)
@@ -317,7 +360,8 @@ def main():
         "coverage": {
             "covered": len(TOOLKIT_COVERAGE["covered"]),
             "gaps": len(TOOLKIT_COVERAGE["gaps"]),
-            "coverage_rate": len(TOOLKIT_COVERAGE["covered"]) / (len(TOOLKIT_COVERAGE["covered"]) + len(TOOLKIT_COVERAGE["gaps"])),
+            "coverage_rate": len(TOOLKIT_COVERAGE["covered"])
+            / (len(TOOLKIT_COVERAGE["covered"]) + len(TOOLKIT_COVERAGE["gaps"])),
         },
         "items": [asdict(b) for b in backlog],
     }
@@ -333,7 +377,9 @@ def main():
     print("-" * 75)
     for item in backlog:
         pri_label = {1: "P1!", 2: "P2 ", 3: "P3 ", 4: "P4 "}[item.priority]
-        print(f"{item.id:<8} {pri_label} {item.layer:>4.0f} {item.effort:<7} {item.category:<10} {item.title}")
+        print(
+            f"{item.id:<8} {pri_label} {item.layer:>4.0f} {item.effort:<7} {item.category:<10} {item.title}"
+        )
 
 
 if __name__ == "__main__":

@@ -177,9 +177,7 @@ def validate_output(output: dict[str, Any], schema: dict[str, Any]) -> list[str]
 
         if expected_type:
             # Handle nullable types like ["string", "null"]
-            allowed_types = (
-                expected_type if isinstance(expected_type, list) else [expected_type]
-            )
+            allowed_types = expected_type if isinstance(expected_type, list) else [expected_type]
             python_types = {
                 "string": str,
                 "integer": int,
@@ -189,9 +187,7 @@ def validate_output(output: dict[str, Any], schema: dict[str, Any]) -> list[str]
                 "object": dict,
                 "null": type(None),
             }
-            valid_python = tuple(
-                python_types[t] for t in allowed_types if t in python_types
-            )
+            valid_python = tuple(python_types[t] for t in allowed_types if t in python_types)
             if valid_python and not isinstance(value, valid_python):
                 errors.append(
                     f"Field '{field_name}' has wrong type: "
@@ -199,9 +195,7 @@ def validate_output(output: dict[str, Any], schema: dict[str, Any]) -> list[str]
                 )
 
         if enum_values is not None and value not in enum_values:
-            errors.append(
-                f"Field '{field_name}' value {value!r} not in enum {enum_values}"
-            )
+            errors.append(f"Field '{field_name}' value {value!r} not in enum {enum_values}")
 
         # Recurse into array items if schema present.
         if expected_type == "array" and isinstance(value, list):
@@ -256,9 +250,7 @@ def run_structured(
         RuntimeError: If the CLI is not found, returns a non-zero exit code,
             or if the output cannot be parsed or fails schema validation.
     """
-    system_prompt = _SYSTEM_PROMPT_TEMPLATE.format(
-        schema=json.dumps(schema, indent=2)
-    )
+    system_prompt = _SYSTEM_PROMPT_TEMPLATE.format(schema=json.dumps(schema, indent=2))
 
     env = os.environ.copy()
     # Ensure the CLI can find its OAuth token.
@@ -270,10 +262,14 @@ def run_structured(
 
     cmd = [
         "claude",
-        "--model", model,
-        "--system", system_prompt,
-        "--output-format", "text",
-        "-p", prompt,
+        "--model",
+        model,
+        "--system",
+        system_prompt,
+        "--output-format",
+        "text",
+        "-p",
+        prompt,
     ]
 
     try:
@@ -290,15 +286,11 @@ def run_structured(
             "https://code.claude.com/docs/en/get-started/quickstart"
         ) from exc
     except subprocess.TimeoutExpired as exc:
-        raise RuntimeError(
-            f"claude CLI timed out after {timeout}s"
-        ) from exc
+        raise RuntimeError(f"claude CLI timed out after {timeout}s") from exc
 
     if result.returncode != 0:
         stderr = result.stderr.strip()
-        raise RuntimeError(
-            f"claude CLI exited with code {result.returncode}: {stderr}"
-        )
+        raise RuntimeError(f"claude CLI exited with code {result.returncode}: {stderr}")
 
     raw = result.stdout.strip()
     parsed = _extract_json(raw)
@@ -367,9 +359,7 @@ def _extract_json(text: str) -> dict[str, Any]:
     # Find the outermost { ... } block.
     start = cleaned.find("{")
     if start == -1:
-        raise RuntimeError(
-            f"No JSON object found in model output. Raw output:\n{text[:500]}"
-        )
+        raise RuntimeError(f"No JSON object found in model output. Raw output:\n{text[:500]}")
 
     # Walk forward to find the matching closing brace.
     depth = 0
@@ -384,9 +374,7 @@ def _extract_json(text: str) -> dict[str, Any]:
                 break
 
     if end == -1:
-        raise RuntimeError(
-            f"Unbalanced braces in model output. Raw output:\n{text[:500]}"
-        )
+        raise RuntimeError(f"Unbalanced braces in model output. Raw output:\n{text[:500]}")
 
     try:
         return json.loads(cleaned[start:end])

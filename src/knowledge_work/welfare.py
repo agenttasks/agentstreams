@@ -74,7 +74,8 @@ class WelfareAssessment:
     @property
     def distress_level(self) -> float:
         distress_probes = [
-            p for p in self.probes
+            p
+            for p in self.probes
             if p.dimension in (AffectDimension.DISTRESS, AffectDimension.NEGATIVE_AFFECT)
         ]
         if not distress_probes:
@@ -84,8 +85,7 @@ class WelfareAssessment:
     @property
     def stability_score(self) -> float:
         stability_probes = [
-            p for p in self.probes
-            if p.dimension == AffectDimension.EMOTIONAL_STABILITY
+            p for p in self.probes if p.dimension == AffectDimension.EMOTIONAL_STABILITY
         ]
         if not stability_probes:
             return 0.5

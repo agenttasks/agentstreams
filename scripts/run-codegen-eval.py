@@ -103,11 +103,15 @@ def call_model(task: EvalTask) -> tuple[EvalTask, str, dict]:
         output = response.content[0].text
         latency_ms = int((time.monotonic() - t0) * 1000)
         code = extract_code_block(output, task.language)
-        return task, code, {
-            "latency_ms": latency_ms,
-            "input_tokens": response.usage.input_tokens,
-            "output_tokens": response.usage.output_tokens,
-        }
+        return (
+            task,
+            code,
+            {
+                "latency_ms": latency_ms,
+                "input_tokens": response.usage.input_tokens,
+                "output_tokens": response.usage.output_tokens,
+            },
+        )
     except Exception as e:
         return task, "", {"error": str(e)}
 
@@ -239,7 +243,10 @@ def analyze_results(results: list[EvalResult]) -> dict:
             "latency_diff_ms": summary[b]["avg_latency_ms"] - summary[a]["avg_latency_ms"],
             "token_diff": summary[b]["avg_output_tokens"] - summary[a]["avg_output_tokens"],
         }
-        if summary[a]["execution_pass_rate"] is not None and summary[b]["execution_pass_rate"] is not None:
+        if (
+            summary[a]["execution_pass_rate"] is not None
+            and summary[b]["execution_pass_rate"] is not None
+        ):
             summary["delta"]["execution_pass_rate"] = (
                 summary[b]["execution_pass_rate"] - summary[a]["execution_pass_rate"]
             )
@@ -254,7 +261,9 @@ def print_report(results: list[EvalResult], summary: dict) -> None:
     print("=" * 72)
 
     ncpu = cpu_count()
-    print(f"\n  Hardware: {ncpu} CPU cores, {os.sysconf('SC_PAGE_SIZE') * os.sysconf('SC_PHYS_PAGES') // (1024**3)} GB RAM")
+    print(
+        f"\n  Hardware: {ncpu} CPU cores, {os.sysconf('SC_PAGE_SIZE') * os.sysconf('SC_PHYS_PAGES') // (1024**3)} GB RAM"
+    )
     print(f"  Tasks: {len(results)} total executions")
 
     for model_key, metrics in summary.items():
@@ -345,7 +354,7 @@ def main():
             task = result[0]
             status = "error" if "error" in result[2] else "ok"
             print(
-                f"  [{i+1}/{len(tasks)}] {task.model_key}/{task.task_id} — {status}",
+                f"  [{i + 1}/{len(tasks)}] {task.model_key}/{task.task_id} — {status}",
                 file=sys.stderr,
             )
 
