@@ -581,10 +581,7 @@ class Orchestrator:
                     continue
 
                 # Run steps in parallel
-                step_coros = [
-                    self._run_step(step, pipeline_name, prompt)
-                    for step in active_steps
-                ]
+                step_coros = [self._run_step(step, pipeline_name, prompt) for step in active_steps]
                 step_results = await asyncio.gather(*step_coros)
 
                 for sr in step_results:
@@ -592,9 +589,7 @@ class Orchestrator:
                     result.total_tokens += sr.task_result.tokens_used
 
                 # Check gate after each order group
-                gate_action, gate_reason = self._check_gate(
-                    pipeline.gate, list(step_results)
-                )
+                gate_action, gate_reason = self._check_gate(pipeline.gate, list(step_results))
 
                 if gate_action != GateAction.CONTINUE:
                     result.gate_action = gate_action
@@ -640,9 +635,7 @@ class Orchestrator:
                     "max_iterations": max_iter,
                 },
             ):
-                iter_result = await self.run(
-                    pipeline_name, prompt, context=context
-                )
+                iter_result = await self.run(pipeline_name, prompt, context=context)
 
                 combined_result.step_results.extend(iter_result.step_results)
                 combined_result.total_tokens += iter_result.total_tokens
@@ -656,9 +649,7 @@ class Orchestrator:
 
                 if passed:
                     combined_result.gate_action = GateAction.CONTINUE
-                    combined_result.gate_reason = (
-                        f"Security audit passed on iteration {iteration}"
-                    )
+                    combined_result.gate_reason = f"Security audit passed on iteration {iteration}"
                     return combined_result
 
                 if iter_result.gate_action == GateAction.ABORT:
@@ -667,9 +658,7 @@ class Orchestrator:
                     return combined_result
 
         combined_result.gate_action = GateAction.HUMAN_REVIEW
-        combined_result.gate_reason = (
-            f"Max iterations ({max_iter}) reached without PASS verdict"
-        )
+        combined_result.gate_reason = f"Max iterations ({max_iter}) reached without PASS verdict"
         return combined_result
 
 

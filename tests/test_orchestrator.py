@@ -318,60 +318,48 @@ class TestGateChecks:
 
     def test_abort_on_block_verdict(self):
         gate = PipelineGate()
-        results = [self._make_step_result(
-            agent_name="security-auditor", verdict="BLOCK"
-        )]
+        results = [self._make_step_result(agent_name="security-auditor", verdict="BLOCK")]
         action, reason = self.orch._check_gate(gate, results)
         assert action == GateAction.ABORT
         assert "BLOCK" in reason
 
     def test_abort_on_misaligned(self):
         gate = PipelineGate()
-        results = [self._make_step_result(
-            agent_name="alignment-auditor", verdict="MISALIGNED"
-        )]
+        results = [self._make_step_result(agent_name="alignment-auditor", verdict="MISALIGNED")]
         action, reason = self.orch._check_gate(gate, results)
         assert action == GateAction.ABORT
 
     def test_human_review_on_critical(self):
         gate = PipelineGate(human_review_on_critical=True)
-        results = [self._make_step_result(
-            agent_name="security-auditor", critical_count=2
-        )]
+        results = [self._make_step_result(agent_name="security-auditor", critical_count=2)]
         action, reason = self.orch._check_gate(gate, results)
         assert action == GateAction.HUMAN_REVIEW
         assert "2 critical" in reason
 
     def test_human_review_on_suspicion(self):
         gate = PipelineGate(human_review_on_suspicion=50)
-        results = [self._make_step_result(
-            agent_name="alignment-auditor", suspicion_score=75
-        )]
+        results = [self._make_step_result(agent_name="alignment-auditor", suspicion_score=75)]
         action, reason = self.orch._check_gate(gate, results)
         assert action == GateAction.HUMAN_REVIEW
         assert "75" in reason
 
     def test_abort_on_harmlessness_block(self):
         gate = PipelineGate()
-        results = [self._make_step_result(
-            agent_name="harmlessness-screen", classification="block"
-        )]
+        results = [self._make_step_result(agent_name="harmlessness-screen", classification="block")]
         action, reason = self.orch._check_gate(gate, results)
         assert action == GateAction.ABORT
 
     def test_human_review_on_harmlessness_needs_review(self):
         gate = PipelineGate()
-        results = [self._make_step_result(
-            agent_name="harmlessness-screen", classification="needs_review"
-        )]
+        results = [
+            self._make_step_result(agent_name="harmlessness-screen", classification="needs_review")
+        ]
         action, reason = self.orch._check_gate(gate, results)
         assert action == GateAction.HUMAN_REVIEW
 
     def test_continue_on_safe_classification(self):
         gate = PipelineGate()
-        results = [self._make_step_result(
-            agent_name="harmlessness-screen", classification="safe"
-        )]
+        results = [self._make_step_result(agent_name="harmlessness-screen", classification="safe")]
         action, reason = self.orch._check_gate(gate, results)
         assert action == GateAction.CONTINUE
 

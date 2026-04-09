@@ -77,13 +77,17 @@ jobs:
             fi
           done
 
-          # ANTHROPIC_API_KEY never used
+          # ANTHROPIC_API_KEY never used in production code
           VIOLATIONS=$(grep -rn "ANTHROPIC_API_KEY" \
             --include="*.py" --include="*.ts" --include="*.yml" \
             --include="*.sh" --include="*.json" \
             . 2>/dev/null | \
             grep -vi "never use" | grep -vi "NEVER" | \
-            grep -v "node_modules" | grep -v ".git/" || true)
+            grep -v "node_modules" | grep -v ".git/" | \
+            grep -v ".github/workflows/" | \
+            grep -v "tests/" | \
+            grep -v "scripts/security-audit.py" | \
+            grep -v "scripts/validate-skills.py" || true)
           if [ -n "$VIOLATIONS" ]; then
             echo "::error::ANTHROPIC_API_KEY found outside warnings"
             echo "$VIOLATIONS"

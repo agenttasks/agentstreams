@@ -92,7 +92,7 @@ tests:
     prompts:
       - generate-agent-config
     vars:
-      description: "A coding assistant using Claude Sonnet 4.6 with all built-in tools enabled and a system prompt telling it to write clean code"
+      description: "A coding assistant using claude-sonnet-4-6 with all built-in tools enabled and a system prompt telling it to write clean code"
     assert:
       - type: is-json
       - type: javascript
@@ -110,7 +110,7 @@ tests:
     prompts:
       - generate-agent-config
     vars:
-      description: "A security auditor using Claude Opus 4.6 that can only read files, search, and run bash commands — writing and editing are disabled. It should end every response with a verdict."
+      description: "A security auditor using claude-opus-4-6 that can only read files, search, and run bash commands — writing and editing are disabled. It should end every response with a verdict."
     assert:
       - type: is-json
       - type: javascript
@@ -134,7 +134,7 @@ tests:
     prompts:
       - generate-agent-config
     vars:
-      description: "A weather agent using Sonnet 4.6 with all built-in tools plus a custom tool called 'get_weather' that takes a 'location' string parameter"
+      description: "A weather agent using claude-sonnet-4-6 with all built-in tools plus a custom tool called 'get_weather' that takes a 'location' string parameter"
     assert:
       - type: is-json
       - type: javascript
@@ -148,7 +148,7 @@ tests:
     prompts:
       - generate-agent-config
     vars:
-      description: "A GitHub assistant using Sonnet 4.6 that connects to the GitHub MCP server at https://api.githubcopilot.com/mcp/ with built-in tools and MCP tools enabled"
+      description: "A GitHub assistant using claude-sonnet-4-6 that connects to the GitHub MCP server at https://api.githubcopilot.com/mcp/ with built-in tools and MCP tools enabled"
     assert:
       - type: is-json
       - type: javascript
@@ -398,7 +398,7 @@ tests:
     prompts:
       - generate-agent-config
     vars:
-      description: "A basic coding agent with Sonnet 4.6"
+      description: "A basic coding agent with claude-sonnet-4-6"
     assert:
       - type: cost
         threshold: 0.02
