@@ -24,8 +24,9 @@ Plugin categories (PluginCategory enum values mirror directory names exactly):
     PARTNER_BUILT             → partner-built-agent      (11 unique skills:
                                                           apollo, brand-voice,
                                                           common-room, slack;
-                                                          3 cross-plugin dupes
-                                                          yielded to first-party)
+                                                          2 cross-plugin dupes
+                                                          yielded to first-party,
+                                                          1 intra-partner dedup)
     PDF_VIEWER                → pdf-viewer-agent         (1 skill)
     PRODUCT_MANAGEMENT        → product-management-agent (7 skills; competitive-brief
                                                           yielded to marketing)
@@ -307,7 +308,10 @@ for _n, _i in [
 ]:
     _register(_n, PluginCategory.OPERATIONS, _i)
 
-# partner-built — apollo, brand-voice, common-room, slack (14 raw, 11 after dedup).
+# partner-built — apollo, brand-voice, common-room, slack (13 unique slugs, 11 after dedup).
+# account-research, call-prep already registered under first-party sales
+# (common-room variants silently skipped by _register).
+# prospect appears in both apollo and common-room; apollo registers first.
 # account-research, call-prep, prospect already registered under first-party
 # sales/apollo; _register skips duplicates so partner-built entries for those
 # are silently ignored, which is the correct first-party-wins behaviour.
