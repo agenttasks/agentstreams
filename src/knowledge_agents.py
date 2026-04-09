@@ -312,9 +312,6 @@ for _n, _i in [
 # account-research, call-prep already registered under first-party sales
 # (common-room variants silently skipped by _register).
 # prospect appears in both apollo and common-room; apollo registers first.
-# account-research, call-prep, prospect already registered under first-party
-# sales/apollo; _register skips duplicates so partner-built entries for those
-# are silently ignored, which is the correct first-party-wins behaviour.
 for _n, _i in [
     # apollo
     ("enrich-lead", 607),

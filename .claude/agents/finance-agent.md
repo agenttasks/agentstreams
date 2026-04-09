@@ -7,6 +7,51 @@ color: red
 memory: project
 maxTurns: 15
 skills:
+  - vendors/financial-services-plugins/equity-research/skills/catalyst-calendar/SKILL.md
+  - vendors/financial-services-plugins/equity-research/skills/earnings-analysis/SKILL.md
+  - vendors/financial-services-plugins/equity-research/skills/earnings-preview/SKILL.md
+  - vendors/financial-services-plugins/equity-research/skills/idea-generation/SKILL.md
+  - vendors/financial-services-plugins/equity-research/skills/initiating-coverage/SKILL.md
+  - vendors/financial-services-plugins/equity-research/skills/model-update/SKILL.md
+  - vendors/financial-services-plugins/equity-research/skills/morning-note/SKILL.md
+  - vendors/financial-services-plugins/equity-research/skills/sector-overview/SKILL.md
+  - vendors/financial-services-plugins/equity-research/skills/thesis-tracker/SKILL.md
+  - vendors/financial-services-plugins/financial-analysis/skills/3-statement-model/SKILL.md
+  - vendors/financial-services-plugins/financial-analysis/skills/audit-xls/SKILL.md
+  - vendors/financial-services-plugins/financial-analysis/skills/clean-data-xls/SKILL.md
+  - vendors/financial-services-plugins/financial-analysis/skills/competitive-analysis/SKILL.md
+  - vendors/financial-services-plugins/financial-analysis/skills/comps-analysis/SKILL.md
+  - vendors/financial-services-plugins/financial-analysis/skills/dcf-model/SKILL.md
+  - vendors/financial-services-plugins/financial-analysis/skills/deck-refresh/SKILL.md
+  - vendors/financial-services-plugins/financial-analysis/skills/ib-check-deck/SKILL.md
+  - vendors/financial-services-plugins/financial-analysis/skills/lbo-model/SKILL.md
+  - vendors/financial-services-plugins/financial-analysis/skills/ppt-template-creator/SKILL.md
+  - vendors/financial-services-plugins/financial-analysis/skills/skill-creator/SKILL.md
+  - vendors/financial-services-plugins/investment-banking/skills/buyer-list/SKILL.md
+  - vendors/financial-services-plugins/investment-banking/skills/cim-builder/SKILL.md
+  - vendors/financial-services-plugins/investment-banking/skills/datapack-builder/SKILL.md
+  - vendors/financial-services-plugins/investment-banking/skills/deal-tracker/SKILL.md
+  - vendors/financial-services-plugins/investment-banking/skills/merger-model/SKILL.md
+  - vendors/financial-services-plugins/investment-banking/skills/pitch-deck/SKILL.md
+  - vendors/financial-services-plugins/investment-banking/skills/process-letter/SKILL.md
+  - vendors/financial-services-plugins/investment-banking/skills/strip-profile/SKILL.md
+  - vendors/financial-services-plugins/investment-banking/skills/teaser/SKILL.md
+  - vendors/financial-services-plugins/private-equity/skills/ai-readiness/SKILL.md
+  - vendors/financial-services-plugins/private-equity/skills/dd-checklist/SKILL.md
+  - vendors/financial-services-plugins/private-equity/skills/dd-meeting-prep/SKILL.md
+  - vendors/financial-services-plugins/private-equity/skills/deal-screening/SKILL.md
+  - vendors/financial-services-plugins/private-equity/skills/deal-sourcing/SKILL.md
+  - vendors/financial-services-plugins/private-equity/skills/ic-memo/SKILL.md
+  - vendors/financial-services-plugins/private-equity/skills/portfolio-monitoring/SKILL.md
+  - vendors/financial-services-plugins/private-equity/skills/returns-analysis/SKILL.md
+  - vendors/financial-services-plugins/private-equity/skills/unit-economics/SKILL.md
+  - vendors/financial-services-plugins/private-equity/skills/value-creation-plan/SKILL.md
+  - vendors/financial-services-plugins/wealth-management/skills/client-report/SKILL.md
+  - vendors/financial-services-plugins/wealth-management/skills/client-review/SKILL.md
+  - vendors/financial-services-plugins/wealth-management/skills/financial-plan/SKILL.md
+  - vendors/financial-services-plugins/wealth-management/skills/investment-proposal/SKILL.md
+  - vendors/financial-services-plugins/wealth-management/skills/portfolio-rebalance/SKILL.md
+  - vendors/financial-services-plugins/wealth-management/skills/tax-loss-harvesting/SKILL.md
   - vendors/knowledge-work-plugins/finance/skills/audit-support/SKILL.md
   - vendors/knowledge-work-plugins/finance/skills/close-management/SKILL.md
   - vendors/knowledge-work-plugins/finance/skills/financial-statements/SKILL.md

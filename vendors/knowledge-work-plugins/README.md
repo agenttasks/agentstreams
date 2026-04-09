@@ -10,7 +10,9 @@ Each plugin bundles the skills, connectors, slash commands, and sub-agents for a
 
 ## Plugin Marketplace
 
-We're open-sourcing 11 plugins built and inspired by our own work:
+We're open-sourcing 11 plugins built and inspired by our own work
+(the repo also ships 6 additional plugins — design, engineering,
+human-resources, operations, partner-built, pdf-viewer — for 17 total):
 
 | Plugin | How it helps | Connectors |
 |--------|-------------|------------|

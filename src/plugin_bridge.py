@@ -275,9 +275,19 @@ class PluginBridge:
         Combines the plugin description with skill content to create
         a comprehensive agent prompt.
         """
+        # Derive repo name from the vendor path
+        _repo = "knowledge-work-plugins"
+        if manifest.path:
+            try:
+                parts_list = manifest.path.parts
+                idx = parts_list.index("vendors")
+                _repo = parts_list[idx + 1]
+            except (ValueError, IndexError):
+                pass
+
         parts = [
             f"You are a {manifest.name} agent, powered by the `{manifest.name}` "
-            f"plugin from anthropics/knowledge-work-plugins.",
+            f"plugin from anthropics/{_repo}.",
             "",
         ]
 

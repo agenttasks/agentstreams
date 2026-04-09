@@ -244,13 +244,10 @@ def generate_subagent_md(agent: MergedSubagent) -> str:
         f"maxTurns: {max_turns}",
     ]
 
-    # Skills frontmatter — relative paths for preloading
-    real_skill_paths = [
-        p for p, s in zip(agent.skill_paths, agent.skills, strict=True) if not _is_stub_skill(s)
-    ]
-    if real_skill_paths:
+    # Skills frontmatter — relative paths for preloading (all skills, including stubs)
+    if agent.skill_paths:
         fm.append("skills:")
-        for path in real_skill_paths:
+        for path in agent.skill_paths:
             fm.append(f"  - {path}")
 
     # MCP servers frontmatter — inline HTTP definitions

@@ -156,8 +156,8 @@ def _agent_configs() -> dict[str, AgentConfig]:
     """Build the roster of subagent configurations.
 
     Model assignments follow the hierarchy:
-    - opus: security-auditor, alignment-auditor, architecture-reviewer,
-            + all 17 knowledge-work agents (from plugin layer)
+    - opus: security-auditor, alignment-auditor, architecture-reviewer
+            (+ 17 knowledge-work agents from plugin layer)
     - sonnet: code-generator, test-runner, prompt-hardener, eval-builder
     - haiku: harmlessness-screen
 
