@@ -124,7 +124,7 @@ without reasoning monitoring.
 **Repos that feed this layer:**
 - safety-research/petri (979★) — alignment auditing agent
 - safety-research/lie-detector (4★) — lie detection in LMs
-- safety-research/trusted-monitor (1★) — transcript suspicious behavior scoring
+- safety-research/trusted-monitor (41★) — transcript suspicious behavior scoring
 
 ---
 
