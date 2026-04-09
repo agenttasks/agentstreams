@@ -185,7 +185,7 @@ type: subagent
     </package>
 
     <!-- Reference repos (not pip-installable, used as methodology context) -->
-    <reference name="trusted-monitor" relevance="alignment-auditor">
+    <reference name="trusted-monitor" relevance="alignment-auditor" stars="41">
       Transcript suspicion scoring (0-100, 8-tier rubric). Quick scan and
       full scan modes. Evaluates: suspicion, incriminating, severity,
       confidence, effectiveness, realism.
