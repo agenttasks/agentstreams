@@ -77,7 +77,7 @@ For each file changed:
 
 ## Defaults
 
-- Model: claude-opus-4-6 for security-auditor, claude-sonnet-4-6 for others
+- Model: claude-opus-4-6 for security-auditor, alignment-auditor, architecture-reviewer; claude-sonnet-4-6 for code-generator, test-runner, prompt-hardener, eval-builder
 - Max files per review: 50
 - Timeout per agent: 120 seconds
 - Parallel agents: 3 (one per review dimension)

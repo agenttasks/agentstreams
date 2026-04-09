@@ -1,4 +1,4 @@
-"""knowledge_work — 8-layer abstraction over anthropics/knowledge-work-plugins.
+"""knowledge_work — 14-layer abstraction over anthropics/knowledge-work-plugins.
 
 Layers (bottom → top):
 

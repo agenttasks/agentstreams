@@ -461,6 +461,22 @@ SAFETY_REPOS = [
     ),
     RepoEntry(
         Org.SAFETY,
+        "ciphered-reasoning-llms",
+        0,
+        "Python",
+        "Research on ciphered/encoded reasoning in LLMs",
+        Layer.CIRCUITS,
+    ),
+    RepoEntry(
+        Org.SAFETY,
+        "PurpleLlama",
+        0,
+        "Python",
+        "Meta's safety evaluation suite (referenced by security-auditor)",
+        Layer.EVALS,
+    ),
+    RepoEntry(
+        Org.SAFETY,
         "impossiblebench",
         36,
         "Python",
