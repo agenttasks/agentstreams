@@ -617,6 +617,248 @@ def tools_load(
             console.print("[dim]No properties defined in schema.[/dim]")
 
 
+# ── Channels ────────────────────────────────────────────────────
+
+
+@channels_app.command("list")
+def channels_list() -> None:
+    """List all registered channels (name, source type, filter)."""
+    from src.channels import CI_CHANNEL, GITHUB_CHANNEL, SLACK_CHANNEL, ChannelBridge
+
+    bridge = ChannelBridge()
+    for cfg in [CI_CHANNEL, GITHUB_CHANNEL, SLACK_CHANNEL]:
+        bridge.register(cfg)
+
+    table = Table(title="Registered Channels")
+    table.add_column("Name", style="cyan")
+    table.add_column("Source Type", style="green")
+    table.add_column("Filter Pattern", style="yellow")
+
+    for cfg in bridge.registered_channels():
+        table.add_row(cfg.channel_name, cfg.source_type.value, cfg.filter_pattern or "-")
+
+    console.print(table)
+
+
+@channels_app.command("push")
+def channels_push(
+    source: str = typer.Option(..., "--source", "-s", help="Channel name / source (e.g., ci, github)"),
+    type_: str = typer.Option(..., "--type", "-t", help="Event type (e.g., ci.failure, pr.comment)"),
+    payload: str = typer.Option("{}", "--payload", "-p", help="JSON payload string"),
+) -> None:
+    """Push an event into the active Claude Code session.
+
+    Example:
+      agentstreams channels push -s ci -t ci.failure -p '{"branch":"main"}'
+    """
+    import json as _json
+
+    from src.channels import ChannelBridge, ChannelMessage
+
+    try:
+        data = _json.loads(payload)
+    except _json.JSONDecodeError as exc:
+        console.print(f"[red]Invalid JSON payload: {exc}[/red]")
+        raise typer.Exit(1)
+
+    msg = ChannelMessage(source=source, type=type_, payload=data)
+    bridge = ChannelBridge()
+    proc = bridge.push(msg)
+
+    if proc.returncode == 0:
+        console.print(f"[green]Pushed {type_} to channel '{source}'[/green]")
+        if proc.stdout.strip():
+            console.print(proc.stdout.strip())
+    else:
+        console.print(f"[red]Push failed (exit {proc.returncode})[/red]")
+        if proc.stderr.strip():
+            console.print(f"[dim]{proc.stderr.strip()}[/dim]")
+        raise typer.Exit(proc.returncode)
+
+
+@channels_app.command("status")
+def channels_status() -> None:
+    """Show channel status: pre-built configs and auth token presence."""
+    import os
+
+    from src.channels import CI_CHANNEL, GITHUB_CHANNEL, SLACK_CHANNEL
+
+    table = Table(title="Channel Status")
+    table.add_column("Channel", style="cyan")
+    table.add_column("Source Type", style="green")
+    table.add_column("Filter", style="yellow")
+    table.add_column("Status")
+
+    for cfg in [CI_CHANNEL, GITHUB_CHANNEL, SLACK_CHANNEL]:
+        table.add_row(
+            cfg.channel_name,
+            cfg.source_type.value,
+            cfg.filter_pattern or "-",
+            "[green]ready[/green]",
+        )
+
+    console.print(table)
+
+    token_present = bool(os.environ.get("CLAUDE_CODE_OAUTH_TOKEN"))
+    auth_label = (
+        "[green]CLAUDE_CODE_OAUTH_TOKEN set[/green]"
+        if token_present
+        else "[red]CLAUDE_CODE_OAUTH_TOKEN not set[/red]"
+    )
+    console.print(f"\nAuth: {auth_label}")
+
+
+# ── Headless ─────────────────────────────────────────────────────
+
+
+@headless_app.command("run")
+def headless_run(
+    prompt: str = typer.Argument(..., help="Prompt to send to Claude"),
+    model: str = typer.Option("", help="Model ID (overrides config default)"),
+    config_name: str = typer.Option(
+        "codegen",
+        "--config",
+        "-c",
+        help="Pre-built config: codegen, review, research",
+    ),
+    system_prompt: str = typer.Option("", "--system-prompt", help="Override system prompt"),
+    max_turns: int = typer.Option(0, help="Override max turns (0 = use config default)"),
+    tools: list[str] = typer.Option([], "--tool", help="MCP tool names to enable"),
+    output_format: str = typer.Option("", "--output-format", "-o", help="text, json, stream-json"),
+) -> None:
+    """Run a single prompt in headless mode.
+
+    Example:
+      agentstreams headless run "Add type hints to src/bloom.py" --config codegen
+    """
+    from src.headless import (
+        CODEGEN_CONFIG,
+        RESEARCH_CONFIG,
+        REVIEW_CONFIG,
+        HeadlessConfig,
+        run_headless,
+        run_headless_with_tools,
+    )
+
+    _configs = {"codegen": CODEGEN_CONFIG, "review": REVIEW_CONFIG, "research": RESEARCH_CONFIG}
+    base = _configs.get(config_name)
+    if base is None:
+        console.print(f"[red]Unknown config '{config_name}'. Choose: codegen, review, research[/red]")
+        raise typer.Exit(1)
+
+    cfg = HeadlessConfig(
+        model=model or base.model,
+        system_prompt=system_prompt or base.system_prompt,
+        max_turns=max_turns if max_turns > 0 else base.max_turns,
+        tools=list(base.tools),
+        output_format=output_format or base.output_format,
+    )
+
+    console.print(f"[bold]Running headless ({cfg.model}, {cfg.max_turns} turns max)...[/bold]")
+
+    if tools:
+        result = run_headless_with_tools(prompt, list(tools), cfg)
+    else:
+        result = run_headless(prompt, cfg)
+
+    if result.success:
+        console.print(result.output)
+    else:
+        console.print(f"[red]claude exited {result.returncode}[/red]")
+        if result.stderr.strip():
+            console.print(f"[dim]{result.stderr.strip()}[/dim]")
+        raise typer.Exit(result.returncode)
+
+
+@headless_app.command("batch")
+def headless_batch(
+    prompts_file: str = typer.Option(
+        "",
+        "--file",
+        "-f",
+        help="Path to a file with one prompt per line",
+    ),
+    prompts: list[str] = typer.Option([], "--prompt", "-p", help="Prompt(s) to run (repeatable)"),
+    config_name: str = typer.Option(
+        "codegen",
+        "--config",
+        "-c",
+        help="Pre-built config: codegen, review, research",
+    ),
+    parallel: int = typer.Option(4, help="Number of parallel workers (default 4)"),
+    output_format: str = typer.Option("", "--output-format", "-o", help="text, json, stream-json"),
+) -> None:
+    """Run multiple prompts in parallel headless mode.
+
+    Prompts may be supplied via --prompt (repeatable) or --file (one per line).
+
+    Example:
+      agentstreams headless batch --file prompts.txt --parallel 4
+      agentstreams headless batch -p "task 1" -p "task 2" --config review
+    """
+    from src.headless import (
+        CODEGEN_CONFIG,
+        RESEARCH_CONFIG,
+        REVIEW_CONFIG,
+        HeadlessConfig,
+        run_batch,
+    )
+
+    all_prompts: list[str] = list(prompts)
+
+    if prompts_file:
+        ppath = Path(prompts_file)
+        if not ppath.exists():
+            console.print(f"[red]File not found: {prompts_file}[/red]")
+            raise typer.Exit(1)
+        lines = [line.strip() for line in ppath.read_text().splitlines() if line.strip()]
+        all_prompts.extend(lines)
+
+    if not all_prompts:
+        console.print("[red]No prompts provided. Use --prompt or --file.[/red]")
+        raise typer.Exit(1)
+
+    _configs = {"codegen": CODEGEN_CONFIG, "review": REVIEW_CONFIG, "research": RESEARCH_CONFIG}
+    base = _configs.get(config_name)
+    if base is None:
+        console.print(f"[red]Unknown config '{config_name}'. Choose: codegen, review, research[/red]")
+        raise typer.Exit(1)
+
+    cfg = HeadlessConfig(
+        model=base.model,
+        system_prompt=base.system_prompt,
+        max_turns=base.max_turns,
+        tools=list(base.tools),
+        output_format=output_format or base.output_format,
+    )
+
+    console.print(
+        f"[bold]Running {len(all_prompts)} prompts "
+        f"({parallel} parallel, {cfg.model})...[/bold]"
+    )
+
+    results = run_batch(all_prompts, cfg, parallel=parallel)
+
+    failed = 0
+    for i, res in enumerate(results, start=1):
+        run_status = "[green]OK[/green]" if res.success else "[red]FAIL[/red]"
+        snippet = res.prompt[:80] + ("..." if len(res.prompt) > 80 else "")
+        console.print(f"\n[bold]Prompt {i}/{len(results)}[/bold]  {run_status}")
+        console.print(f"  [dim]{snippet}[/dim]")
+        if res.output:
+            console.print(res.output)
+        if not res.success:
+            failed += 1
+            if res.stderr.strip():
+                console.print(f"  [dim]{res.stderr.strip()}[/dim]")
+
+    if failed:
+        console.print(f"\n[red]{failed}/{len(results)} prompts failed.[/red]")
+        raise typer.Exit(1)
+    else:
+        console.print(f"\n[green]All {len(results)} prompts completed.[/green]")
+
+
 # ── Top-level commands ──────────────────────────────────────────
 
 
