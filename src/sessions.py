@@ -27,7 +27,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-
 # ── Data classes ───────────────────────────────────────────────
 
 
@@ -432,8 +431,8 @@ class SessionManager:
                 # Count non-empty lines as a proxy for message count
                 try:
                     lines = [
-                        l for l in transcript.read_text(encoding="utf-8").splitlines()
-                        if l.strip()
+                        line for line in transcript.read_text(encoding="utf-8").splitlines()
+                        if line.strip()
                     ]
                     message_count = len(lines)
                 except OSError:

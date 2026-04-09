@@ -21,7 +21,7 @@ from __future__ import annotations
 import json
 import os
 import subprocess
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any
 
 # ── Pre-built schemas ────────────────────────────────────────────────────────
@@ -36,7 +36,7 @@ VERDICT_SCHEMA: dict[str, Any] = {
         },
         "severity": {
             "type": "string",
-            "enum": ["low", "medium", "high", "critical"],
+            "enum": ["none", "low", "medium", "high", "critical"],
             "description": "Worst-case severity of any finding",
         },
         "findings": {
@@ -68,7 +68,7 @@ CODE_REVIEW_SCHEMA: dict[str, Any] = {
                     },
                     "severity": {
                         "type": "string",
-                        "enum": ["low", "medium", "high", "critical"],
+                        "enum": ["none", "low", "medium", "high", "critical"],
                     },
                     "message": {
                         "type": "string",

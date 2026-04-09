@@ -18,7 +18,7 @@ Uses CLAUDE_CODE_OAUTH_TOKEN for auth (never ANTHROPIC_API_KEY).
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -189,7 +189,7 @@ class ToolIndex:
     def from_mcp_servers(
         cls,
         server_configs: list[dict[str, Any]],
-    ) -> "ToolIndex":
+    ) -> ToolIndex:
         """Build an index from a list of MCP server tool definitions.
 
         Each entry in ``server_configs`` should follow the MCP tools-list
@@ -223,7 +223,7 @@ class ToolIndex:
     # ── Factory: skills directory ───────────────────────────────────────
 
     @classmethod
-    def from_skills(cls, skills_dir: Path) -> "ToolIndex":
+    def from_skills(cls, skills_dir: Path) -> ToolIndex:
         """Build an index by scanning a skills/ directory tree for SKILL.md files.
 
         Each SKILL.md must have YAML frontmatter with at minimum a ``name``

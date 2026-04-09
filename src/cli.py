@@ -76,7 +76,7 @@ def agents_list(
     agents_dir = PROJECT_ROOT / ".claude" / "agents"
     if not agents_dir.exists():
         console.print("[red]No agents directory found[/red]")
-        raise typer.Exit(1)
+        raise typer.Exit(1) from None
 
     table = Table(title="Agents")
     table.add_column("Name", style="cyan")
@@ -109,7 +109,7 @@ def agents_show(name: str = typer.Argument(..., help="Agent name")) -> None:
     md = PROJECT_ROOT / ".claude" / "agents" / f"{name}.md"
     if not md.exists():
         console.print(f"[red]Agent not found: {name}[/red]")
-        raise typer.Exit(1)
+        raise typer.Exit(1) from None
     console.print(md.read_text(errors="replace"))
 
 
@@ -127,8 +127,8 @@ def eval_codegen(
     cmd = [sys.executable, str(PROJECT_ROOT / "scripts" / "run-codegen-eval.py")]
     for m in models:
         cmd.extend(["--models", m])
-    for l in lang:
-        cmd.extend(["--lang", l])
+    for language in lang:
+        cmd.extend(["--lang", language])
     cmd.extend(["--samples", str(samples)])
     if dry_run:
         cmd.append("--dry-run")
@@ -211,8 +211,9 @@ def pipeline_security(
     JSON verdict (VERDICT_SCHEMA) instead of running the audit script.
     """
     if structured:
-        from src.structured_output import VERDICT_SCHEMA, run_structured
         import json as _json
+
+        from src.structured_output import VERDICT_SCHEMA, run_structured
 
         paths_str = ", ".join(paths)
         prompt = (
@@ -227,7 +228,7 @@ def pipeline_security(
             console.print_json(_json.dumps(result, indent=2))
         except RuntimeError as exc:
             console.print(f"[red]Structured output failed: {exc}[/red]")
-            raise typer.Exit(1)
+            raise typer.Exit(1) from None
         return
 
     cmd = [sys.executable, str(PROJECT_ROOT / "scripts" / "security-audit.py")]
@@ -256,9 +257,10 @@ def validate_all(
     running each script individually.
     """
     if structured:
-        from src.structured_output import TASK_RESULT_SCHEMA, run_structured
         import json as _json
         import time
+
+        from src.structured_output import TASK_RESULT_SCHEMA, run_structured
 
         start_ms = int(time.monotonic() * 1000)
         scripts = ["validate-skills.py", "validate-ontology.py"]
@@ -297,7 +299,7 @@ def validate_all(
             console.print_json(_json.dumps(structured_result, indent=2))
         except RuntimeError as exc:
             console.print(f"[red]Structured output failed: {exc}[/red]")
-            raise typer.Exit(1)
+            raise typer.Exit(1) from None
         return
 
     for script in ["validate-skills.py", "validate-ontology.py"]:
@@ -329,7 +331,7 @@ def layers_list() -> None:
     table.add_column("Top Repo")
 
     reg = EcosystemRegistry()
-    for layer in sorted(Layer, key=lambda l: l.value):
+    for layer in sorted(Layer, key=lambda x: x.value):
         repos = reg.by_layer(layer)
         if repos:
             table.add_row(
@@ -353,7 +355,7 @@ def layers_repos(layer_id: int = typer.Argument(..., help="Layer ID (0-10)")) ->
         layer = Layer(layer_id)
     except ValueError:
         console.print(f"[red]Invalid layer ID: {layer_id}[/red]")
-        raise typer.Exit(1)
+        raise typer.Exit(1) from None
 
     repos = reg.by_layer(layer)
     table = Table(title=f"Layer {layer_id}: {layer.name}")
@@ -433,7 +435,7 @@ def teams_run(
     if team not in TEAMS:
         available = ", ".join(TEAMS.keys())
         console.print(f"[red]Unknown team '{team}'. Available: {available}[/red]")
-        raise typer.Exit(1)
+        raise typer.Exit(1) from None
 
     config = TEAMS[team]
     orch = TeamOrchestrator(config)
@@ -443,7 +445,7 @@ def teams_run(
         names = [m.agent_name for m in config.members]
         if member not in names:
             console.print(f"[red]Member '{member}' not in team '{team}'. Members: {', '.join(names)}[/red]")
-            raise typer.Exit(1)
+            raise typer.Exit(1) from None
         console.print(f"[bold]Assigning task to {member}...[/bold]")
         result = orch.assign_task(member, task)
         _print_member_result(result)
@@ -581,13 +583,14 @@ def tools_load(
     json_output: bool = typer.Option(False, "--json", help="Print raw JSON schema"),
 ) -> None:
     """Load and display the full schema for a named tool."""
-    from src.tool_search import DEFAULT_INDEX
     import json as _json
+
+    from src.tool_search import DEFAULT_INDEX
 
     schema = DEFAULT_INDEX.load(name)
     if schema is None:
         console.print(f"[red]Tool not found: {name}[/red]")
-        raise typer.Exit(1)
+        raise typer.Exit(1) from None
 
     tool = DEFAULT_INDEX._tools.get(name)  # noqa: SLF001
     console.print(f"[bold cyan]{name}[/bold cyan]")
@@ -659,7 +662,7 @@ def channels_push(
         data = _json.loads(payload)
     except _json.JSONDecodeError as exc:
         console.print(f"[red]Invalid JSON payload: {exc}[/red]")
-        raise typer.Exit(1)
+        raise typer.Exit(1) from None
 
     msg = ChannelMessage(source=source, type=type_, payload=data)
     bridge = ChannelBridge()
@@ -744,7 +747,7 @@ def headless_run(
     base = _configs.get(config_name)
     if base is None:
         console.print(f"[red]Unknown config '{config_name}'. Choose: codegen, review, research[/red]")
-        raise typer.Exit(1)
+        raise typer.Exit(1) from None
 
     cfg = HeadlessConfig(
         model=model or base.model,
@@ -810,19 +813,19 @@ def headless_batch(
         ppath = Path(prompts_file)
         if not ppath.exists():
             console.print(f"[red]File not found: {prompts_file}[/red]")
-            raise typer.Exit(1)
+            raise typer.Exit(1) from None
         lines = [line.strip() for line in ppath.read_text().splitlines() if line.strip()]
         all_prompts.extend(lines)
 
     if not all_prompts:
         console.print("[red]No prompts provided. Use --prompt or --file.[/red]")
-        raise typer.Exit(1)
+        raise typer.Exit(1) from None
 
     _configs = {"codegen": CODEGEN_CONFIG, "review": REVIEW_CONFIG, "research": RESEARCH_CONFIG}
     base = _configs.get(config_name)
     if base is None:
         console.print(f"[red]Unknown config '{config_name}'. Choose: codegen, review, research[/red]")
-        raise typer.Exit(1)
+        raise typer.Exit(1) from None
 
     cfg = HeadlessConfig(
         model=base.model,
@@ -854,7 +857,7 @@ def headless_batch(
 
     if failed:
         console.print(f"\n[red]{failed}/{len(results)} prompts failed.[/red]")
-        raise typer.Exit(1)
+        raise typer.Exit(1) from None
     else:
         console.print(f"\n[green]All {len(results)} prompts completed.[/green]")
 
@@ -921,7 +924,7 @@ def sessions_continue(
         result = sm.continue_session(prompt=prompt)
     except RuntimeError as exc:
         console.print(f"[red]{exc}[/red]")
-        raise typer.Exit(1)
+        raise typer.Exit(1) from None
 
     console.print(f"[green]Session:[/green] {result.session_id}")
     if result.cost_usd:
@@ -948,7 +951,7 @@ def sessions_resume(
         result = sm.resume_session(session_id, prompt=prompt)
     except RuntimeError as exc:
         console.print(f"[red]{exc}[/red]")
-        raise typer.Exit(1)
+        raise typer.Exit(1) from None
 
     console.print(f"[green]Session:[/green] {result.session_id}")
     if result.cost_usd:
@@ -976,7 +979,7 @@ def sessions_fork(
         result = sm.fork_session(session_id, prompt=prompt)
     except RuntimeError as exc:
         console.print(f"[red]{exc}[/red]")
-        raise typer.Exit(1)
+        raise typer.Exit(1) from None
 
     console.print(f"[green]Forked session:[/green] {result.session_id}")
     console.print(f"[dim]Parent:[/dim] {session_id}")
@@ -1008,7 +1011,7 @@ def sessions_events(
         events = sm.get_session_events(session_id, event_types=types if types else None)
     except FileNotFoundError as exc:
         console.print(f"[red]{exc}[/red]")
-        raise typer.Exit(1)
+        raise typer.Exit(1) from None
 
     if not events:
         console.print("[yellow]No events found for this session.[/yellow]")
@@ -1093,7 +1096,6 @@ def status() -> None:
     table.add_column("OK", justify="center")
 
     for name, result_text, ok in checks:
-        style = "green" if ok else "red"
         table.add_row(name, result_text, "[green]✓[/green]" if ok else "[red]✗[/red]")
 
     console.print(table)

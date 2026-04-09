@@ -19,7 +19,6 @@ import os
 import subprocess
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
-from typing import Any
 
 # Maximum workers for parallel headless runs (one per CPU core)
 _BATCH_WORKERS: int = 4

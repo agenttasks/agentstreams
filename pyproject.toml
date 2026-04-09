@@ -69,7 +69,7 @@ line-length = 100
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B", "SIM"]
-ignore = ["E501", "SIM102", "SIM108"]  # line length; keep explicit if/else for readability
+ignore = ["E501", "SIM102", "SIM108", "B008"]  # line length; keep explicit if/else; typer uses function calls in defaults by design
 
 [tool.ruff.format]
 quote-style = "double"
