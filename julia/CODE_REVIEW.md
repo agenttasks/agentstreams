@@ -61,38 +61,65 @@ improved using these 9 external sources:
 
 ---
 
-## Security Findings
+## Security Findings (14 findings from security-auditor)
 
-*(Awaiting security-auditor agent — preliminary from prior audits)*
+### Fixed in this review:
+- 9 HIGH + 11 MEDIUM from prior audit rounds (shared db.ts, error handling, TOCTOU, etc.)
+- **Finding #1 FIXED**: Researcher agent had Bash tool (privilege escalation).
+  Changed `tools: Read, Glob, Grep, Bash` → `tools: Read, Glob, Grep`.
 
-### Fixed (from prior audit rounds):
-- 9 HIGH: shared db.ts, audit error handling, MCP handlers, TOCTOU, error swallowing
-- 11 MEDIUM: pipeline gate timing, dead imports, index exports, error variants
+### HIGH (1 remaining):
+- **#8 No auth on MCP server**: 15 tools including destructive ops (delete file,
+  delete matters) with zero authentication or authorization. Any MCP client can
+  execute any operation. `owner_email` stored but never checked.
 
-### Known remaining:
-- `fromRow()` methods use unsafe `as` casts without runtime validation (MEDIUM)
-- No rate limiting on MCP server tools (LOW)
-- Branded type constructors accept any string including empty (LOW)
-- `assistant.ts` creates new Anthropic() per send() call (LOW)
+### MEDIUM (6):
+- **#3 Unbounded `take`**: audit pagination accepts `take: 999999999` (needs `.max(1000)`)
+- **#4 Unbounded content upload**: no size limit on vault file content (needs `.max(10_000_000)`)
+- **#5 Error message leakage**: catch blocks return raw `err.message` to MCP clients (includes table/column names)
+- **#10 Prompt injection via vault**: raw document content injected into system prompt position
+- **#11 Prompt injection via MCP prompts**: user request concatenated with system instructions
+- **#14 No transaction boundaries**: uploadFile does 5+ sequential SQL without BEGIN/COMMIT
+
+### LOW (5):
+- **#2 Empty string IDs**: branded constructors accept empty strings
+- **#6 Option leak**: file_details serializes internal `_tag`/`value` to MCP clients
+- **#7 Partial TOCTOU fix**: DELETE...RETURNING would be fully atomic
+- **#9 No string validation**: empty project names, filenames accepted
+- **#12 Unused lancedb dep**: listed in package.json but never imported
+- **#13 assertNever leaks values**: `JSON.stringify(value)` in error message
+
+### Positive findings:
+- Zero SQL injection (all tagged template parameterized)
+- Zero eval/Function/dynamic execution
+- Zero hardcoded secrets
+- ANTHROPIC_API_KEY policy enforced throughout
+- TypeScript strict mode (strict + noUncheckedIndexedAccess + exactOptionalPropertyTypes)
+- Timestamp validation present in audit.ts and MCP server
+- No XSS surface (pure data API, no HTML generation)
 
 ---
 
 ## Architecture Findings
 
-*(Awaiting architecture-reviewer agent — preliminary)*
-
 ### Strengths:
-- Clean separation: types.ts is single source of truth
-- Shared db.ts eliminates duplicated connections
-- Pipeline correctly checks gate AFTER entire order group
-- Emotion monitoring is a novel safety layer
+- Clean separation: types.ts is single source of truth (588 lines, all Cherny patterns)
+- Shared db.ts eliminates duplicated connections (returns Result, not throw)
+- Pipeline correctly checks gate AFTER entire order group (fixed from mid-group)
+- Emotion monitoring is a novel safety layer (no other legal AI has this)
+- Agent tool grants follow least privilege (researcher Bash FIXED in this review)
+- All model names use hyphen format (claude-opus-4-6, claude-sonnet-4-6)
+- MemPalace wing/hall/tunnel properly declared in .gitattributes
 
 ### Weaknesses:
-- Cube YAML models are disconnected from runtime (decoration only)
-- `hashEmbedding()` is deterministic but not semantically meaningful
-- No LanceDB integration actually implemented (only pgvector in vault.ts)
-- `probeTextForEmotions()` is keyword-matching, not activation-level monitoring
-- Consistency eval criterion (cosine > 0.8) defined but never executed
+- **Cube YAML models disconnected**: 3 files exist but nothing reads them at runtime
+- **hashEmbedding() not semantic**: deterministic SHA-512 hash, not sentence-transformers
+- **LanceDB phantom dependency**: listed in package.json, never imported — vault.ts uses pgvector only
+- **probeTextForEmotions() is keyword-matching**: not activation-level monitoring per the paper
+- **Consistency eval never executed**: defined in plan (cosine > 0.8) but not in any test file
+- **assistant.ts creates new Anthropic() per send()**: wasteful, should pool
+- **fromRow() methods use unsafe `as` casts**: no runtime validation, could corrupt domain objects
+- **No actual end-to-end pipeline test with real Claude calls**: all tests mock the API
 
 ---
 

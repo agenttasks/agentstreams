@@ -1,7 +1,7 @@
 ---
 name: julia-researcher
 description: Legal research — vault semantic search, precedent gathering, context assembly
-tools: Read, Glob, Grep, Bash
+tools: Read, Glob, Grep
 model: claude-opus-4-6
 color: purple
 maxTurns: 15
