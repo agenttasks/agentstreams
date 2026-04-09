@@ -51,6 +51,7 @@ from src.knowledge_work.harness import HarnessConfig, HarnessLoop
 from src.knowledge_work.tasks import Task, TaskRouter
 from src.knowledge_work.subtasks import Subtask, SubtaskGraph
 from src.knowledge_work.evals import EvalSuite, EvalResult, ABComparison
+from src.knowledge_work.registry import EcosystemRegistry, RepoEntry, Org, Layer
 
 __all__ = [
     # Layer 1: Circuits
@@ -80,4 +81,9 @@ __all__ = [
     "EvalSuite",
     "EvalResult",
     "ABComparison",
+    # Registry
+    "EcosystemRegistry",
+    "RepoEntry",
+    "Org",
+    "Layer",
 ]
