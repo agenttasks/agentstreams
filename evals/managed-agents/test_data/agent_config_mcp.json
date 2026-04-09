@@ -1,0 +1,15 @@
+{
+  "name": "GitHub Assistant",
+  "model": "claude-sonnet-4-6",
+  "mcp_servers": [
+    {
+      "type": "url",
+      "name": "github",
+      "url": "https://api.githubcopilot.com/mcp/"
+    }
+  ],
+  "tools": [
+    {"type": "agent_toolset_20260401"},
+    {"type": "mcp_toolset", "mcp_server_name": "github"}
+  ]
+}

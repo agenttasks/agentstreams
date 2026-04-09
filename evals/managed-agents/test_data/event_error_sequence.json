@@ -1,0 +1,8 @@
+[
+  {"type": "session.status_running", "processed_at": "2026-04-09T03:00:00Z"},
+  {"type": "session.error", "error": {"type": "container_error", "message": "Container OOM killed after exceeding 4GB memory limit", "retry_status": "will_retry"}, "processed_at": "2026-04-09T03:00:01Z"},
+  {"type": "session.status_rescheduled", "processed_at": "2026-04-09T03:00:02Z"},
+  {"type": "session.status_running", "processed_at": "2026-04-09T03:00:05Z"},
+  {"type": "agent.message", "id": "msg_020", "content": [{"type": "text", "text": "Resuming after transient error."}], "processed_at": "2026-04-09T03:00:06Z"},
+  {"type": "session.status_idle", "stop_reason": "end_turn", "processed_at": "2026-04-09T03:00:07Z"}
+]

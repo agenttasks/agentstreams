@@ -1,0 +1,11 @@
+{
+  "name": "data-analysis",
+  "config": {
+    "type": "cloud",
+    "packages": {
+      "pip": ["pandas", "numpy", "scikit-learn"],
+      "npm": ["express"]
+    },
+    "networking": {"type": "unrestricted"}
+  }
+}

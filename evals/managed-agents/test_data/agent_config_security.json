@@ -1,0 +1,17 @@
+{
+  "name": "Security Auditor",
+  "model": "claude-opus-4-6",
+  "system": "You are a security auditor. Scan for injection flaws, hard-coded secrets, unsafe eval/exec, prompt injection vectors. Do NOT modify any files. End with verdict: PASS, NEEDS_REMEDIATION, or BLOCK.",
+  "tools": [
+    {
+      "type": "agent_toolset_20260401",
+      "default_config": {"enabled": false},
+      "configs": [
+        {"name": "bash", "enabled": true},
+        {"name": "read", "enabled": true},
+        {"name": "glob", "enabled": true},
+        {"name": "grep", "enabled": true}
+      ]
+    }
+  ]
+}

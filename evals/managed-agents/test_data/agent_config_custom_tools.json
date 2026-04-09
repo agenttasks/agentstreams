@@ -1,0 +1,19 @@
+{
+  "name": "Weather Agent",
+  "model": "claude-sonnet-4-6",
+  "tools": [
+    {"type": "agent_toolset_20260401"},
+    {
+      "type": "custom",
+      "name": "get_weather",
+      "description": "Get current weather for a location",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "location": {"type": "string", "description": "City name"}
+        },
+        "required": ["location"]
+      }
+    }
+  ]
+}

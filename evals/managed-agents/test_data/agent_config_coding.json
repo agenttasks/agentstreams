@@ -1,0 +1,8 @@
+{
+  "name": "Coding Assistant",
+  "model": "claude-sonnet-4-6",
+  "system": "You are a helpful coding assistant. Write clean, well-documented code.",
+  "tools": [
+    {"type": "agent_toolset_20260401"}
+  ]
+}
