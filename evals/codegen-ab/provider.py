@@ -17,15 +17,11 @@ Validation pipeline (CPU-parallel per sample):
 from __future__ import annotations
 
 import ast
-import json
 import os
 import subprocess
 import sys
 import tempfile
-import textwrap
 import time
-from concurrent.futures import ProcessPoolExecutor, as_completed
-from pathlib import Path
 
 # ---------------------------------------------------------------------------
 # Code validators (run CPU-bound work across all cores)
@@ -115,8 +111,17 @@ def validate_typescript(code: str) -> dict:
         f.flush()
         try:
             proc = subprocess.run(
-                ["npx", "tsc", "--noEmit", "--strict", "--target", "ES2022",
-                 "--moduleResolution", "node", f.name],
+                [
+                    "npx",
+                    "tsc",
+                    "--noEmit",
+                    "--strict",
+                    "--target",
+                    "ES2022",
+                    "--moduleResolution",
+                    "node",
+                    f.name,
+                ],
                 capture_output=True,
                 text=True,
                 timeout=30,
