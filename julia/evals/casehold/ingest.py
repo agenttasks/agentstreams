@@ -39,44 +39,59 @@ console = Console()
 def download_casehold() -> list[dict]:
     """Download CaseHOLD dataset from HuggingFace.
 
-    Returns list of dicts with: citing_prompt, holdings, label.
-    Uses the test split by default (most commonly benchmarked).
+    Downloads CSV files from casehold/casehold repo using huggingface_hub.
+    The dataset uses a legacy loading script incompatible with datasets>=3.0,
+    so we download the raw CSV files directly.
+
+    CSV format: index, citing_prompt, holding_0..holding_4, score_0..score_4, label
     """
-    from datasets import load_dataset
+    import csv
+
+    from huggingface_hub import hf_hub_download
 
     console.print("[bold]Downloading CaseHOLD from HuggingFace...[/bold]")
-    ds = load_dataset("casehold/casehold", "all")
+
+    splits = {
+        "test": "data/all/test.csv",
+        "train": "data/all/train.csv",
+        "validation": "data/all/val.csv",
+    }
 
     examples = []
-    for split_name in ["test", "train", "validation"]:
-        if split_name not in ds:
+    for split_name, csv_path in splits.items():
+        try:
+            local_path = hf_hub_download(
+                "casehold/casehold", csv_path, repo_type="dataset"
+            )
+        except Exception as e:
+            console.print(f"[yellow]Skipping {split_name}: {e}[/yellow]")
             continue
-        split = ds[split_name]
-        for i, row in enumerate(split):
-            example_id = f"casehold_{split_name}_{i}"
-            citing_prompt = row.get("citing_prompt", row.get("context", ""))
-            holdings = [
-                row.get(f"holding_{j}", row.get("endings", [""] * 5)[j] if "endings" in row else "")
-                for j in range(5)
-            ]
-            # Some dataset versions use different column names
-            if not any(holdings):
-                holdings = row.get("endings", [""] * 5)
-            label = row.get("label", 0)
-            jurisdiction = extract_jurisdiction(citing_prompt)
 
-            content_hash = hashlib.sha256(citing_prompt.encode()).hexdigest()
+        with open(local_path) as f:
+            reader = csv.reader(f)
+            next(reader)  # skip header
+            for row in reader:
+                if len(row) < 13:
+                    continue
+                idx = row[0]
+                citing_prompt = row[1]
+                holdings = [row[2], row[3], row[4], row[5], row[6]]
+                label = int(row[12])
+                jurisdiction = extract_jurisdiction(citing_prompt)
+                content_hash = hashlib.sha256(citing_prompt.encode()).hexdigest()
 
-            examples.append({
-                "id": example_id,
-                "citing_prompt": citing_prompt,
-                "holdings": holdings,
-                "label": int(label),
-                "jurisdiction": jurisdiction,
-                "court": "",
-                "content_hash": content_hash,
-                "split": split_name,
-            })
+                examples.append({
+                    "id": f"casehold_{split_name}_{idx}",
+                    "citing_prompt": citing_prompt,
+                    "holdings": holdings,
+                    "label": label,
+                    "jurisdiction": jurisdiction,
+                    "court": "",
+                    "content_hash": content_hash,
+                    "split": split_name,
+                })
+
+        console.print(f"  {split_name}: {sum(1 for e in examples if e['split'] == split_name)} rows")
 
     console.print(f"[green]Downloaded {len(examples)} examples across all splits[/green]")
     return examples
