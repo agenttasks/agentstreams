@@ -267,7 +267,7 @@ type: subagent
              npm="npmjs.com/package/@anthropic-ai/sdk"
              docs="platform.claude.com/docs/en/api/client-sdks">
       Direct API client for Messages API. Use for custom tool loops, batch
-      processing, or when Agent SDK overhead is unnecessary. v0.85+.
+      processing, or when Agent SDK overhead is unnecessary. v0.86+.
     </package>
     <package name="@anthropic-ai/bedrock-sdk"
              npm="npmjs.com/package/@anthropic-ai/bedrock-sdk">
