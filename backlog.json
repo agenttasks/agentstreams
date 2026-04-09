@@ -1,0 +1,249 @@
+{
+  "generated_at": "2026-04-09T13:57:14.904966+00:00",
+  "docs_crawled": 108,
+  "backlog_items": 21,
+  "by_priority": {
+    "critical": 4,
+    "high": 4,
+    "medium": 10,
+    "low": 3
+  },
+  "coverage": {
+    "covered": 17,
+    "gaps": 21,
+    "coverage_rate": 0.4473684210526316
+  },
+  "items": [
+    {
+      "id": "BL-015",
+      "title": "Sessions Management",
+      "description": "No session continue/resume/fork wrappers",
+      "priority": 1,
+      "layer": 5,
+      "doc_url": "https://code.claude.com/docs/en/agent-sdk/sessions.md",
+      "category": "cli",
+      "effort": "medium",
+      "status": "todo"
+    },
+    {
+      "id": "BL-001",
+      "title": "Agent Teams",
+      "description": "No multi-session team orchestration",
+      "priority": 1,
+      "layer": 6,
+      "doc_url": "https://code.claude.com/docs/en/agent-sdk/agent-loop.md",
+      "category": "agent",
+      "effort": "large",
+      "status": "todo"
+    },
+    {
+      "id": "BL-002",
+      "title": "Channels",
+      "description": "No MCP channel integration for push events",
+      "priority": 1,
+      "layer": 7,
+      "doc_url": "https://code.claude.com/docs/en/channels.md",
+      "category": "mcp",
+      "effort": "medium",
+      "status": "todo"
+    },
+    {
+      "id": "BL-008",
+      "title": "Headless Recipes",
+      "description": "No headless SDK usage examples",
+      "priority": 1,
+      "layer": 7,
+      "doc_url": "https://code.claude.com/docs/en/headless.md",
+      "category": "cli",
+      "effort": "small",
+      "status": "todo"
+    },
+    {
+      "id": "BL-018",
+      "title": "Tool Search",
+      "description": "No dynamic tool discovery/loading",
+      "priority": 2,
+      "layer": 4,
+      "doc_url": "https://code.claude.com/docs/en/agent-sdk/custom-tools.md",
+      "category": "mcp",
+      "effort": "medium",
+      "status": "todo"
+    },
+    {
+      "id": "BL-017",
+      "title": "Structured Output",
+      "description": "No Zod/Pydantic structured output wrappers",
+      "priority": 2,
+      "layer": 6,
+      "doc_url": "https://code.claude.com/docs/en/agent-sdk/streaming-output.md",
+      "category": "cli",
+      "effort": "medium",
+      "status": "todo"
+    },
+    {
+      "id": "BL-009",
+      "title": "Hook Library",
+      "description": "Only 1 hook (SessionStart); no library of reusable hooks",
+      "priority": 2,
+      "layer": 7,
+      "doc_url": "https://code.claude.com/docs/en/agent-sdk/hooks.md",
+      "category": "hook",
+      "effort": "medium",
+      "status": "todo"
+    },
+    {
+      "id": "BL-005",
+      "title": "Code Review Skill",
+      "description": "No automated PR review skill",
+      "priority": 2,
+      "layer": 8,
+      "doc_url": "https://code.claude.com/docs/en/agent-sdk/agent-loop.md",
+      "category": "eval",
+      "effort": "large",
+      "status": "todo"
+    },
+    {
+      "id": "BL-006",
+      "title": "Context Window Management",
+      "description": "No context budget tracking",
+      "priority": 3,
+      "layer": 3,
+      "doc_url": "https://code.claude.com/docs/en/context-window.md",
+      "category": "cli",
+      "effort": "medium",
+      "status": "todo"
+    },
+    {
+      "id": "BL-011",
+      "title": "Output Styles",
+      "description": "No output style presets for non-engineering domains",
+      "priority": 3,
+      "layer": 3,
+      "doc_url": "https://code.claude.com/docs/en/agent-sdk/streaming-output.md",
+      "category": "cli",
+      "effort": "medium",
+      "status": "todo"
+    },
+    {
+      "id": "BL-012",
+      "title": "Plugin Marketplace",
+      "description": "No marketplace distribution system",
+      "priority": 3,
+      "layer": 4,
+      "doc_url": "https://code.claude.com/docs/en/agent-sdk/plugins.md",
+      "category": "skill",
+      "effort": "medium",
+      "status": "todo"
+    },
+    {
+      "id": "BL-016",
+      "title": "Slash Commands",
+      "description": "No custom slash commands beyond /security-review",
+      "priority": 3,
+      "layer": 4,
+      "doc_url": "https://code.claude.com/docs/en/agent-sdk/slash-commands.md",
+      "category": "cli",
+      "effort": "medium",
+      "status": "todo"
+    },
+    {
+      "id": "BL-003",
+      "title": "Checkpointing Integration",
+      "description": "No file checkpointing wrapper",
+      "priority": 3,
+      "layer": 5,
+      "doc_url": "https://code.claude.com/docs/en/agent-sdk/file-checkpointing.md",
+      "category": "cli",
+      "effort": "medium",
+      "status": "todo"
+    },
+    {
+      "id": "BL-019",
+      "title": "Typescript V2 Sdk",
+      "description": "No V2 SDK patterns implemented",
+      "priority": 3,
+      "layer": 6,
+      "doc_url": "https://code.claude.com/docs/en/agent-sdk/agent-loop.md",
+      "category": "cli",
+      "effort": "medium",
+      "status": "todo"
+    },
+    {
+      "id": "BL-013",
+      "title": "Remote Control",
+      "description": "No remote control integration",
+      "priority": 3,
+      "layer": 7,
+      "doc_url": "https://code.claude.com/docs/en/remote-control.md",
+      "category": "cli",
+      "effort": "medium",
+      "status": "todo"
+    },
+    {
+      "id": "BL-014",
+      "title": "Scheduled Tasks",
+      "description": "No /loop or cron integration",
+      "priority": 3,
+      "layer": 7,
+      "doc_url": "https://code.claude.com/docs/en/desktop-scheduled-tasks.md",
+      "category": "cli",
+      "effort": "medium",
+      "status": "todo"
+    },
+    {
+      "id": "BL-007",
+      "title": "Cost Tracking",
+      "description": "No per-session cost tracking",
+      "priority": 3,
+      "layer": 8,
+      "doc_url": "https://code.claude.com/docs/en/agent-sdk/cost-tracking.md",
+      "category": "cli",
+      "effort": "medium",
+      "status": "todo"
+    },
+    {
+      "id": "BL-010",
+      "title": "Observability",
+      "description": "OTel dep exists but no tracing integration",
+      "priority": 3,
+      "layer": 8,
+      "doc_url": "https://code.claude.com/docs/en/agent-sdk/observability.md",
+      "category": "cli",
+      "effort": "medium",
+      "status": "todo"
+    },
+    {
+      "id": "BL-004",
+      "title": "Chrome Integration",
+      "description": "No browser automation skill",
+      "priority": 4,
+      "layer": 7,
+      "doc_url": "https://code.claude.com/docs/en/chrome.md",
+      "category": "cli",
+      "effort": "large",
+      "status": "todo"
+    },
+    {
+      "id": "BL-020",
+      "title": "Ultraplan",
+      "description": "No cloud planning integration",
+      "priority": 4,
+      "layer": 7,
+      "doc_url": "https://code.claude.com/docs/en/ultraplan.md",
+      "category": "cli",
+      "effort": "medium",
+      "status": "todo"
+    },
+    {
+      "id": "BL-021",
+      "title": "Voice",
+      "description": "No voice dictation integration",
+      "priority": 4,
+      "layer": 7,
+      "doc_url": "https://code.claude.com/docs/en/voice-dictation.md",
+      "category": "cli",
+      "effort": "small",
+      "status": "todo"
+    }
+  ]
+}
