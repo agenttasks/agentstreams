@@ -238,6 +238,20 @@
     "court": ""
   },
   {
+    "id": "casehold_test_47867",
+    "citing_prompt": "J. The defendant, Richard Jackson, appeals from the denial of his motion for postconviction relief filed under Florida Rule of Criminal Procedure 3.850 based on the trial court\u2019s determination that the motion was untimely. ' Because the record before this Court demonstrates that the motion was timely filed within the two-year time limit provided by rule 3.850 based on the \u201cmailbox rule,\u201d we reverse the order denying the defendant\u2019s motion for postconviction relief and remand for consideration on the merits. See Griffin v. Sistuenck, 816 So.2d 600, 601 (Fla.2002) (\u201cUnder the mailbox rule, a notice' is deemed filed when it is delivered to prison authorities for mailing.\u201d); Haag v. State, 591 So.2d 614, 617 (Fla.1992) (<HOLDING>); Lawson v. State, 107 So.3d 1228, 1229 (Fla.",
+    "holdings": [
+      "holding that under the mailbox rule the date that a motion is placed into the hands of prison officials for filing is the date that the motion is considered filed",
+      "holding that under the mailbox rule a pro se inmates document is deemed filed at the moment in time when the inmate loses control over the document by entrusting its further delivery or processing which is usually when the inmate places the document in the hands of prison officials",
+      "holding the separate document rule violated when the alleged judgment was included with the memorandum and order of the court",
+      "holding that the date of filing is the time at which a pro se prisoner entrusts the document to prison officials for delivery",
+      "holding that in connection with a motion to dismiss the court may consider a document not attached to the pleadings where the plaintiffs claim depends on the contents of a document the defendant attaches the document to its motion to dismiss and the parties do not dispute the authenticity of the document even though the plaintiff does not explicitly allege the contents of that document in the complaint"
+    ],
+    "label": 1,
+    "jurisdiction": "florida",
+    "court": ""
+  },
+  {
     "id": "casehold_test_48292",
     "citing_prompt": "that the judge\u2019s comments in any way influenced (or even could have influenced) the jury. As such, the trial judge\u2019s comments did not violate OCGA \u00a7 17-8-57. Additionally, the trial court committed no error by allowing the State to reopen the case to establish venue. Judgment affirmed. Barnes, P. J., and Blackwell, J., concur. 1 Additionally, Davenport was found guilty of driving under the influence of methamphetamine and two counts of improper lane change, although he does not challenge those convictions on appeal. 2 We note that any inconsistencies in the jury\u2019s verdicts between the co-defendants have no bearing on our review of the appellants\u2019 claims because the inconsistent-verdict rule has been abolished in Georgia. See Parker v. Mooneyham, 256 Ga. 334, 335 (349 SE2d 182) (1986) (<HOLDING>), overruled on other grounds by State v.",
     "holdings": [
@@ -1382,20 +1396,6 @@
       "holding that unless the actor desires to cause consequences of his act or  believes that the consequences are substantially certain to result from it  he has not committed a wilful and malicious injury as defined under  523a6 citing to restatement second of torts  8a 1964 internal citations omitted"
     ],
     "label": 4,
-    "jurisdiction": "",
-    "court": ""
-  },
-  {
-    "id": "casehold_test_47909",
-    "citing_prompt": "whether a claimant\u2019s injury arose out of employment). An injury that occurs after the employment relationship ends, however, is generally not compensable under the NUA. See Law Offices of Barry Levinson v. Milko, 124 Nev. 355, 184 P.3d 378 (2008). Other courts have recognized exceptions to this general rule. See, e.g., Peterson v. Moran, 245 P.2d 540 (Cal. Ct. App. 1952) (reversing a tort judgment for an employee who was assaulted as he left the workplace immediately after being discharged); Ardoin v. Cleco Power, L.L.C., 38 So. 3d 264, 266 (La. 2010) (providing that an employee is within the course and scope of employment if his \u201cinjury occurs during the reasonable period of time for winding up his affairs\u201d); Zygmuntowicz v. American Steel & Wire Co., 134 N.E. 385, 386-87 (Mass. 1922) (<HOLDING>); Anderson v. Hotel Cataract, 17 N.W.2d 913,",
-    "holdings": [
-      "holding intentional assault by coworker to be outside the course and scope of employment",
-      "holding that a sexual assault on a female employee was of a personal nature and not directed against the employee as part of the employment relationship",
-      "holding that an assault that occurred immediately after the employee was discharged was in the course of the employment",
-      "holding that an obstructionofjustice enhancement was appropriate based on the defendants assault on a witness after trial and rejecting the defendants argument that because the assault occurred after trial it could not impact the prosecution of his case",
-      "holding that injury incurred when employee returned to retrieve paycheck six days after employment had been terminated occurred in course of employment"
-    ],
-    "label": 2,
     "jurisdiction": "",
     "court": ""
   }
