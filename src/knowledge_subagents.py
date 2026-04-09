@@ -38,7 +38,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
 
 from src.knowledge_agents import CATEGORY_AGENTS, PluginCategory
 from src.plugin_bridge import ParsedSkill, PluginLoader, PluginManifest
@@ -247,7 +246,7 @@ def generate_subagent_md(agent: MergedSubagent) -> str:
 
     # Skills frontmatter — relative paths for preloading
     real_skill_paths = [
-        p for p, s in zip(agent.skill_paths, agent.skills)
+        p for p, s in zip(agent.skill_paths, agent.skills, strict=True)
         if not _is_stub_skill(s)
     ]
     if real_skill_paths:
@@ -260,7 +259,7 @@ def generate_subagent_md(agent: MergedSubagent) -> str:
         fm.append("mcpServers:")
         for srv_name, url in sorted(agent.mcp_servers.items()):
             fm.append(f"  - {srv_name}:")
-            fm.append(f"      type: http")
+            fm.append("      type: http")
             fm.append(f"      url: {url}")
 
     fm.append("---")

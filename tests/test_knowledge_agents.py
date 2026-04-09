@@ -5,7 +5,6 @@ from __future__ import annotations
 from src.knowledge_agents import (
     CATEGORY_AGENTS,
     SKILL_CATALOG,
-    KnowledgeAgentConfig,
     KnowledgeWorkRegistry,
     PluginCategory,
     SkillMeta,
@@ -21,7 +20,6 @@ from src.knowledge_agents import (
     total_installs,
 )
 from src.managed_agents import NetworkingMode
-
 
 # ── Enum Tests ────────────────────────────────────────────────
 

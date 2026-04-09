@@ -5,16 +5,13 @@ from __future__ import annotations
 from src.knowledge_subagents import (
     AGENT_COLORS,
     AGENT_DESCRIPTIONS,
-    AGENT_TOOLS,
     KNOWLEDGE_AGENT_NAMES,
-    MergedSubagent,
-    _is_stub_skill,
     _resolve_agent_name,
     collect_subagents,
     generate_all_subagents,
     generate_subagent_md,
 )
-from src.plugin_bridge import ParsedSkill, PluginLoader, VENDORS_DIR
+from src.plugin_bridge import VENDORS_DIR, PluginLoader
 
 
 class TestConstants:
@@ -30,7 +27,7 @@ class TestConstants:
             assert name in AGENT_DESCRIPTIONS, f"{name} missing description"
 
     def test_no_api_key_in_descriptions(self):
-        for name, desc in AGENT_DESCRIPTIONS.items():
+        for _name, desc in AGENT_DESCRIPTIONS.items():
             if "ANTHROPIC_API_KEY" in desc:
                 assert "never" in desc.lower()
 

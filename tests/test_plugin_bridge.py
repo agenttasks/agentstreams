@@ -9,12 +9,10 @@ from src.plugin_bridge import (
     ParsedSkill,
     PluginBridge,
     PluginLoader,
-    PluginManifest,
     all_managed_agents,
     load_all_plugins,
     plugin_to_managed,
 )
-
 
 # ── ParsedSkill Tests ────────────────────────────────────────
 

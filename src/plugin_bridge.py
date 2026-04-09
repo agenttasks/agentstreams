@@ -23,11 +23,9 @@ import json
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
 
 from src.knowledge_agents import (
     CATEGORY_AGENTS,
-    SKILL_CATALOG,
     KnowledgeWorkRegistry,
     PluginCategory,
 )
@@ -287,8 +285,8 @@ class PluginBridge:
         ]
 
         if manifest.description:
-            parts.append(f"## Purpose")
-            parts.append(f"")
+            parts.append("## Purpose")
+            parts.append("")
             parts.append(manifest.description)
             parts.append("")
 
@@ -301,7 +299,7 @@ class PluginBridge:
             parts.append("")
 
         if manifest.connectors:
-            parts.append(f"## Connectors")
+            parts.append("## Connectors")
             parts.append("")
             parts.append(", ".join(manifest.connectors))
             parts.append("")
