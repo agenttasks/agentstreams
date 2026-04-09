@@ -20,12 +20,10 @@ Design principles (from Anthropic's infrastructure noise research):
 
 from __future__ import annotations
 
-import time
 from dataclasses import dataclass, field
 from typing import Any
 
 from src.knowledge_work.circuits import Circuit, CircuitTopology
-from src.knowledge_work.harness import HarnessEvent, SessionLog
 from src.knowledge_work.tasks import Task
 
 

@@ -22,7 +22,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from src.knowledge_work.subtasks import Subtask, SubtaskStatus
+from src.knowledge_work.subtasks import Subtask
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 
@@ -125,7 +125,6 @@ class SubagentPool:
             from src.knowledge_subagents import (
                 AGENT_COLORS,
                 AGENT_TOOLS,
-                DEFAULT_TOOLS,
             )
         except ImportError:
             return cls()

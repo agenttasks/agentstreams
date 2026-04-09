@@ -17,19 +17,18 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import os
 import sys
 import time
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass
 from multiprocessing import cpu_count
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
-
-import importlib.util
 
 _provider_path = PROJECT_ROOT / "evals" / "codegen-ab" / "provider.py"
 _spec = importlib.util.spec_from_file_location("codegen_ab_provider", _provider_path)
@@ -274,7 +273,7 @@ def print_report(results: list[EvalResult], summary: dict) -> None:
 
     if "delta" in summary:
         d = summary["delta"]
-        print(f"\n  ── DELTA (Opus - Sonnet) ──")
+        print("\n  ── DELTA (Opus - Sonnet) ──")
         print(f"  Syntax pass:    {d['syntax_pass_rate']:+.1%}")
         print(f"  Lint clean:     {d['lint_clean_rate']:+.1%}")
         if "execution_pass_rate" in d:

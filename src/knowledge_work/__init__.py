@@ -44,14 +44,14 @@ Uses CLAUDE_CODE_OAUTH_TOKEN for auth (never ANTHROPIC_API_KEY).
 """
 
 from src.knowledge_work.circuits import Circuit, CircuitTopology, FeatureNode
-from src.knowledge_work.tracers import TracerConfig, TracerResult, trace_circuit
-from src.knowledge_work.prompts import PromptTemplate, PromptRegistry
-from src.knowledge_work.subagents import SubagentSpec, SubagentPool
+from src.knowledge_work.evals import ABComparison, EvalResult, EvalSuite
 from src.knowledge_work.harness import HarnessConfig, HarnessLoop
-from src.knowledge_work.tasks import Task, TaskRouter
+from src.knowledge_work.prompts import PromptRegistry, PromptTemplate
+from src.knowledge_work.registry import EcosystemRegistry, Layer, Org, RepoEntry
+from src.knowledge_work.subagents import SubagentPool, SubagentSpec
 from src.knowledge_work.subtasks import Subtask, SubtaskGraph
-from src.knowledge_work.evals import EvalSuite, EvalResult, ABComparison
-from src.knowledge_work.registry import EcosystemRegistry, RepoEntry, Org, Layer
+from src.knowledge_work.tasks import Task, TaskRouter
+from src.knowledge_work.tracers import TracerConfig, TracerResult, trace_circuit
 
 __all__ = [
     # Layer 1: Circuits

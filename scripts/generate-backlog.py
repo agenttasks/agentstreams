@@ -19,7 +19,7 @@ from __future__ import annotations
 import json
 import re
 import sys
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -197,10 +197,8 @@ def map_doc_to_layer(url: str, title: str, desc: str) -> tuple[float, str]:
 def generate_backlog_items(docs: list[DimDoc]) -> list[BacklogItem]:
     """Generate backlog items from doc-to-toolkit gap analysis."""
     items: list[BacklogItem] = []
-    idx = 0
 
-    for gap_key, gap_desc in TOOLKIT_COVERAGE["gaps"].items():
-        idx += 1
+    for idx, (gap_key, gap_desc) in enumerate(TOOLKIT_COVERAGE["gaps"].items(), 1):
 
         # Find the most relevant doc for this gap
         best_doc = ""

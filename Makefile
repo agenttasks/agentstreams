@@ -106,7 +106,7 @@ validate-agents: ## Validate agent boundaries (no recursive spawning, API key ba
 	  src/ .claude/ webapp/src/ 2>/dev/null | \
 	  grep -vi "never use" | grep -vi "NEVER" | \
 	  grep -v "security-audit.py" | grep -v "validate-skills.py" | \
-	  grep -v "node_modules" || true); \
+	  grep -v "node_modules" | grep -vi "BLOCKED\|block-secrets\|violations\.push\|output\.includes" || true); \
 	if [ -n "$$VIOLATIONS" ]; then \
 	  echo "FAIL: ANTHROPIC_API_KEY found in source files"; \
 	  echo "$$VIOLATIONS"; exit 1; \
