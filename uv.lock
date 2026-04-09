@@ -10,7 +10,7 @@ resolution-markers = [
 [[package]]
 name = "agentstreams"
 version = "0.3.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "aiodns" },
     { name = "aiohttp" },
