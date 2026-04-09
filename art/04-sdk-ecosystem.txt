@@ -1,0 +1,63 @@
+                ╔═══════════════════════════════════════════╗
+                ║   Anthropic + Neon SDK Ecosystem          ║
+                ║   npm packages powering agentstreams      ║
+                ╚═══════════════════════════════════════════╝
+
+    ┌─────────────────────────────────────────────────────────────┐
+    │                    Anthropic SDKs                            │
+    │                                                             │
+    │  @anthropic-ai/claude-agent-sdk                             │
+    │  ┌─────────────────────────────────────────────────────┐    │
+    │  │  query()  →  built-in tools (Read, Write, Bash...)  │    │
+    │  │  hooks    →  PreToolUse, PostToolUse, SessionStart   │    │
+    │  │  agents   →  AgentDefinition { tools, prompt, desc } │    │
+    │  │  sessions →  resume, fork, session_id               │    │
+    │  │  MCP      →  mcpServers: { name: { command, args } }│    │
+    │  └─────────────────────────────────────────────────────┘    │
+    │            │                                                 │
+    │            │ builds on                                       │
+    │            ▼                                                 │
+    │  @anthropic-ai/sdk  v0.86+                                  │
+    │  ┌─────────────────────────────────────────────────────┐    │
+    │  │  client.messages.create()  →  Messages API          │    │
+    │  │  streaming, tools, vision, caching                  │    │
+    │  └─────────────────────────────────────────────────────┘    │
+    │            │                                                 │
+    │  @anthropic-ai/claude-trace                                  │
+    │  ┌─────────────────────────────────────────────────────┐    │
+    │  │  intercepts fetch() → /v1/messages                  │    │
+    │  │  logs JSONL to .claude-trace/                        │    │
+    │  │  captures: system prompts, tool I/O, thinking       │    │
+    │  │  web UI for viewing transcripts                     │    │
+    │  └─────────────────────────────────────────────────────┘    │
+    │            │ transcripts consumed by                         │
+    │            ▼                                                 │
+    │  safety-research/trusted-monitor (suspicion 0-100)          │
+    │                                                             │
+    │  @anthropic-ai/mcpb                                          │
+    │  ┌─────────────────────────────────────────────────────┐    │
+    │  │  mcpb init  →  manifest.json                        │    │
+    │  │  mcpb pack  →  .mcpb bundle (zip)                   │    │
+    │  │  server types: node, python, uv, binary             │    │
+    │  └─────────────────────────────────────────────────────┘    │
+    └─────────────────────────────────────────────────────────────┘
+
+    ┌─────────────────────────────────────────────────────────────┐
+    │                     Neon SDKs                                │
+    │                                                             │
+    │  @neondatabase/serverless  v1.0+                             │
+    │  ┌─────────────────────────────────────────────────────┐    │
+    │  │  neon()   →  one-shot SQL over HTTPS (stateless)    │    │
+    │  │  Pool     →  WebSocket connection pool               │    │
+    │  │  Client   →  individual WebSocket connection          │    │
+    │  └─────────────────────────────────────────────────────┘    │
+    │                                                             │
+    │  @neondatabase/neon-js  (beta)                               │
+    │  ┌─────────────────────────────────────────────────────┐    │
+    │  │  Auth     →  integrated Neon Auth                    │    │
+    │  │  Data API →  PostgREST (browser-safe)                │    │
+    │  └─────────────────────────────────────────────────────┘    │
+    └─────────────────────────────────────────────────────────────┘
+
+    Auth:  CLAUDE_CODE_OAUTH_TOKEN  (never ANTHROPIC_API_KEY)
+    DB:    NEON_DATABASE_URL from .env (loaded by SessionStart hook)

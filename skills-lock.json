@@ -6,6 +6,11 @@
       "sourceType": "github",
       "computedHash": "4931c2867890bfef5881225adb691c3d719fe9ad556e3d5fae15f83e0668fa60"
     },
+    "architecture": {
+      "source": "anthropics/knowledge-work-plugins",
+      "sourceType": "github",
+      "computedHash": "0220c55f7be41d5ac6e622510b3367e7ad023cbcd9b804a43ede7db82185eafb"
+    },
     "frontend-design": {
       "source": "anthropics/claude-plugins-official",
       "sourceType": "github",

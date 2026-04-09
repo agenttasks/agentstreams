@@ -1,0 +1,46 @@
+                         ╔═══════════════════════╗
+                         ║   Memory Palace       ║
+                         ║   Wing Architecture   ║
+                         ╚═══════════════════════╝
+
+    ┌─────────────┐   ┌─────────────┐   ┌─────────────┐
+    │  ontology/  │   │    src/     │   │  scripts/   │
+    │  ━━━━━━━━━  │   │  ━━━━━━━━━  │   │  ━━━━━━━━━  │
+    │  TTL  SQL   │   │ orchestrate │   │   crawl     │
+    │  schema     │   │ bloom  mcp  │   │   validate  │
+    │  mappings   │   │ crawlers    │   │   pipeline  │
+    │  projections│   │ embeddings  │   │   security  │
+    └──────┬──────┘   └──────┬──────┘   └──────┬──────┘
+           │                 │                  │
+    ═══════╪═════════════════╪══════════════════╪═══════════
+           │    hall_facts   │    hall_tools    │
+    ═══════╪═════════════════╪══════════════════╪═══════════
+           │                 │                  │
+    ┌──────┴──────┐   ┌──────┴──────┐   ┌──────┴──────┐
+    │   skills/   │   │   .claude/  │   │   webapp/   │
+    │  ━━━━━━━━━  │   │  ━━━━━━━━━  │   │  ━━━━━━━━━  │
+    │  8 languages│   │  24 agents  │   │  Next.js 16 │
+    │  SKILL.md   │   │  6 subagent │   │  Tailwind   │
+    │  setup.sh   │   │  commands   │   │  Motion     │
+    │  README.md  │   │  skills     │   │  Neon SDK   │
+    └──────┬──────┘   └──────┬──────┘   └──────┬──────┘
+           │                 │                  │
+    ═══════╪═════════════════╪══════════════════╪═══════════
+           │   hall_skills   │   hall_agents    │  hall_webapp
+    ═══════╪═════════════════╪══════════════════╪═══════════
+           │                 │                  │
+    ┌──────┴──────┐   ┌──────┴──────┐   ┌──────┴──────┐
+    │   .github/  │   │    evals/   │   │    art/     │
+    │  ━━━━━━━━━  │   │  ━━━━━━━━━  │   │  ━━━━━━━━━  │
+    │  9 workflows│   │  promptfoo  │   │  ASCII art  │
+    │  sec rules  │   │  test data  │   │  diagrams   │
+    │  PR template│   │  providers  │   │  asc11.com  │
+    │  protection │   │  configs    │   │             │
+    └─────────────┘   └─────────────┘   └─────────────┘
+
+    Tunnels (cross-wing connections):
+    ─────────────────────────────────
+    ontology ──→ src/projections.py       (generates Avro/GraphQL)
+    src/orchestrator.py ←→ .claude/agents (configs mirror frontmatter)
+    .claude/agents ──→ .github/workflows  (CI validates boundaries)
+    webapp/package.json ──→ @neon/serverless + @anthropic/sdk
