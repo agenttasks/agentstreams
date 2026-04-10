@@ -507,7 +507,7 @@ INSERT INTO agent_manifests (name, model_override, allowed_tools, denied_tools, 
     ('uda-thinker', 'opus', ARRAY['Read', 'Glob', 'Grep', 'Bash'], NULL, NULL, '.claude/agents/uda-thinker.md'),
     ('frontend-generator', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash', 'Write'], NULL, NULL, '.claude/agents/frontend-generator.md'),
     ('frontend-evaluator', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash'], ARRAY['Edit', 'Write', 'Agent'], NULL, '.claude/agents/frontend-evaluator.md'),
-    ('graphql-typescript', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash', 'Write', 'Edit'], NULL, NULL, '.claude/agents/graphql-typescript-agent.md');
+    ('graphql-typescript-agent', NULL, ARRAY['Read', 'Glob', 'Grep', 'Write', 'Edit'], ARRAY['Agent'], NULL, '.claude/agents/graphql-typescript-agent.md');
 
 -- ── Seed: DSPy Signatures ───────────────────────────────
 

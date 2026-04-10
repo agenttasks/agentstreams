@@ -126,8 +126,6 @@ Install pip packages: `make install-safety` (petri, bloom)
 | `@anthropic-ai/claude-trace` | JSONL transcript capture — v0.1.2+ |
 | `@anthropic-ai/mcpb` | MCP Bundle builder — v2.1.2+ |
 | `@modelcontextprotocol/sdk` | MCP SDK for tool servers — v1.29.0+ |
-| `@modelcontextprotocol/ext-apps` | Browser rendering and inline widgets — v1.5.0+ |
-| `@modelcontextprotocol/inspector` | MCP debugger CLI — v0.21.1+ |
 | `@neondatabase/serverless` | Neon SQL over HTTPS/WebSocket |
 | `@neondatabase/neon-js` | Neon Auth + Data API |
 
