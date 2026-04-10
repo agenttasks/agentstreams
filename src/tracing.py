@@ -43,13 +43,30 @@ _log_prompts = False
 _log_tool_details = False
 _log_tool_content = False
 
-_SENSITIVE_KEYWORDS = {"prompt", "input", "content", "output", "text", "body"}
+# Attribute keywords by category — each gated by its own flag
+_PROMPT_KEYWORDS = {"prompt", "user_input", "request"}
+_TOOL_DETAIL_KEYWORDS = {"tool", "function", "method", "action"}
+_TOOL_CONTENT_KEYWORDS = {"content", "output", "text", "body", "response", "result"}
 
 
-def _is_sensitive_attribute(key: str) -> bool:
-    """Check if a span attribute key contains sensitive data."""
+def _should_log_attribute(key: str) -> bool:
+    """Check if a sensitive span attribute should be logged.
+
+    Each flag controls its own category:
+    - OTEL_LOG_USER_PROMPTS → prompt, user_input, request
+    - OTEL_LOG_TOOL_DETAILS → tool, function, method, action
+    - OTEL_LOG_TOOL_CONTENT → content, output, text, body, response, result
+
+    Non-sensitive attributes (e.g. duration_ms, model, status) always pass.
+    """
     key_lower = key.lower()
-    return any(kw in key_lower for kw in _SENSITIVE_KEYWORDS)
+    if any(kw in key_lower for kw in _PROMPT_KEYWORDS):
+        return _log_prompts
+    if any(kw in key_lower for kw in _TOOL_DETAIL_KEYWORDS):
+        return _log_tool_details
+    if any(kw in key_lower for kw in _TOOL_CONTENT_KEYWORDS):
+        return _log_tool_content
+    return True  # Non-sensitive attributes always logged
 
 
 def _init_tracer():
@@ -119,10 +136,7 @@ def trace_span(
         with tracer.start_as_current_span(name) as span:
             if attributes:
                 for k, v in attributes.items():
-                    # Gate sensitive attributes behind OTEL logging flags
-                    if _is_sensitive_attribute(k) and not (
-                        _log_prompts or _log_tool_details or _log_tool_content
-                    ):
+                    if not _should_log_attribute(k):
                         continue
                     span.set_attribute(k, str(v) if not isinstance(v, (int, float, bool)) else v)
             try:
@@ -136,9 +150,7 @@ def trace_span(
                 span.set_attribute("duration_ms", int(elapsed * 1000))
                 for k, v in span_ctx.items():
                     if k != "start_time":
-                        if _is_sensitive_attribute(k) and not (
-                            _log_prompts or _log_tool_details or _log_tool_content
-                        ):
+                        if not _should_log_attribute(k):
                             continue
                         span.set_attribute(
                             k,

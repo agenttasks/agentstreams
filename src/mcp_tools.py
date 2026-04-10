@@ -332,14 +332,14 @@ class MCPToolHandler:
     def _safe_output_path(self, output_dir: str) -> Path:
         """Resolve output_dir and assert it stays within the project root."""
         resolved = (self._project_root / output_dir).resolve()
-        if not str(resolved).startswith(str(self._project_root)):
+        if not resolved.is_relative_to(self._project_root):
             raise ValueError(f"output_dir must be within the project directory, got: {output_dir}")
         return resolved
 
     def _safe_file_path(self, file_path: str) -> Path:
         """Resolve file_path and assert it stays within the project root."""
         resolved = Path(file_path).resolve()
-        if not str(resolved).startswith(str(self._project_root)):
+        if not resolved.is_relative_to(self._project_root):
             raise ValueError(f"file_path must be within the project directory, got: {file_path}")
         return resolved
 

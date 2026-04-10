@@ -48,8 +48,10 @@ class Tracer:
     def span(
         self, name: str, layer: int = 0, sensitive: bool = False, **attrs: Any
     ) -> Generator[Span, None, None]:
-        if sensitive and os.environ.get("OTEL_LOG_USER_PROMPTS", "").lower() != "true":
-            attrs = {k: "[redacted]" for k in attrs}
+        if sensitive:
+            from src.tracing import _should_log_attribute
+
+            attrs = {k: v if _should_log_attribute(k) else "[redacted]" for k, v in attrs.items()}
         s = Span(name=name, layer=layer, attributes=attrs)
         try:
             yield s
