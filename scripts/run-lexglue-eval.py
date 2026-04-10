@@ -15,7 +15,7 @@ Data sources (in priority order):
   2. Default: Load from local JSON cache (julia/evals/test_data/lexglue/)
 
 Usage:
-  uv run scripts/run-lexglue-eval.py                          # All 5 tasks
+  uv run scripts/run-lexglue-eval.py                          # All 8 tasks
   uv run scripts/run-lexglue-eval.py --task casehold           # CaseHOLD only
   uv run scripts/run-lexglue-eval.py --task ledgar --samples 10 # 10 samples
   uv run scripts/run-lexglue-eval.py --few-shot 5              # 5-shot prompting
@@ -397,16 +397,26 @@ def load_from_neon(task: str, samples: int) -> list[LexGLUETask]:
         from src.neon_db import connection_pool
 
         async with connection_pool() as conn:
-            limit_clause = f"LIMIT {samples}" if samples else ""
-            rows = await (
-                await conn.execute(
-                    f"""SELECT id, task, hf_index, text, holdings, label, labels, label_set
-                        FROM julia_lexglue_samples
-                        WHERE task = %s AND split = 'test'
-                        ORDER BY hf_index
-                        {limit_clause}""",
-                    (task,),
+            if samples:
+                rows = await (
+                    await conn.execute(
+                        """SELECT id, task, hf_index, text, holdings, label, labels, label_set
+                            FROM julia_lexglue_samples
+                            WHERE task = %s AND split = 'test'
+                            ORDER BY hf_index
+                            LIMIT %s""",
+                        (task, samples),
+                    )
                 )
+            else:
+                rows = await (
+                    await conn.execute(
+                        """SELECT id, task, hf_index, text, holdings, label, labels, label_set
+                            FROM julia_lexglue_samples
+                            WHERE task = %s AND split = 'test'
+                            ORDER BY hf_index""",
+                        (task,),
+                    )
             ).fetchall()
 
             tasks = []
@@ -769,7 +779,7 @@ def main():
         "--task",
         default="",
         choices=ALL_TASKS + [""],
-        help="Single task to run (default: all 5)",
+        help="Single task to run (default: all 8)",
     )
     parser.add_argument(
         "--few-shot",

@@ -16,7 +16,7 @@
 
 -- ── LexGLUE Samples (Transaction Fact) ──────────────────────
 -- Grain: one benchmark sample. Task is degenerate dimension.
--- Source: HuggingFace lex_glue dataset (5 priority tasks).
+-- Source: HuggingFace lex_glue dataset (8 tasks).
 
 CREATE TABLE IF NOT EXISTS julia_lexglue_samples (
     id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
