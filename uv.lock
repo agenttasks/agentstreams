@@ -31,6 +31,9 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
+casehold = [
+    { name = "huggingface-hub" },
+]
 lexglue = [
     { name = "datasets" },
 ]
@@ -60,7 +63,6 @@ diagrams = [
     { name = "diagrams" },
 ]
 eval = [
-    { name = "datasets" },
     { name = "deepeval" },
     { name = "promptfoo" },
     { name = "pyright" },
@@ -78,6 +80,7 @@ requires-dist = [
     { name = "bloom", marker = "extra == 'safety'", git = "https://github.com/safety-research/bloom" },
     { name = "datasets", marker = "extra == 'lexglue'", specifier = ">=3.0" },
     { name = "httpx", specifier = ">=0.28.1" },
+    { name = "huggingface-hub", marker = "extra == 'casehold'", specifier = ">=0.20" },
     { name = "lancedb", marker = "extra == 'vector'", specifier = ">=0.6" },
     { name = "mcp", specifier = ">=1.0" },
     { name = "opentelemetry-api", marker = "extra == 'otel'", specifier = ">=1.29" },
@@ -91,7 +94,7 @@ requires-dist = [
     { name = "rich", specifier = ">=14.3.3" },
     { name = "typer", specifier = ">=0.24.1" },
 ]
-provides-extras = ["vector", "otel", "safety", "lexglue"]
+provides-extras = ["vector", "otel", "safety", "lexglue", "casehold"]
 
 [package.metadata.requires-dev]
 dev = [
@@ -103,7 +106,6 @@ dev = [
 ]
 diagrams = [{ name = "diagrams", specifier = ">=0.25.1" }]
 eval = [
-    { name = "datasets", specifier = ">=3.0" },
     { name = "deepeval", specifier = ">=3.9.6" },
     { name = "promptfoo", specifier = ">=0.1.4" },
     { name = "pyright", specifier = ">=1.1.408" },
