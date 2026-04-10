@@ -218,8 +218,6 @@ def eval_promptfoo(
             subprocess.run(["npx", "promptfoo", "eval"], cwd=d)
 
 
-
-
 # ── PDF ─────────────────────────────────────────────────────────
 
 

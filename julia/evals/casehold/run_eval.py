@@ -340,8 +340,7 @@ def run_eval(
 
     with ThreadPoolExecutor(max_workers=workers) as executor:
         future_to_idx = {
-            executor.submit(evaluate_single, client, ex, model): i
-            for i, ex in enumerate(examples)
+            executor.submit(evaluate_single, client, ex, model): i for i, ex in enumerate(examples)
         }
 
         for completed, future in enumerate(as_completed(future_to_idx), 1):

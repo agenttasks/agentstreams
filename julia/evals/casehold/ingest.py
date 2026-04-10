@@ -69,9 +69,7 @@ def download_casehold() -> list[dict]:
     examples = []
     for split_name, csv_path in splits.items():
         try:
-            local_path = hf_hub_download(
-                "casehold/casehold", csv_path, repo_type="dataset"
-            )
+            local_path = hf_hub_download("casehold/casehold", csv_path, repo_type="dataset")
         except Exception as e:
             console.print(f"[yellow]Skipping {split_name}: {e}[/yellow]")
             continue
@@ -89,18 +87,22 @@ def download_casehold() -> list[dict]:
                 jurisdiction = extract_jurisdiction(citing_prompt)
                 content_hash = hashlib.sha256(citing_prompt.encode()).hexdigest()
 
-                examples.append({
-                    "id": f"casehold_{split_name}_{idx}",
-                    "citing_prompt": citing_prompt,
-                    "holdings": holdings,
-                    "label": label,
-                    "jurisdiction": jurisdiction,
-                    "court": "",
-                    "content_hash": content_hash,
-                    "split": split_name,
-                })
+                examples.append(
+                    {
+                        "id": f"casehold_{split_name}_{idx}",
+                        "citing_prompt": citing_prompt,
+                        "holdings": holdings,
+                        "label": label,
+                        "jurisdiction": jurisdiction,
+                        "court": "",
+                        "content_hash": content_hash,
+                        "split": split_name,
+                    }
+                )
 
-        console.print(f"  {split_name}: {sum(1 for e in examples if e['split'] == split_name)} rows")
+        console.print(
+            f"  {split_name}: {sum(1 for e in examples if e['split'] == split_name)} rows"
+        )
 
     console.print(f"[green]Downloaded {len(examples)} examples across all splits[/green]")
     return examples
@@ -206,21 +208,23 @@ def ingest_to_neon_http(examples: list[dict], batch_size: int = 100) -> int:
                 vec_str = "[" + ",".join(str(v) for v in embedding) + "]"
                 offset = j * 9
                 values_clauses.append(
-                    f"(${offset+1}, ${offset+2}, ${offset+3}::jsonb, ${offset+4}, "
-                    f"${offset+5}, ${offset+6}, ${offset+7}::vector, ${offset+8}, "
-                    f"${offset+9}::jsonb)"
+                    f"(${offset + 1}, ${offset + 2}, ${offset + 3}::jsonb, ${offset + 4}, "
+                    f"${offset + 5}, ${offset + 6}, ${offset + 7}::vector, ${offset + 8}, "
+                    f"${offset + 9}::jsonb)"
                 )
-                params.extend([
-                    ex["id"],
-                    ex["citing_prompt"],
-                    json.dumps(ex["holdings"]),
-                    ex["label"],
-                    ex["jurisdiction"],
-                    ex.get("court", ""),
-                    vec_str,
-                    ex["content_hash"],
-                    json.dumps({"split": ex.get("split", "test")}),
-                ])
+                params.extend(
+                    [
+                        ex["id"],
+                        ex["citing_prompt"],
+                        json.dumps(ex["holdings"]),
+                        ex["label"],
+                        ex["jurisdiction"],
+                        ex.get("court", ""),
+                        vec_str,
+                        ex["content_hash"],
+                        json.dumps({"split": ex.get("split", "test")}),
+                    ]
+                )
 
             query = (
                 "INSERT INTO casehold_examples "
@@ -248,8 +252,7 @@ def ingest_to_neon_http(examples: list[dict], batch_size: int = 100) -> int:
             progress.update(task, advance=len(batch))
 
     console.print(
-        f"[green]Ingested {count} examples to Neon via HTTP "
-        f"({errors} batch errors)[/green]"
+        f"[green]Ingested {count} examples to Neon via HTTP ({errors} batch errors)[/green]"
     )
     return count
 

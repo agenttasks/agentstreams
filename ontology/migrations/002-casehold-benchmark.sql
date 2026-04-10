@@ -5,7 +5,7 @@
 -- and evaluation results. Uses pgvector for semantic search
 -- and pg_trgm for fuzzy text matching on citing prompts.
 --
--- Source: HuggingFace reglab/casehold
+-- Source: HuggingFace casehold/casehold
 -- GitHub issue: https://github.com/agenttasks/agentstreams/issues/55
 -- ═══════════════════════════════════════════════════════════
 
