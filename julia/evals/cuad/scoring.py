@@ -52,16 +52,6 @@ class RecallResult:
     duration_ms: int = 0
 
 
-@dataclass
-class CaseHOLDGrade:
-    """Score for a single CaseHOLD prediction."""
-
-    example_id: str = ""
-    predicted_idx: int = -1
-    gold_idx: int = -1
-    correct: bool = False
-    confidence: float = 0.0
-
 
 # ── Token-Level F1 ─────────────────────────────────────────────
 
@@ -251,16 +241,6 @@ def compute_recall_at_k(
     return found / len(gold_set)
 
 
-# ── CaseHOLD Accuracy ─────────────────────────────────────────
-
-
-def compute_casehold_accuracy(grades: list[CaseHOLDGrade]) -> float:
-    """Compute accuracy for CaseHOLD predictions."""
-    if not grades:
-        return 0.0
-    correct = sum(1 for g in grades if g.correct)
-    return correct / len(grades)
-
 
 # ── Aggregation ────────────────────────────────────────────────
 
@@ -374,37 +354,3 @@ async def persist_vault_recall(conn, result: RecallResult, harness_run_id: int |
     return row[0]
 
 
-async def persist_casehold_result(
-    conn,
-    *,
-    example_id: str,
-    citing_prompt: str,
-    holding_options: list[str],
-    predicted_idx: int | None,
-    gold_idx: int,
-    correct: bool,
-    confidence: float | None,
-    reasoning: str | None,
-    model: str,
-    input_tokens: int | None,
-    output_tokens: int | None,
-    duration_ms: int | None,
-    harness_run_id: int | None = None,
-) -> int:
-    """Persist a CaseHOLD eval result to julia_casehold_eval_runs."""
-    row = await (
-        await conn.execute(
-            """INSERT INTO julia_casehold_eval_runs
-               (harness_run_id, example_id, citing_prompt, holding_options,
-                predicted_idx, gold_idx, correct, confidence, reasoning,
-                model, input_tokens, output_tokens, duration_ms)
-               VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-               RETURNING id""",
-            (
-                harness_run_id, example_id, citing_prompt, holding_options,
-                predicted_idx, gold_idx, correct, confidence, reasoning,
-                model, input_tokens, output_tokens, duration_ms,
-            ),
-        )
-    ).fetchone()
-    return row[0]

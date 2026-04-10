@@ -135,6 +135,40 @@ def eval_codegen(
     subprocess.run(cmd, cwd=PROJECT_ROOT)
 
 
+@eval_app.command("casehold")
+def eval_casehold(
+    examples: int = typer.Option(0, help="Limit examples (0=all)"),
+    jurisdiction: str = typer.Option("", help="Filter by jurisdiction (e.g., delaware, 9th_cir)"),
+    confidence_threshold: float = typer.Option(
+        0.0,
+        "--confidence-threshold",
+        help="Flag answers below this confidence",
+    ),
+    citation_audit: bool = typer.Option(
+        False, "--citation-audit", help="Verify citation grounding"
+    ),
+    persist: bool = typer.Option(False, help="Persist results to Neon"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Show task matrix"),
+    workers: int = typer.Option(4, help="Concurrent API workers"),
+) -> None:
+    """Run CaseHOLD legal holdings benchmark (53K+ holdings, 5-way multiple choice)."""
+    cmd = [sys.executable, str(PROJECT_ROOT / "julia" / "evals" / "casehold" / "runner.py")]
+    if examples:
+        cmd.extend(["--examples", str(examples)])
+    if jurisdiction:
+        cmd.extend(["--jurisdiction", jurisdiction])
+    if confidence_threshold > 0:
+        cmd.extend(["--confidence-threshold", str(confidence_threshold)])
+    if citation_audit:
+        cmd.append("--citation-audit")
+    if persist:
+        cmd.append("--persist")
+    if dry_run:
+        cmd.append("--dry-run")
+    cmd.extend(["--workers", str(workers)])
+    subprocess.run(cmd, cwd=PROJECT_ROOT)
+
+
 @eval_app.command("lexglue")
 def eval_lexglue(
     task: str = typer.Option(

@@ -36,20 +36,16 @@ PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from julia.evals.cuad.prompts import (  # noqa: E402
-    CASEHOLD_SYSTEM_PROMPT,
     CUAD_SYSTEM_PROMPT,
     HIGH_STAKES_CLAUSE_TYPES,
-    build_casehold_prompt,
     build_cuad_single_prompt,
     build_cuad_verify_prompt,
 )
 from julia.evals.cuad.scoring import (  # noqa: E402
-    CaseHOLDGrade,
     CUADGrade,
     RecallResult,
     aggregate_cuad_grades,
     aggregate_recall_results,
-    compute_casehold_accuracy,
     grade_cuad_extraction,
 )
 
@@ -86,26 +82,6 @@ class CUADResult:
     duration_ms: int = 0
     error: str | None = None
 
-
-@dataclass
-class CaseHOLDTask:
-    example_id: str
-    citing_prompt: str
-    holdings: list[str]
-    gold_idx: int
-
-
-@dataclass
-class CaseHOLDResult:
-    task: CaseHOLDTask
-    predicted_idx: int = -1
-    correct: bool = False
-    confidence: float = 0.0
-    reasoning: str = ""
-    input_tokens: int = 0
-    output_tokens: int = 0
-    duration_ms: int = 0
-    error: str | None = None
 
 
 # ── API Caller ──────────────────────────────────────────────
@@ -222,36 +198,6 @@ def run_cuad_task(task: CUADTask) -> CUADResult:
     return result
 
 
-# ── CaseHOLD Task Execution ─────────────────────────────────
-
-
-def run_casehold_task(task: CaseHOLDTask) -> CaseHOLDResult:
-    """Execute a single CaseHOLD prediction task."""
-    result = CaseHOLDResult(task=task)
-
-    try:
-        user_prompt = build_casehold_prompt(task.citing_prompt, task.holdings)
-        response = call_claude(CASEHOLD_SYSTEM_PROMPT, user_prompt)
-
-        result.input_tokens = response["input_tokens"]
-        result.output_tokens = response["output_tokens"]
-        result.duration_ms = response["duration_ms"]
-
-        parsed = parse_json_response(response["text"])
-        if not parsed or not isinstance(parsed, dict):
-            result.error = "Failed to parse JSON response"
-            return result
-
-        result.predicted_idx = parsed.get("predicted_idx", -1)
-        result.confidence = parsed.get("confidence", 0.0)
-        result.reasoning = parsed.get("reasoning", "")
-        result.correct = result.predicted_idx == task.gold_idx
-
-    except Exception as e:
-        result.error = str(e)
-
-    return result
-
 
 # ── Data Loading ────────────────────────────────────────────
 
@@ -305,36 +251,6 @@ def load_cuad_tasks(
 
     return tasks
 
-
-def load_casehold_tasks(max_examples: int | None = None) -> list[CaseHOLDTask]:
-    """Load CaseHOLD tasks from downloaded dataset."""
-    casehold_path = DATA_DIR / "casehold.jsonl"
-    if not casehold_path.exists():
-        print(f"ERROR: CaseHOLD data not found at {casehold_path}")
-        print("Run: uv run julia/evals/cuad/download_casehold.py")
-        sys.exit(1)
-
-    tasks = []
-    with open(casehold_path) as f:
-        for i, line in enumerate(f):
-            if max_examples and i >= max_examples:
-                break
-
-            ex = json.loads(line)
-            tasks.append(CaseHOLDTask(
-                example_id=ex["id"],
-                citing_prompt=ex["citing_prompt"],
-                holdings=[
-                    ex["holding_0"],
-                    ex["holding_1"],
-                    ex["holding_2"],
-                    ex["holding_3"],
-                    ex["holding_4"],
-                ],
-                gold_idx=ex["label"],
-            ))
-
-    return tasks
 
 
 # ── Vault Recall Evaluation ─────────────────────────────────
@@ -441,33 +357,28 @@ def run_vault_recall(
 
 async def persist_results(
     cuad_results: list[CUADResult],
-    casehold_results: list[CaseHOLDResult],
     recall_results: list[RecallResult],
 ) -> None:
-    """Persist all eval results to Neon Postgres."""
+    """Persist CUAD eval results to Neon Postgres."""
     from julia.evals.cuad.scoring import (
         aggregate_cuad_grades,
-        persist_casehold_result,
         persist_cuad_grade,
         persist_vault_recall,
     )
     from src.neon_db import connection_pool, create_harness_run, record_evaluation_result
 
     async with connection_pool() as conn:
-        # Create harness run
         harness_run_id = await create_harness_run(
             conn,
-            harness_name="cuad-casehold-benchmark",
+            harness_name="cuad-benchmark",
             sprint_id="cuad-v1",
-            objective="Measure Julia clause extraction F1 and CaseHOLD accuracy",
+            objective="Measure Julia clause extraction F1",
             criteria=[
                 {"name": "cuad_f1", "target": 0.85},
                 {"name": "source_score", "target": 0.9},
-                {"name": "casehold_accuracy", "target": 0.7},
             ],
         )
 
-        # Persist CUAD results
         for r in cuad_results:
             if r.grade and not r.error:
                 await persist_cuad_grade(
@@ -491,36 +402,11 @@ async def persist_results(
                     harness_run_id=harness_run_id,
                 )
 
-        # Persist recall results
         for r in recall_results:
             await persist_vault_recall(conn, r, harness_run_id=harness_run_id)
 
-        # Persist CaseHOLD results
-        for r in casehold_results:
-            if not r.error:
-                await persist_casehold_result(
-                    conn,
-                    example_id=r.task.example_id,
-                    citing_prompt=r.task.citing_prompt,
-                    holding_options=r.task.holdings,
-                    predicted_idx=r.predicted_idx,
-                    gold_idx=r.task.gold_idx,
-                    correct=r.correct,
-                    confidence=r.confidence,
-                    reasoning=r.reasoning,
-                    model=MODEL,
-                    input_tokens=r.input_tokens,
-                    output_tokens=r.output_tokens,
-                    duration_ms=r.duration_ms,
-                    harness_run_id=harness_run_id,
-                )
-
-        # Record overall eval result
         cuad_grades = [r.grade for r in cuad_results if r.grade]
         agg = aggregate_cuad_grades(cuad_grades)
-        casehold_acc = compute_casehold_accuracy(
-            [CaseHOLDGrade(correct=r.correct) for r in casehold_results if not r.error]
-        )
 
         await record_evaluation_result(
             conn,
@@ -530,11 +416,10 @@ async def persist_results(
                 {"name": "cuad_f1", "value": agg["mean_f1"]},
                 {"name": "cuad_answer_score", "value": agg["mean_answer_score"]},
                 {"name": "cuad_source_score", "value": agg["mean_source_score"]},
-                {"name": "casehold_accuracy", "value": casehold_acc},
             ],
             overall_score=agg["mean_f1"],
             passed=agg["mean_f1"] >= 0.85,
-            summary=f"CUAD F1={agg['mean_f1']:.3f}, CaseHOLD acc={casehold_acc:.3f}",
+            summary=f"CUAD F1={agg['mean_f1']:.3f}",
         )
 
         await conn.commit()
@@ -584,21 +469,6 @@ def print_cuad_summary(results: list[CUADResult]) -> None:
     print()
 
 
-def print_casehold_summary(results: list[CaseHOLDResult]) -> None:
-    """Print CaseHOLD evaluation summary."""
-    errors = sum(1 for r in results if r.error)
-    valid = [r for r in results if not r.error]
-    accuracy = sum(1 for r in valid if r.correct) / max(len(valid), 1)
-
-    print("=" * 70)
-    print("CASEHOLD BENCHMARK RESULTS")
-    print("=" * 70)
-    print(f"  Total examples:         {len(results)}")
-    print(f"  Errors:                 {errors}")
-    print(f"  Accuracy:               {accuracy:.4f}")
-    print(f"  Correct:                {sum(1 for r in valid if r.correct)} / {len(valid)}")
-    print()
-
 
 def print_recall_summary(results: list[RecallResult]) -> None:
     """Print vault recall summary."""
@@ -616,11 +486,9 @@ def print_recall_summary(results: list[RecallResult]) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="CUAD + CaseHOLD benchmark runner")
-    parser.add_argument("--benchmark", choices=["cuad", "casehold", "all"], default="all")
+    parser = argparse.ArgumentParser(description="CUAD clause extraction benchmark runner")
     parser.add_argument("--clause", type=str, default=None, help="Filter to clause type")
     parser.add_argument("--contracts", type=int, default=None, help="Limit CUAD contracts")
-    parser.add_argument("--examples", type=int, default=None, help="Limit CaseHOLD examples")
     parser.add_argument("--vault-recall", action="store_true", help="Run vault recall eval only")
     parser.add_argument("--backend", default="all", help="Search backend for recall eval")
     parser.add_argument("--source-score", action="store_true", help="Source verification only")
@@ -630,7 +498,6 @@ def main() -> None:
     args = parser.parse_args()
 
     cuad_results: list[CUADResult] = []
-    casehold_results: list[CaseHOLDResult] = []
     recall_results: list[RecallResult] = []
 
     # Vault recall mode
@@ -643,92 +510,59 @@ def main() -> None:
         print_recall_summary(recall_results)
 
         if args.persist:
-            asyncio.run(persist_results([], [], recall_results))
+            asyncio.run(persist_results([], recall_results))
         return
 
     # CUAD benchmark
-    if args.benchmark in ("cuad", "all"):
-        tasks = load_cuad_tasks(
-            clause_filter=args.clause,
-            max_contracts=args.contracts,
-        )
+    tasks = load_cuad_tasks(
+        clause_filter=args.clause,
+        max_contracts=args.contracts,
+    )
 
-        if args.dry_run:
-            print(f"CUAD: {len(tasks)} tasks across contracts")
-            clause_counts: dict[str, int] = {}
-            for t in tasks:
-                clause_counts[t.clause_type] = clause_counts.get(t.clause_type, 0) + 1
-            for ct, count in sorted(clause_counts.items()):
-                print(f"  {ct}: {count} contracts")
-        else:
-            print(f"Running CUAD evaluation ({len(tasks)} tasks, {args.workers} workers)...")
-            with ThreadPoolExecutor(max_workers=args.workers) as pool:
-                futures = {pool.submit(run_cuad_task, t): t for t in tasks}
-                for i, future in enumerate(as_completed(futures)):
-                    result = future.result()
-                    cuad_results.append(result)
-                    if (i + 1) % 50 == 0:
-                        print(f"  CUAD: {i + 1}/{len(tasks)} completed")
+    if args.dry_run:
+        print(f"CUAD: {len(tasks)} tasks across contracts")
+        clause_counts: dict[str, int] = {}
+        for t in tasks:
+            clause_counts[t.clause_type] = clause_counts.get(t.clause_type, 0) + 1
+        for ct, count in sorted(clause_counts.items()):
+            print(f"  {ct}: {count} contracts")
+        return
 
-            print_cuad_summary(cuad_results)
+    print(f"Running CUAD evaluation ({len(tasks)} tasks, {args.workers} workers)...")
+    with ThreadPoolExecutor(max_workers=args.workers) as pool:
+        futures = {pool.submit(run_cuad_task, t): t for t in tasks}
+        for i, future in enumerate(as_completed(futures)):
+            result = future.result()
+            cuad_results.append(result)
+            if (i + 1) % 50 == 0:
+                print(f"  CUAD: {i + 1}/{len(tasks)} completed")
 
-    # CaseHOLD benchmark
-    if args.benchmark in ("casehold", "all"):
-        tasks = load_casehold_tasks(max_examples=args.examples)
-
-        if args.dry_run:
-            print(f"CaseHOLD: {len(tasks)} examples")
-        else:
-            print(f"Running CaseHOLD evaluation ({len(tasks)} tasks, {args.workers} workers)...")
-            with ThreadPoolExecutor(max_workers=args.workers) as pool:
-                futures = {pool.submit(run_casehold_task, t): t for t in tasks}
-                for i, future in enumerate(as_completed(futures)):
-                    result = future.result()
-                    casehold_results.append(result)
-                    if (i + 1) % 100 == 0:
-                        print(f"  CaseHOLD: {i + 1}/{len(tasks)} completed")
-
-            print_casehold_summary(casehold_results)
+    print_cuad_summary(cuad_results)
 
     # Save results locally
-    if not args.dry_run:
-        RESULTS_DIR.mkdir(parents=True, exist_ok=True)
-        ts = int(time.time())
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    ts = int(time.time())
 
-        if cuad_results:
-            cuad_path = RESULTS_DIR / f"cuad_{ts}.jsonl"
-            with open(cuad_path, "w") as f:
-                for r in cuad_results:
-                    row = {
-                        "contract_id": r.task.contract_id,
-                        "clause_type": r.task.clause_type,
-                        "found": r.found,
-                        "gold_found": r.task.gold_found,
-                        "f1": r.grade.f1_score if r.grade else 0.0,
-                        "answer_score": r.grade.answer_score if r.grade else 0.0,
-                        "source_score": r.grade.source_score if r.grade else 0.0,
-                        "error": r.error,
-                    }
-                    f.write(json.dumps(row) + "\n")
-            print(f"CUAD results saved to {cuad_path}")
-
-        if casehold_results:
-            ch_path = RESULTS_DIR / f"casehold_{ts}.jsonl"
-            with open(ch_path, "w") as f:
-                for r in casehold_results:
-                    row = {
-                        "example_id": r.task.example_id,
-                        "predicted_idx": r.predicted_idx,
-                        "gold_idx": r.task.gold_idx,
-                        "correct": r.correct,
-                        "error": r.error,
-                    }
-                    f.write(json.dumps(row) + "\n")
-            print(f"CaseHOLD results saved to {ch_path}")
+    if cuad_results:
+        cuad_path = RESULTS_DIR / f"cuad_{ts}.jsonl"
+        with open(cuad_path, "w") as f:
+            for r in cuad_results:
+                row = {
+                    "contract_id": r.task.contract_id,
+                    "clause_type": r.task.clause_type,
+                    "found": r.found,
+                    "gold_found": r.task.gold_found,
+                    "f1": r.grade.f1_score if r.grade else 0.0,
+                    "answer_score": r.grade.answer_score if r.grade else 0.0,
+                    "source_score": r.grade.source_score if r.grade else 0.0,
+                    "error": r.error,
+                }
+                f.write(json.dumps(row) + "\n")
+        print(f"CUAD results saved to {cuad_path}")
 
     # Persist to Neon
-    if args.persist and not args.dry_run:
-        asyncio.run(persist_results(cuad_results, casehold_results, recall_results))
+    if args.persist:
+        asyncio.run(persist_results(cuad_results, recall_results))
 
 
 if __name__ == "__main__":
