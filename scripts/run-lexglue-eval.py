@@ -128,7 +128,7 @@ class LexGLUEResult:
 
 
 # ---------------------------------------------------------------------------
-# Julia system prompt (extended from julia/src/completion.ts:161 — adds eval-specific constraints)
+# Julia system prompt (adapted from julia/src/completion.ts:161 — eval-specific constraints replace attorney-referral and jurisdiction guards)
 # ---------------------------------------------------------------------------
 
 JULIA_SYSTEM_PROMPT = """You are Julia, a legal analysis assistant that helps legal professionals review documents, assess risk, and draft responses.

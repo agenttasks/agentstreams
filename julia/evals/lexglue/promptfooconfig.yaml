@@ -117,6 +117,41 @@ prompts:
       Output ONLY valid JSON:
       {"concepts": ["concept_id", ...], "reasoning": "..."}
 
+  # ── UNFAIR-ToS: Unfair Clause Detection ──────────────────────
+  - id: unfair-tos-detect
+    raw: |
+      You are Julia, a legal analysis assistant. Never provide legal advice.
+
+      Analyze this Terms of Service clause for unfairness.
+      Identify ONLY unfair elements that are ACTUALLY present in the text.
+      Do NOT identify unfair elements that are implied but not stated.
+
+      Valid unfairness types:
+      limitation_of_liability, unilateral_termination, unilateral_change,
+      content_removal, jurisdiction, choice_of_law, arbitration, contract_by_using
+
+      <document>
+      {{text}}
+      </document>
+
+      Output ONLY valid JSON:
+      {"is_unfair": true/false, "unfairness_types": ["type1", ...], "reasoning": "..."}
+
+  # ── ECtHR-A: Violation Prediction ────────────────────────────
+  - id: ecthr-a-predict
+    raw: |
+      You are Julia, a legal analysis assistant. Never provide legal advice.
+
+      Given this ECtHR case description, predict which ECHR articles were violated.
+      Select ONLY from: 2, 3, 5, 6, 8, 9, 10, 11, 13, 14, P1-1
+
+      <document>
+      {{text}}
+      </document>
+
+      Output ONLY valid JSON:
+      {"violated_articles": ["article_number", ...], "reasoning": "..."}
+
 tests:
   # ── LEDGAR Smoke Tests ───────────────────────────────────────
   - description: "LEDGAR: Reimbursement provision"
@@ -168,6 +203,32 @@ tests:
       - type: contains-json
       - type: javascript
         value: "JSON.parse(output).issue_area === 'First Amendment'"
+
+  # ── UNFAIR-ToS Smoke Tests ───────────────────────────────────
+  - description: "UNFAIR-ToS: Arbitration clause detection"
+    vars:
+      text: "Any dispute arising out of or in connection with this agreement shall be resolved by binding arbitration under the rules of the American Arbitration Association."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).is_unfair === true"
+
+  - description: "UNFAIR-ToS: Fair clause passes"
+    vars:
+      text: "Users may cancel their subscription at any time through their account settings. Upon cancellation, access continues until the end of the billing period."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).is_unfair === false"
+
+  # ── ECtHR-A Smoke Test ──────────────────────────────────────
+  - description: "ECtHR-A: Detention violation"
+    vars:
+      text: "The applicant was held in detention for over two years without being brought before a judge. The domestic courts repeatedly denied his requests for release without providing adequate reasoning."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "Array.isArray(JSON.parse(output).violated_articles)"
 
   # ── ContractNLI Smoke Tests ─────────────────────────────────
   - description: "ContractNLI: Contradiction detection"
