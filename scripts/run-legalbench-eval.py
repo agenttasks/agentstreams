@@ -74,6 +74,7 @@ class LegalBenchResult:
     task_id: str
     task_name: str
     category: str
+    sample_id: str = ""
     hf_index: int = 0
     gold_answer: str = ""
     predicted_answer: str = ""
@@ -352,6 +353,7 @@ def parse_response(task: LegalBenchTask, raw_output: str) -> LegalBenchResult:
         task_id=task.task_id,
         task_name=task.task_name,
         category=task.category,
+        sample_id=task.sample_id,
         hf_index=task.hf_index,
         gold_answer=task.answer,
         raw_output=raw_output,
@@ -528,7 +530,7 @@ async def store_results_neon(run_id: str, results: list[LegalBenchResult]) -> in
                         input_tokens, output_tokens, duration_ms, raw_output)
                        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
                     (
-                        run_id, r.task_id, r.task_name, r.category,
+                        run_id, r.sample_id or None, r.task_name, r.category,
                         r.predicted_answer, r.gold_answer,
                         r.is_correct, r.confidence, r.reasoning,
                         json.dumps(r.quotes_used) if r.quotes_used else None,

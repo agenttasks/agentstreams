@@ -72,6 +72,102 @@
     "flan_t5": 35.0,
     "llama2_70b": 38.0
   },
+  "contract_qa": {
+    "_comment": "No published baselines available for this category",
+    "metric": "accuracy",
+    "gpt4": null,
+    "claude_opus": null,
+    "flan_t5": null,
+    "llama2_70b": null
+  },
+  "privacy_policy": {
+    "_comment": "No published baselines available for this category",
+    "metric": "accuracy",
+    "gpt4": null,
+    "claude_opus": null,
+    "flan_t5": null,
+    "llama2_70b": null
+  },
+  "ssla": {
+    "_comment": "No published baselines available for this category",
+    "metric": "accuracy",
+    "gpt4": null,
+    "claude_opus": null,
+    "flan_t5": null,
+    "llama2_70b": null
+  },
+  "sara": {
+    "_comment": "No published baselines available for this category",
+    "metric": "accuracy",
+    "gpt4": null,
+    "claude_opus": null,
+    "flan_t5": null,
+    "llama2_70b": null
+  },
+  "textualism": {
+    "_comment": "No published baselines available for this category",
+    "metric": "accuracy",
+    "gpt4": null,
+    "claude_opus": null,
+    "flan_t5": null,
+    "llama2_70b": null
+  },
+  "citation_prediction": {
+    "_comment": "No published baselines available for this category",
+    "metric": "accuracy",
+    "gpt4": null,
+    "claude_opus": null,
+    "flan_t5": null,
+    "llama2_70b": null
+  },
+  "interpretation": {
+    "_comment": "No published baselines available for this category",
+    "metric": "accuracy",
+    "gpt4": null,
+    "claude_opus": null,
+    "flan_t5": null,
+    "llama2_70b": null
+  },
+  "corporate_lobbying": {
+    "_comment": "No published baselines available for this category",
+    "metric": "accuracy",
+    "gpt4": null,
+    "claude_opus": null,
+    "flan_t5": null,
+    "llama2_70b": null
+  },
+  "court_outcomes": {
+    "_comment": "No published baselines available for this category",
+    "metric": "accuracy",
+    "gpt4": null,
+    "claude_opus": null,
+    "flan_t5": null,
+    "llama2_70b": null
+  },
+  "judicial_ethics": {
+    "_comment": "No published baselines available for this category",
+    "metric": "accuracy",
+    "gpt4": null,
+    "claude_opus": null,
+    "flan_t5": null,
+    "llama2_70b": null
+  },
+  "international_law": {
+    "_comment": "No published baselines available for this category",
+    "metric": "accuracy",
+    "gpt4": null,
+    "claude_opus": null,
+    "flan_t5": null,
+    "llama2_70b": null
+  },
+  "unfair_tos": {
+    "_comment": "No published baselines available for this category",
+    "metric": "accuracy",
+    "gpt4": null,
+    "claude_opus": null,
+    "flan_t5": null,
+    "llama2_70b": null
+  },
   "overall": {
     "metric": "accuracy",
     "gpt4": 73.0,

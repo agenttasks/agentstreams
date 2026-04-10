@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS julia_legalbench_samples (
     split TEXT NOT NULL DEFAULT 'test',
     metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
     content_hash TEXT NOT NULL,
-    -- pg_tiktoken: token count for prompt budgeting
+    -- Approximate word-count token estimate for prompt budgeting
     token_count INTEGER DEFAULT 0,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     UNIQUE (task, hf_index, split)
@@ -70,7 +70,7 @@ COMMENT ON COLUMN julia_legalbench_samples.answer_type IS
 COMMENT ON COLUMN julia_legalbench_samples.label_names IS
     'Valid label vocabulary for this task (JSON array)';
 COMMENT ON COLUMN julia_legalbench_samples.token_count IS
-    'pg_tiktoken cl100k_base token count for prompt budgeting';
+    'Approximate word-count token estimate for prompt budgeting (whitespace split)';
 
 -- ── LegalBench Embeddings (pgvector 0.8.1) ─────────────────────
 -- Chunks of sample texts with 384-dim embeddings for retrieval.
@@ -108,7 +108,7 @@ COMMENT ON COLUMN julia_legalbench_embeddings.embedding IS
 CREATE TABLE IF NOT EXISTS julia_legalbench_results (
     id BIGSERIAL PRIMARY KEY,
     run_id TEXT NOT NULL,                  -- Groups results by eval run
-    sample_id TEXT NOT NULL REFERENCES julia_legalbench_samples(id),
+    sample_id TEXT REFERENCES julia_legalbench_samples(id),  -- NULL when running from JSON without Neon ingest
     task TEXT NOT NULL,                    -- Degenerate dimension
     category TEXT NOT NULL,                -- Degenerate dimension
     predicted_answer TEXT,                 -- Model prediction
