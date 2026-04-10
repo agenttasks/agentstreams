@@ -15,7 +15,7 @@ Usage:
     python -m julia.evals.casehold.ingest --http             # HTTP SQL API mode
     python -m julia.evals.casehold.ingest --export-sample --sample-size 100
 
-Auth: NEON_DATABASE_URL / DATABASE_URL from env (never hardcoded).
+Auth: NEON_DATABASE_URL from env (never hardcoded).
 """
 
 from __future__ import annotations
@@ -163,8 +163,10 @@ async def ingest_to_neon(examples: list[dict], batch_size: int = 500) -> int:
 def _get_neon_http_config() -> tuple[str, dict[str, str]]:
     """Build Neon HTTP SQL API endpoint and headers from project env vars.
 
-    Uses NEON_HTTP_HOST and NEON_HTTP_CONN as defined in CLAUDE.md.
-    Falls back to parsing NEON_DATABASE_URL if the dedicated vars are absent.
+    Precedence:
+    1. NEON_HTTP_HOST + NEON_HTTP_CONN (CLAUDE.md standard)
+    2. NEON_DATABASE_URL (CLAUDE.md standard, parsed for host)
+    3. DATABASE_URL (non-standard fallback for CI/sandboxed envs)
     """
     http_host = os.environ.get("NEON_HTTP_HOST")
     http_conn = os.environ.get("NEON_HTTP_CONN")
@@ -177,7 +179,7 @@ def _get_neon_http_config() -> tuple[str, dict[str, str]]:
         }
         return url, headers
 
-    # Fallback: parse from NEON_DATABASE_URL
+    # Fallback: parse host from connection string
     db_url = os.environ.get("NEON_DATABASE_URL") or os.environ.get("DATABASE_URL", "")
     if not db_url:
         raise ValueError("Set NEON_HTTP_HOST + NEON_HTTP_CONN, or NEON_DATABASE_URL")
