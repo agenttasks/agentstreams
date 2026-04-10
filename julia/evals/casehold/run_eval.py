@@ -257,11 +257,14 @@ def evaluate_single(
         question_id=example["id"],
     )
 
+    jurisdiction = example.get("jurisdiction", "")
+
     try:
         response = call_model(client, SYSTEM_PROMPT, prompt, model)
     except Exception as e:
         return {
             "example_id": example["id"],
+            "jurisdiction": jurisdiction,
             "selected_holding": -1,
             "correct": False,
             "confidence": 0.0,
@@ -283,6 +286,7 @@ def evaluate_single(
     if parsed is None:
         return {
             "example_id": example["id"],
+            "jurisdiction": jurisdiction,
             "selected_holding": -1,
             "correct": False,
             "confidence": 0.0,
@@ -308,6 +312,7 @@ def evaluate_single(
 
     return {
         "example_id": example["id"],
+        "jurisdiction": jurisdiction,
         "selected_holding": selected,
         "correct": correct,
         "confidence": confidence,
@@ -604,15 +609,8 @@ def main() -> None:
 
     console.print(f"Loaded {len(examples)} examples")
 
-    # Attach jurisdiction to results for per-jurisdiction metrics
-    jurisdiction_map = {ex["id"]: ex.get("jurisdiction", "") for ex in examples}
-
     # Run evaluation
     results = run_eval(examples, model=args.model, workers=args.workers)
-
-    # Attach jurisdiction to results
-    for r in results:
-        r["jurisdiction"] = jurisdiction_map.get(r["example_id"], "")
 
     # Compute and print metrics
     metrics = compute_metrics(results, confidence_threshold=args.confidence_threshold)

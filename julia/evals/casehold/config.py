@@ -17,7 +17,7 @@ import re
 
 TARGET_ACCURACY = 0.70  # Published BERT baseline: ~70%
 DEFAULT_CONFIDENCE_THRESHOLD = 0.8
-DEFAULT_MODEL = "claude-sonnet-4-6"
+DEFAULT_MODEL = "claude-opus-4-6"
 TEMPERATURE = 0
 MAX_TOKENS = 1024
 DEFAULT_WORKERS = 4
