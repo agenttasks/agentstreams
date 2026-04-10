@@ -25,6 +25,9 @@ class TestToolDefinitions:
             "project_ontology",
             "query_metrics",
             "enqueue_task",
+            "graphql_introspect",
+            "generate_cube_model",
+            "generate_typescript",
         }
         assert expected == tool_names
 

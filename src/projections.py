@@ -279,14 +279,61 @@ class GraphQLProjection:
             lines.append("")
         return "\n".join(lines)
 
+    def generate_input_types(self, class_name: str) -> str:
+        """Generate Create and Update input types for a class."""
+        cls = self.parser.classes.get(class_name)
+        if not cls:
+            return ""
+
+        lines = []
+        # Create input — all non-relationship fields
+        create_fields = []
+        update_fields = []
+        for prop in cls.properties:
+            if prop.is_relationship:
+                continue
+            gql_type = self.TYPE_MAP.get(prop.range_type, "String")
+            create_fields.append(f"  as_{prop.name}: {gql_type}!")
+            update_fields.append(f"  as_{prop.name}: {gql_type}")
+
+        if create_fields:
+            lines.append(f"input CreateAS_{class_name}Input {{")
+            lines.extend(create_fields)
+            lines.append("}")
+            lines.append("")
+            lines.append(f"input UpdateAS_{class_name}Input {{")
+            lines.extend(update_fields)
+            lines.append("}")
+            lines.append("")
+
+        return "\n".join(lines)
+
+    def generate_connection_type(self, class_name: str) -> str:
+        """Generate Relay-style connection types for pagination."""
+        return "\n".join([
+            f"type AS_{class_name}Connection {{",
+            f"  edges: [AS_{class_name}Edge!]!",
+            "  pageInfo: PageInfo!",
+            "  totalCount: Int!",
+            "}",
+            "",
+            f"type AS_{class_name}Edge {{",
+            f"  node: AS_{class_name}!",
+            "  cursor: String!",
+            "}",
+            "",
+        ])
+
     def generate_all(self) -> str:
-        """Generate complete GraphQL schema."""
+        """Generate complete GraphQL schema with queries, mutations, connections."""
         parts = [
             '"""AgentStreams UDA GraphQL Schema"""',
             '"""Auto-generated from ontology/agentstreams.ttl"""',
             "",
             "directive @key(fields: String!) on OBJECT",
             "directive @udaUri(uri: String!) on OBJECT | FIELD_DEFINITION",
+            "",
+            "scalar DateTime",
             "",
         ]
 
@@ -295,10 +342,68 @@ class GraphQLProjection:
         if enum_defs:
             parts.append(enum_defs)
 
-        # Types
+        # PageInfo (Relay spec)
+        parts.extend([
+            "type PageInfo {",
+            "  hasNextPage: Boolean!",
+            "  hasPreviousPage: Boolean!",
+            "  startCursor: String",
+            "  endCursor: String",
+            "}",
+            "",
+        ])
+
+        # Types + connection types + input types
         for class_name in self.parser.classes:
             parts.append(self.generate(class_name))
             parts.append("")
+            parts.append(self.generate_connection_type(class_name))
+            parts.append(self.generate_input_types(class_name))
+
+        # Query root type
+        query_fields = []
+        for class_name in self.parser.classes:
+            lower = class_name[0].lower() + class_name[1:]
+            query_fields.append(f"  as_{lower}(id: ID!): AS_{class_name}")
+            query_fields.append(
+                f"  as_{lower}s(limit: Int = 10, offset: Int = 0): AS_{class_name}Connection!"
+            )
+        parts.append("type Query {")
+        parts.extend(query_fields)
+        parts.append("}")
+        parts.append("")
+
+        # Mutation root type
+        mutation_fields = []
+        for class_name in self.parser.classes:
+            lower = class_name[0].lower() + class_name[1:]
+            mutation_fields.append(
+                f"  createAS_{class_name}(input: CreateAS_{class_name}Input!): AS_{class_name}!"
+            )
+            mutation_fields.append(
+                f"  updateAS_{class_name}(id: ID!, input: UpdateAS_{class_name}Input!): AS_{class_name}!"
+            )
+            mutation_fields.append(
+                f"  deleteAS_{class_name}(id: ID!): Boolean!"
+            )
+        parts.append("type Mutation {")
+        parts.extend(mutation_fields)
+        parts.append("}")
+        parts.append("")
+
+        # Subscription root type
+        sub_fields = []
+        for class_name in self.parser.classes:
+            sub_fields.append(
+                f"  onAS_{class_name}Created: AS_{class_name}!"
+            )
+            sub_fields.append(
+                f"  onAS_{class_name}Updated: AS_{class_name}!"
+            )
+        parts.append("type Subscription {")
+        parts.extend(sub_fields)
+        parts.append("}")
+        parts.append("")
 
         return "\n".join(parts)
 
@@ -439,6 +544,7 @@ def generate_all_projections(
     """Generate all UDA projections from ontology.
 
     Returns dict mapping filename → content for each generated file.
+    Formats: Avro, GraphQL, DataContainer, Mapping, Cube YAML, TypeScript.
     """
     parser = OntologyParser(ttl_path)
     parser.parse()
@@ -450,7 +556,7 @@ def generate_all_projections(
     for name in parser.classes:
         results[f"avro/{name}.avsc"] = json.dumps(avro.generate(name), indent=2)
 
-    # GraphQL schema
+    # GraphQL schema (enhanced with queries, mutations, connections)
     gql = GraphQLProjection(parser)
     results["graphql/schema.graphqls"] = gql.generate_all()
 
@@ -463,6 +569,17 @@ def generate_all_projections(
     mp = MappingProjection(parser)
     for name in parser.classes:
         results[f"mappings/{name}_mappings.ttl"] = mp.generate(name)
+
+    # Cube.dev YAML data models (Kimball dimensional modeling)
+    from src.cube_models import CubeProjection
+
+    cube = CubeProjection(parser)
+    results["cube/models.yml"] = cube.to_yaml_all()
+
+    # TypeScript types (from GraphQL schema)
+    from src.typescript_codegen import codegen_from_ontology
+
+    results["typescript/types.ts"] = codegen_from_ontology(parser)
 
     # Write to output directory if specified
     if output_dir:

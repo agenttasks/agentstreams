@@ -13,6 +13,7 @@ CREATE EXTENSION IF NOT EXISTS hll;              -- HyperLogLog: approximate dis
 CREATE EXTENSION IF NOT EXISTS pg_trgm;          -- trigram similarity search
 CREATE EXTENSION IF NOT EXISTS pg_stat_statements; -- query performance monitoring
 CREATE EXTENSION IF NOT EXISTS pg_cron;          -- scheduled jobs for pipeline automation
+CREATE EXTENSION IF NOT EXISTS pg_jsonschema;    -- JSON Schema validation for JSONB columns
 
 -- ── Languages ────────────────────────────────────────────
 
@@ -277,6 +278,36 @@ CREATE TABLE data_containers (
     projection_ttl TEXT,               -- generated TTL DataContainer
     created_at TIMESTAMPTZ DEFAULT now(),
     updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- ── Cube Models (Cube.dev YAML: Kimball dimensional models) ─
+
+CREATE TABLE cube_models (
+    id SERIAL PRIMARY KEY,
+    class_name TEXT NOT NULL UNIQUE,    -- ontology class name
+    cube_yaml TEXT NOT NULL,            -- generated Cube.dev YAML definition
+    kimball_type TEXT NOT NULL DEFAULT 'dimension'
+        CHECK (kimball_type IN ('transaction_fact', 'accumulating_snapshot',
+               'periodic_snapshot', 'dimension', 'factless_fact')),
+    dimensions JSONB NOT NULL DEFAULT '[]',
+    measures JSONB NOT NULL DEFAULT '[]',
+    joins JSONB NOT NULL DEFAULT '[]',
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- ── GraphQL Schemas (versioned schema registry) ─────────
+
+CREATE TABLE graphql_schemas (
+    id SERIAL PRIMARY KEY,
+    schema_name TEXT NOT NULL,          -- 'agentstreams', 'julia', etc.
+    version INTEGER NOT NULL DEFAULT 1,
+    sdl TEXT NOT NULL,                  -- GraphQL SDL content
+    checksum TEXT NOT NULL,             -- SHA-256 of SDL for dedup
+    source TEXT NOT NULL DEFAULT 'ontology'
+        CHECK (source IN ('ontology', 'introspection', 'manual')),
+    created_at TIMESTAMPTZ DEFAULT now(),
+    UNIQUE (schema_name, version)
 );
 
 -- ── Embeddings (pgvector: semantic search) ──────────────

@@ -33,6 +33,9 @@ as:AvroFormat a as:ProjectionFormat ; rdfs:label "Avro" .
 as:GraphQLFormat a as:ProjectionFormat ; rdfs:label "GraphQL" .
 as:DataContainerTTL a as:ProjectionFormat ; rdfs:label "DataContainer TTL" .
 as:MappingTTL a as:ProjectionFormat ; rdfs:label "Mapping TTL" .
+as:CubeYAML a as:ProjectionFormat ; rdfs:label "Cube YAML" .
+as:TypeScriptTypes a as:ProjectionFormat ; rdfs:label "TypeScript Types" .
+as:DimensionalModel a as:ProjectionFormat ; rdfs:label "Dimensional Model" .
 
 as:BloomFilterState a rdfs:Class ;
     rdfs:label "Bloom Filter State" ;
