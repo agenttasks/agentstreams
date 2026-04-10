@@ -60,7 +60,6 @@ diagrams = [
     { name = "diagrams" },
 ]
 eval = [
-    { name = "datasets" },
     { name = "deepeval" },
     { name = "promptfoo" },
     { name = "pyright" },
@@ -103,7 +102,6 @@ dev = [
 ]
 diagrams = [{ name = "diagrams", specifier = ">=0.25.1" }]
 eval = [
-    { name = "datasets", specifier = ">=3.0" },
     { name = "deepeval", specifier = ">=3.9.6" },
     { name = "promptfoo", specifier = ">=0.1.4" },
     { name = "pyright", specifier = ">=1.1.408" },
