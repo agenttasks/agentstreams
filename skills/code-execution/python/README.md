@@ -28,7 +28,7 @@ uv add --dev pytest-asyncio==0.25.3
 
 | Package | Version | Purpose |
 |---------|---------|---------|
-| `anthropic` | 0.86.0 | Official Python SDK — messages, tool use, beta features |
+| `anthropic` | 0.87.0 | Official Python SDK — messages, tool use, beta features |
 | `e2b-code-interpreter` | 1.1.0 | E2B sandbox — run Python/JS with file I/O |
 | `modal` | 0.73.0 | Modal serverless — GPU, long-running, custom images |
 | `docker` | 7.1.0 | Docker SDK — container lifecycle, exec, logs |

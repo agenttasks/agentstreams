@@ -156,7 +156,7 @@ Environment variables available after session start:
 
 **Always use `NEON_DATABASE_URL` from env** — never hardcode credentials in scripts.
 
-Schema: `ontology/schema.sql` (12 tables, `resources.url` has UNIQUE constraint)
+Schema: `ontology/schema.sql` (29 tables, `resources.url` has UNIQUE constraint)
 
 ## Webapp
 

@@ -24,7 +24,7 @@ uv add --dev pytest==8.4.0
 
 | Package | Version | Purpose |
 |---------|---------|---------|
-| `anthropic` | 0.86.0 | Official Python SDK — messages, vision, files API |
+| `anthropic` | 0.87.0 | Official Python SDK — messages, vision, files API |
 | `pillow` | 11.1.0 | Image manipulation — resize, crop, format conversion |
 | `httpx` | 0.28.1 | HTTP client — fetch images from URLs |
 | `pymupdf` | 1.25.3 | PDF text extraction — local alternative to files API |

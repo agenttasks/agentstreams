@@ -44,8 +44,8 @@ npm install -D typescript-language-server@5.1.3
 | Package | Version | Purpose |
 |---------|---------|---------|
 | `@anthropic-ai/sdk` | latest | Core Messages API client |
-| `@anthropic-ai/claude-agent-sdk` | 0.2.88 | Headless agent orchestration (spawns Claude CLI) |
-| `@anthropic-ai/claude-code` | 2.1.88 | Claude Code CLI (global install, not project dep) |
+| `@anthropic-ai/claude-agent-sdk` | 0.2.101 | Headless agent orchestration (spawns Claude CLI) |
+| `@anthropic-ai/claude-code` | 2.1.101 | Claude Code CLI (global install, not project dep) |
 | `@anthropic-ai/bedrock-sdk` | 0.26.4 | AWS Bedrock variant of the SDK |
 | `@anthropic-ai/vertex-sdk` | 0.14.4 | Google Vertex variant of the SDK |
 | `@anthropic-ai/foundry-sdk` | 0.2.3 | Anthropic Foundry variant |

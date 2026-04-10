@@ -33,7 +33,7 @@ uv add --dev python-lsp-ruff==2.3.0
 
 | Package | Version | Purpose |
 |---------|---------|---------|
-| `anthropic` | 0.86.0 | Official Python SDK — messages, streaming, tool use, structured outputs |
+| `anthropic` | 0.87.0 | Official Python SDK — messages, streaming, tool use, structured outputs |
 | `claude-agent-sdk` | 0.1.53 | Headless agent — `query()`, `ClaudeSDKClient` |
 | `mcp` | 1.26.0 | Official MCP SDK — servers, clients, tools, resources |
 | `scrapy` | 2.14.2 | Web crawling framework — spiders, middleware, pipelines |
