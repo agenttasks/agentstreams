@@ -13,11 +13,12 @@
     "test": "node --test dist/**/*.test.js"
   },
   "dependencies": {
-    "@anthropic-ai/claude-agent-sdk": "^0.2.97",
-    "@anthropic-ai/claude-code": "^2.1.97",
+    "@anthropic-ai/claude-agent-sdk": "^0.2.101",
+    "@anthropic-ai/claude-code": "^2.1.101",
+    "@anthropic-ai/claude-trace": "^0.1.2",
     "@anthropic-ai/mcpb": "^2.1.2",
-    "@anthropic-ai/sdk": "^0.86.1",
-    "@modelcontextprotocol/sdk": "^1.12.0",
+    "@anthropic-ai/sdk": "^0.87.0",
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "@crawlee/core": "^3.16.0",
     "@crawlee/http": "^3.16.0",
     "@crawlee/browser": "^3.16.0",

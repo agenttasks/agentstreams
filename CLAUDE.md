@@ -108,10 +108,14 @@ Install pip packages: `make install-safety` (petri, bloom)
 
 | Package | Purpose |
 |---------|---------|
-| `@anthropic-ai/claude-agent-sdk` | Agent runtime (query, hooks, subagents) |
-| `@anthropic-ai/sdk` | Direct Messages API client (v0.86+) |
-| `@anthropic-ai/claude-trace` | JSONL transcript capture |
-| `@anthropic-ai/mcpb` | MCP Bundle builder |
+| `@anthropic-ai/claude-agent-sdk` | Agent runtime (query, hooks, subagents) — v0.2.101+ |
+| `@anthropic-ai/sdk` | Direct Messages API client (v0.87+) |
+| `@anthropic-ai/claude-code` | Claude Code CLI runtime — v2.1.101+ |
+| `@anthropic-ai/claude-trace` | JSONL transcript capture — v0.1.2+ |
+| `@anthropic-ai/mcpb` | MCP Bundle builder — v2.1.2+ |
+| `@modelcontextprotocol/sdk` | MCP SDK for tool servers — v1.29.0+ |
+| `@modelcontextprotocol/ext-apps` | Browser rendering and inline widgets — v1.5.0+ |
+| `@modelcontextprotocol/inspector` | MCP debugger CLI — v0.21.1+ |
 | `@neondatabase/serverless` | Neon SQL over HTTPS/WebSocket |
 | `@neondatabase/neon-js` | Neon Auth + Data API |
 
