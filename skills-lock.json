@@ -20,6 +20,16 @@
       "source": "anthropics/claude-plugins-official",
       "sourceType": "github",
       "computedHash": "e8118284a6365753790d44bb2758a6032b3af27fa84696428d9233f2be0f4e78"
+    },
+    "hf-cli": {
+      "source": "huggingface/skills",
+      "sourceType": "github",
+      "computedHash": "23b7cd77b72ebc1177525321ab4a02baef6b958bcd927aab9e444331e6cb663e"
+    },
+    "huggingface-datasets": {
+      "source": "huggingface/skills",
+      "sourceType": "github",
+      "computedHash": "79398ce664a1554bd55582cfa933ca0e6732840c5e2e00afe0132c44e22ee767"
     }
   }
 }
