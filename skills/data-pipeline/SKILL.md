@@ -41,7 +41,7 @@ Before reading setup docs, determine which language stack the user needs:
 
 | Capability | TypeScript | Python |
 |---|---|---|
-| **Anthropic SDK** | `@anthropic-ai/sdk` | `anthropic` 0.87.0 |
+| **Anthropic SDK** | `@anthropic-ai/sdk` 0.87.0 | `anthropic` 0.87.0 |
 | **Orchestration** | Temporal SDK | Prefect 3.4 / Dagster 1.10 |
 | **Streaming** | Node.js Streams / Kafka.js | Faust 0.11 / kafka-python |
 | **Batch ETL** | Node.js worker_threads | Pandas 2.2 / Polars 1.27 |
