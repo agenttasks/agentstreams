@@ -1,0 +1,84 @@
+{
+  "_comment": "Published LegalBench baselines. Sources: nguha/legalbench paper, GPT-4/Claude eval reports.",
+  "contract_nli": {
+    "metric": "accuracy",
+    "gpt4": 82.0,
+    "claude_opus": null,
+    "flan_t5": 62.0,
+    "llama2_70b": 58.0,
+    "harvey_biglaw_bench_answer_score": 74.0,
+    "target": 85.0
+  },
+  "cuad": {
+    "metric": "accuracy",
+    "gpt4": 79.0,
+    "claude_opus": null,
+    "flan_t5": 55.0,
+    "llama2_70b": 52.0
+  },
+  "maud": {
+    "metric": "accuracy",
+    "gpt4": 75.0,
+    "claude_opus": null,
+    "flan_t5": 48.0,
+    "llama2_70b": 45.0
+  },
+  "learned_hands": {
+    "metric": "accuracy",
+    "gpt4": 71.0,
+    "claude_opus": null,
+    "flan_t5": 54.0,
+    "llama2_70b": 50.0
+  },
+  "rule_application": {
+    "metric": "accuracy",
+    "gpt4": 68.0,
+    "claude_opus": null,
+    "flan_t5": 45.0,
+    "llama2_70b": 42.0
+  },
+  "diversity_jurisdiction": {
+    "metric": "accuracy",
+    "gpt4": 84.0,
+    "claude_opus": null,
+    "flan_t5": 50.0,
+    "llama2_70b": 55.0
+  },
+  "core_legal_knowledge": {
+    "metric": "accuracy",
+    "gpt4": 72.0,
+    "claude_opus": null,
+    "flan_t5": 38.0,
+    "llama2_70b": 40.0
+  },
+  "supply_chain_disclosure": {
+    "metric": "accuracy",
+    "gpt4": 80.0,
+    "claude_opus": null,
+    "flan_t5": 60.0,
+    "llama2_70b": 55.0
+  },
+  "opp115": {
+    "metric": "accuracy",
+    "gpt4": 76.0,
+    "claude_opus": null,
+    "flan_t5": 52.0,
+    "llama2_70b": 48.0
+  },
+  "rhetorical_understanding": {
+    "metric": "accuracy",
+    "gpt4": 65.0,
+    "claude_opus": null,
+    "flan_t5": 35.0,
+    "llama2_70b": 38.0
+  },
+  "overall": {
+    "metric": "accuracy",
+    "gpt4": 73.0,
+    "claude_opus": null,
+    "flan_t5": 47.0,
+    "llama2_70b": 44.0,
+    "harvey_biglaw_bench_answer_score": 74.0,
+    "foundation_models_baseline": 50.0
+  }
+}

@@ -4,6 +4,9 @@
        eval-codegen eval-codegen-quick eval-codegen-dry eval-promptfoo \
        eval-cuad eval-casehold eval-cuad-quick eval-cuad-recall eval-legal \
        eval-lexglue eval-lexglue-quick eval-lexglue-dry ingest-lexglue \
+       eval-legalbench eval-legalbench-contract eval-legalbench-quick \
+       eval-legalbench-dry eval-legalbench-verify \
+       ingest-legalbench ingest-legalbench-contract \
        install-managed-agents build-managed-agents check-managed-agents \
        clean ci ci-py ci-webapp
 
@@ -140,8 +143,9 @@ eval-cuad-quick: ## Quick CUAD eval (20 contracts, 5 high-priority clause types)
 eval-cuad-recall: ## CUAD vault recall@K (pgvector vs lancedb vs pg_trgm)
 	uv run julia/evals/cuad/runner.py --vault-recall --contracts 50
 
-eval-legal: ## Run all legal benchmarks (CUAD + CaseHOLD)
+eval-legal: ## Run all legal benchmarks (CUAD + CaseHOLD + LegalBench)
 	uv run julia/evals/cuad/runner.py
+	uv run scripts/run-legalbench-eval.py
 
 eval-lexglue: ## Run LexGLUE legal benchmark (all 8 tasks)
 	uv run scripts/run-lexglue-eval.py
@@ -154,6 +158,28 @@ eval-lexglue-dry: ## Dry-run LexGLUE eval (show task matrix)
 
 ingest-lexglue: ## Download LexGLUE from HuggingFace → Neon + local JSON
 	uv run --extra lexglue scripts/ingest-lexglue.py --task all --lance
+
+# ── LegalBench Evals (162 tasks, 22 categories) ────────────────
+eval-legalbench: ## Run LegalBench benchmark (all tasks)
+	uv run scripts/run-legalbench-eval.py
+
+eval-legalbench-contract: ## Run LegalBench contract NLI (>= 85% F1 target)
+	uv run scripts/run-legalbench-eval.py --category contract_nli
+
+eval-legalbench-quick: ## Quick LegalBench eval (10 contract NLI samples)
+	uv run scripts/run-legalbench-eval.py --category contract_nli --samples 10
+
+eval-legalbench-dry: ## Dry-run LegalBench (show task matrix)
+	uv run scripts/run-legalbench-eval.py --dry-run
+
+eval-legalbench-verify: ## LegalBench with citation verification + Best-of-3
+	uv run scripts/run-legalbench-eval.py --category contract_nli --verify-citations --best-of-n 3
+
+ingest-legalbench: ## Download LegalBench from HuggingFace → Neon + local JSON
+	uv run --extra lexglue scripts/ingest-legalbench.py --task all --lance
+
+ingest-legalbench-contract: ## Download only contract NLI tasks
+	uv run --extra lexglue scripts/ingest-legalbench.py --category contract_nli --lance
 
 ## ── Managed Agents ──────────────────────────────────────────
 install-managed-agents: ## Install managed agents TS package deps

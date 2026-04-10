@@ -1,0 +1,97 @@
+{
+  "contract_nli": [
+    {
+      "text": "For purposes of this Agreement, \"Confidential Information\" shall mean information disclosed by either party to the other party, directly or indirectly.",
+      "answer": "Yes",
+      "task": "contract_nli_explicit_identification"
+    },
+    {
+      "text": "The Receiving Party shall not disclose Confidential Information to any third party without the prior written consent of the Disclosing Party.",
+      "answer": "Yes",
+      "task": "contract_nli_sharing_with_third-parties"
+    },
+    {
+      "text": "The Receiving Party agrees to use the Confidential Information solely for the purpose of evaluating the potential business relationship between the parties.",
+      "answer": "Yes",
+      "task": "contract_nli_limited_use"
+    },
+    {
+      "text": "The parties agree to maintain standard business practices regarding all shared materials and communications during the term of this agreement.",
+      "answer": "No",
+      "task": "contract_nli_limited_use"
+    },
+    {
+      "text": "Upon termination of this Agreement, the Receiving Party shall return or destroy all copies of the Confidential Information.",
+      "answer": "Yes",
+      "task": "contract_nli_return_of_confidential_information"
+    }
+  ],
+  "rule_application": [
+    {
+      "text": "On the issue of whether James is a smart individual, the fact that James scored 1600 on the SAT is offered as evidence.",
+      "answer": "No",
+      "task": "hearsay"
+    },
+    {
+      "text": "The mark \"Apple\" for computers and electronics.",
+      "answer": "arbitrary",
+      "task": "abercrombie"
+    },
+    {
+      "text": "A buyer who has a claim against an escrow account required by law may bring a civil action.",
+      "answer": "Yes",
+      "task": "proa"
+    },
+    {
+      "text": "Eduardo and Francesca agree that Francesca will photograph Eduardo riding his bicycle for $500.",
+      "answer": "Common Law",
+      "task": "ucc_v_common_law"
+    },
+    {
+      "text": "Acme Corp sells widgets through telemarketing calls without providing the required disclosures about refund policies.",
+      "answer": "Yes",
+      "task": "telemarketing_sales_rule"
+    }
+  ],
+  "core_legal_knowledge": [
+    {
+      "text": "What are the requirements for diversity jurisdiction?",
+      "answer": "Diversity jurisdiction exists when the amount in controversy exceeds $75,000 and the plaintiffs and defendants are completely diverse.",
+      "task": "rule_qa"
+    },
+    {
+      "text": "The respondents do not dispute that the trustee meets the usual definition of the term as used in bankruptcy law.",
+      "answer": "Yes",
+      "task": "definition_classification"
+    },
+    {
+      "text": "The ordinary meaning of \"relief\" in the context of a lawsuit is the redress or benefit sought by a complainant.",
+      "answer": "Relief",
+      "task": "definition_extraction"
+    }
+  ],
+  "rhetorical_understanding": [
+    {
+      "text": "Just briefly. There's some discussion in the briefs about going past with this procedure. Can you explain the background?",
+      "answer": "Background",
+      "task": "oral_argument_question_purpose"
+    },
+    {
+      "text": "In 2010, Alexander Khochinsky, then a Russian foreign national living in the United States, applied for asylum.",
+      "answer": "Facts",
+      "task": "function_of_decision_section"
+    }
+  ],
+  "diversity_jurisdiction": [
+    {
+      "text": "James is from Arizona. Lucas is from Arizona. James sues Lucas for negligence for $100,000.",
+      "answer": "No",
+      "task": "diversity_1"
+    },
+    {
+      "text": "Sarah is from New York. Michael is from California. Sarah sues Michael for breach of contract for $80,000.",
+      "answer": "Yes",
+      "task": "diversity_1"
+    }
+  ]
+}
