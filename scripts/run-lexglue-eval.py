@@ -144,6 +144,11 @@ IMPORTANT CONSTRAINTS:
 - Maintain strict confidentiality — do not reference prior conversations or external data sources."""
 
 
+def _safe_document_text(text: str) -> str:
+    """Escape document text to prevent XML tag injection in <document> blocks."""
+    return text.replace("</document>", "&lt;/document&gt;")
+
+
 # ---------------------------------------------------------------------------
 # Per-task prompt builders
 # ---------------------------------------------------------------------------
@@ -205,7 +210,7 @@ Do NOT create new categories.
 Now classify this provision:
 
 <document>
-{task.text}
+{_safe_document_text(task.text)}
 </document>
 
 Output ONLY valid JSON (no markdown, no extra text):
@@ -226,7 +231,7 @@ Valid unfairness types:
 {types_list}
 {few_shot_text}
 <document>
-{task.text}
+{_safe_document_text(task.text)}
 </document>
 
 Output ONLY valid JSON (no markdown, no extra text):
@@ -246,7 +251,7 @@ issue areas:
 Do NOT create new categories.
 {few_shot_text}
 <document>
-{task.text[:4000]}
+{_safe_document_text(task.text[:4000])}
 </document>
 
 Output ONLY valid JSON (no markdown, no extra text):
@@ -266,7 +271,7 @@ Select ONLY from the following valid articles:
 If no violations are found, return an empty array.
 {few_shot_text}
 <document>
-{task.text}
+{_safe_document_text(task.text)}
 </document>
 
 Output ONLY valid JSON (no markdown, no extra text):
@@ -287,7 +292,7 @@ def build_casehold_prompt(task: LexGLUETask, few_shot: int) -> str:
 fills the <HOLDING> placeholder. Select exactly one option.
 {few_shot_text}
 <document>
-{task.text}
+{_safe_document_text(task.text)}
 </document>
 
 Options:
@@ -309,7 +314,7 @@ the premise and hypothesis:
 Analyze ONLY the text provided. Do NOT infer conclusions not explicitly stated.
 {few_shot_text}
 <document>
-{task.text}
+{_safe_document_text(task.text)}
 </document>
 
 Output ONLY valid JSON (no markdown, no extra text):
@@ -330,7 +335,7 @@ If no violations are found, return an empty array.
 Do NOT infer violations not explicitly described in the case text.
 {few_shot_text}
 <document>
-{task.text[:4000]}
+{_safe_document_text(task.text[:4000])}
 </document>
 
 Output ONLY valid JSON (no markdown, no extra text):
@@ -351,7 +356,7 @@ Example concept IDs: {concepts}, ...
 Analyze ONLY the document text provided. Do NOT infer topics not discussed.
 {few_shot_text}
 <document>
-{task.text[:4000]}
+{_safe_document_text(task.text[:4000])}
 </document>
 
 Output ONLY valid JSON (no markdown, no extra text):
@@ -412,27 +417,14 @@ def load_from_neon(task: str, samples: int) -> list[LexGLUETask]:
         from src.neon_db import connection_pool
 
         async with connection_pool() as conn:
+            query = """SELECT id, task, hf_index, text, holdings, label, labels, label_set
+                        FROM julia_lexglue_samples
+                        WHERE task = %s AND split = 'test'
+                        ORDER BY hf_index"""
             if samples:
-                rows = await (
-                    await conn.execute(
-                        """SELECT id, task, hf_index, text, holdings, label, labels, label_set
-                            FROM julia_lexglue_samples
-                            WHERE task = %s AND split = 'test'
-                            ORDER BY hf_index
-                            LIMIT %s""",
-                        (task, samples),
-                    )
-                )
+                rows = await (await conn.execute(query + " LIMIT %s", (task, samples))).fetchall()
             else:
-                rows = await (
-                    await conn.execute(
-                        """SELECT id, task, hf_index, text, holdings, label, labels, label_set
-                            FROM julia_lexglue_samples
-                            WHERE task = %s AND split = 'test'
-                            ORDER BY hf_index""",
-                        (task,),
-                    )
-                ).fetchall()
+                rows = await (await conn.execute(query, (task,))).fetchall()
 
             tasks = []
             for row in rows:

@@ -46,7 +46,7 @@ safety = [
     # referenced as methodology context in agent prompts only.
 ]
 lexglue = [
-    "datasets>=2.14.0",    # HuggingFace datasets for lex_glue benchmark
+    "datasets>=3.0",    # HuggingFace datasets for lex_glue benchmark (matches eval group)
 ]
 
 [dependency-groups]

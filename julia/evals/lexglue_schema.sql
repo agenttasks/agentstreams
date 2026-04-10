@@ -55,7 +55,7 @@ COMMENT ON COLUMN julia_lexglue_samples.holdings IS
 COMMENT ON COLUMN julia_lexglue_samples.label IS
     'Ground truth for single-label tasks (LEDGAR, SCOTUS, ContractNLI, CaseHOLD)';
 COMMENT ON COLUMN julia_lexglue_samples.labels IS
-    'Ground truth for multi-label tasks (UNFAIR-ToS types, ECtHR-A articles)';
+    'Ground truth for multi-label tasks (UNFAIR-ToS types, ECtHR-A/B articles, EUR-Lex concepts)';
 COMMENT ON COLUMN julia_lexglue_samples.label_set IS
     'Valid label vocabulary for this task (JSON array)';
 

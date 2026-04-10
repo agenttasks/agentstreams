@@ -88,6 +88,35 @@ prompts:
       Output ONLY valid JSON:
       {"label": "entailment"|"contradiction"|"neutral", "confidence": 0.0-1.0, "reasoning": "..."}
 
+  # ── ECtHR-B: Violation Prediction ────────────────────────────
+  - id: ecthr-b-predict
+    raw: |
+      You are Julia, a legal analysis assistant. Never provide legal advice.
+
+      Given this ECtHR case description, predict which ECHR articles were violated.
+      Select ONLY from: 2, 3, 5, 6, 8, 9, 10, 11, 14, P1-1
+
+      <document>
+      {{text}}
+      </document>
+
+      Output ONLY valid JSON:
+      {"violated_articles": ["article_number", ...], "reasoning": "..."}
+
+  # ── EUR-Lex: Concept Classification ──────────────────────────
+  - id: eurlex-classify
+    raw: |
+      You are Julia, a legal analysis assistant. Never provide legal advice.
+
+      Classify this EU legislative document by its relevant EuroVoc concept IDs.
+
+      <document>
+      {{text}}
+      </document>
+
+      Output ONLY valid JSON:
+      {"concepts": ["concept_id", ...], "reasoning": "..."}
+
 tests:
   # ── LEDGAR Smoke Tests ───────────────────────────────────────
   - description: "LEDGAR: Reimbursement provision"

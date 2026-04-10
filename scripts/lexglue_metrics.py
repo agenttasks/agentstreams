@@ -25,7 +25,7 @@ def _precision_recall_f1(tp: int, fp: int, fn: int) -> tuple[float, float, float
 def accuracy(y_true: list[str], y_pred: list[str]) -> float:
     """Exact-match accuracy for single-label classification.
 
-    Used for ContractNLI, SCOTUS, and CaseHOLD tasks.
+    Used for ContractNLI and CaseHOLD tasks.
     """
     if not y_true:
         return 0.0
@@ -37,7 +37,7 @@ def micro_f1(y_true: list[str], y_pred: list[str], labels: list[str] | None = No
     """Micro-averaged F1 for single-label classification.
 
     Aggregates TP/FP/FN across all classes before computing F1.
-    Used for LEDGAR and ECtHR-A tasks.
+    Used for LEDGAR and SCOTUS tasks.
     """
     if labels is None:
         labels = sorted(set(y_true) | set(y_pred))
@@ -61,7 +61,8 @@ def micro_f1(y_true: list[str], y_pred: list[str], labels: list[str] | None = No
 def macro_f1(y_true: list[str], y_pred: list[str], labels: list[str] | None = None) -> float:
     """Macro-averaged F1 for single-label classification.
 
-    Computes F1 per class then averages. Used for UNFAIR-ToS task.
+    Computes F1 per class then averages. Not currently used by any LexGLUE task
+    (UNFAIR-ToS uses multilabel_macro_f1 instead).
     """
     if labels is None:
         labels = sorted(set(y_true) | set(y_pred))
@@ -85,7 +86,7 @@ def multilabel_micro_f1(
 
     Each sample has a set of true labels and a set of predicted labels.
     Aggregates TP/FP/FN across all samples and labels.
-    Used for UNFAIR-ToS and ECtHR-A multi-label tasks.
+    Used for ECtHR-A, ECtHR-B, and EUR-Lex multi-label tasks.
     """
     total_tp = 0
     total_fp = 0
