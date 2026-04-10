@@ -544,6 +544,32 @@ class TestTaskMetrics:
         assert metrics["total"] == 2
         assert metrics["score"] > 0
 
+    def test_ecthr_b_metrics(self):
+        Result, compute = self._import_compute()
+        results = [
+            Result(task_id="0", task_type="ecthr_b",
+                   gold_labels=["3", "5"],
+                   predicted_labels=["3", "5"], is_correct=True),
+            Result(task_id="1", task_type="ecthr_b",
+                   gold_labels=["8"],
+                   predicted_labels=["8", "10"], is_correct=False),
+        ]
+        metrics = compute("ecthr_b", results)
+        assert metrics["metric"] == "micro_f1"
+        assert metrics["total"] == 2
+
+    def test_all_errors_returns_zero_metrics(self):
+        Result, compute = self._import_compute()
+        results = [
+            Result(task_id="0", task_type="ledgar", error="API error"),
+            Result(task_id="1", task_type="ledgar", error="timeout"),
+        ]
+        metrics = compute("ledgar", results)
+        assert metrics["total"] == 0
+        assert metrics["errors"] == 2
+        assert metrics["score"] == 0.0
+        assert metrics["exact_match_rate"] == 0.0
+
     def test_errors_excluded(self):
         Result, compute = self._import_compute()
         results = [
@@ -554,3 +580,87 @@ class TestTaskMetrics:
         metrics = compute("ledgar", results)
         assert metrics["total"] == 1
         assert metrics["errors"] == 1
+
+
+# ═══════════════════════════════════════════════════════════════
+# Few-Shot Builder Tests
+# ═══════════════════════════════════════════════════════════════
+
+
+class TestFewShotBuilder:
+    """Test that _build_few_shot produces correct output for each task type."""
+
+    def test_few_shot_disabled_returns_empty(self):
+        result = _mod._build_few_shot("ledgar", 0)
+        assert result == ""
+
+    def test_few_shot_unknown_task_returns_empty(self):
+        result = _mod._build_few_shot("nonexistent_task", 3)
+        assert result == ""
+
+    def test_few_shot_ledgar(self):
+        result = _mod._build_few_shot("ledgar", 1)
+        if result:  # Only if few_shot_examples.json exists
+            assert "Example 1:" in result
+
+    def test_few_shot_scotus(self):
+        result = _mod._build_few_shot("scotus", 1)
+        if result:
+            assert "Example 1:" in result
+
+    def test_few_shot_contract_nli(self):
+        result = _mod._build_few_shot("contract_nli", 1)
+        if result:
+            assert "Premise:" in result
+
+    def test_few_shot_ecthr_b(self):
+        result = _mod._build_few_shot("ecthr_b", 1)
+        if result:
+            assert "articles:" in result
+
+    def test_few_shot_eurlex(self):
+        result = _mod._build_few_shot("eurlex", 1)
+        if result:
+            assert "concepts:" in result
+
+
+# ═══════════════════════════════════════════════════════════════
+# Label Validation Edge Cases
+# ═══════════════════════════════════════════════════════════════
+
+
+class TestLabelValidation:
+    """Test label validation accepts valid labels and rejects invalid ones."""
+
+    def _import_parser(self):
+        return _mod.LexGLUETask, _mod.parse_response, _mod._extract_json
+
+    def test_valid_single_label_passes(self):
+        Task, parse, _ = self._import_parser()
+        task = Task(
+            task_id="val_0", task_type="scotus",
+            text="test case", label="Civil Rights",
+            label_set=["Criminal Procedure", "Civil Rights", "First Amendment"],
+        )
+        result = parse(task, '{"issue_area": "Civil Rights", "confidence": 0.9, "reasoning": "x"}')
+        assert result.error is None
+        assert result.predicted_label == "Civil Rights"
+
+    def test_valid_multi_label_passes(self):
+        Task, parse, _ = self._import_parser()
+        task = Task(
+            task_id="val_1", task_type="ecthr_b",
+            text="case text", labels=["3", "5"],
+            label_set=["2", "3", "5", "6", "8"],
+        )
+        result = parse(task, '{"violated_articles": ["3", "5"], "reasoning": "x"}')
+        assert result.error is None
+
+    def test_empty_label_set_skips_validation(self):
+        Task, parse, _ = self._import_parser()
+        task = Task(
+            task_id="val_2", task_type="ledgar",
+            text="test", label="X", label_set=[],
+        )
+        result = parse(task, '{"provision_type": "Anything", "confidence": 0.5, "reasoning": "x"}')
+        assert result.error is None

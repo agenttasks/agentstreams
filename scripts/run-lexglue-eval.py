@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """LexGLUE multi-task legal benchmark eval runner.
 
-Evaluates Julia (legal AI agent) across 5 LexGLUE tasks using Claude API.
+Evaluates Julia (legal AI agent) across 8 LexGLUE tasks using Claude API.
 Computes micro-F1, macro-F1, and accuracy metrics per task, then compares
 against published baselines (Legal-BERT, DeBERTa, etc.).
 
@@ -122,7 +122,7 @@ class LexGLUEResult:
 
 
 # ---------------------------------------------------------------------------
-# Julia system prompt (replicated from julia/src/completion.ts:149-167)
+# Julia system prompt (extended from julia/src/completion.ts:161 — adds eval-specific constraints)
 # ---------------------------------------------------------------------------
 
 JULIA_SYSTEM_PROMPT = """You are Julia, a legal analysis assistant that helps legal professionals review documents, assess risk, and draft responses.
@@ -166,9 +166,14 @@ def _build_few_shot(task_type: str, n: int) -> str:
                 f'Example {i}: Premise: "{ex["premise"]}" | '
                 f'Hypothesis: "{ex["hypothesis"]}" -> "{ex["label"]}"'
             )
-        elif task_type == "ecthr_a":
+        elif task_type == "scotus":
+            lines.append(f'Example {i}: "{ex["text"][:100]}..." -> "{ex["label"]}"')
+        elif task_type in ("ecthr_a", "ecthr_b"):
             articles = ", ".join(ex.get("labels", []))
             lines.append(f'Example {i}: "{ex["text"][:100]}..." -> articles: [{articles}]')
+        elif task_type == "eurlex":
+            concepts = ", ".join(ex.get("labels", []))
+            lines.append(f'Example {i}: "{ex["text"][:100]}..." -> concepts: [{concepts}]')
         elif task_type == "casehold":
             lines.append(f'Example {i}: Context: "{ex["context"][:100]}..." -> answer index: {ex["label"]}')
     lines.append("")

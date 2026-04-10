@@ -1,4 +1,4 @@
-description: "LexGLUE benchmark smoke tests — quick CI validation for 5 legal tasks"
+description: "LexGLUE benchmark smoke tests — quick CI validation for 8 legal tasks"
 
 # Smoke tests only — full benchmark runs via scripts/run-lexglue-eval.py
 # These tests validate that Julia produces parseable JSON with correct fields
@@ -22,6 +22,7 @@ prompts:
       Amendments, Arbitration, Base Salary, Change of Control, Confidentiality,
       Governing Law, Indemnification, Insurance, Interest Rate, Reimbursement,
       Representations, Severability, Stock Options, Termination, Warranties
+      # NOTE: 15-label subset for smoke testing only. Full eval uses ~100 LEDGAR categories.
 
       Do NOT create new categories.
 

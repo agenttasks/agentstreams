@@ -3,8 +3,8 @@
 Pure-Python implementation using only stdlib (collections.Counter).
 No sklearn dependency required.
 
-Supports both single-label (LEDGAR, ContractNLI, CaseHOLD) and
-multi-label (UNFAIR-ToS, ECtHR-A) classification tasks.
+Supports both single-label (LEDGAR, SCOTUS, ContractNLI, CaseHOLD) and
+multi-label (UNFAIR-ToS, ECtHR-A/B, EUR-Lex) classification tasks.
 
 Auth: N/A (no API calls — pure computation).
 """
@@ -25,7 +25,7 @@ def _precision_recall_f1(tp: int, fp: int, fn: int) -> tuple[float, float, float
 def accuracy(y_true: list[str], y_pred: list[str]) -> float:
     """Exact-match accuracy for single-label classification.
 
-    Used for ContractNLI and CaseHOLD tasks.
+    Used for ContractNLI, SCOTUS, and CaseHOLD tasks.
     """
     if not y_true:
         return 0.0

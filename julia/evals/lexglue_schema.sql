@@ -29,8 +29,8 @@ CREATE TABLE IF NOT EXISTS julia_lexglue_samples (
     -- CaseHOLD-specific: multiple-choice holdings
     holdings JSONB,                      -- array of 5 candidate holdings
     -- Labels
-    label TEXT,                          -- single-label (LEDGAR, ContractNLI, CaseHOLD)
-    labels JSONB,                        -- multi-label (UNFAIR-ToS, ECtHR-A)
+    label TEXT,                          -- single-label (LEDGAR, SCOTUS, ContractNLI, CaseHOLD)
+    labels JSONB,                        -- multi-label (UNFAIR-ToS, ECtHR-A/B, EUR-Lex)
     label_set JSONB NOT NULL,            -- valid label vocabulary for this task
     -- Metadata
     split TEXT NOT NULL DEFAULT 'test',

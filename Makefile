@@ -166,10 +166,10 @@ check-managed-agents: ## Type-check managed agents
 	cd src/knowledge-work-managed-agents && npx tsc --noEmit
 
 eval-promptfoo: ## Run all promptfoo eval suites
-	@for dir in evals/*/; do \
+	@for dir in evals/*/ julia/evals/*/; do \
 	  if [ -f "$$dir/promptfooconfig.yaml" ]; then \
 	    echo "Running: $$dir"; \
-	    cd "$$dir" && npx promptfoo eval && cd ../..; \
+	    (cd "$$dir" && npx promptfoo eval); \
 	  fi; \
 	done
 
