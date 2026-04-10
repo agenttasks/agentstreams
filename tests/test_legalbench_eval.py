@@ -254,7 +254,14 @@ class TestTaskRegistry:
         import json
 
         registry = json.loads((PROJECT_ROOT / "scripts" / "legalbench_tasks.json").read_text())
-        required = {"category", "hf_config", "text_fields", "answer_field", "answer_type", "label_names"}
+        required = {
+            "category",
+            "hf_config",
+            "text_fields",
+            "answer_field",
+            "answer_type",
+            "label_names",
+        }
         for task_name, config in registry.items():
             missing = required - set(config.keys())
             assert not missing, f"{task_name} missing fields: {missing}"
@@ -272,7 +279,9 @@ class TestTaskRegistry:
         registry = json.loads((PROJECT_ROOT / "scripts" / "legalbench_tasks.json").read_text())
         valid_types = {"binary", "multiple_choice", "classification", "extraction"}
         for task_name, config in registry.items():
-            assert config["answer_type"] in valid_types, f"{task_name} has invalid answer_type: {config['answer_type']}"
+            assert config["answer_type"] in valid_types, (
+                f"{task_name} has invalid answer_type: {config['answer_type']}"
+            )
 
 
 # ═══════════════════════════════════════════════════════════════

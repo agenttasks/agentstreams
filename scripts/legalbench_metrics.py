@@ -208,7 +208,9 @@ def aggregate_legalbench_metrics(
     by_type: dict[str, list[tuple[str, str]]] = {}
     for g, p, at in zip(y_true, y_pred, answer_types, strict=True):
         by_type.setdefault(at, []).append((g, p))
-    type_acc = {t: accuracy([x[0] for x in pairs], [x[1] for x in pairs]) for t, pairs in by_type.items()}
+    type_acc = {
+        t: accuracy([x[0] for x in pairs], [x[1] for x in pairs]) for t, pairs in by_type.items()
+    }
 
     return {
         "overall_accuracy": round(overall_acc * 100, 2),

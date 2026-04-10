@@ -314,7 +314,9 @@ def main():
 
     # List tasks mode
     if args.list_tasks:
-        print(f"\nLegalBench Task Registry ({len(ALL_TASKS)} tasks, {len(ALL_CATEGORIES)} categories)\n")
+        print(
+            f"\nLegalBench Task Registry ({len(ALL_TASKS)} tasks, {len(ALL_CATEGORIES)} categories)\n"
+        )
         for cat in ALL_CATEGORIES:
             tasks = CATEGORY_MAP[cat]
             print(f"  {cat} ({len(tasks)} tasks):")

@@ -386,9 +386,7 @@ def parse_response(task: LegalBenchTask, raw_output: str) -> LegalBenchResult:
 # ---------------------------------------------------------------------------
 
 
-def run_best_of_n(
-    borderline: list[LegalBenchTask], n: int
-) -> list[LegalBenchResult]:
+def run_best_of_n(borderline: list[LegalBenchTask], n: int) -> list[LegalBenchResult]:
     results_map: dict[str, list[LegalBenchResult]] = {}
     all_futures = {}
 
@@ -530,12 +528,23 @@ async def store_results_neon(run_id: str, results: list[LegalBenchResult]) -> in
                         input_tokens, output_tokens, duration_ms, raw_output)
                        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
                     (
-                        run_id, r.sample_id or None, r.task_name, r.category,
-                        r.predicted_answer, r.gold_answer,
-                        r.is_correct, r.confidence, r.reasoning,
+                        run_id,
+                        r.sample_id or None,
+                        r.task_name,
+                        r.category,
+                        r.predicted_answer,
+                        r.gold_answer,
+                        r.is_correct,
+                        r.confidence,
+                        r.reasoning,
                         json.dumps(r.quotes_used) if r.quotes_used else None,
-                        r.citation_score, r.best_of_n_count, r.best_of_n_agreement,
-                        MODEL, r.input_tokens, r.output_tokens, r.latency_ms,
+                        r.citation_score,
+                        r.best_of_n_count,
+                        r.best_of_n_agreement,
+                        MODEL,
+                        r.input_tokens,
+                        r.output_tokens,
+                        r.latency_ms,
                         r.raw_output[:4000],
                     ),
                 )
@@ -584,7 +593,9 @@ def main():
             t.prompt = builder(t, args.few_shot)
         all_tasks.extend(task_list)
 
-    print(f"\n  Loaded {len(all_tasks)} tasks across {len(tasks_to_run)} task types", file=sys.stderr)
+    print(
+        f"\n  Loaded {len(all_tasks)} tasks across {len(tasks_to_run)} task types", file=sys.stderr
+    )
     print(f"  Model: {MODEL}", file=sys.stderr)
 
     if args.dry_run:
@@ -608,8 +619,10 @@ def main():
             api_results.append(result)
             task = result[0]
             status = "error" if "error" in result[2] else "ok"
-            print(f"  [{i + 1}/{len(all_tasks)}] {task.task_name}/{task.task_id} -- {status}",
-                  file=sys.stderr)
+            print(
+                f"  [{i + 1}/{len(all_tasks)}] {task.task_name}/{task.task_id} -- {status}",
+                file=sys.stderr,
+            )
 
     # Phase 2: Parse responses
     print("\n  Phase 2: Parsing responses...", file=sys.stderr)
@@ -627,13 +640,13 @@ def main():
     # Phase 2b: Best-of-N for borderline cases
     if args.best_of_n > 0:
         borderline_tasks = [
-            all_tasks[i]
-            for i, r in enumerate(all_results)
-            if not r.error and r.confidence < 0.8
+            all_tasks[i] for i, r in enumerate(all_results) if not r.error and r.confidence < 0.8
         ]
         if borderline_tasks:
-            print(f"\n  Phase 2b: Best-of-{args.best_of_n} on {len(borderline_tasks)} borderline...",
-                  file=sys.stderr)
+            print(
+                f"\n  Phase 2b: Best-of-{args.best_of_n} on {len(borderline_tasks)} borderline...",
+                file=sys.stderr,
+            )
             bon_results = run_best_of_n(borderline_tasks, args.best_of_n)
             bon_map = {r.task_id: r for r in bon_results}
             all_results = [bon_map.get(r.task_id, r) for r in all_results]
