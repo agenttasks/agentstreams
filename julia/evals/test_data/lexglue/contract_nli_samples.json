@@ -1,0 +1,952 @@
+[
+  {
+    "task": "contract_nli",
+    "hf_index": 0,
+    "text": "Premise: In the event that a receiving party or its Associates is or becomes legally compelled under applicable law, regulation or securities exchange listing agreement, or by a competent governmental, administrative or regulatory authority or in a proceeding before a court, arbitrator or administrative agency, whether or not as a result of a Transaction to which the Company has consented, to disclose any portion of the Confidential Information of a disclosing party, that discussions or negotiations between the parties hereto are taking place or have taken place, or any of the terms, conditions or other facts with respect to a Transaction, including the status thereof, the receiving party will, and will direct its  Associates to, provide the disclosing party with prompt written notice (unless prohibited by law) of such legal compulsion, and shall delay disclosure, if and to the extent permitted or practicable, until the disclaiming party has had an opportunity to seek a protective order or other appropriate remedy or to waive compliance by the receiving party and/or its Associates with the relevant provisions of this Agreement. \nHypothesis: Receiving Party shall not reverse engineer any objects which embody Disclosing Party's Confidential Information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "In the event that a receiving party or its Associates is or becomes legally compelled under applicable law, regulation or securities exchange listing agreement, or by a competent governmental, administrative or regulatory authority or in a proceeding before a court, arbitrator or administrative agency, whether or not as a result of a Transaction to which the Company has consented, to disclose any portion of the Confidential Information of a disclosing party, that discussions or negotiations between the parties hereto are taking place or have taken place, or any of the terms, conditions or other facts with respect to a Transaction, including the status thereof, the receiving party will, and will direct its  Associates to, provide the disclosing party with prompt written notice (unless prohibited by law) of such legal compulsion, and shall delay disclosure, if and to the extent permitted or practicable, until the disclaiming party has had an opportunity to seek a protective order or other appropriate remedy or to waive compliance by the receiving party and/or its Associates with the relevant provisions of this Agreement. ",
+      "hypothesis": "Receiving Party shall not reverse engineer any objects which embody Disclosing Party's Confidential Information."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "903350dcd0cb7333ed5ee5cd2778a424"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 1,
+    "text": "Premise: The Recipient shall immediately return and redeliver to the other all tangible material embodying the JEA Confidential Information provided hereunder and all notes, summaries, memoranda, drawings, manuals, records, excerpts or derivative information deriving there from and all other documents or materials (\"Notes\") (and all copies of any of the foregoing, including \"copies\" that have been converted to computerized media in the form of image, data or word processing files either manually or by image capture) based on or including any JEA Confidential Information, in whatever form of storage or retrieval, upon the earlier of - I. the completion or termination of the dealings between the parties contemplated hereunder; or II. the termination of this Agreement; or\nHypothesis: Receiving Party shall destroy or return some Confidential Information upon the termination of Agreement.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "The Recipient shall immediately return and redeliver to the other all tangible material embodying the JEA Confidential Information provided hereunder and all notes, summaries, memoranda, drawings, manuals, records, excerpts or derivative information deriving there from and all other documents or materials (\"Notes\") (and all copies of any of the foregoing, including \"copies\" that have been converted to computerized media in the form of image, data or word processing files either manually or by image capture) based on or including any JEA Confidential Information, in whatever form of storage or retrieval, upon the earlier of - I. the completion or termination of the dealings between the parties contemplated hereunder; or II. the termination of this Agreement; or",
+      "hypothesis": "Receiving Party shall destroy or return some Confidential Information upon the termination of Agreement."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "dd6ae085bfeb9d251ccfd6545a04fd0a"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 2,
+    "text": "Premise: No other right or license, whether expressed or implied, in the Confidential Information is granted to the Parties hereunder. \nHypothesis: Agreement shall not grant Receiving Party any right to Confidential Information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "No other right or license, whether expressed or implied, in the Confidential Information is granted to the Parties hereunder. ",
+      "hypothesis": "Agreement shall not grant Receiving Party any right to Confidential Information."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "1b8413bedf9a3c66fa67e391f034688d"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 3,
+    "text": "Premise: In the event that a receiving party or its Associates is or becomes legally compelled under applicable law, regulation or securities exchange listing agreement, or by a competent governmental, administrative or regulatory authority or in a proceeding before a court, arbitrator or administrative agency, whether or not as a result of a Transaction to which the Company has consented, to disclose any portion of the Confidential Information of a disclosing party, that discussions or negotiations between the parties hereto are taking place or have taken place, or any of the terms, conditions or other facts with respect to a Transaction, including the status thereof, the receiving party will, and will direct its  Associates to, provide the disclosing party with prompt written notice (unless prohibited by law) of such legal compulsion, and shall delay disclosure, if and to the extent permitted or practicable, until the disclaiming party has had an opportunity to seek a protective order or other appropriate remedy or to waive compliance by the receiving party and/or its Associates with the relevant provisions of this Agreement. \nHypothesis: Receiving Party shall not disclose the fact that Agreement was agreed or negotiated.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "In the event that a receiving party or its Associates is or becomes legally compelled under applicable law, regulation or securities exchange listing agreement, or by a competent governmental, administrative or regulatory authority or in a proceeding before a court, arbitrator or administrative agency, whether or not as a result of a Transaction to which the Company has consented, to disclose any portion of the Confidential Information of a disclosing party, that discussions or negotiations between the parties hereto are taking place or have taken place, or any of the terms, conditions or other facts with respect to a Transaction, including the status thereof, the receiving party will, and will direct its  Associates to, provide the disclosing party with prompt written notice (unless prohibited by law) of such legal compulsion, and shall delay disclosure, if and to the extent permitted or practicable, until the disclaiming party has had an opportunity to seek a protective order or other appropriate remedy or to waive compliance by the receiving party and/or its Associates with the relevant provisions of this Agreement. ",
+      "hypothesis": "Receiving Party shall not disclose the fact that Agreement was agreed or negotiated."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "2abe73b2d939a6dec4e498ced6be5312"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 4,
+    "text": "Premise: For purposes of this Agreement, \"Confidential Information\" means any data or information that is proprietary to the Parties and not generally known to the public, whether in tangible or intangible form, whenever and however disclosed, including but not limited to: a. the documents described in the Whereas clause above; b. Critical Infrastructure Information (CII) or Bulk Electric System Information (BCSI) or Security Sensitive Information (SSI) classified by JEA c. Protected Health Information in both physical and electronic form (PHI and ePHI) d. Personal Identifiable Information (PII) e. any protected, non-public information concerning the design or operation of present or future critical infrastructure; f. any information that could be used to compromise or expose the vulnerability of the Parties Cyber systems, processes, programs data, communications, energy and operations systems or structures; g. any Copyright application code, source code, technical design (not released for open use), trade secret, scientific or technical information, invention, design, process, procedure, formula, improvement, technology or method;\nHypothesis: Confidential Information shall only include technical information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "For purposes of this Agreement, \"Confidential Information\" means any data or information that is proprietary to the Parties and not generally known to the public, whether in tangible or intangible form, whenever and however disclosed, including but not limited to: a. the documents described in the Whereas clause above; b. Critical Infrastructure Information (CII) or Bulk Electric System Information (BCSI) or Security Sensitive Information (SSI) classified by JEA c. Protected Health Information in both physical and electronic form (PHI and ePHI) d. Personal Identifiable Information (PII) e. any protected, non-public information concerning the design or operation of present or future critical infrastructure; f. any information that could be used to compromise or expose the vulnerability of the Parties Cyber systems, processes, programs data, communications, energy and operations systems or structures; g. any Copyright application code, source code, technical design (not released for open use), trade secret, scientific or technical information, invention, design, process, procedure, formula, improvement, technology or method;",
+      "hypothesis": "Confidential Information shall only include technical information."
+    },
+    "holdings": null,
+    "label": "contradiction",
+    "labels": null,
+    "content_hash": "9beee820b5518978cdf8040bfb530f8c"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 5,
+    "text": "Premise: For purposes of this Agreement, \"Confidential Information\" means any data or information that is proprietary to the Parties and not generally known to the public, whether in tangible or intangible form, whenever and however disclosed, including but not limited to:\nHypothesis: All Confidential Information shall be expressly identified by the Disclosing Party.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "For purposes of this Agreement, \"Confidential Information\" means any data or information that is proprietary to the Parties and not generally known to the public, whether in tangible or intangible form, whenever and however disclosed, including but not limited to:",
+      "hypothesis": "All Confidential Information shall be expressly identified by the Disclosing Party."
+    },
+    "holdings": null,
+    "label": "contradiction",
+    "labels": null,
+    "content_hash": "59251c2411e365b7307400739f0c98fd"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 6,
+    "text": "Premise: b. Notwithstanding the foregoing, the parties' duty to hold in confidence Confidential Information that was disclosed during term shall remain in effect indefinitely.\nHypothesis: Some obligations of Agreement may survive termination of Agreement.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "b. Notwithstanding the foregoing, the parties' duty to hold in confidence Confidential Information that was disclosed during term shall remain in effect indefinitely.",
+      "hypothesis": "Some obligations of Agreement may survive termination of Agreement."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "2d1d6f58783a71d29b93abad515ada59"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 7,
+    "text": "Premise: The obligations and restrictions imposed by this Agreement will not apply to any information that: a. The Recipient can demonstrate was already known to the Recipient prior to the disclosure by the Discloser; or, b. has become publicly known through no wrongful act of the Recipient; or, c. was received by the Recipient without breach of this Agreement from a third party without restriction as to the use and disclosure of the Discloser's Confidential Information; or, d. was independently developed by the Recipient without use of the Discloser's Confidential Information; or\nHypothesis: Receiving Party may independently develop information similar to Confidential Information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "The obligations and restrictions imposed by this Agreement will not apply to any information that: a. The Recipient can demonstrate was already known to the Recipient prior to the disclosure by the Discloser; or, b. has become publicly known through no wrongful act of the Recipient; or, c. was received by the Recipient without breach of this Agreement from a third party without restriction as to the use and disclosure of the Discloser's Confidential Information; or, d. was independently developed by the Recipient without use of the Discloser's Confidential Information; or",
+      "hypothesis": "Receiving Party may independently develop information similar to Confidential Information."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "715e9e322b343f6752b2020cd7b6fc93"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 8,
+    "text": "Premise: e. Return of Information. on a Party's request, the other Party shall return all Confidential Information of the requesting Party, except for that portion of such Confidential Information that may be found in analyses prepared by, or for, the returning Party (collectively, \"Analyses\"), and the returning Party and its Representatives shall not retain any copies of such Confidential Information except the returning Party may retain one copy of the Confidential Information as needed to comply with applicable law and/or returning Party's record retention policies. \nHypothesis: Receiving Party may retain some Confidential Information even after the return or destruction of Confidential Information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "e. Return of Information. on a Party's request, the other Party shall return all Confidential Information of the requesting Party, except for that portion of such Confidential Information that may be found in analyses prepared by, or for, the returning Party (collectively, \"Analyses\"), and the returning Party and its Representatives shall not retain any copies of such Confidential Information except the returning Party may retain one copy of the Confidential Information as needed to comply with applicable law and/or returning Party's record retention policies. ",
+      "hypothesis": "Receiving Party may retain some Confidential Information even after the return or destruction of Confidential Information."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "a8a370ae70ba437697b71f6abe1cf0ff"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 9,
+    "text": "Premise: \u201cConfidential Information\u201d means any information, technical data or know-how, including, but not limited to, that which relates to research, product or service plans, business practices, agreement terms, products, services, employees, suppliers, customers, technology or other strategic partners, stockholders, markets, software, know-how, developments, inventions, processes, designs, drawings, engineering, hardware configuration information, marketing, finances, notes, analyses or studies and all tangible and intangible embodiments thereof of any kind whatsoever, whether conveyed in writing or orally by the disclosing party or its Associates to the receiving party or its Associates in connection with the evaluation of a Transaction. \nHypothesis: Confidential Information may include verbally conveyed information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "\u201cConfidential Information\u201d means any information, technical data or know-how, including, but not limited to, that which relates to research, product or service plans, business practices, agreement terms, products, services, employees, suppliers, customers, technology or other strategic partners, stockholders, markets, software, know-how, developments, inventions, processes, designs, drawings, engineering, hardware configuration information, marketing, finances, notes, analyses or studies and all tangible and intangible embodiments thereof of any kind whatsoever, whether conveyed in writing or orally by the disclosing party or its Associates to the receiving party or its Associates in connection with the evaluation of a Transaction. ",
+      "hypothesis": "Confidential Information may include verbally conveyed information."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "688dc4870361f623e40e7be1f81861d9"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 10,
+    "text": "Premise: In the event that a receiving party or its Associates is or becomes legally compelled under applicable law, regulation or securities exchange listing agreement, or by a competent governmental, administrative or regulatory authority or in a proceeding before a court, arbitrator or administrative agency, whether or not as a result of a Transaction to which the Company has consented, to disclose any portion of the Confidential Information of a disclosing party, that discussions or negotiations between the parties hereto are taking place or have taken place, or any of the terms, conditions or other facts with respect to a Transaction, including the status thereof, the receiving party will, and will direct its  Associates to, provide the disclosing party with prompt written notice (unless prohibited by law) of such legal compulsion, and shall delay disclosure, if and to the extent permitted or practicable, until the disclaiming party has had an opportunity to seek a protective order or other appropriate remedy or to waive compliance by the receiving party and/or its Associates with the relevant provisions of this Agreement. \nHypothesis: Receiving Party shall not solicit some of Disclosing Party's representatives.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "In the event that a receiving party or its Associates is or becomes legally compelled under applicable law, regulation or securities exchange listing agreement, or by a competent governmental, administrative or regulatory authority or in a proceeding before a court, arbitrator or administrative agency, whether or not as a result of a Transaction to which the Company has consented, to disclose any portion of the Confidential Information of a disclosing party, that discussions or negotiations between the parties hereto are taking place or have taken place, or any of the terms, conditions or other facts with respect to a Transaction, including the status thereof, the receiving party will, and will direct its  Associates to, provide the disclosing party with prompt written notice (unless prohibited by law) of such legal compulsion, and shall delay disclosure, if and to the extent permitted or practicable, until the disclaiming party has had an opportunity to seek a protective order or other appropriate remedy or to waive compliance by the receiving party and/or its Associates with the relevant provisions of this Agreement. ",
+      "hypothesis": "Receiving Party shall not solicit some of Disclosing Party's representatives."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "e49a6072df4d3517d8351d8cede5ada0"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 11,
+    "text": "Premise: The Parties will: a. limit disclosure of any Confidential Information to its directors, officers, employees, agents or representatives (collectively \"Representatives\") who have a need to know such Confidential Information in connection with the Transaction, and only for that purpose;\nHypothesis: Receiving Party may share some Confidential Information with some third-parties (including consultants, agents and professional advisors).",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "The Parties will: a. limit disclosure of any Confidential Information to its directors, officers, employees, agents or representatives (collectively \"Representatives\") who have a need to know such Confidential Information in connection with the Transaction, and only for that purpose;",
+      "hypothesis": "Receiving Party may share some Confidential Information with some third-parties (including consultants, agents and professional advisors)."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "96a88e5add04750a145ca2b17b7d0506"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 12,
+    "text": "Premise: e. Return of Information. on a Party's request, the other Party shall return all Confidential Information of the requesting Party, except for that portion of such Confidential Information that may be found in analyses prepared by, or for, the returning Party (collectively, \"Analyses\"), and the returning Party and its Representatives shall not retain any copies of such Confidential Information except the returning Party may retain one copy of the Confidential Information as needed to comply with applicable law and/or returning Party's record retention policies. \nHypothesis: Receiving Party may create a copy of some Confidential Information in some circumstances.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "e. Return of Information. on a Party's request, the other Party shall return all Confidential Information of the requesting Party, except for that portion of such Confidential Information that may be found in analyses prepared by, or for, the returning Party (collectively, \"Analyses\"), and the returning Party and its Representatives shall not retain any copies of such Confidential Information except the returning Party may retain one copy of the Confidential Information as needed to comply with applicable law and/or returning Party's record retention policies. ",
+      "hypothesis": "Receiving Party may create a copy of some Confidential Information in some circumstances."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "a62e6288f3cfd2e2aff8a464f6165496"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 13,
+    "text": "Premise: a. The Recipient may disclose Confidential Information pursuant to any governmental, judicial, or administrative order, subpoena, discovery request, regulatory request or similar method, provided that the Recipient promptly notifies, to the extent practicable.\nHypothesis: Receiving Party shall notify Disclosing Party in case Receiving Party is required by law, regulation or judicial process to disclose any Confidential Information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "a. The Recipient may disclose Confidential Information pursuant to any governmental, judicial, or administrative order, subpoena, discovery request, regulatory request or similar method, provided that the Recipient promptly notifies, to the extent practicable.",
+      "hypothesis": "Receiving Party shall notify Disclosing Party in case Receiving Party is required by law, regulation or judicial process to disclose any Confidential Information."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "488b336c38db6046a7cd2a26e80699e9"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 14,
+    "text": "Premise: The obligations and restrictions imposed by this Agreement will not apply to any information that: a. The Recipient can demonstrate was already known to the Recipient prior to the disclosure by the Discloser; or, b. has become publicly known through no wrongful act of the Recipient; or, c. was received by the Recipient without breach of this Agreement from a third party without restriction as to the use and disclosure of the Discloser's Confidential Information; or,\nHypothesis: Receiving Party may acquire information similar to Confidential Information from a third party.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "The obligations and restrictions imposed by this Agreement will not apply to any information that: a. The Recipient can demonstrate was already known to the Recipient prior to the disclosure by the Discloser; or, b. has become publicly known through no wrongful act of the Recipient; or, c. was received by the Recipient without breach of this Agreement from a third party without restriction as to the use and disclosure of the Discloser's Confidential Information; or,",
+      "hypothesis": "Receiving Party may acquire information similar to Confidential Information from a third party."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "edcb8eec4946b5fd733e4cc55454d429"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 15,
+    "text": "Premise: The Parties agree to use the Confidential Information solely in connection with the Transaction and not for any purpose other than as authorized by this Agreement without the prior written consent of an authorized representative of the Parties.  No other right or license, whether expressed or implied, in the Confidential Information is granted to the Parties hereunder.  Title to the Confidential Information will remain solely with the Party.  All use of Confidential Information by the Parties shall be for the benefit of the Parties and any modifications and improvements thereof by the Recipient shall be the sole property of Discloser.  Notwithstanding the foregoing, Confidential Information shall include any proprietary records created in the course of the Recipient's course of engagement such as customized code, configuration, flowcharts or project data that was specifically designed to meet the needs of the Discloser. The Parties agree to ensure that all copyright products, such as source codes, system design data/architecture, and other proprietary information, disclosed during the engagement is protected from any misuse, alteration, modification, sharing, or transfer to any party without express permission of the Discloser.  Such data is provided for the sole use of the Parties, and limited for the use under this agreement. 4. Obligations of Receiving Party. a. No Use.  The Receiving Party agrees not to use the Confidential Information in any way, or to manufacture or test any product embodying Confidential Information, except for the purpose set forth above.\nHypothesis: Receiving Party shall not use any Confidential Information for any purpose other than the purposes stated in Agreement.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "The Parties agree to use the Confidential Information solely in connection with the Transaction and not for any purpose other than as authorized by this Agreement without the prior written consent of an authorized representative of the Parties.  No other right or license, whether expressed or implied, in the Confidential Information is granted to the Parties hereunder.  Title to the Confidential Information will remain solely with the Party.  All use of Confidential Information by the Parties shall be for the benefit of the Parties and any modifications and improvements thereof by the Recipient shall be the sole property of Discloser.  Notwithstanding the foregoing, Confidential Information shall include any proprietary records created in the course of the Recipient's course of engagement such as customized code, configuration, flowcharts or project data that was specifically designed to meet the needs of the Discloser. The Parties agree to ensure that all copyright products, such as source codes, system design data/architecture, and other proprietary information, disclosed during the engagement is protected from any misuse, alteration, modification, sharing, or transfer to any party without express permission of the Discloser.  Such data is provided for the sole use of the Parties, and limited for the use under this agreement. 4. Obligations of Receiving Party. a. No Use.  The Receiving Party agrees not to use the Confidential Information in any way, or to manufacture or test any product embodying Confidential Information, except for the purpose set forth above.",
+      "hypothesis": "Receiving Party shall not use any Confidential Information for any purpose other than the purposes stated in Agreement."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "d6096b4bb0696dac079b1a3da29464b2"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 16,
+    "text": "Premise: Recipient shall not without Disclosing Party\u2019s prior written consent reverse engineer, disassemble or decompile any prototypes, software or other objects which embody the Disclosing Party\u2019s Confidential Information to obtain access to Disclosing Party\u2019s trade secrets and to the extent such consent is granted Recipient shall receive and hold such Confidential Information subject to the terms of this Agreement.\nHypothesis: Receiving Party shall not reverse engineer any objects which embody Disclosing Party's Confidential Information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "Recipient shall not without Disclosing Party\u2019s prior written consent reverse engineer, disassemble or decompile any prototypes, software or other objects which embody the Disclosing Party\u2019s Confidential Information to obtain access to Disclosing Party\u2019s trade secrets and to the extent such consent is granted Recipient shall receive and hold such Confidential Information subject to the terms of this Agreement.",
+      "hypothesis": "Receiving Party shall not reverse engineer any objects which embody Disclosing Party's Confidential Information."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "49f044074df9c22eef9d8504324e9beb"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 17,
+    "text": "Premise: Disclosing Party may serve written request on Recipient for return or destruction of its Confidential Information at any time up to six (6) months after the termination or expiry of this Agreement and Recipient shall, within thirty (30) days of such request or termination, return to the Disclosing Party (or its designees) or certify as destroyed all Confidential Information, in whatever form, including written or electronically recorded information and all copies thereof (other than copies retained in automatic back-up and archive systems), provided however that Recipient shall be entitled to retain one copy of the Confidential Information with its legal counsel or other appropriate corporate representative to evidence the exchange of information hereunder and in connection with legal or statutory requirements. \nHypothesis: Receiving Party shall destroy or return some Confidential Information upon the termination of Agreement.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "Disclosing Party may serve written request on Recipient for return or destruction of its Confidential Information at any time up to six (6) months after the termination or expiry of this Agreement and Recipient shall, within thirty (30) days of such request or termination, return to the Disclosing Party (or its designees) or certify as destroyed all Confidential Information, in whatever form, including written or electronically recorded information and all copies thereof (other than copies retained in automatic back-up and archive systems), provided however that Recipient shall be entitled to retain one copy of the Confidential Information with its legal counsel or other appropriate corporate representative to evidence the exchange of information hereunder and in connection with legal or statutory requirements. ",
+      "hypothesis": "Receiving Party shall destroy or return some Confidential Information upon the termination of Agreement."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "dae6d4d26e633f53289637d480f3569e"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 18,
+    "text": "Premise: Neither the execution of this Agreement nor the disclosure of any Confidential Information is construed as granting either expressly or by implication, estoppel or otherwise, any license or right to the Confidential Information or any intellectual property rights embodied therein.\nHypothesis: Agreement shall not grant Receiving Party any right to Confidential Information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "Neither the execution of this Agreement nor the disclosure of any Confidential Information is construed as granting either expressly or by implication, estoppel or otherwise, any license or right to the Confidential Information or any intellectual property rights embodied therein.",
+      "hypothesis": "Agreement shall not grant Receiving Party any right to Confidential Information."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "507cf3c44bf5a8f6fda1ac865e925b58"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 19,
+    "text": "Premise: The obligations and restrictions imposed by this Agreement will not apply to any information that: a. The Recipient can demonstrate was already known to the Recipient prior to the disclosure by the Discloser; or, b. has become publicly known through no wrongful act of the Recipient; or, c. was received by the Recipient without breach of this Agreement from a third party without restriction as to the use and disclosure of the Discloser's Confidential Information; or,\nHypothesis: Receiving Party shall not disclose the fact that Agreement was agreed or negotiated.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "The obligations and restrictions imposed by this Agreement will not apply to any information that: a. The Recipient can demonstrate was already known to the Recipient prior to the disclosure by the Discloser; or, b. has become publicly known through no wrongful act of the Recipient; or, c. was received by the Recipient without breach of this Agreement from a third party without restriction as to the use and disclosure of the Discloser's Confidential Information; or,",
+      "hypothesis": "Receiving Party shall not disclose the fact that Agreement was agreed or negotiated."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "6ac374829e5cd5ad5952bc8daebd8518"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 20,
+    "text": "Premise: Confidential Information includes, but is not limited to documents, drawings, models, apparatus, sketches, designs, schedules, product plans, marketing plans, technical procedures, manufacturing processes, software, prototypes, samples, methodologies, formulations, trade secrets, patent applications, know-how, experimental results, specifications and other business information.\nHypothesis: Confidential Information shall only include technical information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "Confidential Information includes, but is not limited to documents, drawings, models, apparatus, sketches, designs, schedules, product plans, marketing plans, technical procedures, manufacturing processes, software, prototypes, samples, methodologies, formulations, trade secrets, patent applications, know-how, experimental results, specifications and other business information.",
+      "hypothesis": "Confidential Information shall only include technical information."
+    },
+    "holdings": null,
+    "label": "contradiction",
+    "labels": null,
+    "content_hash": "b320dc524e569ca6548fcefa96a0918b"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 21,
+    "text": "Premise: The term \u201cConfidential Information\u201d as used herein means all nonpublic information relating to the Subject Matter that is disclosed by either party, its Affiliates (as defined below), or their agents (where applicable, collectively referred to as the \u201cDisclosing Party\u201d), directly or indirectly, in writing, orally or by inspection of premises or tangible objects to the other party (the \u201cRecipient\u201d) that is:  (i) marked confidential or proprietary, or  (ii) given the nature of the information or the circumstances surrounding its disclosure, reasonably should be deemed confidential. \nHypothesis: All Confidential Information shall be expressly identified by the Disclosing Party.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "The term \u201cConfidential Information\u201d as used herein means all nonpublic information relating to the Subject Matter that is disclosed by either party, its Affiliates (as defined below), or their agents (where applicable, collectively referred to as the \u201cDisclosing Party\u201d), directly or indirectly, in writing, orally or by inspection of premises or tangible objects to the other party (the \u201cRecipient\u201d) that is:  (i) marked confidential or proprietary, or  (ii) given the nature of the information or the circumstances surrounding its disclosure, reasonably should be deemed confidential. ",
+      "hypothesis": "All Confidential Information shall be expressly identified by the Disclosing Party."
+    },
+    "holdings": null,
+    "label": "contradiction",
+    "labels": null,
+    "content_hash": "ec5793f9e9478875358492cd91648e0b"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 22,
+    "text": "Premise: Disclosing Party may serve written request on Recipient for return or destruction of its Confidential Information at any time up to six (6) months after the termination or expiry of this Agreement and Recipient shall, within thirty (30) days of such request or termination, return to the Disclosing Party (or its designees) or certify as destroyed all Confidential Information, in whatever form, including written or electronically recorded information and all copies thereof (other than copies retained in automatic back-up and archive systems), provided however that Recipient shall be entitled to retain one copy of the Confidential Information with its legal counsel or other appropriate corporate representative to evidence the exchange of information hereunder and in connection with legal or statutory requirements. \nHypothesis: Receiving Party may retain some Confidential Information even after the return or destruction of Confidential Information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "Disclosing Party may serve written request on Recipient for return or destruction of its Confidential Information at any time up to six (6) months after the termination or expiry of this Agreement and Recipient shall, within thirty (30) days of such request or termination, return to the Disclosing Party (or its designees) or certify as destroyed all Confidential Information, in whatever form, including written or electronically recorded information and all copies thereof (other than copies retained in automatic back-up and archive systems), provided however that Recipient shall be entitled to retain one copy of the Confidential Information with its legal counsel or other appropriate corporate representative to evidence the exchange of information hereunder and in connection with legal or statutory requirements. ",
+      "hypothesis": "Receiving Party may retain some Confidential Information even after the return or destruction of Confidential Information."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "3313c289c3eb26d6538a581b6aabc9fa"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 23,
+    "text": "Premise: The term \u201cConfidential Information\u201d as used herein means all nonpublic information relating to the Subject Matter that is disclosed by either party, its Affiliates (as defined below), or their agents (where applicable, collectively referred to as the \u201cDisclosing Party\u201d), directly or indirectly, in writing, orally or by inspection of premises or tangible objects to the other party (the \u201cRecipient\u201d) that is: \nHypothesis: Confidential Information may include verbally conveyed information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "The term \u201cConfidential Information\u201d as used herein means all nonpublic information relating to the Subject Matter that is disclosed by either party, its Affiliates (as defined below), or their agents (where applicable, collectively referred to as the \u201cDisclosing Party\u201d), directly or indirectly, in writing, orally or by inspection of premises or tangible objects to the other party (the \u201cRecipient\u201d) that is: ",
+      "hypothesis": "Confidential Information may include verbally conveyed information."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "1839347736c8125c84cbc73d1f722455"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 24,
+    "text": "Premise: e. Return of Information. on a Party's request, the other Party shall return all Confidential Information of the requesting Party, except for that portion of such Confidential Information that may be found in analyses prepared by, or for, the returning Party (collectively, \"Analyses\"), and the returning Party and its Representatives shall not retain any copies of such Confidential Information except the returning Party may retain one copy of the Confidential Information as needed to comply with applicable law and/or returning Party's record retention policies. \nHypothesis: Receiving Party shall not solicit some of Disclosing Party's representatives.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "e. Return of Information. on a Party's request, the other Party shall return all Confidential Information of the requesting Party, except for that portion of such Confidential Information that may be found in analyses prepared by, or for, the returning Party (collectively, \"Analyses\"), and the returning Party and its Representatives shall not retain any copies of such Confidential Information except the returning Party may retain one copy of the Confidential Information as needed to comply with applicable law and/or returning Party's record retention policies. ",
+      "hypothesis": "Receiving Party shall not solicit some of Disclosing Party's representatives."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "56b98ecb37beaf81382dad2b8efd04cf"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 25,
+    "text": "Premise: Recipient will not disclose or permit access to Confidential Information to contract workers, consultants or contractors of Recipient or its Affiliates unless authorized by Disclosing Party in writing and on condition that such persons are bound by obligations of confidentiality inuring to the benefit of Disclosing Party and its Affiliates at least as restrictive as these terms and conditions. \nHypothesis: Receiving Party may share some Confidential Information with some third-parties (including consultants, agents and professional advisors).",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "Recipient will not disclose or permit access to Confidential Information to contract workers, consultants or contractors of Recipient or its Affiliates unless authorized by Disclosing Party in writing and on condition that such persons are bound by obligations of confidentiality inuring to the benefit of Disclosing Party and its Affiliates at least as restrictive as these terms and conditions. ",
+      "hypothesis": "Receiving Party may share some Confidential Information with some third-parties (including consultants, agents and professional advisors)."
+    },
+    "holdings": null,
+    "label": "contradiction",
+    "labels": null,
+    "content_hash": "1382b89659f81320a966095e41dd7012"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 26,
+    "text": "Premise: Disclosing Party may serve written request on Recipient for return or destruction of its Confidential Information at any time up to six (6) months after the termination or expiry of this Agreement and Recipient shall, within thirty (30) days of such request or termination, return to the Disclosing Party (or its designees) or certify as destroyed all Confidential Information, in whatever form, including written or electronically recorded information and all copies thereof (other than copies retained in automatic back-up and archive systems), provided however that Recipient shall be entitled to retain one copy of the Confidential Information with its legal counsel or other appropriate corporate representative to evidence the exchange of information hereunder and in connection with legal or statutory requirements. \nHypothesis: Receiving Party may create a copy of some Confidential Information in some circumstances.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "Disclosing Party may serve written request on Recipient for return or destruction of its Confidential Information at any time up to six (6) months after the termination or expiry of this Agreement and Recipient shall, within thirty (30) days of such request or termination, return to the Disclosing Party (or its designees) or certify as destroyed all Confidential Information, in whatever form, including written or electronically recorded information and all copies thereof (other than copies retained in automatic back-up and archive systems), provided however that Recipient shall be entitled to retain one copy of the Confidential Information with its legal counsel or other appropriate corporate representative to evidence the exchange of information hereunder and in connection with legal or statutory requirements. ",
+      "hypothesis": "Receiving Party may create a copy of some Confidential Information in some circumstances."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "dc6408666f060a770cdb219d6866ce7a"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 27,
+    "text": "Premise: If Recipient is requested, ordered or required by a regulatory agency or any other government authority or a court to disclose any Confidential Information, Recipient shall promptly notify Disclosing Party of such request, order or requirement so that Disclosing Party may have the opportunity to contest the disclosure, including seeking a protective order, or waive Recipient\u2019s compliance with this Agreement. \nHypothesis: Receiving Party shall notify Disclosing Party in case Receiving Party is required by law, regulation or judicial process to disclose any Confidential Information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "If Recipient is requested, ordered or required by a regulatory agency or any other government authority or a court to disclose any Confidential Information, Recipient shall promptly notify Disclosing Party of such request, order or requirement so that Disclosing Party may have the opportunity to contest the disclosure, including seeking a protective order, or waive Recipient\u2019s compliance with this Agreement. ",
+      "hypothesis": "Receiving Party shall notify Disclosing Party in case Receiving Party is required by law, regulation or judicial process to disclose any Confidential Information."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "3d539f9afbe00a54e9d0690cad730354"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 28,
+    "text": "Premise: Recipient agrees to limit disclosure of Confidential Information to employees and employees of Affiliates having a specific need to know such Confidential Information for the Purpose and in the case of Affiliates only to the extent that such Affiliate is under obligation to hold such information in confidence and is made aware of these terms and conditions. \nHypothesis: Receiving Party may share some Confidential Information with some of Receiving Party's employees.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "Recipient agrees to limit disclosure of Confidential Information to employees and employees of Affiliates having a specific need to know such Confidential Information for the Purpose and in the case of Affiliates only to the extent that such Affiliate is under obligation to hold such information in confidence and is made aware of these terms and conditions. ",
+      "hypothesis": "Receiving Party may share some Confidential Information with some of Receiving Party's employees."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "a40f6c0b1050628c3d3d9ab0a7a4a84c"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 29,
+    "text": "Premise: The Parties agree to use the Confidential Information solely in connection with the Transaction and not for any purpose other than as authorized by this Agreement without the prior written consent of an authorized representative of the Parties.  No other right or license, whether expressed or implied, in the Confidential Information is granted to the Parties hereunder.  Title to the Confidential Information will remain solely with the Party.  All use of Confidential Information by the Parties shall be for the benefit of the Parties and any modifications and improvements thereof by the Recipient shall be the sole property of Discloser.  Notwithstanding the foregoing, Confidential Information shall include any proprietary records created in the course of the Recipient's course of engagement such as customized code, configuration, flowcharts or project data that was specifically designed to meet the needs of the Discloser. The Parties agree to ensure that all copyright products, such as source codes, system design data/architecture, and other proprietary information, disclosed during the engagement is protected from any misuse, alteration, modification, sharing, or transfer to any party without express permission of the Discloser.  Such data is provided for the sole use of the Parties, and limited for the use under this agreement. 4. Obligations of Receiving Party. a. No Use.  The Receiving Party agrees not to use the Confidential Information in any way, or to manufacture or test any product embodying Confidential Information, except for the purpose set forth above.\nHypothesis: Receiving Party shall not use any Confidential Information for any purpose other than the purposes stated in Agreement.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "The Parties agree to use the Confidential Information solely in connection with the Transaction and not for any purpose other than as authorized by this Agreement without the prior written consent of an authorized representative of the Parties.  No other right or license, whether expressed or implied, in the Confidential Information is granted to the Parties hereunder.  Title to the Confidential Information will remain solely with the Party.  All use of Confidential Information by the Parties shall be for the benefit of the Parties and any modifications and improvements thereof by the Recipient shall be the sole property of Discloser.  Notwithstanding the foregoing, Confidential Information shall include any proprietary records created in the course of the Recipient's course of engagement such as customized code, configuration, flowcharts or project data that was specifically designed to meet the needs of the Discloser. The Parties agree to ensure that all copyright products, such as source codes, system design data/architecture, and other proprietary information, disclosed during the engagement is protected from any misuse, alteration, modification, sharing, or transfer to any party without express permission of the Discloser.  Such data is provided for the sole use of the Parties, and limited for the use under this agreement. 4. Obligations of Receiving Party. a. No Use.  The Receiving Party agrees not to use the Confidential Information in any way, or to manufacture or test any product embodying Confidential Information, except for the purpose set forth above.",
+      "hypothesis": "Receiving Party shall not use any Confidential Information for any purpose other than the purposes stated in Agreement."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "d6096b4bb0696dac079b1a3da29464b2"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 30,
+    "text": "Premise: e. Return of Information. on a Party's request, the other Party shall return all Confidential Information of the requesting Party, except for that portion of such Confidential Information that may be found in analyses prepared by, or for, the returning Party (collectively, \"Analyses\"), and the returning Party and its Representatives shall not retain any copies of such Confidential Information except the returning Party may retain one copy of the Confidential Information as needed to comply with applicable law and/or returning Party's record retention policies. \nHypothesis: Receiving Party shall not reverse engineer any objects which embody Disclosing Party's Confidential Information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "e. Return of Information. on a Party's request, the other Party shall return all Confidential Information of the requesting Party, except for that portion of such Confidential Information that may be found in analyses prepared by, or for, the returning Party (collectively, \"Analyses\"), and the returning Party and its Representatives shall not retain any copies of such Confidential Information except the returning Party may retain one copy of the Confidential Information as needed to comply with applicable law and/or returning Party's record retention policies. ",
+      "hypothesis": "Receiving Party shall not reverse engineer any objects which embody Disclosing Party's Confidential Information."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "3ff61e870b1b4af3c7740337cb80f9e5"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 31,
+    "text": "Premise: e. Return of Information. on a Party's request, the other Party shall return all Confidential Information of the requesting Party, except for that portion of such Confidential Information that may be found in analyses prepared by, or for, the returning Party (collectively, \"Analyses\"), and the returning Party and its Representatives shall not retain any copies of such Confidential Information except the returning Party may retain one copy of the Confidential Information as needed to comply with applicable law and/or returning Party's record retention policies. \nHypothesis: Receiving Party shall destroy or return some Confidential Information upon the termination of Agreement.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "e. Return of Information. on a Party's request, the other Party shall return all Confidential Information of the requesting Party, except for that portion of such Confidential Information that may be found in analyses prepared by, or for, the returning Party (collectively, \"Analyses\"), and the returning Party and its Representatives shall not retain any copies of such Confidential Information except the returning Party may retain one copy of the Confidential Information as needed to comply with applicable law and/or returning Party's record retention policies. ",
+      "hypothesis": "Receiving Party shall destroy or return some Confidential Information upon the termination of Agreement."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "a76a40541b529d0d8d7824c24af3a1c0"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 32,
+    "text": "Premise: 7. Neither this Agreement nor the supply of any information grants the Recipient any licence, interest or right in respect of any intellectual property rights of the Discloser except the right to copy the Confidential Information solely for the Purpose.\nHypothesis: Agreement shall not grant Receiving Party any right to Confidential Information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "7. Neither this Agreement nor the supply of any information grants the Recipient any licence, interest or right in respect of any intellectual property rights of the Discloser except the right to copy the Confidential Information solely for the Purpose.",
+      "hypothesis": "Agreement shall not grant Receiving Party any right to Confidential Information."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "cda603319d31794347d993c45839f416"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 33,
+    "text": "Premise: The obligations and restrictions imposed by this Agreement will not apply to any information that: a. The Recipient can demonstrate was already known to the Recipient prior to the disclosure by the Discloser; or, b. has become publicly known through no wrongful act of the Recipient; or, c. was received by the Recipient without breach of this Agreement from a third party without restriction as to the use and disclosure of the Discloser's Confidential Information; or,\nHypothesis: Receiving Party shall not disclose the fact that Agreement was agreed or negotiated.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "The obligations and restrictions imposed by this Agreement will not apply to any information that: a. The Recipient can demonstrate was already known to the Recipient prior to the disclosure by the Discloser; or, b. has become publicly known through no wrongful act of the Recipient; or, c. was received by the Recipient without breach of this Agreement from a third party without restriction as to the use and disclosure of the Discloser's Confidential Information; or,",
+      "hypothesis": "Receiving Party shall not disclose the fact that Agreement was agreed or negotiated."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "6ac374829e5cd5ad5952bc8daebd8518"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 34,
+    "text": "Premise: Recipient agrees to limit disclosure of Confidential Information to employees and employees of Affiliates having a specific need to know such Confidential Information for the Purpose and in the case of Affiliates only to the extent that such Affiliate is under obligation to hold such information in confidence and is made aware of these terms and conditions. \nHypothesis: Confidential Information shall only include technical information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "Recipient agrees to limit disclosure of Confidential Information to employees and employees of Affiliates having a specific need to know such Confidential Information for the Purpose and in the case of Affiliates only to the extent that such Affiliate is under obligation to hold such information in confidence and is made aware of these terms and conditions. ",
+      "hypothesis": "Confidential Information shall only include technical information."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "4df0d9e7e69f528083570fe3f618e436"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 35,
+    "text": "Premise: 4. The undertakings in clauses 2 and 3 above apply to all of the information disclosed by the Discloser to the Recipient, regardless of the way or form in which it is disclosed or recorded but they do not apply to:\nHypothesis: All Confidential Information shall be expressly identified by the Disclosing Party.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "4. The undertakings in clauses 2 and 3 above apply to all of the information disclosed by the Discloser to the Recipient, regardless of the way or form in which it is disclosed or recorded but they do not apply to:",
+      "hypothesis": "All Confidential Information shall be expressly identified by the Disclosing Party."
+    },
+    "holdings": null,
+    "label": "contradiction",
+    "labels": null,
+    "content_hash": "be4a6bff6bb88d479aabac101332e675"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 36,
+    "text": "Premise: 8. The undertakings in clauses 2 and 3 will continue in force indefinitely.\nHypothesis: Some obligations of Agreement may survive termination of Agreement.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "8. The undertakings in clauses 2 and 3 will continue in force indefinitely.",
+      "hypothesis": "Some obligations of Agreement may survive termination of Agreement."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "68b2874051c12ef471184c05e08ffeda"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 37,
+    "text": "Premise: If Recipient is requested, ordered or required by a regulatory agency or any other government authority or a court to disclose any Confidential Information, Recipient shall promptly notify Disclosing Party of such request, order or requirement so that Disclosing Party may have the opportunity to contest the disclosure, including seeking a protective order, or waive Recipient\u2019s compliance with this Agreement. \nHypothesis: Receiving Party may independently develop information similar to Confidential Information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "If Recipient is requested, ordered or required by a regulatory agency or any other government authority or a court to disclose any Confidential Information, Recipient shall promptly notify Disclosing Party of such request, order or requirement so that Disclosing Party may have the opportunity to contest the disclosure, including seeking a protective order, or waive Recipient\u2019s compliance with this Agreement. ",
+      "hypothesis": "Receiving Party may independently develop information similar to Confidential Information."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "ba1c34ac2231f2e5ba54cbfcc38e0900"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 38,
+    "text": "Premise: 6. The Recipient will, on request from the Discloser, return all copies and records of the Confidential Information to the Discloser and will not retain any copies or records of the Confidential Information.\nHypothesis: Receiving Party may retain some Confidential Information even after the return or destruction of Confidential Information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "6. The Recipient will, on request from the Discloser, return all copies and records of the Confidential Information to the Discloser and will not retain any copies or records of the Confidential Information.",
+      "hypothesis": "Receiving Party may retain some Confidential Information even after the return or destruction of Confidential Information."
+    },
+    "holdings": null,
+    "label": "contradiction",
+    "labels": null,
+    "content_hash": "1317a41446a675f37e338202fac1f837"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 39,
+    "text": "Premise: 4. The undertakings in clauses 2 and 3 above apply to all of the information disclosed by the Discloser to the Recipient, regardless of the way or form in which it is disclosed or recorded but they do not apply to:\nHypothesis: Confidential Information may include verbally conveyed information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "4. The undertakings in clauses 2 and 3 above apply to all of the information disclosed by the Discloser to the Recipient, regardless of the way or form in which it is disclosed or recorded but they do not apply to:",
+      "hypothesis": "Confidential Information may include verbally conveyed information."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "5c076e649c17ac24d40e5a37cf9d3561"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 40,
+    "text": "Premise: If Recipient is requested, ordered or required by a regulatory agency or any other government authority or a court to disclose any Confidential Information, Recipient shall promptly notify Disclosing Party of such request, order or requirement so that Disclosing Party may have the opportunity to contest the disclosure, including seeking a protective order, or waive Recipient\u2019s compliance with this Agreement. \nHypothesis: Receiving Party shall not solicit some of Disclosing Party's representatives.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "If Recipient is requested, ordered or required by a regulatory agency or any other government authority or a court to disclose any Confidential Information, Recipient shall promptly notify Disclosing Party of such request, order or requirement so that Disclosing Party may have the opportunity to contest the disclosure, including seeking a protective order, or waive Recipient\u2019s compliance with this Agreement. ",
+      "hypothesis": "Receiving Party shall not solicit some of Disclosing Party's representatives."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "dff02800603fd7950ee39ed5c9601c3e"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 41,
+    "text": "Premise: If Recipient is requested, ordered or required by a regulatory agency or any other government authority or a court to disclose any Confidential Information, Recipient shall promptly notify Disclosing Party of such request, order or requirement so that Disclosing Party may have the opportunity to contest the disclosure, including seeking a protective order, or waive Recipient\u2019s compliance with this Agreement. \nHypothesis: Receiving Party may share some Confidential Information with some third-parties (including consultants, agents and professional advisors).",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "If Recipient is requested, ordered or required by a regulatory agency or any other government authority or a court to disclose any Confidential Information, Recipient shall promptly notify Disclosing Party of such request, order or requirement so that Disclosing Party may have the opportunity to contest the disclosure, including seeking a protective order, or waive Recipient\u2019s compliance with this Agreement. ",
+      "hypothesis": "Receiving Party may share some Confidential Information with some third-parties (including consultants, agents and professional advisors)."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "74ac93705f224519787017ae56a010f9"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 42,
+    "text": "Premise: Disclosing Party may serve written request on Recipient for return or destruction of its Confidential Information at any time up to six (6) months after the termination or expiry of this Agreement and Recipient shall, within thirty (30) days of such request or termination, return to the Disclosing Party (or its designees) or certify as destroyed all Confidential Information, in whatever form, including written or electronically recorded information and all copies thereof (other than copies retained in automatic back-up and archive systems), provided however that Recipient shall be entitled to retain one copy of the Confidential Information with its legal counsel or other appropriate corporate representative to evidence the exchange of information hereunder and in connection with legal or statutory requirements. \nHypothesis: Receiving Party may create a copy of some Confidential Information in some circumstances.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "Disclosing Party may serve written request on Recipient for return or destruction of its Confidential Information at any time up to six (6) months after the termination or expiry of this Agreement and Recipient shall, within thirty (30) days of such request or termination, return to the Disclosing Party (or its designees) or certify as destroyed all Confidential Information, in whatever form, including written or electronically recorded information and all copies thereof (other than copies retained in automatic back-up and archive systems), provided however that Recipient shall be entitled to retain one copy of the Confidential Information with its legal counsel or other appropriate corporate representative to evidence the exchange of information hereunder and in connection with legal or statutory requirements. ",
+      "hypothesis": "Receiving Party may create a copy of some Confidential Information in some circumstances."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "dc6408666f060a770cdb219d6866ce7a"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 43,
+    "text": "Premise: If Recipient is requested, ordered or required by a regulatory agency or any other government authority or a court to disclose any Confidential Information, Recipient shall promptly notify Disclosing Party of such request, order or requirement so that Disclosing Party may have the opportunity to contest the disclosure, including seeking a protective order, or waive Recipient\u2019s compliance with this Agreement. \nHypothesis: Receiving Party shall notify Disclosing Party in case Receiving Party is required by law, regulation or judicial process to disclose any Confidential Information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "If Recipient is requested, ordered or required by a regulatory agency or any other government authority or a court to disclose any Confidential Information, Recipient shall promptly notify Disclosing Party of such request, order or requirement so that Disclosing Party may have the opportunity to contest the disclosure, including seeking a protective order, or waive Recipient\u2019s compliance with this Agreement. ",
+      "hypothesis": "Receiving Party shall notify Disclosing Party in case Receiving Party is required by law, regulation or judicial process to disclose any Confidential Information."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "3d539f9afbe00a54e9d0690cad730354"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 44,
+    "text": "Premise: If Recipient is requested, ordered or required by a regulatory agency or any other government authority or a court to disclose any Confidential Information, Recipient shall promptly notify Disclosing Party of such request, order or requirement so that Disclosing Party may have the opportunity to contest the disclosure, including seeking a protective order, or waive Recipient\u2019s compliance with this Agreement. \nHypothesis: Receiving Party may acquire information similar to Confidential Information from a third party.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "If Recipient is requested, ordered or required by a regulatory agency or any other government authority or a court to disclose any Confidential Information, Recipient shall promptly notify Disclosing Party of such request, order or requirement so that Disclosing Party may have the opportunity to contest the disclosure, including seeking a protective order, or waive Recipient\u2019s compliance with this Agreement. ",
+      "hypothesis": "Receiving Party may acquire information similar to Confidential Information from a third party."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "d4be8051951d313da69f0eab287bd9da"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 45,
+    "text": "Premise: If Recipient is requested, ordered or required by a regulatory agency or any other government authority or a court to disclose any Confidential Information, Recipient shall promptly notify Disclosing Party of such request, order or requirement so that Disclosing Party may have the opportunity to contest the disclosure, including seeking a protective order, or waive Recipient\u2019s compliance with this Agreement. \nHypothesis: Receiving Party may share some Confidential Information with some of Receiving Party's employees.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "If Recipient is requested, ordered or required by a regulatory agency or any other government authority or a court to disclose any Confidential Information, Recipient shall promptly notify Disclosing Party of such request, order or requirement so that Disclosing Party may have the opportunity to contest the disclosure, including seeking a protective order, or waive Recipient\u2019s compliance with this Agreement. ",
+      "hypothesis": "Receiving Party may share some Confidential Information with some of Receiving Party's employees."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "c62c62a4c68a2f6d1fc31fe59fe9081c"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 46,
+    "text": "Premise: 2. The Recipient undertakes not to use the Confidential Information for any purpose except the Purpose, without first obtaining the written agreement of the Discloser.\nHypothesis: Receiving Party shall not use any Confidential Information for any purpose other than the purposes stated in Agreement.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "2. The Recipient undertakes not to use the Confidential Information for any purpose except the Purpose, without first obtaining the written agreement of the Discloser.",
+      "hypothesis": "Receiving Party shall not use any Confidential Information for any purpose other than the purposes stated in Agreement."
+    },
+    "holdings": null,
+    "label": "entailment",
+    "labels": null,
+    "content_hash": "750b5421f23bc737cc2872bcfc9a0935"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 47,
+    "text": "Premise: If Recipient is requested, ordered or required by a regulatory agency or any other government authority or a court to disclose any Confidential Information, Recipient shall promptly notify Disclosing Party of such request, order or requirement so that Disclosing Party may have the opportunity to contest the disclosure, including seeking a protective order, or waive Recipient\u2019s compliance with this Agreement. \nHypothesis: Receiving Party shall not reverse engineer any objects which embody Disclosing Party's Confidential Information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "If Recipient is requested, ordered or required by a regulatory agency or any other government authority or a court to disclose any Confidential Information, Recipient shall promptly notify Disclosing Party of such request, order or requirement so that Disclosing Party may have the opportunity to contest the disclosure, including seeking a protective order, or waive Recipient\u2019s compliance with this Agreement. ",
+      "hypothesis": "Receiving Party shall not reverse engineer any objects which embody Disclosing Party's Confidential Information."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "a8b22493e753b81dabcd6a2d24f021d3"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 48,
+    "text": "Premise: Disclosing Party may serve written request on Recipient for return or destruction of its Confidential Information at any time up to six (6) months after the termination or expiry of this Agreement and Recipient shall, within thirty (30) days of such request or termination, return to the Disclosing Party (or its designees) or certify as destroyed all Confidential Information, in whatever form, including written or electronically recorded information and all copies thereof (other than copies retained in automatic back-up and archive systems), provided however that Recipient shall be entitled to retain one copy of the Confidential Information with its legal counsel or other appropriate corporate representative to evidence the exchange of information hereunder and in connection with legal or statutory requirements. \nHypothesis: Receiving Party shall destroy or return some Confidential Information upon the termination of Agreement.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "Disclosing Party may serve written request on Recipient for return or destruction of its Confidential Information at any time up to six (6) months after the termination or expiry of this Agreement and Recipient shall, within thirty (30) days of such request or termination, return to the Disclosing Party (or its designees) or certify as destroyed all Confidential Information, in whatever form, including written or electronically recorded information and all copies thereof (other than copies retained in automatic back-up and archive systems), provided however that Recipient shall be entitled to retain one copy of the Confidential Information with its legal counsel or other appropriate corporate representative to evidence the exchange of information hereunder and in connection with legal or statutory requirements. ",
+      "hypothesis": "Receiving Party shall destroy or return some Confidential Information upon the termination of Agreement."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "dae6d4d26e633f53289637d480f3569e"
+  },
+  {
+    "task": "contract_nli",
+    "hf_index": 49,
+    "text": "Premise: If Recipient is requested, ordered or required by a regulatory agency or any other government authority or a court to disclose any Confidential Information, Recipient shall promptly notify Disclosing Party of such request, order or requirement so that Disclosing Party may have the opportunity to contest the disclosure, including seeking a protective order, or waive Recipient\u2019s compliance with this Agreement. \nHypothesis: Agreement shall not grant Receiving Party any right to Confidential Information.",
+    "label_set": [
+      "contradiction",
+      "entailment",
+      "neutral"
+    ],
+    "split": "test",
+    "metadata": {
+      "premise": "If Recipient is requested, ordered or required by a regulatory agency or any other government authority or a court to disclose any Confidential Information, Recipient shall promptly notify Disclosing Party of such request, order or requirement so that Disclosing Party may have the opportunity to contest the disclosure, including seeking a protective order, or waive Recipient\u2019s compliance with this Agreement. ",
+      "hypothesis": "Agreement shall not grant Receiving Party any right to Confidential Information."
+    },
+    "holdings": null,
+    "label": "neutral",
+    "labels": null,
+    "content_hash": "771b6aecb7190575f9e11f44b4dfbe68"
+  }
+]

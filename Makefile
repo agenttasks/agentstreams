@@ -1,8 +1,9 @@
-.PHONY: help install install-safety install-webapp dev dev-webapp \
+.PHONY: help install install-safety install-skills install-webapp dev dev-webapp \
        lint lint-py lint-webapp format test test-py test-webapp \
        build build-webapp typecheck security-audit validate \
        eval-codegen eval-codegen-quick eval-codegen-dry eval-promptfoo \
        eval-cuad eval-casehold eval-cuad-quick eval-cuad-recall eval-legal \
+       eval-lexglue eval-lexglue-quick eval-lexglue-dry ingest-lexglue \
        install-managed-agents build-managed-agents check-managed-agents \
        clean ci ci-py ci-webapp
 
@@ -21,7 +22,10 @@ install-safety: ## Install safety-research extras (petri, bloom)
 install-webapp: ## Install webapp Node deps
 	cd webapp && npm ci
 
-install-all: install install-webapp ## Install everything
+install-skills: ## Install Claude Code skills from skills-lock.json
+	npx skills install --yes
+
+install-all: install install-webapp install-skills ## Install everything
 
 # ── Development ──────────────────────────────────────────────
 dev: ## Start Python dev environment
@@ -139,6 +143,18 @@ eval-cuad-recall: ## CUAD vault recall@K (pgvector vs lancedb vs pg_trgm)
 eval-legal: ## Run all legal benchmarks (CUAD + CaseHOLD)
 	uv run julia/evals/cuad/runner.py
 
+eval-lexglue: ## Run LexGLUE legal benchmark (all 8 tasks)
+	uv run scripts/run-lexglue-eval.py
+
+eval-lexglue-quick: ## Quick LexGLUE eval (CaseHOLD, 10 samples)
+	uv run scripts/run-lexglue-eval.py --task casehold --samples 10
+
+eval-lexglue-dry: ## Dry-run LexGLUE eval (show task matrix)
+	uv run scripts/run-lexglue-eval.py --dry-run
+
+ingest-lexglue: ## Download LexGLUE from HuggingFace → Neon + local JSON
+	uv run --extra lexglue scripts/ingest-lexglue.py --task all --lance
+
 ## ── Managed Agents ──────────────────────────────────────────
 install-managed-agents: ## Install managed agents TS package deps
 	cd src/knowledge-work-managed-agents && npm install
@@ -150,10 +166,10 @@ check-managed-agents: ## Type-check managed agents
 	cd src/knowledge-work-managed-agents && npx tsc --noEmit
 
 eval-promptfoo: ## Run all promptfoo eval suites
-	@for dir in evals/*/; do \
+	@for dir in evals/*/ julia/evals/*/; do \
 	  if [ -f "$$dir/promptfooconfig.yaml" ]; then \
 	    echo "Running: $$dir"; \
-	    cd "$$dir" && npx promptfoo eval && cd ../..; \
+	    (cd "$$dir" && npx promptfoo eval); \
 	  fi; \
 	done
 

@@ -31,6 +31,9 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
+lexglue = [
+    { name = "datasets" },
+]
 otel = [
     { name = "opentelemetry-api" },
     { name = "opentelemetry-exporter-otlp" },
@@ -73,6 +76,7 @@ requires-dist = [
     { name = "aiohttp", specifier = ">=3.10" },
     { name = "anthropic", specifier = ">=0.42" },
     { name = "bloom", marker = "extra == 'safety'", git = "https://github.com/safety-research/bloom" },
+    { name = "datasets", marker = "extra == 'lexglue'", specifier = ">=3.0" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "lancedb", marker = "extra == 'vector'", specifier = ">=0.6" },
     { name = "mcp", specifier = ">=1.0" },
@@ -87,7 +91,7 @@ requires-dist = [
     { name = "rich", specifier = ">=14.3.3" },
     { name = "typer", specifier = ">=0.24.1" },
 ]
-provides-extras = ["vector", "otel", "safety"]
+provides-extras = ["vector", "otel", "safety", "lexglue"]
 
 [package.metadata.requires-dev]
 dev = [
@@ -3909,8 +3913,8 @@ name = "uvicorn"
 version = "0.44.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "click" },
-    { name = "h11" },
+    { name = "click", marker = "sys_platform != 'emscripten'" },
+    { name = "h11", marker = "sys_platform != 'emscripten'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/5e/da/6eee1ff8b6cbeed47eeb5229749168e81eb4b7b999a1a15a7176e51410c9/uvicorn-0.44.0.tar.gz", hash = "sha256:6c942071b68f07e178264b9152f1f16dfac5da85880c4ce06366a96d70d4f31e", size = 86947, upload-time = "2026-04-06T09:23:22.826Z" }
 wheels = [

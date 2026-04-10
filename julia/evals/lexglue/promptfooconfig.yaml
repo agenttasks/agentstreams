@@ -1,0 +1,278 @@
+description: "LexGLUE benchmark smoke tests — quick CI validation for 8 legal tasks"
+
+# Smoke tests only — full benchmark runs via scripts/run-lexglue-eval.py
+# These tests validate that Julia produces parseable JSON with correct fields
+# for each LexGLUE task type. Not a substitute for aggregate F1/accuracy metrics.
+
+providers:
+  - id: python:../provider.py
+    label: julia-lexglue
+    config:
+      model: claude-opus-4-6
+      temperature: 0
+      max_tokens: 2048
+
+prompts:
+  # ── LEDGAR: Provision Classification ─────────────────────────
+  - id: ledgar-classify
+    raw: |
+      You are Julia, a legal analysis assistant. Never provide legal advice.
+
+      Classify this contract provision into EXACTLY ONE of the following types:
+      Amendments, Arbitration, Base Salary, Change of Control, Confidentiality,
+      Governing Law, Indemnification, Insurance, Interest Rate, Reimbursement,
+      Representations, Severability, Stock Options, Termination, Warranties
+      # NOTE: 15-label subset for smoke testing only. Full eval uses ~100 LEDGAR categories.
+
+      Do NOT create new categories.
+
+      <document>
+      {{text}}
+      </document>
+
+      Output ONLY valid JSON:
+      {"provision_type": "...", "confidence": 0.0-1.0, "reasoning": "..."}
+
+  # ── CaseHOLD: Holding Identification ─────────────────────────
+  - id: casehold-identify
+    raw: |
+      You are Julia, a legal analysis assistant. Never provide legal advice.
+
+      Given this legal context, identify which holding statement correctly
+      fills the <HOLDING> placeholder. Select exactly one option.
+
+      <document>
+      {{context}}
+      </document>
+
+      Options:
+      {{options}}
+
+      Output ONLY valid JSON:
+      {"answer": "A"|"B"|"C"|"D"|"E", "reasoning": "..."}
+
+  # ── SCOTUS: Issue Area Classification ─────────────────────────
+  - id: scotus-classify
+    raw: |
+      You are Julia, a legal analysis assistant. Never provide legal advice.
+
+      Classify this U.S. Supreme Court case into EXACTLY ONE of the following
+      issue areas: Criminal Procedure, Civil Rights, First Amendment,
+      Due Process, Privacy, Attorneys, Unions, Economic Activity,
+      Judicial Power, Federalism, Interstate Relations, Federal Taxation,
+      Miscellaneous, Private Action
+
+      Do NOT create new categories.
+
+      <document>
+      {{text}}
+      </document>
+
+      Output ONLY valid JSON:
+      {"issue_area": "...", "confidence": 0.0-1.0, "reasoning": "..."}
+
+  # ── ContractNLI: Entailment ──────────────────────────────────
+  - id: contract-nli
+    raw: |
+      You are Julia, a legal analysis assistant. Never provide legal advice.
+
+      Determine the relationship between the premise and hypothesis:
+      - "entailment": the hypothesis is supported by the contract
+      - "contradiction": the hypothesis contradicts the contract
+      - "neutral": the hypothesis is neither supported nor contradicted
+
+      <document>
+      {{text}}
+      </document>
+
+      Output ONLY valid JSON:
+      {"label": "entailment"|"contradiction"|"neutral", "confidence": 0.0-1.0, "reasoning": "..."}
+
+  # ── ECtHR-B: Violation Prediction ────────────────────────────
+  - id: ecthr-b-predict
+    raw: |
+      You are Julia, a legal analysis assistant. Never provide legal advice.
+
+      Given this ECtHR case description, predict which ECHR articles were violated.
+      Select ONLY from: 2, 3, 5, 6, 8, 9, 10, 11, 14, P1-1
+
+      <document>
+      {{text}}
+      </document>
+
+      Output ONLY valid JSON:
+      {"violated_articles": ["article_number", ...], "reasoning": "..."}
+
+  # ── EUR-Lex: Concept Classification ──────────────────────────
+  - id: eurlex-classify
+    raw: |
+      You are Julia, a legal analysis assistant. Never provide legal advice.
+
+      Classify this EU legislative document by its relevant EuroVoc concept IDs.
+
+      <document>
+      {{text}}
+      </document>
+
+      Output ONLY valid JSON:
+      {"concepts": ["concept_id", ...], "reasoning": "..."}
+
+  # ── UNFAIR-ToS: Unfair Clause Detection ──────────────────────
+  - id: unfair-tos-detect
+    raw: |
+      You are Julia, a legal analysis assistant. Never provide legal advice.
+
+      Analyze this Terms of Service clause for unfairness.
+      Identify ONLY unfair elements that are ACTUALLY present in the text.
+      Do NOT identify unfair elements that are implied but not stated.
+
+      Valid unfairness types:
+      limitation_of_liability, unilateral_termination, unilateral_change,
+      content_removal, jurisdiction, choice_of_law, arbitration, contract_by_using
+
+      <document>
+      {{text}}
+      </document>
+
+      Output ONLY valid JSON:
+      {"is_unfair": true/false, "unfairness_types": ["type1", ...], "reasoning": "..."}
+
+  # ── ECtHR-A: Violation Prediction ────────────────────────────
+  - id: ecthr-a-predict
+    raw: |
+      You are Julia, a legal analysis assistant. Never provide legal advice.
+
+      Given this ECtHR case description, predict which ECHR articles were violated.
+      Select ONLY from: 2, 3, 5, 6, 8, 9, 10, 11, 13, 14, P1-1
+
+      <document>
+      {{text}}
+      </document>
+
+      Output ONLY valid JSON:
+      {"violated_articles": ["article_number", ...], "reasoning": "..."}
+
+tests:
+  # ── LEDGAR Smoke Tests ───────────────────────────────────────
+  - description: "LEDGAR: Reimbursement provision"
+    prompt: ledgar-classify
+    vars:
+      text: "The Company shall reimburse the Executive for all reasonable business expenses incurred in connection with the performance of Executive's duties."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).provision_type === 'Reimbursement'"
+      - type: cost
+        threshold: 0.05
+
+  - description: "LEDGAR: Governing Law provision"
+    prompt: ledgar-classify
+    vars:
+      text: "This Agreement shall be governed by and construed in accordance with the laws of the State of Delaware, without giving effect to any choice of law or conflict of law provision."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).provision_type === 'Governing Law'"
+
+  # ── CaseHOLD Smoke Test ──────────────────────────────────────
+  - description: "CaseHOLD: FLSA holding identification"
+    prompt: casehold-identify
+    vars:
+      context: "In this case, the court considered whether the employer's policy of mandatory overtime violated the Fair Labor Standards Act. The plaintiff argued that the policy effectively reduced their hourly wage below minimum wage. The court noted that <HOLDING>."
+      options: |
+        (A) the FLSA requires that employees be paid at least minimum wage for all hours worked
+        (B) employers have unlimited discretion to set overtime policies
+        (C) mandatory overtime policies are per se violations of the FLSA
+        (D) the FLSA does not apply to salaried employees
+        (E) overtime calculations must include all forms of compensation
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "['A','B','C','D','E'].includes(JSON.parse(output).answer)"
+
+  # ── SCOTUS Smoke Tests ───────────────────────────────────────
+  - description: "SCOTUS: Criminal Procedure classification"
+    prompt: scotus-classify
+    vars:
+      text: "The defendant was convicted of armed robbery and sentenced under the federal sentencing guidelines. On appeal, the defendant argued that the district court erred in applying a two-level enhancement for use of a firearm during the commission of the offense."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).issue_area === 'Criminal Procedure'"
+
+  - description: "SCOTUS: First Amendment classification"
+    prompt: scotus-classify
+    vars:
+      text: "The petitioner challenged the constitutionality of a state statute that prohibited the publication of certain types of political advertisements within 30 days of an election, arguing it violated the free speech protections of the First Amendment."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).issue_area === 'First Amendment'"
+
+  # ── UNFAIR-ToS Smoke Tests ───────────────────────────────────
+  - description: "UNFAIR-ToS: Arbitration clause detection"
+    prompt: unfair-tos-detect
+    vars:
+      text: "Any dispute arising out of or in connection with this agreement shall be resolved by binding arbitration under the rules of the American Arbitration Association."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).is_unfair === true"
+
+  - description: "UNFAIR-ToS: Fair clause passes"
+    prompt: unfair-tos-detect
+    vars:
+      text: "Users may cancel their subscription at any time through their account settings. Upon cancellation, access continues until the end of the billing period."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).is_unfair === false"
+
+  # ── ECtHR-A Smoke Test ──────────────────────────────────────
+  - description: "ECtHR-A: Detention violation"
+    prompt: ecthr-a-predict
+    vars:
+      text: "The applicant was held in detention for over two years without being brought before a judge. The domestic courts repeatedly denied his requests for release without providing adequate reasoning."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "Array.isArray(JSON.parse(output).violated_articles)"
+
+  # ── ContractNLI Smoke Tests ─────────────────────────────────
+  - description: "ContractNLI: Contradiction detection"
+    prompt: contract-nli
+    vars:
+      text: "Premise: The Receiving Party shall not disclose any Confidential Information to any third party without the prior written consent of the Disclosing Party.\nHypothesis: The Receiving Party can share confidential information with anyone."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).label === 'contradiction'"
+
+  - description: "ContractNLI: Entailment detection"
+    prompt: contract-nli
+    vars:
+      text: "Premise: This Agreement shall remain in effect for a period of two (2) years from the Effective Date.\nHypothesis: The agreement has a defined duration."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).label === 'entailment'"
+
+  # ── ECtHR-B Smoke Test ──────────────────────────────────────
+  - description: "ECtHR-B: Article violation prediction"
+    prompt: ecthr-b-predict
+    vars:
+      text: "The applicant was held in pre-trial detention for over three years without access to legal counsel. The court found that the conditions of detention amounted to degrading treatment."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "Array.isArray(JSON.parse(output).violated_articles)"
+
+  # ── EUR-Lex Smoke Test ──────────────────────────────────────
+  - description: "EUR-Lex: EU law concept classification"
+    prompt: eurlex-classify
+    vars:
+      text: "Council Regulation establishing common rules for direct support schemes under the common agricultural policy and establishing certain support schemes for farmers."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "Array.isArray(JSON.parse(output).concepts)"

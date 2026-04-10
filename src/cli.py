@@ -135,6 +135,36 @@ def eval_codegen(
     subprocess.run(cmd, cwd=PROJECT_ROOT)
 
 
+@eval_app.command("lexglue")
+def eval_lexglue(
+    task: str = typer.Option(
+        "",
+        help="Task: ledgar, unfair-tos, scotus, ecthr-a, ecthr-b, eurlex, contract-nli, casehold",
+    ),
+    few_shot: int = typer.Option(3, help="Number of few-shot examples"),
+    samples: int = typer.Option(0, help="Limit samples per task (0=all)"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Show tasks without running"),
+    leaderboard: bool = typer.Option(False, help="Compare against published baselines"),
+    from_neon: bool = typer.Option(False, "--from-neon", help="Load from Neon pgvector"),
+) -> None:
+    """Run LexGLUE legal benchmark eval (8 tasks: LEDGAR, UNFAIR-ToS, SCOTUS, ECtHR-A/B, EUR-Lex, ContractNLI, CaseHOLD)."""
+    cmd = [sys.executable, str(PROJECT_ROOT / "scripts" / "run-lexglue-eval.py")]
+    if task:
+        # Convert CLI-friendly names to internal task names
+        task_name = task.replace("-", "_")
+        cmd.extend(["--task", task_name])
+    cmd.extend(["--few-shot", str(few_shot)])
+    if samples:
+        cmd.extend(["--samples", str(samples)])
+    if dry_run:
+        cmd.append("--dry-run")
+    if leaderboard:
+        cmd.append("--leaderboard")
+    if from_neon:
+        cmd.append("--from-neon")
+    subprocess.run(cmd, cwd=PROJECT_ROOT)
+
+
 @eval_app.command("promptfoo")
 def eval_promptfoo(
     suite: str = typer.Argument("", help="Specific suite dir (e.g., codegen-ab)"),

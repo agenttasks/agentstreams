@@ -10,8 +10,6 @@ Auth: CLAUDE_CODE_OAUTH_TOKEN (never ANTHROPIC_API_KEY).
 
 from __future__ import annotations
 
-import json
-import os
 from typing import Any
 
 import anthropic

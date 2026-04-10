@@ -1,0 +1,60 @@
+{
+  "description": "Published LexGLUE leaderboard baselines for comparison. Scores are percentages.",
+  "source": "https://github.com/coastalcph/lex-glue",
+  "ledgar": {
+    "metric": "micro-F1",
+    "bert_base": 87.2,
+    "legal_bert": 87.6,
+    "deberta": 88.1,
+    "longformer": 87.9
+  },
+  "unfair_tos": {
+    "metric": "macro-F1",
+    "bert_base": 81.3,
+    "legal_bert": 83.0,
+    "deberta": 83.8,
+    "longformer": 83.5
+  },
+  "scotus": {
+    "metric": "micro-F1",
+    "bert_base": 68.3,
+    "legal_bert": 70.7,
+    "deberta": 72.2,
+    "longformer": 72.1
+  },
+  "ecthr_a": {
+    "metric": "micro-F1",
+    "bert_base": 70.1,
+    "legal_bert": 71.4,
+    "deberta": 72.3,
+    "longformer": 72.0
+  },
+  "ecthr_b": {
+    "metric": "micro-F1",
+    "bert_base": 74.7,
+    "legal_bert": 77.2,
+    "deberta": 78.8,
+    "longformer": 79.4
+  },
+  "eurlex": {
+    "metric": "micro-F1",
+    "bert_base": 71.4,
+    "legal_bert": 72.1,
+    "deberta": 72.6,
+    "longformer": 72.2
+  },
+  "contract_nli": {
+    "metric": "accuracy",
+    "bert_base": 62.9,
+    "legal_bert": 71.1,
+    "deberta": 72.8,
+    "longformer": 72.0
+  },
+  "casehold": {
+    "metric": "accuracy",
+    "bert_base": 71.4,
+    "legal_bert": 75.3,
+    "deberta": 76.0,
+    "longformer": 75.5
+  }
+}
