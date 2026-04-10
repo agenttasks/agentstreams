@@ -16,8 +16,8 @@ model:
 
 data:
   primary: julia/evals/test_data/lexglue/casehold_samples.json
-  download: julia/evals/cuad/download_casehold.py
-  downloaded: julia/evals/cuad/data/casehold.jsonl
+  download: julia/evals/casehold/download_casehold.py
+  downloaded: julia/evals/casehold/data/casehold.jsonl
 
 # ── Measures (Cube.dev pattern) ─────────────────────────────────
 # Aggregation definitions for eval metrics.

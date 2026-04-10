@@ -24,8 +24,7 @@ type HoldingIndex = z.infer<typeof HoldingIndex>;
 // Matches the JSON shape produced by CASEHOLD_PREDICT prompt.
 
 const CaseHOLDOutput = z.object({
-  question_id: z.string(),
-  selected_holding: HoldingIndex,
+  predicted_idx: HoldingIndex,
   reasoning: z.string(),
   supporting_quote: z.string(),
   confidence: z.number().min(0).max(1),
@@ -38,12 +37,12 @@ type CaseHOLDOutput = z.infer<typeof CaseHOLDOutput>;
 
 const CaseHOLDSuccess = CaseHOLDOutput.extend({
   status: z.literal("success"),
-  selected_holding: z.number().int().min(0).max(4),
+  predicted_idx: z.number().int().min(0).max(4),
 });
 
 const CaseHOLDAbstention = CaseHOLDOutput.extend({
   status: z.literal("abstention"),
-  selected_holding: z.literal(-1),
+  predicted_idx: z.literal(-1),
   reasoning: z.string().min(1), // must explain why none match
 });
 

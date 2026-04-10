@@ -222,7 +222,7 @@ def load_casehold_tasks(
         "primary", "julia/evals/test_data/lexglue/casehold_samples.json"
     )
     downloaded_path = PROJECT_ROOT / CONFIG.get("data", {}).get(
-        "downloaded", "julia/evals/cuad/data/casehold.jsonl"
+        "downloaded", "julia/evals/casehold/data/casehold.jsonl"
     )
 
     tasks: list[CaseHOLDTask] = []
@@ -233,7 +233,7 @@ def load_casehold_tasks(
         tasks = _load_from_jsonl(downloaded_path)
     else:
         print(f"ERROR: No CaseHOLD data found at {primary_path} or {downloaded_path}")
-        print("Run: uv run julia/evals/cuad/download_casehold.py")
+        print("Run: uv run julia/evals/casehold/download_casehold.py")
         sys.exit(1)
 
     # Extract jurisdiction
@@ -282,20 +282,17 @@ def _load_from_jsonl(path: Path) -> list[CaseHOLDTask]:
     with open(path) as f:
         for line in f:
             ex = json.loads(line)
-            tasks.append(
-                CaseHOLDTask(
-                    example_id=ex["id"],
-                    citing_prompt=ex["citing_prompt"],
-                    holdings=[
-                        ex["holding_0"],
-                        ex["holding_1"],
-                        ex["holding_2"],
-                        ex["holding_3"],
-                        ex["holding_4"],
-                    ],
-                    gold_idx=ex["label"],
+            try:
+                tasks.append(
+                    CaseHOLDTask(
+                        example_id=ex["id"],
+                        citing_prompt=ex["citing_prompt"],
+                        holdings=[ex[f"holding_{i}"] for i in range(5)],
+                        gold_idx=ex["label"],
+                    )
                 )
-            )
+            except KeyError:
+                continue  # skip malformed rows
     return tasks
 
 
