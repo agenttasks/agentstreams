@@ -10,6 +10,7 @@
 - [ ] New feature
 - [ ] Refactor (no functional change)
 - [ ] Agent config change (`.claude/agents/` or `.claude/subagents/`)
+- [ ] Schema / database change (`ontology/schema.sql` or `ontology/migrations/`)
 - [ ] Webapp change (`webapp/`)
 - [ ] CI/CD or workflow change (`.github/`)
 - [ ] Documentation
@@ -38,6 +39,17 @@
 - [ ] `cd webapp && npx tsc --noEmit` passes
 - [ ] `cd webapp && npx next build` produces static export
 - [ ] No `dangerouslySetInnerHTML` or XSS vectors
+
+### If modifying schema or database
+
+- [ ] Changes are idempotent (`CREATE TABLE IF NOT EXISTS`, `ON CONFLICT DO NOTHING/UPDATE`)
+- [ ] New tables added to both `ontology/schema.sql` (DDL) and `ontology/agentstreams.ttl` (ontology class)
+- [ ] New seed data uses `ON CONFLICT` — safe to re-run on production
+- [ ] Migrations in `ontology/migrations/` are numbered sequentially (`002-*.sql`, etc.)
+- [ ] `neon-preview.yml` will create a preview branch — verify schema applies cleanly
+- [ ] `pg_graphql` validation passes (auto-checked in preview workflow)
+- [ ] No destructive DDL (`DROP TABLE`, `DROP COLUMN`) without migration plan
+- [ ] JSONB columns have `DEFAULT '{}'::jsonb` or `DEFAULT '[]'::jsonb`
 
 ### If modifying safety-research references
 
