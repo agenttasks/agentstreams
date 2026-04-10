@@ -74,6 +74,6 @@ VALUES (
     'casehold-legal-holdings',
     NULL,
     'julia/evals/casehold/promptfooconfig.yaml',
-    53000,
-    53000
+    4,
+    10
 ) ON CONFLICT (name) DO NOTHING;
