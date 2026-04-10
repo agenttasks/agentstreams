@@ -7,8 +7,8 @@ CaseHOLD (Case Holdings On Legal Decisions):
   Source: https://huggingface.co/datasets/casehold/casehold
 
 Usage:
-  uv run julia/evals/cuad/download_casehold.py
-  uv run julia/evals/cuad/download_casehold.py --split test --limit 1000
+  uv run julia/evals/casehold/download_casehold.py
+  uv run julia/evals/casehold/download_casehold.py --split test --limit 1000
 
 Auth: CLAUDE_CODE_OAUTH_TOKEN (never ANTHROPIC_API_KEY).
 """
