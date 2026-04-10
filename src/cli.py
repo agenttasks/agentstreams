@@ -140,9 +140,13 @@ def eval_casehold(
     examples: int = typer.Option(0, help="Limit examples (0=all)"),
     jurisdiction: str = typer.Option("", help="Filter by jurisdiction (e.g., delaware, 9th_cir)"),
     confidence_threshold: float = typer.Option(
-        0.0, "--confidence-threshold", help="Flag answers below this confidence",
+        0.0,
+        "--confidence-threshold",
+        help="Flag answers below this confidence",
     ),
-    citation_audit: bool = typer.Option(False, "--citation-audit", help="Verify citation grounding"),
+    citation_audit: bool = typer.Option(
+        False, "--citation-audit", help="Verify citation grounding"
+    ),
     persist: bool = typer.Option(False, help="Persist results to Neon"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Show task matrix"),
     workers: int = typer.Option(4, help="Concurrent API workers"),

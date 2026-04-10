@@ -133,10 +133,10 @@ class TestComputeAccuracy:
 class TestConfidenceAnalysis:
     def test_buckets(self):
         grades = [
-            CaseHOLDGrade(correct=True, predicted_idx=0, confidence=0.95),   # high
-            CaseHOLDGrade(correct=True, predicted_idx=1, confidence=0.85),   # high
+            CaseHOLDGrade(correct=True, predicted_idx=0, confidence=0.95),  # high
+            CaseHOLDGrade(correct=True, predicted_idx=1, confidence=0.85),  # high
             CaseHOLDGrade(correct=False, predicted_idx=2, confidence=0.65),  # medium
-            CaseHOLDGrade(correct=True, predicted_idx=3, confidence=0.3),    # low
+            CaseHOLDGrade(correct=True, predicted_idx=3, confidence=0.3),  # low
         ]
         result = compute_confidence_analysis(grades)
 
@@ -304,24 +304,31 @@ class TestPromptEngineering:
 class TestResponseParsing:
     def _import_parser(self):
         from julia.evals.casehold.runner import parse_json_response
+
         return parse_json_response
 
     def test_parse_valid_json(self):
         parse = self._import_parser()
-        result = parse('{"predicted_idx": 2, "confidence": 0.9, "reasoning": "test", "supporting_quote": "the court held"}')
+        result = parse(
+            '{"predicted_idx": 2, "confidence": 0.9, "reasoning": "test", "supporting_quote": "the court held"}'
+        )
         assert result is not None
         assert result["predicted_idx"] == 2
         assert result["supporting_quote"] == "the court held"
 
     def test_parse_markdown_fenced(self):
         parse = self._import_parser()
-        result = parse('```json\n{"predicted_idx": 0, "confidence": 0.5, "reasoning": "x", "supporting_quote": "y"}\n```')
+        result = parse(
+            '```json\n{"predicted_idx": 0, "confidence": 0.5, "reasoning": "x", "supporting_quote": "y"}\n```'
+        )
         assert result is not None
         assert result["predicted_idx"] == 0
 
     def test_parse_abstention(self):
         parse = self._import_parser()
-        result = parse('{"predicted_idx": -1, "confidence": 0.1, "reasoning": "none match", "supporting_quote": ""}')
+        result = parse(
+            '{"predicted_idx": -1, "confidence": 0.1, "reasoning": "none match", "supporting_quote": ""}'
+        )
         assert result is not None
         assert result["predicted_idx"] == -1
 
@@ -331,7 +338,9 @@ class TestResponseParsing:
 
     def test_parse_json_with_surrounding_text(self):
         parse = self._import_parser()
-        result = parse('Here is my analysis:\n{"predicted_idx": 3, "confidence": 0.8, "reasoning": "match"}\nDone.')
+        result = parse(
+            'Here is my analysis:\n{"predicted_idx": 3, "confidence": 0.8, "reasoning": "match"}\nDone.'
+        )
         assert result is not None
         assert result["predicted_idx"] == 3
 
@@ -404,7 +413,9 @@ class TestTaskLoading:
     def test_load_from_json(self):
         from julia.evals.casehold.runner import _load_from_json
 
-        data_path = PROJECT_ROOT / "julia" / "evals" / "test_data" / "lexglue" / "casehold_samples.json"
+        data_path = (
+            PROJECT_ROOT / "julia" / "evals" / "test_data" / "lexglue" / "casehold_samples.json"
+        )
         if not data_path.exists():
             pytest.skip("casehold_samples.json not found")
 

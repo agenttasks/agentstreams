@@ -71,12 +71,8 @@ Respond with ONLY a JSON object (no markdown, no explanation):
 # ── Jurisdiction Extraction ───────────────────────────────────
 
 # Patterns ordered by specificity (most specific first)
-_CIRCUIT_RE = re.compile(
-    r"\((\d+(?:st|nd|rd|th)\s+Cir\.)\s*\d{4}\)"
-)
-_FEDERAL_CIRCUIT_RE = re.compile(
-    r"\(Fed\.\s*Cir\.\s*\d{4}\)"
-)
+_CIRCUIT_RE = re.compile(r"\((\d+(?:st|nd|rd|th)\s+Cir\.)\s*\d{4}\)")
+_FEDERAL_CIRCUIT_RE = re.compile(r"\(Fed\.\s*Cir\.\s*\d{4}\)")
 _DISTRICT_RE = re.compile(
     r"\(([NSEW]\.D\.\s*(?:"
     r"Ill|Cal|Tex|N\.Y|Pa|Ohio|Fla|Mass|Mich|Ga|Va|Wash|Or|Md|Conn|Ind|Wis|"
@@ -92,25 +88,60 @@ _STATE_RE = re.compile(
     r"Wyo|Alaska|W\.Va|D\.C"
     r")\.?\s*\d{4}\)"
 )
-_CHANCERY_RE = re.compile(
-    r"\((\w+\.?\s*Ch\.)\s*\d{4}\)"
-)
+_CHANCERY_RE = re.compile(r"\((\w+\.?\s*Ch\.)\s*\d{4}\)")
 
 # Map state abbreviations to full names for --jurisdiction filtering
 _STATE_ABBREV_TO_NAME = {
-    "Ill": "illinois", "Cal": "california", "Tex": "texas", "N.Y": "new_york",
-    "Pa": "pennsylvania", "Ohio": "ohio", "Fla": "florida", "Mass": "massachusetts",
-    "Mich": "michigan", "Ga": "georgia", "Va": "virginia", "Wash": "washington",
-    "Or": "oregon", "Md": "maryland", "Conn": "connecticut", "Ind": "indiana",
-    "Wis": "wisconsin", "Minn": "minnesota", "Mo": "missouri", "Tenn": "tennessee",
-    "Ala": "alabama", "La": "louisiana", "Ky": "kentucky", "S.C": "south_carolina",
-    "N.C": "north_carolina", "Okla": "oklahoma", "Ariz": "arizona",
-    "Colo": "colorado", "Kan": "kansas", "Nev": "nevada", "Iowa": "iowa",
-    "Ark": "arkansas", "Miss": "mississippi", "Neb": "nebraska", "Utah": "utah",
-    "N.M": "new_mexico", "N.H": "new_hampshire", "Me": "maine", "Idaho": "idaho",
-    "Mont": "montana", "Haw": "hawaii", "R.I": "rhode_island", "Del": "delaware",
-    "S.D": "south_dakota", "N.D": "north_dakota", "Vt": "vermont", "Wyo": "wyoming",
-    "Alaska": "alaska", "W.Va": "west_virginia", "D.C": "dc",
+    "Ill": "illinois",
+    "Cal": "california",
+    "Tex": "texas",
+    "N.Y": "new_york",
+    "Pa": "pennsylvania",
+    "Ohio": "ohio",
+    "Fla": "florida",
+    "Mass": "massachusetts",
+    "Mich": "michigan",
+    "Ga": "georgia",
+    "Va": "virginia",
+    "Wash": "washington",
+    "Or": "oregon",
+    "Md": "maryland",
+    "Conn": "connecticut",
+    "Ind": "indiana",
+    "Wis": "wisconsin",
+    "Minn": "minnesota",
+    "Mo": "missouri",
+    "Tenn": "tennessee",
+    "Ala": "alabama",
+    "La": "louisiana",
+    "Ky": "kentucky",
+    "S.C": "south_carolina",
+    "N.C": "north_carolina",
+    "Okla": "oklahoma",
+    "Ariz": "arizona",
+    "Colo": "colorado",
+    "Kan": "kansas",
+    "Nev": "nevada",
+    "Iowa": "iowa",
+    "Ark": "arkansas",
+    "Miss": "mississippi",
+    "Neb": "nebraska",
+    "Utah": "utah",
+    "N.M": "new_mexico",
+    "N.H": "new_hampshire",
+    "Me": "maine",
+    "Idaho": "idaho",
+    "Mont": "montana",
+    "Haw": "hawaii",
+    "R.I": "rhode_island",
+    "Del": "delaware",
+    "S.D": "south_dakota",
+    "N.D": "north_dakota",
+    "Vt": "vermont",
+    "Wyo": "wyoming",
+    "Alaska": "alaska",
+    "W.Va": "west_virginia",
+    "D.C": "dc",
 }
 
 

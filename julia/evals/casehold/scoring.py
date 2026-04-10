@@ -205,11 +205,23 @@ async def persist_casehold_result(
                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                RETURNING id""",
             (
-                harness_run_id, run_id, example_id,
-                predicted_idx, gold_idx, correct, confidence,
-                supporting_quote, grounding_verified,
-                jurisdiction, citing_prompt, json.dumps(holding_options), reasoning,
-                model, input_tokens, output_tokens, duration_ms,
+                harness_run_id,
+                run_id,
+                example_id,
+                predicted_idx,
+                gold_idx,
+                correct,
+                confidence,
+                supporting_quote,
+                grounding_verified,
+                jurisdiction,
+                citing_prompt,
+                json.dumps(holding_options),
+                reasoning,
+                model,
+                input_tokens,
+                output_tokens,
+                duration_ms,
             ),
         )
     ).fetchone()

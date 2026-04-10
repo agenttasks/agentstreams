@@ -243,10 +243,7 @@ def load_casehold_tasks(
     # Filter by jurisdiction if specified
     if jurisdiction_filter:
         norm_filter = jurisdiction_filter.lower().replace("-", "_").replace(" ", "_")
-        tasks = [
-            t for t in tasks
-            if t.jurisdiction and norm_filter in t.jurisdiction
-        ]
+        tasks = [t for t in tasks if t.jurisdiction and norm_filter in t.jurisdiction]
 
     # Limit examples
     if max_examples and max_examples > 0:
@@ -268,12 +265,14 @@ def _load_from_json(path: Path) -> list[CaseHOLDTask]:
         if label is None:
             continue
 
-        tasks.append(CaseHOLDTask(
-            example_id=str(sample.get("hf_index", len(tasks))),
-            citing_prompt=sample["text"],
-            holdings=holdings,
-            gold_idx=int(label),
-        ))
+        tasks.append(
+            CaseHOLDTask(
+                example_id=str(sample.get("hf_index", len(tasks))),
+                citing_prompt=sample["text"],
+                holdings=holdings,
+                gold_idx=int(label),
+            )
+        )
     return tasks
 
 
@@ -283,15 +282,20 @@ def _load_from_jsonl(path: Path) -> list[CaseHOLDTask]:
     with open(path) as f:
         for line in f:
             ex = json.loads(line)
-            tasks.append(CaseHOLDTask(
-                example_id=ex["id"],
-                citing_prompt=ex["citing_prompt"],
-                holdings=[
-                    ex["holding_0"], ex["holding_1"], ex["holding_2"],
-                    ex["holding_3"], ex["holding_4"],
-                ],
-                gold_idx=ex["label"],
-            ))
+            tasks.append(
+                CaseHOLDTask(
+                    example_id=ex["id"],
+                    citing_prompt=ex["citing_prompt"],
+                    holdings=[
+                        ex["holding_0"],
+                        ex["holding_1"],
+                        ex["holding_2"],
+                        ex["holding_3"],
+                        ex["holding_4"],
+                    ],
+                    gold_idx=ex["label"],
+                )
+            )
     return tasks
 
 
@@ -352,7 +356,8 @@ def print_casehold_summary(
             supporting_quote=r.supporting_quote,
             grounding_verified=r.grounding_verified,
         )
-        for r in results if not r.error
+        for r in results
+        if not r.error
     ]
 
     agg = aggregate_casehold_grades(grades)
@@ -378,10 +383,7 @@ def print_casehold_summary(
     for bucket in ("high", "medium", "low"):
         b = conf[bucket]
         if b["total"] > 0:
-            print(
-                f"  {bucket:<12} {b['accuracy']:>10.4f} "
-                f"{b['correct']:>10} {b['total']:>8}"
-            )
+            print(f"  {bucket:<12} {b['accuracy']:>10.4f} {b['correct']:>10} {b['total']:>8}")
 
     # Confidence threshold flagging
     if confidence_threshold and confidence_threshold > 0:
@@ -443,35 +445,44 @@ def print_casehold_summary(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="CaseHOLD legal holdings benchmark runner"
-    )
+    parser = argparse.ArgumentParser(description="CaseHOLD legal holdings benchmark runner")
     parser.add_argument(
-        "--examples", type=int, default=None,
+        "--examples",
+        type=int,
+        default=None,
         help="Limit number of examples (default: all)",
     )
     parser.add_argument(
-        "--jurisdiction", type=str, default=None,
+        "--jurisdiction",
+        type=str,
+        default=None,
         help="Filter by jurisdiction (e.g., delaware, 9th_cir)",
     )
     parser.add_argument(
-        "--confidence-threshold", type=float, default=None,
+        "--confidence-threshold",
+        type=float,
+        default=None,
         help="Flag answers below this confidence threshold",
     )
     parser.add_argument(
-        "--citation-audit", action="store_true",
+        "--citation-audit",
+        action="store_true",
         help="Verify citation grounding (supporting_quote in context)",
     )
     parser.add_argument(
-        "--persist", action="store_true",
+        "--persist",
+        action="store_true",
         help="Persist results to Neon Postgres",
     )
     parser.add_argument(
-        "--dry-run", action="store_true",
+        "--dry-run",
+        action="store_true",
         help="Show task matrix without running eval",
     )
     parser.add_argument(
-        "--workers", type=int, default=MAX_WORKERS,
+        "--workers",
+        type=int,
+        default=MAX_WORKERS,
         help="Max concurrent API workers",
     )
     args = parser.parse_args()
