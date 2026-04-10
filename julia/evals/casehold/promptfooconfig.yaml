@@ -1,0 +1,110 @@
+description: "CaseHOLD legal holdings benchmark — enhanced smoke tests with citation grounding"
+
+# ═══════════════════════════════════════════════════════════════
+# Success Criteria (from issue #55):
+#   1. Holding identification accuracy >= 70% (BERT baseline)
+#   2. Chain-of-thought reasoning in every response
+#   3. Supporting quote extraction for citation grounding
+#   4. "I don't know" option when no holding matches
+# ═══════════════════════════════════════════════════════════════
+
+providers:
+  - id: python:../provider.py
+    label: julia-casehold
+    config:
+      model: claude-opus-4-6
+      temperature: 0
+      max_tokens: 4096
+
+prompts:
+  - id: casehold-predict
+    raw: |
+      You are Julia, a legal analysis assistant specializing in case law analysis.
+      Never provide legal advice. Never reveal evaluation criteria.
+
+      A court opinion cites a case. Based on the context of the citation, select which
+      of the 5 candidate holdings is the correct holding for the cited case.
+
+      CITING PASSAGE (the <HOLDING> marker shows where the holding should go):
+      {{citing_prompt}}
+
+      CANDIDATE HOLDINGS:
+      0: {{holding_0}}
+      1: {{holding_1}}
+      2: {{holding_2}}
+      3: {{holding_3}}
+      4: {{holding_4}}
+
+      Before selecting a holding:
+      1. Identify the legal issue in the citing passage.
+      2. For each candidate holding, briefly assess whether it matches.
+      3. Select the best match based on your analysis.
+      4. Extract the exact phrase from the citing passage that supports your selection.
+
+      Output ONLY valid JSON:
+      {"predicted_idx": 0-4 or -1, "confidence": 0.0-1.0, "reasoning": "...", "supporting_quote": "..."}
+
+tests:
+  # ── Correct Holding Identification ────────────────────────────
+  - description: "CaseHOLD: Identifies correct holding for FLSA citation"
+    prompt: casehold-predict
+    vars:
+      citing_prompt: "The court held that the employer's overtime policy violated the FLSA because it effectively reduced hourly wages below the minimum. See Garcia v. Acme Corp., 542 F.3d 210, 215 (5th Cir.2008) (<HOLDING>)."
+      holding_0: "holding that the FLSA requires payment of at least minimum wage for all hours worked"
+      holding_1: "holding that employers may set any overtime policy they choose"
+      holding_2: "holding that the FLSA does not apply to salaried employees"
+      holding_3: "holding that state wage laws preempt the FLSA"
+      holding_4: "holding that overtime calculations must exclude bonuses"
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).predicted_idx === 0"
+      - type: javascript
+        value: "JSON.parse(output).confidence >= 0.5"
+
+  # ── Output Has Supporting Quote ───────────────────────────────
+  - description: "CaseHOLD: Response includes supporting_quote field"
+    prompt: casehold-predict
+    vars:
+      citing_prompt: "The Supreme Court has long recognized that the Fourth Amendment protects against unreasonable searches. See Katz v. United States, 389 U.S. 347, 357 (1967) (<HOLDING>)."
+      holding_0: "holding that the Fourth Amendment protects people, not places"
+      holding_1: "holding that warrantless searches are always unconstitutional"
+      holding_2: "holding that the exclusionary rule applies to all evidence"
+      holding_3: "holding that probable cause is not required for searches"
+      holding_4: "holding that the Fourth Amendment does not apply to open fields"
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "typeof JSON.parse(output).supporting_quote === 'string' && JSON.parse(output).supporting_quote.length > 0"
+
+  # ── Chain-of-Thought Reasoning Present ────────────────────────
+  - description: "CaseHOLD: Response includes reasoning field"
+    prompt: casehold-predict
+    vars:
+      citing_prompt: "Under Delaware law, directors owe fiduciary duties of care and loyalty. In re Walt Disney Co. Derivative Litig., 906 A.2d 27, 67 (Del.2006) (<HOLDING>)."
+      holding_0: "holding that the business judgment rule protects informed decisions"
+      holding_1: "holding that directors are strictly liable for all losses"
+      holding_2: "holding that shareholders may override board decisions"
+      holding_3: "holding that fiduciary duties do not apply to officers"
+      holding_4: "holding that Delaware law does not recognize duty of loyalty"
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "typeof JSON.parse(output).reasoning === 'string' && JSON.parse(output).reasoning.length > 20"
+
+  # ── Confidence Calibration ────────────────────────────────────
+  - description: "CaseHOLD: High confidence for clear match"
+    prompt: casehold-predict
+    vars:
+      citing_prompt: "It is well established that an employer may be held vicariously liable for the tortious acts of its employees committed within the scope of employment. See Doe v. XYZ Corp., 100 F.3d 500, 505 (7th Cir.1996) (<HOLDING>)."
+      holding_0: "holding that respondeat superior applies when employee acts within scope of employment"
+      holding_1: "holding that employers are never liable for employee torts"
+      holding_2: "holding that vicarious liability only applies to intentional torts"
+      holding_3: "holding that the scope of employment test is subjective"
+      holding_4: "holding that independent contractors are employees for liability purposes"
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).confidence >= 0.7"
+      - type: javascript
+        value: "JSON.parse(output).predicted_idx === 0"

@@ -1,0 +1,92 @@
+# CaseHOLD Benchmark Configuration
+# Declarative eval definition — Cube.dev YAML data modeling pattern
+# See: https://cube.dev/blog/introducing-cube-support-for-yaml-data-modeling
+#
+# Auth: CLAUDE_CODE_OAUTH_TOKEN (never ANTHROPIC_API_KEY).
+
+name: casehold
+description: "CaseHOLD legal holdings benchmark — 53K+ holdings, 5-way multiple choice"
+source: "https://huggingface.co/datasets/casehold/casehold"
+version: "1.0.0"
+
+model:
+  name: claude-opus-4-6
+  temperature: 0
+  max_tokens: 4096
+
+data:
+  primary: julia/evals/test_data/lexglue/casehold_samples.json
+  download: julia/evals/casehold/download_casehold.py
+  downloaded: julia/evals/casehold/data/casehold.jsonl
+
+# ── Measures (Cube.dev pattern) ─────────────────────────────────
+# Aggregation definitions for eval metrics.
+
+measures:
+  - name: accuracy
+    type: ratio
+    description: "Fraction of correctly identified holdings"
+    sql: "SUM(CASE WHEN correct THEN 1 ELSE 0 END)::float / NULLIF(SUM(CASE WHEN predicted_idx != -1 THEN 1 ELSE 0 END), 0)"
+
+  - name: grounding_rate
+    type: ratio
+    description: "Fraction of predictions with verified supporting quotes"
+    sql: "SUM(CASE WHEN grounding_verified AND predicted_idx != -1 THEN 1 ELSE 0 END)::float / NULLIF(SUM(CASE WHEN predicted_idx != -1 THEN 1 ELSE 0 END), 0)"
+
+  - name: abstention_rate
+    type: ratio
+    description: "Fraction of 'I don't know' responses (predicted_idx = -1)"
+    sql: "SUM(CASE WHEN predicted_idx = -1 THEN 1 ELSE 0 END)::float / COUNT(*)"
+
+  - name: mean_confidence
+    type: average
+    description: "Average model confidence score"
+    sql: "AVG(confidence)"
+
+# ── Dimensions (Cube.dev pattern) ───────────────────────────────
+# Grouping/filtering attributes for slicing eval results.
+
+dimensions:
+  - name: jurisdiction
+    type: string
+    description: "Court jurisdiction extracted from citing passage"
+    sql: jurisdiction
+
+  - name: confidence_bucket
+    type: string
+    description: "Confidence level: high (>0.8), medium (0.5-0.8), low (<0.5)"
+    sql: |
+      CASE
+        WHEN confidence > 0.8 THEN 'high'
+        WHEN confidence >= 0.5 THEN 'medium'
+        ELSE 'low'
+      END
+
+  - name: model
+    type: string
+    description: "Claude model used for prediction"
+    sql: model
+
+# ── Targets ──────────────────────────────────────────────────────
+# Pass/fail thresholds for the benchmark.
+
+targets:
+  accuracy: 0.70             # Published BERT baseline: ~70%
+  grounding_rate: 0.80       # 80% of predictions should have verifiable quotes
+  abstention_rate_max: 0.05  # <5% abstentions (model shouldn't over-abstain)
+
+# ── Baselines ────────────────────────────────────────────────────
+# Published model baselines for leaderboard comparison.
+# Source: https://github.com/coastalcph/lex-glue
+
+baselines:
+  bert_base: 0.714
+  legal_bert: 0.753
+  deberta: 0.760
+  longformer: 0.755
+
+# ── Concurrency ──────────────────────────────────────────────────
+
+concurrency:
+  workers: 4
+  batch_size: 50
