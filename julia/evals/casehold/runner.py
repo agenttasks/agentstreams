@@ -70,7 +70,7 @@ def load_config() -> dict[str, Any]:
         "baselines": {"bert_base": 0.714, "legal_bert": 0.753, "deberta": 0.760},
         "data": {
             "primary": "julia/evals/test_data/lexglue/casehold_samples.json",
-            "downloaded": "julia/evals/cuad/data/casehold.jsonl",
+            "downloaded": "julia/evals/casehold/data/casehold.jsonl",
         },
     }
 
