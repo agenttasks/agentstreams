@@ -7,12 +7,18 @@ from pathlib import Path
 import pytest
 
 from src.graphql_toolkit import GraphQLSchemaParser
-from src.typescript_codegen import TypeScriptCodegen, codegen_from_sdl, codegen_from_ontology
+from src.typescript_codegen import TypeScriptCodegen, codegen_from_ontology, codegen_from_sdl
 
 
 @pytest.fixture
 def sample_sdl():
-    schema_path = Path(__file__).parent.parent / "evals" / "api-client" / "test_data" / "graphql_schema.graphql"
+    schema_path = (
+        Path(__file__).parent.parent
+        / "evals"
+        / "api-client"
+        / "test_data"
+        / "graphql_schema.graphql"
+    )
     return schema_path.read_text()
 
 

@@ -312,19 +312,21 @@ class GraphQLProjection:
 
     def generate_connection_type(self, class_name: str) -> str:
         """Generate Relay-style connection types for pagination."""
-        return "\n".join([
-            f"type AS_{class_name}Connection {{",
-            f"  edges: [AS_{class_name}Edge!]!",
-            "  pageInfo: PageInfo!",
-            "  totalCount: Int!",
-            "}",
-            "",
-            f"type AS_{class_name}Edge {{",
-            f"  node: AS_{class_name}!",
-            "  cursor: String!",
-            "}",
-            "",
-        ])
+        return "\n".join(
+            [
+                f"type AS_{class_name}Connection {{",
+                f"  edges: [AS_{class_name}Edge!]!",
+                "  pageInfo: PageInfo!",
+                "  totalCount: Int!",
+                "}",
+                "",
+                f"type AS_{class_name}Edge {{",
+                f"  node: AS_{class_name}!",
+                "  cursor: String!",
+                "}",
+                "",
+            ]
+        )
 
     def generate_all(self) -> str:
         """Generate complete GraphQL schema with queries, mutations, connections."""
@@ -345,15 +347,17 @@ class GraphQLProjection:
             parts.append(enum_defs)
 
         # PageInfo (Relay spec)
-        parts.extend([
-            "type PageInfo {",
-            "  hasNextPage: Boolean!",
-            "  hasPreviousPage: Boolean!",
-            "  startCursor: String",
-            "  endCursor: String",
-            "}",
-            "",
-        ])
+        parts.extend(
+            [
+                "type PageInfo {",
+                "  hasNextPage: Boolean!",
+                "  hasPreviousPage: Boolean!",
+                "  startCursor: String",
+                "  endCursor: String",
+                "}",
+                "",
+            ]
+        )
 
         # Types + connection types + input types
         for class_name in self.parser.classes:
@@ -385,9 +389,7 @@ class GraphQLProjection:
             mutation_fields.append(
                 f"  updateAS_{class_name}(id: ID!, input: UpdateAS_{class_name}Input!): AS_{class_name}!"
             )
-            mutation_fields.append(
-                f"  deleteAS_{class_name}(id: ID!): Boolean!"
-            )
+            mutation_fields.append(f"  deleteAS_{class_name}(id: ID!): Boolean!")
         parts.append("type Mutation {")
         parts.extend(mutation_fields)
         parts.append("}")
@@ -396,12 +398,8 @@ class GraphQLProjection:
         # Subscription root type
         sub_fields = []
         for class_name in self.parser.classes:
-            sub_fields.append(
-                f"  onAS_{class_name}Created: AS_{class_name}!"
-            )
-            sub_fields.append(
-                f"  onAS_{class_name}Updated: AS_{class_name}!"
-            )
+            sub_fields.append(f"  onAS_{class_name}Created: AS_{class_name}!")
+            sub_fields.append(f"  onAS_{class_name}Updated: AS_{class_name}!")
         parts.append("type Subscription {")
         parts.extend(sub_fields)
         parts.append("}")

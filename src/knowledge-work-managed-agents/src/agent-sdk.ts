@@ -91,32 +91,38 @@ export async function executeQuery(
     },
   });
 
-  for await (const message of result) {
-    const msg = message as AgentMessage;
-    messages.push(msg);
+  try {
+    for await (const message of result) {
+      const msg = message as AgentMessage;
+      messages.push(msg);
 
-    if (msg.session_id && !sessionId) {
-      sessionId = msg.session_id;
-    }
+      if (msg.session_id && !sessionId) {
+        sessionId = msg.session_id;
+      }
 
-    if (msg.type === "assistant" && msg.message?.content) {
-      for (const block of msg.message.content) {
-        if (block.type === "text" && block.text) {
-          outputParts.push(block.text);
+      if (msg.type === "assistant" && msg.message?.content) {
+        for (const block of msg.message.content) {
+          if (block.type === "text" && block.text) {
+            outputParts.push(block.text);
+          }
+        }
+      }
+
+      if (msg.type === "tool_use" && msg.message?.content) {
+        for (const block of msg.message.content) {
+          if (block.type === "tool_use") {
+            toolCalls.push({
+              name: (block as Record<string, unknown>).name as string,
+              input: (block as Record<string, unknown>).input as Record<string, unknown>,
+            });
+          }
         }
       }
     }
-
-    if (msg.type === "tool_use" && msg.message?.content) {
-      for (const block of msg.message.content) {
-        if (block.type === "tool_use") {
-          toolCalls.push({
-            name: (block as Record<string, unknown>).name as string,
-            input: (block as Record<string, unknown>).input as Record<string, unknown>,
-          });
-        }
-      }
-    }
+  } finally {
+    // SDK 0.2.101: ensure subprocess/temp cleanup on early exit
+    const iter = result as unknown as { return?: () => Promise<void> };
+    await iter.return?.();
   }
 
   return {
@@ -162,31 +168,38 @@ export class AgentSession {
 
     await session.send(prompt);
 
-    for await (const msg of session.stream() as AsyncIterable<AgentMessage>) {
-      this.messages.push(msg);
+    const stream = session.stream() as AsyncIterable<AgentMessage>;
+    try {
+      for await (const msg of stream) {
+        this.messages.push(msg);
 
-      if (msg.session_id && !this.sessionId) {
-        this.sessionId = msg.session_id;
-      }
+        if (msg.session_id && !this.sessionId) {
+          this.sessionId = msg.session_id;
+        }
 
-      if (msg.type === "assistant" && msg.message?.content) {
-        for (const block of msg.message.content) {
-          if (block.type === "text" && block.text) {
-            outputParts.push(block.text);
+        if (msg.type === "assistant" && msg.message?.content) {
+          for (const block of msg.message.content) {
+            if (block.type === "text" && block.text) {
+              outputParts.push(block.text);
+            }
+          }
+        }
+
+        if (msg.type === "tool_use" && msg.message?.content) {
+          for (const block of msg.message.content) {
+            if (block.type === "tool_use") {
+              toolCalls.push({
+                name: (block as Record<string, unknown>).name as string,
+                input: (block as Record<string, unknown>).input as Record<string, unknown>,
+              });
+            }
           }
         }
       }
-
-      if (msg.type === "tool_use" && msg.message?.content) {
-        for (const block of msg.message.content) {
-          if (block.type === "tool_use") {
-            toolCalls.push({
-              name: (block as Record<string, unknown>).name as string,
-              input: (block as Record<string, unknown>).input as Record<string, unknown>,
-            });
-          }
-        }
-      }
+    } finally {
+      // SDK 0.2.101: ensure subprocess/temp cleanup on early exit
+      const iter = stream as unknown as { return?: () => Promise<void> };
+      await iter.return?.();
     }
 
     return {

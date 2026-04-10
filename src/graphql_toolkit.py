@@ -146,9 +146,7 @@ class GraphQLSchemaParser:
         for match in self._UNION_PATTERN.finditer(sdl):
             name = match.group(1)
             member_types = [t.strip() for t in match.group(2).split("|")]
-            types.append(
-                GraphQLType(name=name, kind="UNION", union_types=member_types)
-            )
+            types.append(GraphQLType(name=name, kind="UNION", union_types=member_types))
 
         return types
 
@@ -353,17 +351,22 @@ def validate_schema_against_ontology(
     # Build lookup sets
     gql_type_names = {t.name for t in schema_types if t.kind == "OBJECT"}
     # Strip AS_ prefix for comparison
-    gql_class_names = {
-        name.removeprefix("AS_") for name in gql_type_names
-    }
+    gql_class_names = {name.removeprefix("AS_") for name in gql_type_names}
     ontology_class_names = set(ontology_classes.keys())
 
     # Check for GraphQL types without ontology backing
     # Skip standard GraphQL types
     standard_types = {
-        "Query", "Mutation", "Subscription", "PageInfo",
-        "__Schema", "__Type", "__Field", "__InputValue",
-        "__EnumValue", "__Directive",
+        "Query",
+        "Mutation",
+        "Subscription",
+        "PageInfo",
+        "__Schema",
+        "__Type",
+        "__Field",
+        "__InputValue",
+        "__EnumValue",
+        "__Directive",
     }
     for gql_type in schema_types:
         if gql_type.kind != "OBJECT":
@@ -376,15 +379,11 @@ def validate_schema_against_ontology(
         if base_name.endswith("Input"):
             continue
         if base_name not in ontology_class_names:
-            warnings.append(
-                f"GraphQL type '{gql_type.name}' has no corresponding ontology class"
-            )
+            warnings.append(f"GraphQL type '{gql_type.name}' has no corresponding ontology class")
 
     # Check for ontology classes without GraphQL representation
     for cls_name in ontology_class_names:
         if cls_name not in gql_class_names and f"AS_{cls_name}" not in gql_type_names:
-            warnings.append(
-                f"Ontology class '{cls_name}' has no GraphQL type projection"
-            )
+            warnings.append(f"Ontology class '{cls_name}' has no GraphQL type projection")
 
     return warnings

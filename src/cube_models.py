@@ -79,12 +79,32 @@ _TIMESTAMP_PROPS = {"createdAt", "updatedAt", "recordedAt", "crawledAt", "fetche
 _MILESTONE_PROPS = {"startedAt", "completedAt", "processedAt", "uploadedAt"}
 _NUMERIC_RANGES = {"xsd:integer", "xsd:float", "xsd:double"}
 _MEASURE_PROPS = {
-    "value", "count", "tokenCount", "charCount", "budgetTokens",
-    "thinkingTokens", "inputTokens", "outputTokens", "durationMs",
-    "overallScore", "totalIterations", "totalTokens", "itemCount",
-    "fpRate", "numHashes", "expectedItems", "testCount", "assertionCount",
-    "githubStars", "priority", "attempts", "maxAttempts", "statusCode",
-    "maxIterations", "acceptanceThreshold", "temperature",
+    "value",
+    "count",
+    "tokenCount",
+    "charCount",
+    "budgetTokens",
+    "thinkingTokens",
+    "inputTokens",
+    "outputTokens",
+    "durationMs",
+    "overallScore",
+    "totalIterations",
+    "totalTokens",
+    "itemCount",
+    "fpRate",
+    "numHashes",
+    "expectedItems",
+    "testCount",
+    "assertionCount",
+    "githubStars",
+    "priority",
+    "attempts",
+    "maxAttempts",
+    "statusCode",
+    "maxIterations",
+    "acceptanceThreshold",
+    "temperature",
 }
 
 
@@ -98,9 +118,7 @@ def _classify_ontology_class(cls: OntologyClass) -> str:
     - "factless_fact": Events without numeric measures
     """
     prop_names = {p.name for p in cls.properties}
-    numeric_props = {
-        p.name for p in cls.properties if p.range_type in _NUMERIC_RANGES
-    }
+    numeric_props = {p.name for p in cls.properties if p.range_type in _NUMERIC_RANGES}
 
     # Check for accumulating snapshot (multiple milestone timestamps)
     milestone_count = len(prop_names & _MILESTONE_PROPS)
@@ -222,9 +240,7 @@ class CubeProjection:
         cubes = self.generate_all()
         return _cubes_to_yaml(cubes)
 
-    def _build_dimensions(
-        self, cls: OntologyClass, kimball_type: str
-    ) -> list[Dimension]:
+    def _build_dimensions(self, cls: OntologyClass, kimball_type: str) -> list[Dimension]:
         """Build dimension list for a class."""
         dimensions: list[Dimension] = []
 
@@ -277,15 +293,15 @@ class CubeProjection:
 
         return dimensions
 
-    def _build_measures(
-        self, cls: OntologyClass, kimball_type: str
-    ) -> list[Measure]:
+    def _build_measures(self, cls: OntologyClass, kimball_type: str) -> list[Measure]:
         """Build measure list for a class."""
         measures: list[Measure] = []
 
         # Every cube gets a count measure
         measures.append(
-            Measure(name="count", type="count", description=f"Total {cls.label or cls.name} records")
+            Measure(
+                name="count", type="count", description=f"Total {cls.label or cls.name} records"
+            )
         )
 
         if kimball_type == "dimension":
@@ -311,7 +327,10 @@ class CubeProjection:
             )
 
             # Average measure for duration/score-like properties
-            if any(kw in prop.name.lower() for kw in ("duration", "score", "rate", "ratio", "count", "tokens")):
+            if any(
+                kw in prop.name.lower()
+                for kw in ("duration", "score", "rate", "ratio", "count", "tokens")
+            ):
                 measures.append(
                     Measure(
                         name=f"avg_{col_name}",
@@ -323,9 +342,7 @@ class CubeProjection:
 
         return measures
 
-    def _build_joins(
-        self, cls: OntologyClass, table_name: str
-    ) -> list[Join]:
+    def _build_joins(self, cls: OntologyClass, table_name: str) -> list[Join]:
         """Build join list from relationship properties."""
         joins: list[Join] = []
         for prop in cls.properties:
@@ -385,11 +402,13 @@ def _cube_to_dict(cube: CubeDefinition) -> dict[str, Any]:
     if cube.joins:
         result["joins"] = []
         for j in cube.joins:
-            result["joins"].append({
-                "name": j.name,
-                "relationship": j.relationship,
-                "sql": j.sql,
-            })
+            result["joins"].append(
+                {
+                    "name": j.name,
+                    "relationship": j.relationship,
+                    "sql": j.sql,
+                }
+            )
 
     return result
 

@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 
@@ -162,7 +163,15 @@ TOOLS: list[ToolDefinition] = [
                 },
                 "format": {
                     "type": "string",
-                    "enum": ["avro", "graphql", "datacontainer", "mapping", "cube", "typescript", "all"],
+                    "enum": [
+                        "avro",
+                        "graphql",
+                        "datacontainer",
+                        "mapping",
+                        "cube",
+                        "typescript",
+                        "all",
+                    ],
                     "description": "Output format (default: all)",
                     "default": "all",
                 },
@@ -318,6 +327,25 @@ class MCPToolHandler:
 
     def __init__(self, neon_url: str = ""):
         self.neon_url = neon_url
+        self._project_root = Path(__file__).resolve().parents[1]
+
+    def _safe_output_path(self, output_dir: str) -> Path:
+        """Resolve output_dir and assert it stays within the project root."""
+        resolved = (self._project_root / output_dir).resolve()
+        if not str(resolved).startswith(str(self._project_root)):
+            raise ValueError(
+                f"output_dir must be within the project directory, got: {output_dir}"
+            )
+        return resolved
+
+    def _safe_file_path(self, file_path: str) -> Path:
+        """Resolve file_path and assert it stays within the project root."""
+        resolved = Path(file_path).resolve()
+        if not str(resolved).startswith(str(self._project_root)):
+            raise ValueError(
+                f"file_path must be within the project directory, got: {file_path}"
+            )
+        return resolved
 
     def list_tools(self) -> list[dict]:
         """Return MCP v2 tool definitions."""
@@ -626,9 +654,7 @@ class MCPToolHandler:
         async with connection_pool(self.neon_url) as conn:
             result = await introspect_pg_graphql(conn, table_filter=table_filter)
 
-        return ToolResult(
-            content=[{"type": "text", "text": result}]
-        )
+        return ToolResult(content=[{"type": "text", "text": result}])
 
     async def _handle_generate_cube_model(self, args: dict) -> ToolResult:
         from src.cube_models import CubeProjection
@@ -649,9 +675,7 @@ class MCPToolHandler:
             filename = f"{class_name.lower()}.yml"
 
         if output_dir:
-            from pathlib import Path
-
-            out = Path(output_dir)
+            out = self._safe_output_path(output_dir)
             out.mkdir(parents=True, exist_ok=True)
             (out / filename).write_text(yaml_content)
 
@@ -659,11 +683,13 @@ class MCPToolHandler:
             content=[
                 {
                     "type": "text",
-                    "text": json.dumps({
-                        "filename": filename,
-                        "content": yaml_content,
-                        "written_to": f"{output_dir}/{filename}" if output_dir else None,
-                    }),
+                    "text": json.dumps(
+                        {
+                            "filename": filename,
+                            "content": yaml_content,
+                            "written_to": f"{output_dir}/{filename}" if output_dir else None,
+                        }
+                    ),
                 }
             ]
         )
@@ -683,11 +709,10 @@ class MCPToolHandler:
                     content=[{"type": "text", "text": "file_path required when source is 'file'"}],
                     is_error=True,
                 )
-            from pathlib import Path
-
             from src.typescript_codegen import codegen_from_sdl
 
-            sdl = Path(file_path).read_text()
+            safe_path = self._safe_file_path(file_path)
+            sdl = safe_path.read_text()
             ts_content = codegen_from_sdl(sdl)
         else:
             return ToolResult(
@@ -697,9 +722,7 @@ class MCPToolHandler:
 
         filename = "types.ts"
         if output_dir:
-            from pathlib import Path as P
-
-            out = P(output_dir)
+            out = self._safe_output_path(output_dir)
             out.mkdir(parents=True, exist_ok=True)
             (out / filename).write_text(ts_content)
 
@@ -707,11 +730,13 @@ class MCPToolHandler:
             content=[
                 {
                     "type": "text",
-                    "text": json.dumps({
-                        "filename": filename,
-                        "content_length": len(ts_content),
-                        "written_to": f"{output_dir}/{filename}" if output_dir else None,
-                    }),
+                    "text": json.dumps(
+                        {
+                            "filename": filename,
+                            "content_length": len(ts_content),
+                            "written_to": f"{output_dir}/{filename}" if output_dir else None,
+                        }
+                    ),
                 }
             ]
         )

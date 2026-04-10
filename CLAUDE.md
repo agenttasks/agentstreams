@@ -18,6 +18,17 @@ For SDK constructors:
 - PHP: `Anthropic::client()` (reads env automatically)
 - cURL: `-H "x-api-key: $CLAUDE_CODE_OAUTH_TOKEN"`
 
+## Environment
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `CLAUDE_CODE_OAUTH_TOKEN` | (required) | Auth token — all SDK constructors read automatically |
+| `API_TIMEOUT_MS` | 300000 | Request timeout for Claude API (increase for extended thinking) |
+| `CLAUDE_CODE_CERT_STORE` | OS store | Set to `bundled` to use only bundled CAs (enterprise proxy) |
+| `OTEL_LOG_USER_PROMPTS` | false | Include user prompts in OTEL trace spans |
+| `OTEL_LOG_TOOL_DETAILS` | false | Include tool call details in OTEL spans |
+| `OTEL_LOG_TOOL_CONTENT` | false | Include tool result content in OTEL spans |
+
 ## Review Criteria
 
 When reviewing PRs, check:

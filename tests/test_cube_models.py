@@ -2,15 +2,12 @@
 
 from __future__ import annotations
 
-import yaml
 import pytest
+import yaml
 
 from src.cube_models import (
     CubeDefinition,
     CubeProjection,
-    Dimension,
-    Join,
-    Measure,
     _classify_ontology_class,
     _property_to_column,
 )
@@ -165,4 +162,6 @@ class TestCubeYAMLOutput:
         for class_name in parser.classes:
             cube = cube_projection.generate(class_name)
             for measure in cube.measures:
-                assert measure.type in valid_types, f"Invalid type {measure.type} for {measure.name}"
+                assert measure.type in valid_types, (
+                    f"Invalid type {measure.type} for {measure.name}"
+                )

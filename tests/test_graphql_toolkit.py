@@ -8,7 +8,6 @@ import pytest
 
 from src.graphql_toolkit import (
     GraphQLSchemaParser,
-    GraphQLType,
     validate_schema_against_ontology,
 )
 
@@ -21,7 +20,13 @@ def parser():
 @pytest.fixture
 def sample_sdl():
     """Load the existing test GraphQL schema."""
-    schema_path = Path(__file__).parent.parent / "evals" / "api-client" / "test_data" / "graphql_schema.graphql"
+    schema_path = (
+        Path(__file__).parent.parent
+        / "evals"
+        / "api-client"
+        / "test_data"
+        / "graphql_schema.graphql"
+    )
     return schema_path.read_text()
 
 
@@ -98,7 +103,13 @@ class TestGraphQLSchemaParser:
         assert "PageInfo" in type_names
 
     def test_parse_file(self, parser):
-        schema_path = Path(__file__).parent.parent / "evals" / "api-client" / "test_data" / "graphql_schema.graphql"
+        schema_path = (
+            Path(__file__).parent.parent
+            / "evals"
+            / "api-client"
+            / "test_data"
+            / "graphql_schema.graphql"
+        )
         types = parser.parse_file(schema_path)
         assert len(types) > 0
 

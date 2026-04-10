@@ -32,9 +32,15 @@ TYPE_MAP: dict[str, str] = {
 
 # Standard GraphQL types to skip during codegen
 _SKIP_TYPES = {
-    "Query", "Mutation", "Subscription",
-    "__Schema", "__Type", "__Field", "__InputValue",
-    "__EnumValue", "__Directive",
+    "Query",
+    "Mutation",
+    "Subscription",
+    "__Schema",
+    "__Type",
+    "__Field",
+    "__InputValue",
+    "__EnumValue",
+    "__Directive",
 }
 
 
@@ -86,9 +92,7 @@ class TypeScriptCodegen:
                 if fld.name == "id" and fld.type_name == "ID":
                     brand_name = f"{gql_type.name}Id"
                     branded_types.append(brand_name)
-                    lines.append(
-                        f"export type {brand_name} = Brand<string, '{brand_name}'>;"
-                    )
+                    lines.append(f"export type {brand_name} = Brand<string, '{brand_name}'>;")
                     break
 
         if branded_types:
@@ -120,9 +124,7 @@ class TypeScriptCodegen:
 
             # Const object: runtime values with as const
             obj_entries = ", ".join(f"{v}: '{v}'" for v in values)
-            lines.append(
-                f"export const {enum_type.name} = {{ {obj_entries} }} as const;"
-            )
+            lines.append(f"export const {enum_type.name} = {{ {obj_entries} }} as const;")
             lines.append("")
 
         return "\n".join(lines)
@@ -142,7 +144,9 @@ class TypeScriptCodegen:
 
             lines.append(f"export interface {gql_type.name} {{")
             for fld in gql_type.fields:
-                ts_type = self._resolve_field_type(fld.type_name, fld.is_list, gql_type.name, fld.name)
+                ts_type = self._resolve_field_type(
+                    fld.type_name, fld.is_list, gql_type.name, fld.name
+                )
                 optional = "" if fld.is_non_null else "?"
                 lines.append(f"  {fld.name}{optional}: {ts_type};")
             lines.append("}")
@@ -211,20 +215,22 @@ class TypeScriptCodegen:
             lines.append("")
 
         # Always generate a QueryResult discriminated union
-        lines.extend([
-            "// ── Query result wrapper ────────────────────────────",
-            "",
-            "export interface GraphQLError {",
-            "  readonly message: string;",
-            "  readonly locations?: readonly { line: number; column: number }[];",
-            "  readonly path?: readonly (string | number)[];",
-            "}",
-            "",
-            "export type QueryResult<T> =",
-            "  | { readonly type: 'success'; readonly data: T }",
-            "  | { readonly type: 'error'; readonly errors: readonly GraphQLError[] };",
-            "",
-        ])
+        lines.extend(
+            [
+                "// ── Query result wrapper ────────────────────────────",
+                "",
+                "export interface GraphQLError {",
+                "  readonly message: string;",
+                "  readonly locations?: readonly { line: number; column: number }[];",
+                "  readonly path?: readonly (string | number)[];",
+                "}",
+                "",
+                "export type QueryResult<T> =",
+                "  | { readonly type: 'success'; readonly data: T }",
+                "  | { readonly type: 'error'; readonly errors: readonly GraphQLError[] };",
+                "",
+            ]
+        )
 
         return "\n".join(lines)
 
@@ -258,10 +264,7 @@ class TypeScriptCodegen:
                     f"Promise<QueryResult<{name}>>;"
                 )
             else:
-                lines.append(
-                    f"export declare function {fn_name}(): "
-                    f"Promise<QueryResult<{name}>>;"
-                )
+                lines.append(f"export declare function {fn_name}(): Promise<QueryResult<{name}>>;")
 
         lines.append("")
         return "\n".join(lines)

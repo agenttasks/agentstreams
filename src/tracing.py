@@ -21,6 +21,9 @@ Environment:
     OTEL_EXPORTER_OTLP_ENDPOINT: OTLP endpoint (default: http://localhost:4318)
     OTEL_SERVICE_NAME: Service name (default: agentstreams)
     OTEL_TRACES_ENABLED: Set to "false" to disable (default: true)
+    OTEL_LOG_USER_PROMPTS: Include user prompts in spans (default: false)
+    OTEL_LOG_TOOL_DETAILS: Include tool call details in spans (default: false)
+    OTEL_LOG_TOOL_CONTENT: Include tool result content in spans (default: false)
 """
 
 from __future__ import annotations
@@ -35,13 +38,31 @@ from typing import Any
 _tracer = None
 _initialized = False
 
+# 2.1.101 OTEL logging flags — control sensitive span attributes
+_log_prompts = False
+_log_tool_details = False
+_log_tool_content = False
+
+_SENSITIVE_KEYWORDS = {"prompt", "input", "content", "output", "text", "body"}
+
+
+def _is_sensitive_attribute(key: str) -> bool:
+    """Check if a span attribute key contains sensitive data."""
+    key_lower = key.lower()
+    return any(kw in key_lower for kw in _SENSITIVE_KEYWORDS)
+
 
 def _init_tracer():
     """Initialize the OTel tracer provider. Idempotent."""
-    global _tracer, _initialized
+    global _tracer, _initialized, _log_prompts, _log_tool_details, _log_tool_content
     if _initialized:
         return
     _initialized = True
+
+    # Parse 2.1.101 logging flags
+    _log_prompts = os.environ.get("OTEL_LOG_USER_PROMPTS", "false").lower() == "true"
+    _log_tool_details = os.environ.get("OTEL_LOG_TOOL_DETAILS", "false").lower() == "true"
+    _log_tool_content = os.environ.get("OTEL_LOG_TOOL_CONTENT", "false").lower() == "true"
 
     if os.environ.get("OTEL_TRACES_ENABLED", "true").lower() == "false":
         return
@@ -98,7 +119,14 @@ def trace_span(
         with tracer.start_as_current_span(name) as span:
             if attributes:
                 for k, v in attributes.items():
-                    span.set_attribute(k, str(v) if not isinstance(v, (int, float, bool)) else v)
+                    # Gate sensitive attributes behind OTEL logging flags
+                    if _is_sensitive_attribute(k) and not (
+                        _log_prompts or _log_tool_details or _log_tool_content
+                    ):
+                        continue
+                    span.set_attribute(
+                        k, str(v) if not isinstance(v, (int, float, bool)) else v
+                    )
             try:
                 yield span_ctx
             except Exception as e:
@@ -110,8 +138,13 @@ def trace_span(
                 span.set_attribute("duration_ms", int(elapsed * 1000))
                 for k, v in span_ctx.items():
                     if k != "start_time":
+                        if _is_sensitive_attribute(k) and not (
+                            _log_prompts or _log_tool_details or _log_tool_content
+                        ):
+                            continue
                         span.set_attribute(
-                            k, str(v) if not isinstance(v, (int, float, bool)) else v
+                            k,
+                            str(v) if not isinstance(v, (int, float, bool)) else v,
                         )
     else:
         try:

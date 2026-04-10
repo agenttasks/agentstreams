@@ -1,7 +1,8 @@
 ---
 name: graphql-typescript-agent
 description: GraphQL schema design, TypeScript codegen, Cube.dev data modeling, and dimensional warehouse modeling. Use when the task involves GraphQL schemas, TypeScript type generation, data cube definitions, or star schema design.
-tools: Read, Glob, Grep, Bash, Write, Edit
+tools: Read, Glob, Grep, Write, Edit
+disallowedTools: Agent
 model: sonnet
 color: cyan
 ---
