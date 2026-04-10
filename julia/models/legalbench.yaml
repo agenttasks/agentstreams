@@ -1,0 +1,181 @@
+cubes:
+  # ── LegalBench Results (Kimball Transaction Fact) ──────────────
+  # Grain: one prediction per sample per eval run.
+  # Cube.dev YAML pattern from julia/models/audit_logs.yaml.
+  - name: julia_legalbench_results
+    sql: SELECT * FROM julia_legalbench_results
+    description: "LegalBench benchmark eval results (Kimball transaction fact)"
+
+    measures:
+      - name: count
+        type: count
+        description: "Total predictions"
+
+      - name: correct_count
+        sql: "CASE WHEN is_correct THEN 1 ELSE 0 END"
+        type: sum
+        description: "Count of correct predictions"
+
+      - name: accuracy
+        sql: "CASE WHEN is_correct THEN 1 ELSE 0 END"
+        type: avg
+        description: "Accuracy (0.0-1.0) — primary metric for contract_nli (target >= 0.85)"
+
+      - name: avg_confidence
+        sql: confidence
+        type: avg
+        description: "Mean model-reported confidence"
+
+      - name: avg_citation_score
+        sql: citation_score
+        type: avg
+        description: "Mean source verification score (compute_source_score from cuad/scoring.py)"
+
+      - name: total_input_tokens
+        sql: input_tokens
+        type: sum
+        description: "Additive measure: total input tokens consumed"
+
+      - name: total_output_tokens
+        sql: output_tokens
+        type: sum
+        description: "Additive measure: total output tokens generated"
+
+      - name: avg_latency_ms
+        sql: duration_ms
+        type: avg
+        description: "Mean API call latency in milliseconds"
+
+      - name: total_duration_ms
+        sql: duration_ms
+        type: sum
+        description: "Total API call time across all predictions"
+
+      - name: avg_best_of_n_agreement
+        sql: best_of_n_agreement
+        type: avg
+        description: "Best-of-N majority vote agreement rate"
+
+    dimensions:
+      - name: id
+        sql: id
+        type: number
+        primary_key: true
+
+      - name: run_id
+        sql: run_id
+        type: string
+        description: "Eval run identifier — groups all predictions in a single benchmark run"
+
+      - name: task
+        sql: task
+        type: string
+        description: "Degenerate dimension — one of 162 LegalBench tasks"
+
+      - name: category
+        sql: category
+        type: string
+        description: "Degenerate dimension — contract_nli, cuad, maud, learned_hands, etc."
+
+      - name: model
+        sql: model
+        type: string
+        description: "Conformed dimension — claude-opus-4-6, claude-sonnet-4-6, etc."
+
+      - name: is_correct
+        sql: is_correct
+        type: boolean
+        description: "Whether predicted answer matches gold answer"
+
+      - name: created_at
+        sql: created_at
+        type: time
+        description: "Prediction timestamp — enables time-series accuracy tracking"
+
+    joins:
+      - name: julia_legalbench_samples
+        relationship: many_to_one
+        sql: "{CUBE}.sample_id = {julia_legalbench_samples}.id"
+
+  # ── LegalBench Samples (Transaction Fact) ─────────────────────
+  # Grain: one benchmark sample per task per split.
+  - name: julia_legalbench_samples
+    sql: SELECT * FROM julia_legalbench_samples
+    description: "LegalBench benchmark samples (Kimball transaction fact, degenerate dims)"
+
+    measures:
+      - name: count
+        type: count
+        description: "Total samples ingested"
+
+      - name: total_tokens
+        sql: token_count
+        type: sum
+        description: "Total approximate token count across all samples (whitespace-split word count)"
+
+      - name: avg_tokens
+        sql: token_count
+        type: avg
+        description: "Average tokens per sample (for prompt budgeting)"
+
+    dimensions:
+      - name: id
+        sql: id
+        type: string
+        primary_key: true
+
+      - name: task
+        sql: task
+        type: string
+        description: "Degenerate dimension — one of 162 LegalBench tasks"
+
+      - name: category
+        sql: category
+        type: string
+        description: "Degenerate dimension — contract_nli, cuad, maud, learned_hands, etc."
+
+      - name: answer_type
+        sql: answer_type
+        type: string
+        description: "binary, multiple_choice, classification, extraction"
+
+      - name: split
+        sql: split
+        type: string
+        description: "Dataset split: train, test, validation"
+
+      - name: created_at
+        sql: created_at
+        type: time
+
+  # ── LegalBench Category Stats (Periodic Snapshot) ─────────────
+  # Grain: one category per day (pg_cron at 2 AM UTC).
+  - name: julia_legalbench_category_stats
+    sql: SELECT * FROM julia_legalbench_category_stats
+    description: "Daily category-level accuracy rollup (Kimball periodic snapshot)"
+
+    measures:
+      - name: avg_accuracy
+        sql: accuracy
+        type: avg
+        description: "Mean accuracy across days"
+
+      - name: total_samples
+        sql: sample_count
+        type: sum
+        description: "Total predictions across days"
+
+      - name: avg_citation_score
+        sql: avg_citation_score
+        type: avg
+
+    dimensions:
+      - name: category
+        sql: category
+        type: string
+        primary_key: true
+
+      - name: date
+        sql: date
+        type: time
+        description: "Rollup date (periodic snapshot grain)"

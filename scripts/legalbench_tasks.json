@@ -1,0 +1,2332 @@
+{
+  "abercrombie": {
+    "category": "rule_application",
+    "hf_config": "abercrombie",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "classification",
+    "label_names": [
+      "arbitrary",
+      "descriptive",
+      "fanciful",
+      "generic",
+      "suggestive"
+    ],
+    "test_size": 95
+  },
+  "canada_tax_court_outcomes": {
+    "category": "court_outcomes",
+    "hf_config": "canada_tax_court_outcomes",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "classification",
+    "label_names": [
+      "allowed",
+      "dismissed",
+      "other"
+    ],
+    "test_size": 244
+  },
+  "citation_prediction_classification": {
+    "category": "citation_prediction",
+    "hf_config": "citation_prediction_classification",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 108
+  },
+  "citation_prediction_open": {
+    "category": "citation_prediction",
+    "hf_config": "citation_prediction_open",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "extraction",
+    "label_names": [],
+    "test_size": 53
+  },
+  "consumer_contracts_qa": {
+    "category": "contract_qa",
+    "hf_config": "consumer_contracts_qa",
+    "text_fields": [
+      "contract",
+      "question"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 396
+  },
+  "contract_nli_confidentiality_of_agreement": {
+    "category": "contract_nli",
+    "hf_config": "contract_nli_confidentiality_of_agreement",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 82
+  },
+  "contract_nli_explicit_identification": {
+    "category": "contract_nli",
+    "hf_config": "contract_nli_explicit_identification",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 109
+  },
+  "contract_nli_inclusion_of_verbally_conveyed_information": {
+    "category": "contract_nli",
+    "hf_config": "contract_nli_inclusion_of_verbally_conveyed_information",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 139
+  },
+  "contract_nli_limited_use": {
+    "category": "contract_nli",
+    "hf_config": "contract_nli_limited_use",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 208
+  },
+  "contract_nli_no_licensing": {
+    "category": "contract_nli",
+    "hf_config": "contract_nli_no_licensing",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 162
+  },
+  "contract_nli_notice_on_compelled_disclosure": {
+    "category": "contract_nli",
+    "hf_config": "contract_nli_notice_on_compelled_disclosure",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 142
+  },
+  "contract_nli_permissible_acquirement_of_similar_information": {
+    "category": "contract_nli",
+    "hf_config": "contract_nli_permissible_acquirement_of_similar_information",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 178
+  },
+  "contract_nli_permissible_copy": {
+    "category": "contract_nli",
+    "hf_config": "contract_nli_permissible_copy",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 87
+  },
+  "contract_nli_permissible_development_of_similar_information": {
+    "category": "contract_nli",
+    "hf_config": "contract_nli_permissible_development_of_similar_information",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 136
+  },
+  "contract_nli_permissible_post-agreement_possession": {
+    "category": "contract_nli",
+    "hf_config": "contract_nli_permissible_post-agreement_possession",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 111
+  },
+  "contract_nli_return_of_confidential_information": {
+    "category": "contract_nli",
+    "hf_config": "contract_nli_return_of_confidential_information",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 66
+  },
+  "contract_nli_sharing_with_employees": {
+    "category": "contract_nli",
+    "hf_config": "contract_nli_sharing_with_employees",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 170
+  },
+  "contract_nli_sharing_with_third-parties": {
+    "category": "contract_nli",
+    "hf_config": "contract_nli_sharing_with_third-parties",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 180
+  },
+  "contract_nli_survival_of_obligations": {
+    "category": "contract_nli",
+    "hf_config": "contract_nli_survival_of_obligations",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 157
+  },
+  "contract_qa": {
+    "category": "contract_qa",
+    "hf_config": "contract_qa",
+    "text_fields": [
+      "text",
+      "question"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 80
+  },
+  "corporate_lobbying": {
+    "category": "corporate_lobbying",
+    "hf_config": "corporate_lobbying",
+    "text_fields": [
+      "bill_title",
+      "bill_summary",
+      "company_name",
+      "company_description"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 490
+  },
+  "cuad_affiliate_license-licensee": {
+    "category": "cuad",
+    "hf_config": "cuad_affiliate_license-licensee",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 198
+  },
+  "cuad_affiliate_license-licensor": {
+    "category": "cuad",
+    "hf_config": "cuad_affiliate_license-licensor",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 88
+  },
+  "cuad_anti-assignment": {
+    "category": "cuad",
+    "hf_config": "cuad_anti-assignment",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 1172
+  },
+  "cuad_audit_rights": {
+    "category": "cuad",
+    "hf_config": "cuad_audit_rights",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 1216
+  },
+  "cuad_cap_on_liability": {
+    "category": "cuad",
+    "hf_config": "cuad_cap_on_liability",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 1246
+  },
+  "cuad_change_of_control": {
+    "category": "cuad",
+    "hf_config": "cuad_change_of_control",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 416
+  },
+  "cuad_competitive_restriction_exception": {
+    "category": "cuad",
+    "hf_config": "cuad_competitive_restriction_exception",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 220
+  },
+  "cuad_covenant_not_to_sue": {
+    "category": "cuad",
+    "hf_config": "cuad_covenant_not_to_sue",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 308
+  },
+  "cuad_effective_date": {
+    "category": "cuad",
+    "hf_config": "cuad_effective_date",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 236
+  },
+  "cuad_exclusivity": {
+    "category": "cuad",
+    "hf_config": "cuad_exclusivity",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 762
+  },
+  "cuad_expiration_date": {
+    "category": "cuad",
+    "hf_config": "cuad_expiration_date",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 876
+  },
+  "cuad_governing_law": {
+    "category": "cuad",
+    "hf_config": "cuad_governing_law",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 876
+  },
+  "cuad_insurance": {
+    "category": "cuad",
+    "hf_config": "cuad_insurance",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 1030
+  },
+  "cuad_ip_ownership_assignment": {
+    "category": "cuad",
+    "hf_config": "cuad_ip_ownership_assignment",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 576
+  },
+  "cuad_irrevocable_or_perpetual_license": {
+    "category": "cuad",
+    "hf_config": "cuad_irrevocable_or_perpetual_license",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 280
+  },
+  "cuad_joint_ip_ownership": {
+    "category": "cuad",
+    "hf_config": "cuad_joint_ip_ownership",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 192
+  },
+  "cuad_license_grant": {
+    "category": "cuad",
+    "hf_config": "cuad_license_grant",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 1396
+  },
+  "cuad_liquidated_damages": {
+    "category": "cuad",
+    "hf_config": "cuad_liquidated_damages",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 220
+  },
+  "cuad_minimum_commitment": {
+    "category": "cuad",
+    "hf_config": "cuad_minimum_commitment",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 772
+  },
+  "cuad_most_favored_nation": {
+    "category": "cuad",
+    "hf_config": "cuad_most_favored_nation",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 64
+  },
+  "cuad_no-solicit_of_customers": {
+    "category": "cuad",
+    "hf_config": "cuad_no-solicit_of_customers",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 84
+  },
+  "cuad_no-solicit_of_employees": {
+    "category": "cuad",
+    "hf_config": "cuad_no-solicit_of_employees",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 142
+  },
+  "cuad_non-compete": {
+    "category": "cuad",
+    "hf_config": "cuad_non-compete",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 442
+  },
+  "cuad_non-disparagement": {
+    "category": "cuad",
+    "hf_config": "cuad_non-disparagement",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 100
+  },
+  "cuad_non-transferable_license": {
+    "category": "cuad",
+    "hf_config": "cuad_non-transferable_license",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 542
+  },
+  "cuad_notice_period_to_terminate_renewal": {
+    "category": "cuad",
+    "hf_config": "cuad_notice_period_to_terminate_renewal",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 222
+  },
+  "cuad_post-termination_services": {
+    "category": "cuad",
+    "hf_config": "cuad_post-termination_services",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 808
+  },
+  "cuad_price_restrictions": {
+    "category": "cuad",
+    "hf_config": "cuad_price_restrictions",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 46
+  },
+  "cuad_renewal_term": {
+    "category": "cuad",
+    "hf_config": "cuad_renewal_term",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 386
+  },
+  "cuad_revenue-profit_sharing": {
+    "category": "cuad",
+    "hf_config": "cuad_revenue-profit_sharing",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 774
+  },
+  "cuad_rofr-rofo-rofn": {
+    "category": "cuad",
+    "hf_config": "cuad_rofr-rofo-rofn",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 690
+  },
+  "cuad_source_code_escrow": {
+    "category": "cuad",
+    "hf_config": "cuad_source_code_escrow",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 118
+  },
+  "cuad_termination_for_convenience": {
+    "category": "cuad",
+    "hf_config": "cuad_termination_for_convenience",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 430
+  },
+  "cuad_third_party_beneficiary": {
+    "category": "cuad",
+    "hf_config": "cuad_third_party_beneficiary",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 68
+  },
+  "cuad_uncapped_liability": {
+    "category": "cuad",
+    "hf_config": "cuad_uncapped_liability",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 294
+  },
+  "cuad_unlimited-all-you-can-eat-license": {
+    "category": "cuad",
+    "hf_config": "cuad_unlimited-all-you-can-eat-license",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 48
+  },
+  "cuad_volume_restriction": {
+    "category": "cuad",
+    "hf_config": "cuad_volume_restriction",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 322
+  },
+  "cuad_warranty_duration": {
+    "category": "cuad",
+    "hf_config": "cuad_warranty_duration",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 320
+  },
+  "definition_classification": {
+    "category": "core_legal_knowledge",
+    "hf_config": "definition_classification",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 1337
+  },
+  "definition_extraction": {
+    "category": "core_legal_knowledge",
+    "hf_config": "definition_extraction",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "extraction",
+    "label_names": [],
+    "test_size": 687
+  },
+  "diversity_1": {
+    "category": "diversity_jurisdiction",
+    "hf_config": "diversity_1",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 300
+  },
+  "diversity_2": {
+    "category": "diversity_jurisdiction",
+    "hf_config": "diversity_2",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 300
+  },
+  "diversity_3": {
+    "category": "diversity_jurisdiction",
+    "hf_config": "diversity_3",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 300
+  },
+  "diversity_4": {
+    "category": "diversity_jurisdiction",
+    "hf_config": "diversity_4",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 300
+  },
+  "diversity_5": {
+    "category": "diversity_jurisdiction",
+    "hf_config": "diversity_5",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 300
+  },
+  "diversity_6": {
+    "category": "diversity_jurisdiction",
+    "hf_config": "diversity_6",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 300
+  },
+  "function_of_decision_section": {
+    "category": "rhetorical_understanding",
+    "hf_config": "function_of_decision_section",
+    "text_fields": [
+      "Paragraph",
+      "Citation"
+    ],
+    "answer_field": "answer",
+    "answer_type": "classification",
+    "label_names": [
+      "Analysis",
+      "Conclusion",
+      "Decree",
+      "Facts",
+      "Issue",
+      "Procedural History",
+      "Rule"
+    ],
+    "test_size": 367
+  },
+  "hearsay": {
+    "category": "rule_application",
+    "hf_config": "hearsay",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 94
+  },
+  "insurance_policy_interpretation": {
+    "category": "interpretation",
+    "hf_config": "insurance_policy_interpretation",
+    "text_fields": [
+      "policy",
+      "claim"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B",
+      "C"
+    ],
+    "test_size": 133
+  },
+  "international_citizenship_questions": {
+    "category": "international_law",
+    "hf_config": "international_citizenship_questions",
+    "text_fields": [
+      "question"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 9306
+  },
+  "jcrew_blocker": {
+    "category": "rule_application",
+    "hf_config": "jcrew_blocker",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 54
+  },
+  "learned_hands_benefits": {
+    "category": "learned_hands",
+    "hf_config": "learned_hands_benefits",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 66
+  },
+  "learned_hands_business": {
+    "category": "learned_hands",
+    "hf_config": "learned_hands_business",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 174
+  },
+  "learned_hands_consumer": {
+    "category": "learned_hands",
+    "hf_config": "learned_hands_consumer",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 614
+  },
+  "learned_hands_courts": {
+    "category": "learned_hands",
+    "hf_config": "learned_hands_courts",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 192
+  },
+  "learned_hands_crime": {
+    "category": "learned_hands",
+    "hf_config": "learned_hands_crime",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 688
+  },
+  "learned_hands_divorce": {
+    "category": "learned_hands",
+    "hf_config": "learned_hands_divorce",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 150
+  },
+  "learned_hands_domestic_violence": {
+    "category": "learned_hands",
+    "hf_config": "learned_hands_domestic_violence",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 174
+  },
+  "learned_hands_education": {
+    "category": "learned_hands",
+    "hf_config": "learned_hands_education",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 56
+  },
+  "learned_hands_employment": {
+    "category": "learned_hands",
+    "hf_config": "learned_hands_employment",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 710
+  },
+  "learned_hands_estates": {
+    "category": "learned_hands",
+    "hf_config": "learned_hands_estates",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 178
+  },
+  "learned_hands_family": {
+    "category": "learned_hands",
+    "hf_config": "learned_hands_family",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 2265
+  },
+  "learned_hands_health": {
+    "category": "learned_hands",
+    "hf_config": "learned_hands_health",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 226
+  },
+  "learned_hands_housing": {
+    "category": "learned_hands",
+    "hf_config": "learned_hands_housing",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 4494
+  },
+  "learned_hands_immigration": {
+    "category": "learned_hands",
+    "hf_config": "learned_hands_immigration",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 134
+  },
+  "learned_hands_torts": {
+    "category": "learned_hands",
+    "hf_config": "learned_hands_torts",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 432
+  },
+  "learned_hands_traffic": {
+    "category": "learned_hands",
+    "hf_config": "learned_hands_traffic",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 556
+  },
+  "legal_reasoning_causality": {
+    "category": "core_legal_knowledge",
+    "hf_config": "legal_reasoning_causality",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 55
+  },
+  "maud_ability_to_consummate_concept_is_subject_to_mae_carveouts": {
+    "category": "maud",
+    "hf_config": "maud_ability_to_consummate_concept_is_subject_to_mae_carveouts",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B"
+    ],
+    "test_size": 69
+  },
+  "maud_accuracy_of_fundamental_target_rws_bringdown_standard": {
+    "category": "maud",
+    "hf_config": "maud_accuracy_of_fundamental_target_rws_bringdown_standard",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B",
+      "C"
+    ],
+    "test_size": 175
+  },
+  "maud_accuracy_of_target_capitalization_rw_(outstanding_shares)_bringdown_standard_answer": {
+    "category": "maud",
+    "hf_config": "maud_accuracy_of_target_capitalization_rw_(outstanding_shares)_bringdown_standard_answer",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "test_size": 148
+  },
+  "maud_accuracy_of_target_general_rw_bringdown_timing_answer": {
+    "category": "maud",
+    "hf_config": "maud_accuracy_of_target_general_rw_bringdown_timing_answer",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B"
+    ],
+    "test_size": 181
+  },
+  "maud_additional_matching_rights_period_for_modifications_(cor)": {
+    "category": "maud",
+    "hf_config": "maud_additional_matching_rights_period_for_modifications_(cor)",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E"
+    ],
+    "test_size": 158
+  },
+  "maud_application_of_buyer_consent_requirement_(negative_interim_covenant)": {
+    "category": "maud",
+    "hf_config": "maud_application_of_buyer_consent_requirement_(negative_interim_covenant)",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B"
+    ],
+    "test_size": 180
+  },
+  "maud_buyer_consent_requirement_(ordinary_course)": {
+    "category": "maud",
+    "hf_config": "maud_buyer_consent_requirement_(ordinary_course)",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B"
+    ],
+    "test_size": 181
+  },
+  "maud_change_in_law__subject_to_disproportionate_impact_modifier": {
+    "category": "maud",
+    "hf_config": "maud_change_in_law__subject_to_disproportionate_impact_modifier",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B"
+    ],
+    "test_size": 99
+  },
+  "maud_changes_in_gaap_or_other_accounting_principles__subject_to_disproportionate_impact_modifier": {
+    "category": "maud",
+    "hf_config": "maud_changes_in_gaap_or_other_accounting_principles__subject_to_disproportionate_impact_modifier",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B"
+    ],
+    "test_size": 98
+  },
+  "maud_cor_permitted_in_response_to_intervening_event": {
+    "category": "maud",
+    "hf_config": "maud_cor_permitted_in_response_to_intervening_event",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B"
+    ],
+    "test_size": 100
+  },
+  "maud_cor_permitted_with_board_fiduciary_determination_only": {
+    "category": "maud",
+    "hf_config": "maud_cor_permitted_with_board_fiduciary_determination_only",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B"
+    ],
+    "test_size": 100
+  },
+  "maud_cor_standard_(intervening_event)": {
+    "category": "maud",
+    "hf_config": "maud_cor_standard_(intervening_event)",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "classification",
+    "label_names": [
+      "B",
+      "C",
+      "D",
+      "E",
+      "H",
+      "I"
+    ],
+    "test_size": 84
+  },
+  "maud_cor_standard_(superior_offer)": {
+    "category": "maud",
+    "hf_config": "maud_cor_standard_(superior_offer)",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "classification",
+    "label_names": [
+      "B",
+      "C",
+      "D",
+      "E",
+      "G",
+      "H",
+      "I",
+      "J"
+    ],
+    "test_size": 100
+  },
+  "maud_definition_contains_knowledge_requirement_-_answer": {
+    "category": "maud",
+    "hf_config": "maud_definition_contains_knowledge_requirement_-_answer",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "test_size": 124
+  },
+  "maud_definition_includes_asset_deals": {
+    "category": "maud",
+    "hf_config": "maud_definition_includes_asset_deals",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "test_size": 141
+  },
+  "maud_definition_includes_stock_deals": {
+    "category": "maud",
+    "hf_config": "maud_definition_includes_stock_deals",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "test_size": 142
+  },
+  "maud_fiduciary_exception__board_determination_standard": {
+    "category": "maud",
+    "hf_config": "maud_fiduciary_exception__board_determination_standard",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "classification",
+    "label_names": [
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "I"
+    ],
+    "test_size": 179
+  },
+  "maud_fiduciary_exception_board_determination_trigger_(no_shop)": {
+    "category": "maud",
+    "hf_config": "maud_fiduciary_exception_board_determination_trigger_(no_shop)",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B"
+    ],
+    "test_size": 179
+  },
+  "maud_financial_point_of_view_is_the_sole_consideration": {
+    "category": "maud",
+    "hf_config": "maud_financial_point_of_view_is_the_sole_consideration",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B"
+    ],
+    "test_size": 112
+  },
+  "maud_fls_(mae)_standard": {
+    "category": "maud",
+    "hf_config": "maud_fls_(mae)_standard",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B",
+      "C",
+      "E"
+    ],
+    "test_size": 77
+  },
+  "maud_general_economic_and_financial_conditions_subject_to_disproportionate_impact_modifier": {
+    "category": "maud",
+    "hf_config": "maud_general_economic_and_financial_conditions_subject_to_disproportionate_impact_modifier",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B"
+    ],
+    "test_size": 98
+  },
+  "maud_includes_consistent_with_past_practice": {
+    "category": "maud",
+    "hf_config": "maud_includes_consistent_with_past_practice",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B"
+    ],
+    "test_size": 181
+  },
+  "maud_initial_matching_rights_period_(cor)": {
+    "category": "maud",
+    "hf_config": "maud_initial_matching_rights_period_(cor)",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "classification",
+    "label_names": [
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "test_size": 158
+  },
+  "maud_initial_matching_rights_period_(ftr)": {
+    "category": "maud",
+    "hf_config": "maud_initial_matching_rights_period_(ftr)",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "classification",
+    "label_names": [
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "test_size": 132
+  },
+  "maud_intervening_event_-_required_to_occur_after_signing_-_answer": {
+    "category": "maud",
+    "hf_config": "maud_intervening_event_-_required_to_occur_after_signing_-_answer",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B"
+    ],
+    "test_size": 124
+  },
+  "maud_knowledge_definition": {
+    "category": "maud",
+    "hf_config": "maud_knowledge_definition",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B"
+    ],
+    "test_size": 148
+  },
+  "maud_liability_standard_for_no-shop_breach_by_target_non-do_representatives": {
+    "category": "maud",
+    "hf_config": "maud_liability_standard_for_no-shop_breach_by_target_non-do_representatives",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B"
+    ],
+    "test_size": 134
+  },
+  "maud_ordinary_course_efforts_standard": {
+    "category": "maud",
+    "hf_config": "maud_ordinary_course_efforts_standard",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B",
+      "C"
+    ],
+    "test_size": 181
+  },
+  "maud_pandemic_or_other_public_health_event__subject_to_disproportionate_impact_modifier": {
+    "category": "maud",
+    "hf_config": "maud_pandemic_or_other_public_health_event__subject_to_disproportionate_impact_modifier",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B"
+    ],
+    "test_size": 98
+  },
+  "maud_pandemic_or_other_public_health_event_specific_reference_to_pandemic-related_governmental_responses_or_measures": {
+    "category": "maud",
+    "hf_config": "maud_pandemic_or_other_public_health_event_specific_reference_to_pandemic-related_governmental_responses_or_measures",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B"
+    ],
+    "test_size": 98
+  },
+  "maud_relational_language_(mae)_applies_to": {
+    "category": "maud",
+    "hf_config": "maud_relational_language_(mae)_applies_to",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "C"
+    ],
+    "test_size": 90
+  },
+  "maud_specific_performance": {
+    "category": "maud",
+    "hf_config": "maud_specific_performance",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B"
+    ],
+    "test_size": 178
+  },
+  "maud_tail_period_length": {
+    "category": "maud",
+    "hf_config": "maud_tail_period_length",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "C",
+      "D",
+      "E"
+    ],
+    "test_size": 179
+  },
+  "maud_type_of_consideration": {
+    "category": "maud",
+    "hf_config": "maud_type_of_consideration",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "test_size": 172
+  },
+  "nys_judicial_ethics": {
+    "category": "judicial_ethics",
+    "hf_config": "nys_judicial_ethics",
+    "text_fields": [
+      "question"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 292
+  },
+  "opp115_data_retention": {
+    "category": "opp115",
+    "hf_config": "opp115_data_retention",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 304
+  },
+  "opp115_data_security": {
+    "category": "opp115",
+    "hf_config": "opp115_data_security",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 738
+  },
+  "opp115_do_not_track": {
+    "category": "opp115",
+    "hf_config": "opp115_do_not_track",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 56
+  },
+  "opp115_first_party_collection_use": {
+    "category": "opp115",
+    "hf_config": "opp115_first_party_collection_use",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 3034
+  },
+  "opp115_international_and_specific_audiences": {
+    "category": "opp115",
+    "hf_config": "opp115_international_and_specific_audiences",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 694
+  },
+  "opp115_policy_change": {
+    "category": "opp115",
+    "hf_config": "opp115_policy_change",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 362
+  },
+  "opp115_third_party_sharing_collection": {
+    "category": "opp115",
+    "hf_config": "opp115_third_party_sharing_collection",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 2364
+  },
+  "opp115_user_access,_edit_and_deletion": {
+    "category": "opp115",
+    "hf_config": "opp115_user_access,_edit_and_deletion",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 452
+  },
+  "opp115_user_choice_control": {
+    "category": "opp115",
+    "hf_config": "opp115_user_choice_control",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 1254
+  },
+  "oral_argument_question_purpose": {
+    "category": "rhetorical_understanding",
+    "hf_config": "oral_argument_question_purpose",
+    "text_fields": [
+      "question"
+    ],
+    "answer_field": "answer",
+    "answer_type": "classification",
+    "label_names": [
+      "Background",
+      "Clarification",
+      "Communicate",
+      "Criticism",
+      "Humor",
+      "Implications",
+      "Support"
+    ],
+    "test_size": 312
+  },
+  "overruling": {
+    "category": "rule_application",
+    "hf_config": "overruling",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 2394
+  },
+  "personal_jurisdiction": {
+    "category": "rule_application",
+    "hf_config": "personal_jurisdiction",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 50
+  },
+  "privacy_policy_entailment": {
+    "category": "privacy_policy",
+    "hf_config": "privacy_policy_entailment",
+    "text_fields": [
+      "text",
+      "description"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Correct",
+      "Incorrect"
+    ],
+    "test_size": 4335
+  },
+  "privacy_policy_qa": {
+    "category": "privacy_policy",
+    "hf_config": "privacy_policy_qa",
+    "text_fields": [
+      "text",
+      "question"
+    ],
+    "answer_field": "answer",
+    "answer_type": "classification",
+    "label_names": [
+      "Relevant"
+    ],
+    "test_size": 10923
+  },
+  "proa": {
+    "category": "rule_application",
+    "hf_config": "proa",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 95
+  },
+  "rule_qa": {
+    "category": "core_legal_knowledge",
+    "hf_config": "rule_qa",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "extraction",
+    "label_names": [],
+    "test_size": 50
+  },
+  "sara_entailment": {
+    "category": "sara",
+    "hf_config": "sara_entailment",
+    "text_fields": [
+      "text",
+      "question",
+      "statute",
+      "description"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Entailment",
+      "Contradiction"
+    ],
+    "test_size": 272
+  },
+  "sara_numeric": {
+    "category": "sara",
+    "hf_config": "sara_numeric",
+    "text_fields": [
+      "text",
+      "question",
+      "statute",
+      "description"
+    ],
+    "answer_field": "answer",
+    "answer_type": "extraction",
+    "label_names": [],
+    "test_size": 96
+  },
+  "scalr": {
+    "category": "rule_application",
+    "hf_config": "scalr",
+    "text_fields": [
+      "question"
+    ],
+    "answer_field": "answer",
+    "answer_type": "multiple_choice",
+    "label_names": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "test_size": 571,
+    "choice_fields": [
+      "choice_0",
+      "choice_1",
+      "choice_2",
+      "choice_3",
+      "choice_4"
+    ]
+  },
+  "ssla_company_defendants": {
+    "category": "ssla",
+    "hf_config": "ssla_company_defendants",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "extraction",
+    "label_names": [],
+    "test_size": 1228
+  },
+  "ssla_individual_defendants": {
+    "category": "ssla",
+    "hf_config": "ssla_individual_defendants",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "extraction",
+    "label_names": [],
+    "test_size": 1012
+  },
+  "ssla_plaintiff": {
+    "category": "ssla",
+    "hf_config": "ssla_plaintiff",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "extraction",
+    "label_names": [],
+    "test_size": 1033
+  },
+  "successor_liability": {
+    "category": "rule_application",
+    "hf_config": "successor_liability",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "extraction",
+    "label_names": [],
+    "test_size": 47
+  },
+  "supply_chain_disclosure_best_practice_accountability": {
+    "category": "supply_chain_disclosure",
+    "hf_config": "supply_chain_disclosure_best_practice_accountability",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 379
+  },
+  "supply_chain_disclosure_best_practice_audits": {
+    "category": "supply_chain_disclosure",
+    "hf_config": "supply_chain_disclosure_best_practice_audits",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 379
+  },
+  "supply_chain_disclosure_best_practice_certification": {
+    "category": "supply_chain_disclosure",
+    "hf_config": "supply_chain_disclosure_best_practice_certification",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 378
+  },
+  "supply_chain_disclosure_best_practice_training": {
+    "category": "supply_chain_disclosure",
+    "hf_config": "supply_chain_disclosure_best_practice_training",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 379
+  },
+  "supply_chain_disclosure_best_practice_verification": {
+    "category": "supply_chain_disclosure",
+    "hf_config": "supply_chain_disclosure_best_practice_verification",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 379
+  },
+  "supply_chain_disclosure_disclosed_accountability": {
+    "category": "supply_chain_disclosure",
+    "hf_config": "supply_chain_disclosure_disclosed_accountability",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 378
+  },
+  "supply_chain_disclosure_disclosed_audits": {
+    "category": "supply_chain_disclosure",
+    "hf_config": "supply_chain_disclosure_disclosed_audits",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 379
+  },
+  "supply_chain_disclosure_disclosed_certification": {
+    "category": "supply_chain_disclosure",
+    "hf_config": "supply_chain_disclosure_disclosed_certification",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 378
+  },
+  "supply_chain_disclosure_disclosed_training": {
+    "category": "supply_chain_disclosure",
+    "hf_config": "supply_chain_disclosure_disclosed_training",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 379
+  },
+  "supply_chain_disclosure_disclosed_verification": {
+    "category": "supply_chain_disclosure",
+    "hf_config": "supply_chain_disclosure_disclosed_verification",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 379
+  },
+  "telemarketing_sales_rule": {
+    "category": "rule_application",
+    "hf_config": "telemarketing_sales_rule",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 47
+  },
+  "textualism_tool_dictionaries": {
+    "category": "textualism",
+    "hf_config": "textualism_tool_dictionaries",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 107
+  },
+  "textualism_tool_plain": {
+    "category": "textualism",
+    "hf_config": "textualism_tool_plain",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "Yes",
+      "No"
+    ],
+    "test_size": 165
+  },
+  "ucc_v_common_law": {
+    "category": "rule_application",
+    "hf_config": "ucc_v_common_law",
+    "text_fields": [
+      "contract"
+    ],
+    "answer_field": "answer",
+    "answer_type": "binary",
+    "label_names": [
+      "UCC",
+      "Common Law"
+    ],
+    "test_size": 94
+  },
+  "unfair_tos": {
+    "category": "unfair_tos",
+    "hf_config": "unfair_tos",
+    "text_fields": [
+      "text"
+    ],
+    "answer_field": "answer",
+    "answer_type": "classification",
+    "label_names": [
+      "Arbitration",
+      "Choice of law",
+      "Content removal",
+      "Contract by using",
+      "Limitation of liability",
+      "Other",
+      "Unilateral change",
+      "Unilateral termination"
+    ],
+    "test_size": 3813
+  }
+}
