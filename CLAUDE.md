@@ -90,6 +90,7 @@ Model hierarchy (orchestrated pipeline agents only):
 
 Standalone subagents (.claude/agents/, not in orchestrator pipelines):
 - opus: uda-thinker, uda-crawler
+- sonnet: graphql-typescript-agent
 - haiku: crawl-analyzer, memory-validator, explore
 
 Knowledge-work pipelines (3):
