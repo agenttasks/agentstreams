@@ -48,6 +48,9 @@ safety = [
 lexglue = [
     "datasets>=3.0",    # HuggingFace datasets for lex_glue benchmark (matches eval group)
 ]
+casehold = [
+    "huggingface_hub>=0.20",  # CaseHOLD CSV download via hf_hub_download
+]
 
 [dependency-groups]
 dev = [

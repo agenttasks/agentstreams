@@ -2,7 +2,7 @@
        lint lint-py lint-webapp format test test-py test-webapp \
        build build-webapp typecheck security-audit validate \
        eval-codegen eval-codegen-quick eval-codegen-dry eval-promptfoo \
-       eval-cuad eval-casehold eval-casehold-quick eval-casehold-audit eval-cuad-quick eval-cuad-recall eval-legal \
+       eval-cuad eval-casehold eval-casehold-quick eval-casehold-audit eval-casehold-ingest eval-cuad-quick eval-cuad-recall eval-legal \
        eval-lexglue eval-lexglue-quick eval-lexglue-dry ingest-lexglue \
        install-managed-agents build-managed-agents check-managed-agents \
        clean ci ci-py ci-webapp
@@ -173,7 +173,7 @@ check-managed-agents: ## Type-check managed agents
 	cd src/knowledge-work-managed-agents && npx tsc --noEmit
 
 eval-casehold-ingest: ## Download CaseHOLD from HuggingFace and ingest to Neon
-	uv run python -m julia.evals.casehold.ingest
+	uv run --extra casehold python -m julia.evals.casehold.ingest
 
 eval-promptfoo: ## Run all promptfoo eval suites
 	@for dir in evals/*/ julia/evals/*/; do \
