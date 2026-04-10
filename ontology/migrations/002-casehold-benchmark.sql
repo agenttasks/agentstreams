@@ -73,7 +73,7 @@ INSERT INTO eval_suites (name, skill_name, config_path, test_count, assertion_co
 VALUES (
     'casehold-legal-holdings',
     NULL,
-    'julia/evals/casehold/run_eval.py',
+    'julia/evals/casehold/promptfooconfig.yaml',
     53000,
     53000
 ) ON CONFLICT (name) DO NOTHING;
