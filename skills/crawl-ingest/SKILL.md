@@ -44,7 +44,7 @@ Before reading setup docs, determine which language stack the user needs:
 | Capability | TypeScript | Python |
 |---|---|---|
 | **Anthropic SDK** | `anthropic-sdk-typescript` | `anthropic-sdk-python` |
-| **Agent SDK** | `claude-agent-sdk-typescript` 0.2.88 | `claude-agent-sdk-python` 0.1.53 |
+| **Agent SDK** | `claude-agent-sdk-typescript` 0.2.101 | `claude-agent-sdk-python` 0.1.53 |
 | **MCP SDK** | `@modelcontextprotocol/sdk` 1.29.0 | `mcp` 1.26.0 |
 | **Web Crawler** | Crawlee 3.16.0 | Scrapy 2.14.2 |
 | **Bloom Filter** | `bloom-filters` 3.0.4 | `pybloom-live` 4.0.0 |
