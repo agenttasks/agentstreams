@@ -8,9 +8,12 @@ Exposes src/ modules as MCP tools:
 - bloom_check: Check/add items to persistent bloom filter
 - crawl_urls: Execute a crawl pipeline
 - dspy_extract: Run DSPy extraction on text
-- project_ontology: Generate UDA projections
+- project_ontology: Generate UDA projections (Avro, GraphQL, Cube, TypeScript, etc.)
 - query_metrics: Query dimensional metrics
 - enqueue_task: Add tasks to processing queue
+- graphql_introspect: Introspect pg_graphql schema from Neon
+- generate_cube_model: Generate Cube.dev YAML data models
+- generate_typescript: Generate TypeScript types from GraphQL
 
 Uses CLAUDE_CODE_OAUTH_TOKEN for auth (never ANTHROPIC_API_KEY).
 """
@@ -148,7 +151,7 @@ TOOLS: list[ToolDefinition] = [
         name="project_ontology",
         description=(
             "Generate UDA projections from the AgentStreams ontology. "
-            "Produces Avro, GraphQL, DataContainer, and Mapping files."
+            "Produces Avro, GraphQL, DataContainer, Mapping, Cube YAML, and TypeScript files."
         ),
         input_schema={
             "type": "object",

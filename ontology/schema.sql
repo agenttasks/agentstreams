@@ -506,7 +506,8 @@ INSERT INTO agent_manifests (name, model_override, allowed_tools, denied_tools, 
     ('uda-extractor', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash'], NULL, NULL, '.claude/agents/uda-extractor.md'),
     ('uda-thinker', 'opus', ARRAY['Read', 'Glob', 'Grep', 'Bash'], NULL, NULL, '.claude/agents/uda-thinker.md'),
     ('frontend-generator', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash', 'Write'], NULL, NULL, '.claude/agents/frontend-generator.md'),
-    ('frontend-evaluator', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash'], ARRAY['Edit', 'Write', 'Agent'], NULL, '.claude/agents/frontend-evaluator.md');
+    ('frontend-evaluator', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash'], ARRAY['Edit', 'Write', 'Agent'], NULL, '.claude/agents/frontend-evaluator.md'),
+    ('graphql-typescript', NULL, ARRAY['Read', 'Glob', 'Grep', 'Bash', 'Write', 'Edit'], NULL, NULL, '.claude/agents/graphql-typescript-agent.md');
 
 -- ── Seed: DSPy Signatures ───────────────────────────────
 
@@ -533,8 +534,8 @@ INSERT INTO subagents (name, description, pipeline_modules, manifest_path) VALUE
     ('uda-extractor', 'DSPy structured extraction with ontology alignment',
      ARRAY['ExtractEntities', 'ClassifyContent', 'AlignToOntology'],
      '.claude/subagents/uda-extractor.md'),
-    ('uda-projector', 'Ontology projection generator: Avro, GraphQL, DataContainer, Mapping',
-     ARRAY['AvroProjection', 'GraphQLProjection', 'DataContainerProjection', 'MappingProjection'],
+    ('uda-projector', 'Ontology projection generator: Avro, GraphQL, DataContainer, Mapping, Cube YAML, TypeScript',
+     ARRAY['AvroProjection', 'GraphQLProjection', 'DataContainerProjection', 'MappingProjection', 'CubeProjection', 'TypeScriptCodegen'],
      '.claude/subagents/uda-projector.md'),
     ('uda-thinker', 'Deep reasoning with extended/adaptive thinking and Neon extensions',
      ARRAY['ExtendedThinking', 'AdaptiveThinking', 'record_thinking_trace'],

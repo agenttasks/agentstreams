@@ -1,6 +1,6 @@
 ---
 name: uda-projector
-description: Reusable instructions for the UDA ontology projection subagent. Generates Avro, GraphQL, DataContainer, and Mapping files from the ontology source of truth.
+description: Reusable instructions for the UDA ontology projection subagent. Generates Avro, GraphQL, DataContainer, Mapping, Cube YAML, and TypeScript files from the ontology source of truth.
 type: subagent
 ---
 
@@ -37,6 +37,19 @@ type: subagent
       Convenience function generating all projections at once.
       Returns dict mapping filename → content.
     </tool>
+    <tool module="src/cube_models.py" class="CubeProjection">
+      Generate Cube.dev YAML data models from ontology classes.
+      Follows Kimball dimensional modeling (DW Toolkit Ch. 2).
+      Methods: generate(class_name), generate_all(), to_yaml(), to_yaml_all()
+    </tool>
+    <tool module="src/typescript_codegen.py" class="TypeScriptCodegen">
+      Generate TypeScript interfaces, branded types, and query functions.
+      Patterns from Programming TypeScript (Cherny Ch. 6).
+      Methods: generate_all(), generate_branded_ids(), generate_types()
+    </tool>
+    <tool module="src/typescript_codegen.py" function="codegen_from_ontology">
+      One-shot: ontology → GraphQL SDL → TypeScript types.
+    </tool>
   </tools>
 
   <uda-pattern>
@@ -60,6 +73,16 @@ type: subagent
       TTL mapping definitions bridging ontology → Postgres tables.
       Each class maps to a table; properties map to columns.
       camelCase properties auto-convert to snake_case columns.
+    </projection>
+    <projection format="cube">
+      Cube.dev YAML data models for semantic/analytics layer.
+      Kimball patterns: transaction facts, accumulating snapshots,
+      conformed dimensions, SCD Type 2 filters.
+    </projection>
+    <projection format="typescript">
+      TypeScript interfaces, branded ID types, and query functions.
+      Cherny patterns: discriminated unions, companion objects,
+      mapped types, generic constraints.
     </projection>
   </uda-pattern>
 

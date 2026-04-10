@@ -8,6 +8,8 @@ Everywhere" pattern:
 - GraphQL schemas (API layer via pg_graphql)
 - TTL DataContainer definitions (data mesh source registration)
 - TTL Mapping definitions (ontology → physical layer bridges)
+- Cube.dev YAML data models (Kimball dimensional modeling)
+- TypeScript types (branded IDs, discriminated unions, query functions)
 
 Each projection is auto-generated from the single ontology source of truth,
 ensuring consistency across all representations.
