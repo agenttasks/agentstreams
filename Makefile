@@ -2,7 +2,7 @@
        lint lint-py lint-webapp format test test-py test-webapp \
        build build-webapp typecheck security-audit validate \
        eval-codegen eval-codegen-quick eval-codegen-dry eval-promptfoo \
-       eval-cuad eval-casehold eval-cuad-quick eval-cuad-recall eval-legal \
+       eval-cuad eval-casehold eval-casehold-quick eval-casehold-audit eval-cuad-quick eval-cuad-recall eval-legal \
        eval-lexglue eval-lexglue-quick eval-lexglue-dry ingest-lexglue \
        install-managed-agents build-managed-agents check-managed-agents \
        clean ci ci-py ci-webapp
@@ -129,19 +129,26 @@ eval-codegen-dry: ## Dry-run codegen eval (show task matrix)
 	uv run scripts/run-codegen-eval.py --dry-run
 
 eval-cuad: ## Run CUAD contract understanding benchmark
-	uv run julia/evals/cuad/runner.py --benchmark cuad
+	uv run julia/evals/cuad/runner.py
 
 eval-casehold: ## Run CaseHOLD precedent ranking benchmark
-	uv run julia/evals/cuad/runner.py --benchmark casehold
+	uv run julia/evals/casehold/runner.py
+
+eval-casehold-quick: ## Quick CaseHOLD eval (100 examples)
+	uv run julia/evals/casehold/runner.py --examples 100
+
+eval-casehold-audit: ## CaseHOLD with citation grounding audit
+	uv run julia/evals/casehold/runner.py --examples 100 --citation-audit
 
 eval-cuad-quick: ## Quick CUAD eval (20 contracts, 5 high-priority clause types)
-	uv run julia/evals/cuad/runner.py --benchmark cuad --contracts 20
+	uv run julia/evals/cuad/runner.py --contracts 20
 
 eval-cuad-recall: ## CUAD vault recall@K (pgvector vs lancedb vs pg_trgm)
 	uv run julia/evals/cuad/runner.py --vault-recall --contracts 50
 
 eval-legal: ## Run all legal benchmarks (CUAD + CaseHOLD)
 	uv run julia/evals/cuad/runner.py
+	uv run julia/evals/casehold/runner.py
 
 eval-lexglue: ## Run LexGLUE legal benchmark (all 8 tasks)
 	uv run scripts/run-lexglue-eval.py

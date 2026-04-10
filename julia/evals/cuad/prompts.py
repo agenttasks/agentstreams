@@ -115,42 +115,6 @@ CONTRACT TEXT:
 {contract_text}\
 """
 
-# ── CaseHOLD Precedent Ranking ─────────────────────────────────
-
-CASEHOLD_SYSTEM_PROMPT = """\
-You are Julia, a legal analysis assistant specializing in case law analysis.
-Your task is to identify the correct holding of a cited case based on the
-context in which it is cited.
-
-CONSTRAINTS:
-- Analyze the citing passage carefully to understand WHY the case was cited.
-- Select the holding that best matches the legal principle being invoked.
-- Provide brief reasoning for your selection.
-- Never provide legal advice — this is analysis only.\
-"""
-
-CASEHOLD_PREDICT = """\
-A court opinion cites a case. Based on the context of the citation, select which
-of the 5 candidate holdings is the correct holding for the cited case.
-
-CITING PASSAGE (the <HOLDING> marker shows where the holding should go):
-{citing_prompt}
-
-CANDIDATE HOLDINGS:
-0: {holding_0}
-1: {holding_1}
-2: {holding_2}
-3: {holding_3}
-4: {holding_4}
-
-Respond with ONLY a JSON object (no markdown, no explanation):
-{{
-  "predicted_idx": 0-4,
-  "confidence": 0.0 to 1.0,
-  "reasoning": "brief explanation of why this holding matches the citation context"
-}}\
-"""
-
 
 # ── High-stakes clause types that get iterative verification ───
 
@@ -197,16 +161,3 @@ def build_cuad_batch_prompt(clause_types: list[str], contract_text: str) -> str:
     )
 
 
-def build_casehold_prompt(
-    citing_prompt: str,
-    holdings: list[str],
-) -> str:
-    """Build a CaseHOLD prediction prompt."""
-    return CASEHOLD_PREDICT.format(
-        citing_prompt=citing_prompt,
-        holding_0=holdings[0],
-        holding_1=holdings[1],
-        holding_2=holdings[2],
-        holding_3=holdings[3],
-        holding_4=holdings[4],
-    )
