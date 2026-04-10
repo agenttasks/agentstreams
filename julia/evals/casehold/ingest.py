@@ -161,12 +161,27 @@ async def ingest_to_neon(examples: list[dict], batch_size: int = 500) -> int:
 
 
 def _get_neon_http_config() -> tuple[str, dict[str, str]]:
-    """Extract Neon HTTP SQL API endpoint and headers from DATABASE_URL."""
+    """Build Neon HTTP SQL API endpoint and headers from project env vars.
+
+    Uses NEON_HTTP_HOST and NEON_HTTP_CONN as defined in CLAUDE.md.
+    Falls back to parsing NEON_DATABASE_URL if the dedicated vars are absent.
+    """
+    http_host = os.environ.get("NEON_HTTP_HOST")
+    http_conn = os.environ.get("NEON_HTTP_CONN")
+
+    if http_host and http_conn:
+        url = f"https://{http_host}/sql"
+        headers = {
+            "Neon-Connection-String": http_conn,
+            "Content-Type": "application/json",
+        }
+        return url, headers
+
+    # Fallback: parse from NEON_DATABASE_URL
     db_url = os.environ.get("NEON_DATABASE_URL") or os.environ.get("DATABASE_URL", "")
     if not db_url:
-        raise ValueError("Set NEON_DATABASE_URL or DATABASE_URL")
+        raise ValueError("Set NEON_HTTP_HOST + NEON_HTTP_CONN, or NEON_DATABASE_URL")
 
-    # Extract pooler host from connection string
     match = re.search(r"@([\w.-]+)", db_url)
     if not match:
         raise ValueError(f"Cannot extract host from: {db_url[:40]}...")
