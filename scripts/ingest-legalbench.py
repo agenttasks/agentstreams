@@ -214,35 +214,34 @@ async def store_neon(samples: list[dict], skip_embeddings: bool = False) -> int:
 
 
 def store_lance(samples: list[dict]) -> int:
-    """Store samples in LanceDB local cache for vector search."""
+    """Store embeddings in LanceDB local cache (follows ingest-lexglue.py pattern)."""
     try:
-        from src.embeddings import get_or_create_lance_table
+        from src.embeddings import EmbeddingRecord, LanceStore
     except ImportError:
         print("  [skip] LanceDB not installed (uv sync --extra vector)", file=sys.stderr)
         return 0
 
+    store = LanceStore(db_path=PROJECT_ROOT / ".lancedb" / "legalbench", table_name="legalbench")
     count = 0
     for sample in samples:
         chunks = chunk_text(sample["text"], chunk_size=512, overlap=64)
         for chunk in chunks:
             vec = hash_embedding(chunk["text"], dim=384)
-            try:
-                table = get_or_create_lance_table("legalbench", sample["task"])
-                table.add(
-                    [
-                        {
-                            "text": chunk["text"],
-                            "vector": vec,
-                            "task": sample["task"],
-                            "category": sample["category"],
-                            "hf_index": sample["hf_index"],
-                        }
-                    ]
-                )
-                count += 1
-            except Exception as e:
-                print(f"  [warn] LanceDB error: {e}", file=sys.stderr)
-                break
+            record = EmbeddingRecord(
+                id=f"{sample['task']}_{sample['hf_index']}_{chunk['index']}",
+                text=chunk["text"],
+                vector=vec,
+                metadata={
+                    "task": sample["task"],
+                    "category": sample["category"],
+                    "hf_index": sample["hf_index"],
+                },
+                wing="legalbench",
+                room=sample["task"],
+                content_hash=hashlib.sha256(chunk["text"].encode()).hexdigest()[:32],
+            )
+            store.add(record)
+            count += 1
 
     return count
 

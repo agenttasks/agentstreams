@@ -111,7 +111,7 @@ cubes:
       - name: total_tokens
         sql: token_count
         type: sum
-        description: "Total pg_tiktoken cl100k_base tokens across all samples"
+        description: "Total approximate token count across all samples (whitespace-split word count)"
 
       - name: avg_tokens
         sql: token_count
