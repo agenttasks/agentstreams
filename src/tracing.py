@@ -38,7 +38,7 @@ from typing import Any
 _tracer = None
 _initialized = False
 
-# 2.1.101 OTEL logging flags — control sensitive span attributes
+# OTEL logging flags — control sensitive span attributes (see module docstring)
 _log_prompts = False
 _log_tool_details = False
 _log_tool_content = False
@@ -76,7 +76,7 @@ def _init_tracer():
         return
     _initialized = True
 
-    # Parse 2.1.101 logging flags
+    # Parse OTEL logging flags
     _log_prompts = os.environ.get("OTEL_LOG_USER_PROMPTS", "false").lower() == "true"
     _log_tool_details = os.environ.get("OTEL_LOG_TOOL_DETAILS", "false").lower() == "true"
     _log_tool_content = os.environ.get("OTEL_LOG_TOOL_CONTENT", "false").lower() == "true"
