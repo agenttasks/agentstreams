@@ -9,7 +9,7 @@ Pipeline:
   5. Optionally populate LanceDB local cache
   6. Write local JSON cache for offline eval runs
 
-Requires: `uv sync --extra lexglue` (installs `datasets>=2.14.0`)
+Requires: `uv sync --extra lexglue` (installs `datasets>=3.0`)
 Schema:  `julia/evals/lexglue_schema.sql` must be applied first.
 Auth:    CLAUDE_CODE_OAUTH_TOKEN (never ANTHROPIC_API_KEY).
 
@@ -445,70 +445,61 @@ async def store_neon(samples: list[dict], skip_embeddings: bool = False) -> int:
     count = 0
     async with connection_pool() as conn:
         for sample in samples:
-            # Upsert sample
-            await conn.execute(
-                """INSERT INTO julia_lexglue_samples
-                   (id, task, hf_index, text, holdings, label, labels,
-                    label_set, split, metadata, content_hash)
-                   VALUES (gen_random_uuid()::text, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                   ON CONFLICT (task, hf_index, split) DO UPDATE SET
-                       text = EXCLUDED.text,
-                       label = EXCLUDED.label,
-                       labels = EXCLUDED.labels""",
-                (
-                    sample["task"],
-                    sample["hf_index"],
-                    sample["text"],
-                    json.dumps(sample.get("holdings")) if sample.get("holdings") else None,
-                    sample.get("label"),
-                    json.dumps(sample.get("labels")) if sample.get("labels") else None,
-                    json.dumps(sample["label_set"]),
-                    sample["split"],
-                    json.dumps(sample.get("metadata", {})),
-                    sample["content_hash"],
-                ),
-            )
+            # Upsert sample and get ID back
+            row = await (
+                await conn.execute(
+                    """INSERT INTO julia_lexglue_samples
+                       (id, task, hf_index, text, holdings, label, labels,
+                        label_set, split, metadata, content_hash)
+                       VALUES (gen_random_uuid()::text, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                       ON CONFLICT (task, hf_index, split) DO UPDATE SET
+                           text = EXCLUDED.text,
+                           label = EXCLUDED.label,
+                           labels = EXCLUDED.labels
+                       RETURNING id""",
+                    (
+                        sample["task"],
+                        sample["hf_index"],
+                        sample["text"],
+                        json.dumps(sample.get("holdings")) if sample.get("holdings") else None,
+                        sample.get("label"),
+                        json.dumps(sample.get("labels")) if sample.get("labels") else None,
+                        json.dumps(sample["label_set"]),
+                        sample["split"],
+                        json.dumps(sample.get("metadata", {})),
+                        sample["content_hash"],
+                    ),
+                )
+            ).fetchone()
 
             # Embed and store chunks
-            if not skip_embeddings:
-                # Get the sample ID back
-                row = await (
+            if not skip_embeddings and row:
+                sample_id = row[0]
+                chunks = chunk_text(sample["text"], chunk_size=512, overlap=64)
+                for chunk in chunks:
+                    vec = hash_embedding(chunk["text"], dim=384)
+                    vec_str = "[" + ",".join(str(v) for v in vec) + "]"
+                    chunk_hash = hashlib.sha256(chunk["text"].encode()).hexdigest()[:32]
+
                     await conn.execute(
-                        """SELECT id FROM julia_lexglue_samples
-                           WHERE task = %s AND hf_index = %s AND split = %s""",
-                        (sample["task"], sample["hf_index"], sample["split"]),
+                        """INSERT INTO julia_lexglue_embeddings
+                           (id, sample_id, chunk_index, content, content_hash,
+                            embedding, token_count, metadata)
+                           VALUES (gen_random_uuid()::text, %s, %s, %s, %s,
+                                   %s::vector, %s, %s)
+                           ON CONFLICT (sample_id, chunk_index) DO UPDATE SET
+                               content = EXCLUDED.content,
+                               embedding = EXCLUDED.embedding""",
+                        (
+                            sample_id,
+                            chunk["index"],
+                            chunk["text"],
+                            chunk_hash,
+                            vec_str,
+                            len(chunk["text"].split()),
+                            json.dumps({"char_start": chunk["start"], "char_end": chunk["end"]}),
+                        ),
                     )
-                ).fetchone()
-
-                if row:
-                    sample_id = row[0]
-                    chunks = chunk_text(sample["text"], chunk_size=512, overlap=64)
-                    for chunk in chunks:
-                        vec = hash_embedding(chunk["text"], dim=384)
-                        vec_str = "[" + ",".join(str(v) for v in vec) + "]"
-                        chunk_hash = hashlib.sha256(chunk["text"].encode()).hexdigest()[:32]
-
-                        await conn.execute(
-                            """INSERT INTO julia_lexglue_embeddings
-                               (id, sample_id, chunk_index, content, content_hash,
-                                embedding, token_count, metadata)
-                               VALUES (gen_random_uuid()::text, %s, %s, %s, %s,
-                                       %s::vector, %s, %s)
-                               ON CONFLICT (sample_id, chunk_index) DO UPDATE SET
-                                   content = EXCLUDED.content,
-                                   embedding = EXCLUDED.embedding""",
-                            (
-                                sample_id,
-                                chunk["index"],
-                                chunk["text"],
-                                chunk_hash,
-                                vec_str,
-                                len(chunk["text"].split()),
-                                json.dumps(
-                                    {"char_start": chunk["start"], "char_end": chunk["end"]}
-                                ),
-                            ),
-                        )
 
             count += 1
 
