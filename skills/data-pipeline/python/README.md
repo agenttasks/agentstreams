@@ -34,7 +34,7 @@ uv add --dev pytest-asyncio==0.25.3
 
 | Package | Version | Purpose |
 |---------|---------|---------|
-| `anthropic` | 0.86.0 | Official Python SDK |
+| `anthropic` | 0.87.0 | Official Python SDK |
 | `prefect` | 3.4.5 | Workflow orchestration — flows, tasks, scheduling, UI |
 | `polars` | 1.27.0 | Fast DataFrames — lazy evaluation, streaming, parallel |
 | `pyarrow` | 19.0.1 | Columnar format — Parquet read/write, zero-copy |

@@ -23,7 +23,7 @@ uv add --dev pytest==8.4.0
 
 | Package | Version | Purpose |
 |---------|---------|---------|
-| `anthropic` | 0.86.0 | Official Python SDK — messages, token counting, caching |
+| `anthropic` | 0.87.0 | Official Python SDK — messages, token counting, caching |
 | `tiktoken` | 0.9.0 | Local token estimation — approximate counts without API call |
 | `nltk` | 3.9.1 | Text splitting — sentence and paragraph boundaries |
 

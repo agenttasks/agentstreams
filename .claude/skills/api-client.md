@@ -16,3 +16,6 @@ For Python API clients, use the unified src/ modules:
 | `src/agent_tasks.py` | `AgentRunner`, `AgentConfig` | Agent SDK v2 client orchestration |
 | `src/neon_db.py` | `record_metric` | API call metrics to dimensional fact table |
 | `src/dspy_prompts.py` | `EXTRACT_API_PATTERNS` | Extract API patterns from documentation |
+| `src/graphql_toolkit.py` | `GraphQLSchemaParser`, `introspect_pg_graphql` | Parse GraphQL SDL, introspect pg_graphql |
+| `src/typescript_codegen.py` | `TypeScriptCodegen`, `codegen_from_sdl` | Generate TypeScript types from GraphQL |
+| `src/cube_models.py` | `CubeProjection` | Cube.dev YAML data model generation |

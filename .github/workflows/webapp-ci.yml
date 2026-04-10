@@ -32,14 +32,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Build static export
+        run: npx next build
+
       - name: TypeScript check
         run: npx tsc --noEmit
 
       - name: ESLint
         run: npx next lint
-
-      - name: Build static export
-        run: npx next build
 
       - name: Verify output
         run: |

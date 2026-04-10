@@ -45,7 +45,13 @@ class Tracer:
         self._otel_enabled = bool(os.environ.get("OTEL_EXPORTER_OTLP_ENDPOINT"))
 
     @contextmanager
-    def span(self, name: str, layer: int = 0, **attrs: Any) -> Generator[Span, None, None]:
+    def span(
+        self, name: str, layer: int = 0, sensitive: bool = False, **attrs: Any
+    ) -> Generator[Span, None, None]:
+        if sensitive:
+            from src.tracing import _should_log_attribute
+
+            attrs = {k: v if _should_log_attribute(k) else "[redacted]" for k, v in attrs.items()}
         s = Span(name=name, layer=layer, attributes=attrs)
         try:
             yield s

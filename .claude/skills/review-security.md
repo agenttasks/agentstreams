@@ -2,6 +2,7 @@
 name: review-security
 description: "Security review for skill PRs — auth violations, hardcoded secrets, unsafe code patterns, credential exposure"
 trigger: "reviewing PR diffs for auth violations, hardcoded secrets, unsafe code patterns, or credential exposure"
+context: fork
 ---
 
 # Security Review

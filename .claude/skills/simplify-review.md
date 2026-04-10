@@ -2,6 +2,7 @@
 name: simplify-review
 description: "Three-agent parallel code review on recent changes: reuse, quality, and efficiency"
 trigger: "user asks to simplify, review, or clean up recent code changes before committing"
+context: fork
 ---
 
 Review recent changes using three parallel perspectives:

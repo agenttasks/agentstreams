@@ -18,6 +18,17 @@ For SDK constructors:
 - PHP: `Anthropic::client()` (reads env automatically)
 - cURL: `-H "x-api-key: $CLAUDE_CODE_OAUTH_TOKEN"`
 
+## Environment
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `CLAUDE_CODE_OAUTH_TOKEN` | (required) | Auth token — all SDK constructors read automatically |
+| `API_TIMEOUT_MS` | 300000 | Request timeout for Claude API (increase for extended thinking) |
+| `CLAUDE_CODE_CERT_STORE` | OS store | Set to `bundled` to use only bundled CAs (enterprise proxy) |
+| `OTEL_LOG_USER_PROMPTS` | false | Include user prompts in OTEL trace spans |
+| `OTEL_LOG_TOOL_DETAILS` | false | Include tool call details in OTEL spans |
+| `OTEL_LOG_TOOL_CONTENT` | false | Include tool result content in OTEL spans |
+
 ## Review Criteria
 
 When reviewing PRs, check:
@@ -79,6 +90,7 @@ Model hierarchy (orchestrated pipeline agents only):
 
 Standalone subagents (.claude/agents/, not in orchestrator pipelines):
 - opus: uda-thinker, uda-crawler
+- sonnet: graphql-typescript-agent
 - haiku: crawl-analyzer, memory-validator, explore
 
 Knowledge-work pipelines (3):
@@ -108,10 +120,12 @@ Install pip packages: `make install-safety` (petri, bloom)
 
 | Package | Purpose |
 |---------|---------|
-| `@anthropic-ai/claude-agent-sdk` | Agent runtime (query, hooks, subagents) |
-| `@anthropic-ai/sdk` | Direct Messages API client (v0.86+) |
-| `@anthropic-ai/claude-trace` | JSONL transcript capture |
-| `@anthropic-ai/mcpb` | MCP Bundle builder |
+| `@anthropic-ai/claude-agent-sdk` | Agent runtime (query, hooks, subagents) — v0.2.101+ |
+| `@anthropic-ai/sdk` | Direct Messages API client (v0.87+) |
+| `@anthropic-ai/claude-code` | Claude Code CLI runtime — v2.1.101+ |
+| `@anthropic-ai/claude-trace` | JSONL transcript capture — v0.1.2+ |
+| `@anthropic-ai/mcpb` | MCP Bundle builder — v2.1.2+ |
+| `@modelcontextprotocol/sdk` | MCP SDK for tool servers — v1.29.0+ |
 | `@neondatabase/serverless` | Neon SQL over HTTPS/WebSocket |
 | `@neondatabase/neon-js` | Neon Auth + Data API |
 
@@ -142,7 +156,7 @@ Environment variables available after session start:
 
 **Always use `NEON_DATABASE_URL` from env** — never hardcode credentials in scripts.
 
-Schema: `ontology/schema.sql` (12 tables, `resources.url` has UNIQUE constraint)
+Schema: `ontology/schema.sql` (29 tables, `resources.url` has UNIQUE constraint)
 
 ## Webapp
 

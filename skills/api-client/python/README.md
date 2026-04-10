@@ -35,7 +35,7 @@ uv add --dev respx==0.22.0     # Mock httpx requests
 
 | Package | Version | Purpose |
 |---------|---------|---------|
-| `anthropic` | 0.86.0 | Official Python SDK — messages, streaming, tool use, structured outputs |
+| `anthropic` | 0.87.0 | Official Python SDK — messages, streaming, tool use, structured outputs |
 | `httpx` | 0.28.1 | Async-first HTTP client — HTTP/2, connection pooling, timeouts |
 | `openapi-python-client` | 0.24.5 | Generate Python clients from OpenAPI specs |
 | `pydantic` | 2.11.3 | Data validation and serialization — JSON Schema, type coercion |

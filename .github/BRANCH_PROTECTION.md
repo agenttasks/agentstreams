@@ -41,6 +41,7 @@ Add these in **Settings → Secrets and variables → Actions**:
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account | `e6294e3ea89f8207af387d459824aaae` |
 | `NEON_API_KEY` | Neon preview branches | console.neon.tech |
 | `NEON_PROJECT_ID` | Neon project | `calm-paper-82059121` |
+| `NEON_DATABASE_URL` | Production Neon connection string (schema deploy on merge) | console.neon.tech → Connection Details |
 
 ## Workflow Architecture
 
@@ -78,8 +79,9 @@ PR opened/synced
 │   └── Cloudflare Pages deploy via wrangler-action@v3
 │
 ├── neon-preview.yml (on schema changes)
-│   ├── create preview branch + apply schema
-│   └── delete on PR close
+│   ├── PR: create preview branch + apply schema + migrations
+│   ├── PR close: delete preview branch
+│   └── push main: apply schema + migrations to production
 │
 ├── evals.yml (on skills/evals changes)
 │   ├── config validation (always)

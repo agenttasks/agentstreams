@@ -1,9 +1,16 @@
-name: Neon Preview Branch
+name: Neon Database
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'ontology/schema.sql'
+      - 'ontology/migrations/*.sql'
   pull_request:
     paths:
       - 'ontology/schema.sql'
+      - 'ontology/migrations/*.sql'
       - 'scripts/generate-timeseries.py'
   pull_request_target:
     types: [closed]
@@ -13,10 +20,64 @@ permissions:
   pull-requests: write
 
 jobs:
+  # ── Apply schema to production on merge to main ────────────
+  deploy-production:
+    name: Apply Schema to Production
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check secrets
+        id: check
+        run: |
+          if [ -z "${{ secrets.NEON_API_KEY }}" ] || [ -z "${{ secrets.NEON_DATABASE_URL }}" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "⚠️ NEON secrets not configured — skipping production deploy" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v6
+        if: steps.check.outputs.skip != 'true'
+
+      - name: Apply schema to production
+        if: steps.check.outputs.skip != 'true'
+        env:
+          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+        run: |
+          set -euo pipefail
+          echo "## Neon Production Deploy" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch: \`main\` (production)" >> $GITHUB_STEP_SUMMARY
+
+          # Apply base schema (idempotent: IF NOT EXISTS + ON CONFLICT)
+          psql "$DATABASE_URL" -f ontology/schema.sql
+          echo "- ✅ ontology/schema.sql applied" >> $GITHUB_STEP_SUMMARY
+
+          # Apply migrations in order (idempotent: ON CONFLICT DO NOTHING)
+          for migration in ontology/migrations/*.sql; do
+            [ -f "$migration" ] || continue
+            psql "$DATABASE_URL" -f "$migration"
+            echo "- ✅ $(basename "$migration") applied" >> $GITHUB_STEP_SUMMARY
+          done
+
+      - name: Validate pg_graphql
+        if: steps.check.outputs.skip != 'true'
+        env:
+          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+        run: |
+          RESULT=$(psql "$DATABASE_URL" -t -c "SELECT graphql.resolve('{ skillCollection(first: 1) { edges { node { name } } } }');")
+          echo "$RESULT" | python3 -c "
+          import sys, json
+          d = json.loads(sys.stdin.read())
+          edges = d['data']['skillCollection']['edges']
+          print(f'pg_graphql: {len(edges)} skill(s) returned')
+          assert len(edges) >= 1, 'pg_graphql returned no skills'
+          "
+          echo "- ✅ pg_graphql verified" >> $GITHUB_STEP_SUMMARY
+
   # ── Create preview branch on PR open/update ────────────────
   create-branch:
     name: Create Neon Preview Branch
-    if: github.event.action != 'closed'
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
     runs-on: ubuntu-latest
     outputs:
       branch_id: ${{ steps.create.outputs.branch_id }}
@@ -45,30 +106,46 @@ jobs:
           role: neondb_owner
           database: neondb
 
-      - name: Apply schema
+      - name: Apply schema and migrations
         if: steps.check.outputs.skip != 'true'
         env:
           DATABASE_URL: ${{ steps.create.outputs.db_url_with_pooler }}
         run: |
-          psql "$DATABASE_URL" -f ontology/schema.sql
+          set -euo pipefail
           echo "## Neon Preview Branch" >> $GITHUB_STEP_SUMMARY
           echo "- Branch: \`preview/pr-${{ github.event.number }}\`" >> $GITHUB_STEP_SUMMARY
           echo "- Branch ID: \`${{ steps.create.outputs.branch_id }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "- Schema applied successfully" >> $GITHUB_STEP_SUMMARY
+
+          # Apply base schema
+          psql "$DATABASE_URL" -f ontology/schema.sql
+          echo "- ✅ ontology/schema.sql applied" >> $GITHUB_STEP_SUMMARY
+
+          # Apply migrations in order
+          for migration in ontology/migrations/*.sql; do
+            [ -f "$migration" ] || continue
+            psql "$DATABASE_URL" -f "$migration"
+            echo "- ✅ $(basename "$migration") applied" >> $GITHUB_STEP_SUMMARY
+          done
 
       - name: Validate pg_graphql
         if: steps.check.outputs.skip != 'true'
         env:
           DATABASE_URL: ${{ steps.create.outputs.db_url_with_pooler }}
         run: |
-          RESULT=$(psql "$DATABASE_URL" -t -c "SELECT graphql.resolve('{ skillCollection { edges { node { name } } } }');")
-          echo "$RESULT" | python3 -c "import sys,json; d=json.loads(sys.stdin.read()); edges=d['data']['skillCollection']['edges']; print(f'pg_graphql: {len(edges)} skills'); assert len(edges)==3"
-          echo "- pg_graphql verified: 3 skills returned" >> $GITHUB_STEP_SUMMARY
+          RESULT=$(psql "$DATABASE_URL" -t -c "SELECT graphql.resolve('{ skillCollection(first: 1) { edges { node { name } } } }');")
+          echo "$RESULT" | python3 -c "
+          import sys, json
+          d = json.loads(sys.stdin.read())
+          edges = d['data']['skillCollection']['edges']
+          print(f'pg_graphql: {len(edges)} skill(s) returned')
+          assert len(edges) >= 1, 'pg_graphql returned no skills'
+          "
+          echo "- ✅ pg_graphql verified" >> $GITHUB_STEP_SUMMARY
 
   # ── Delete preview branch on PR close ──────────────────────
   delete-branch:
     name: Delete Neon Preview Branch
-    if: github.event.action == 'closed'
+    if: github.event_name == 'pull_request_target' && github.event.action == 'closed'
     runs-on: ubuntu-latest
     steps:
       - name: Check secrets

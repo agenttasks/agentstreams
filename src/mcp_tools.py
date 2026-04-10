@@ -8,9 +8,12 @@ Exposes src/ modules as MCP tools:
 - bloom_check: Check/add items to persistent bloom filter
 - crawl_urls: Execute a crawl pipeline
 - dspy_extract: Run DSPy extraction on text
-- project_ontology: Generate UDA projections
+- project_ontology: Generate UDA projections (Avro, GraphQL, Cube, TypeScript, etc.)
 - query_metrics: Query dimensional metrics
 - enqueue_task: Add tasks to processing queue
+- graphql_introspect: Introspect pg_graphql schema from Neon
+- generate_cube_model: Generate Cube.dev YAML data models
+- generate_typescript: Generate TypeScript types from GraphQL
 
 Uses CLAUDE_CODE_OAUTH_TOKEN for auth (never ANTHROPIC_API_KEY).
 """
@@ -19,6 +22,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 
@@ -148,7 +152,7 @@ TOOLS: list[ToolDefinition] = [
         name="project_ontology",
         description=(
             "Generate UDA projections from the AgentStreams ontology. "
-            "Produces Avro, GraphQL, DataContainer, and Mapping files."
+            "Produces Avro, GraphQL, DataContainer, Mapping, Cube YAML, and TypeScript files."
         ),
         input_schema={
             "type": "object",
@@ -159,7 +163,15 @@ TOOLS: list[ToolDefinition] = [
                 },
                 "format": {
                     "type": "string",
-                    "enum": ["avro", "graphql", "datacontainer", "mapping", "all"],
+                    "enum": [
+                        "avro",
+                        "graphql",
+                        "datacontainer",
+                        "mapping",
+                        "cube",
+                        "typescript",
+                        "all",
+                    ],
                     "description": "Output format (default: all)",
                     "default": "all",
                 },
@@ -232,6 +244,72 @@ TOOLS: list[ToolDefinition] = [
             "required": ["queue_name", "task_type"],
         },
     ),
+    ToolDefinition(
+        name="graphql_introspect",
+        description=(
+            "Introspect the pg_graphql auto-generated schema from Neon Postgres. "
+            "Returns the GraphQL schema types, fields, and arguments."
+        ),
+        input_schema={
+            "type": "object",
+            "properties": {
+                "table_filter": {
+                    "type": "string",
+                    "description": "Optional filter to match type names (case-insensitive)",
+                },
+            },
+            "required": [],
+        },
+    ),
+    ToolDefinition(
+        name="generate_cube_model",
+        description=(
+            "Generate Cube.dev YAML data models from the AgentStreams ontology. "
+            "Follows Kimball dimensional modeling patterns (transaction facts, "
+            "accumulating snapshots, conformed dimensions)."
+        ),
+        input_schema={
+            "type": "object",
+            "properties": {
+                "class_name": {
+                    "type": "string",
+                    "description": "Ontology class to generate cube for (or 'all')",
+                },
+                "output_dir": {
+                    "type": "string",
+                    "description": "Directory to write YAML files",
+                },
+            },
+            "required": ["class_name"],
+        },
+    ),
+    ToolDefinition(
+        name="generate_typescript",
+        description=(
+            "Generate TypeScript types and query functions from a GraphQL schema. "
+            "Uses branded types, discriminated unions, and companion object patterns."
+        ),
+        input_schema={
+            "type": "object",
+            "properties": {
+                "source": {
+                    "type": "string",
+                    "enum": ["ontology", "file"],
+                    "description": "Source: 'ontology' generates from TTL, 'file' reads a .graphql file",
+                    "default": "ontology",
+                },
+                "file_path": {
+                    "type": "string",
+                    "description": "Path to .graphql file (required when source is 'file')",
+                },
+                "output_dir": {
+                    "type": "string",
+                    "description": "Directory to write TypeScript files",
+                },
+            },
+            "required": [],
+        },
+    ),
 ]
 
 
@@ -249,6 +327,21 @@ class MCPToolHandler:
 
     def __init__(self, neon_url: str = ""):
         self.neon_url = neon_url
+        self._project_root = Path(__file__).resolve().parents[1]
+
+    def _safe_output_path(self, output_dir: str) -> Path:
+        """Resolve output_dir and assert it stays within the project root."""
+        resolved = (self._project_root / output_dir).resolve()
+        if not resolved.is_relative_to(self._project_root):
+            raise ValueError(f"output_dir must be within the project directory, got: {output_dir}")
+        return resolved
+
+    def _safe_file_path(self, file_path: str) -> Path:
+        """Resolve file_path and assert it stays within the project root."""
+        resolved = Path(file_path).resolve()
+        if not resolved.is_relative_to(self._project_root):
+            raise ValueError(f"file_path must be within the project directory, got: {file_path}")
+        return resolved
 
     def list_tools(self) -> list[dict]:
         """Return MCP v2 tool definitions."""
@@ -270,6 +363,9 @@ class MCPToolHandler:
             "project_ontology": self._handle_project_ontology,
             "query_metrics": self._handle_query_metrics,
             "enqueue_task": self._handle_enqueue_task,
+            "graphql_introspect": self._handle_graphql_introspect,
+            "generate_cube_model": self._handle_generate_cube_model,
+            "generate_typescript": self._handle_generate_typescript,
         }
 
         handler = handlers.get(name)
@@ -444,6 +540,14 @@ class MCPToolHandler:
             output["datacontainer"] = DataContainerProjection(parser).generate(class_name)
         if fmt in ("mapping", "all"):
             output["mapping"] = MappingProjection(parser).generate(class_name)
+        if fmt in ("cube", "all"):
+            from src.cube_models import CubeProjection
+
+            output["cube"] = CubeProjection(parser).to_yaml(class_name)
+        if fmt in ("typescript", "all"):
+            from src.typescript_codegen import codegen_from_ontology
+
+            output["typescript"] = codegen_from_ontology(parser)
 
         return ToolResult(
             content=[
@@ -528,6 +632,107 @@ class MCPToolHandler:
                 {
                     "type": "text",
                     "text": json.dumps({"task_id": task_id, "status": "queued"}),
+                }
+            ]
+        )
+
+    async def _handle_graphql_introspect(self, args: dict) -> ToolResult:
+        from src.graphql_toolkit import introspect_pg_graphql
+        from src.neon_db import connection_pool
+
+        if not self.neon_url:
+            return ToolResult(
+                content=[{"type": "text", "text": "No NEON_DATABASE_URL configured"}],
+                is_error=True,
+            )
+
+        table_filter = args.get("table_filter")
+        async with connection_pool(self.neon_url) as conn:
+            result = await introspect_pg_graphql(conn, table_filter=table_filter)
+
+        return ToolResult(content=[{"type": "text", "text": result}])
+
+    async def _handle_generate_cube_model(self, args: dict) -> ToolResult:
+        from src.cube_models import CubeProjection
+        from src.projections import OntologyParser
+
+        class_name = args["class_name"]
+        output_dir = args.get("output_dir")
+
+        parser = OntologyParser()
+        parser.parse()
+        cube = CubeProjection(parser)
+
+        if class_name == "all":
+            yaml_content = cube.to_yaml_all()
+            filename = "models.yml"
+        else:
+            yaml_content = cube.to_yaml(class_name)
+            filename = f"{class_name.lower()}.yml"
+
+        if output_dir:
+            out = self._safe_output_path(output_dir)
+            out.mkdir(parents=True, exist_ok=True)
+            (out / filename).write_text(yaml_content)
+
+        return ToolResult(
+            content=[
+                {
+                    "type": "text",
+                    "text": json.dumps(
+                        {
+                            "filename": filename,
+                            "content": yaml_content,
+                            "written_to": f"{output_dir}/{filename}" if output_dir else None,
+                        }
+                    ),
+                }
+            ]
+        )
+
+    async def _handle_generate_typescript(self, args: dict) -> ToolResult:
+        source = args.get("source", "ontology")
+        output_dir = args.get("output_dir")
+
+        if source == "ontology":
+            from src.typescript_codegen import codegen_from_ontology
+
+            ts_content = codegen_from_ontology()
+        elif source == "file":
+            file_path = args.get("file_path")
+            if not file_path:
+                return ToolResult(
+                    content=[{"type": "text", "text": "file_path required when source is 'file'"}],
+                    is_error=True,
+                )
+            from src.typescript_codegen import codegen_from_sdl
+
+            safe_path = self._safe_file_path(file_path)
+            sdl = safe_path.read_text()
+            ts_content = codegen_from_sdl(sdl)
+        else:
+            return ToolResult(
+                content=[{"type": "text", "text": f"Unknown source: {source}"}],
+                is_error=True,
+            )
+
+        filename = "types.ts"
+        if output_dir:
+            out = self._safe_output_path(output_dir)
+            out.mkdir(parents=True, exist_ok=True)
+            (out / filename).write_text(ts_content)
+
+        return ToolResult(
+            content=[
+                {
+                    "type": "text",
+                    "text": json.dumps(
+                        {
+                            "filename": filename,
+                            "content_length": len(ts_content),
+                            "written_to": f"{output_dir}/{filename}" if output_dir else None,
+                        }
+                    ),
                 }
             ]
         )
