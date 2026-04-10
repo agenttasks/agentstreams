@@ -4,11 +4,18 @@ Downloads the CaseHOLD dataset (53K+ legal holdings) from HuggingFace,
 extracts jurisdiction metadata, generates hash embeddings, and persists
 to Neon Postgres 18 (pgvector) and LanceDB (local vector store).
 
+Supports two Neon ingestion modes:
+  - psycopg (default): async connection via NEON_DATABASE_URL
+  - HTTP SQL API (--http): batch multi-row INSERT via Neon pooler HTTP endpoint,
+    useful when direct Postgres connections are unavailable (e.g., in sandboxed envs).
+    Batches 100 rows per HTTP request (53K rows = ~530 requests = ~2 min).
+
 Usage:
     python -m julia.evals.casehold.ingest
+    python -m julia.evals.casehold.ingest --http             # HTTP SQL API mode
     python -m julia.evals.casehold.ingest --export-sample --sample-size 100
 
-Auth: NEON_DATABASE_URL from env (never hardcoded).
+Auth: NEON_DATABASE_URL / DATABASE_URL from env (never hardcoded).
 """
 
 from __future__ import annotations
@@ -16,6 +23,8 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import json
+import os
+import re
 import sys
 from pathlib import Path
 
@@ -146,6 +155,105 @@ async def ingest_to_neon(examples: list[dict], batch_size: int = 500) -> int:
     return count
 
 
+# ── Neon HTTP SQL Batch Ingestion ──────────────────────────
+
+
+def _get_neon_http_config() -> tuple[str, dict[str, str]]:
+    """Extract Neon HTTP SQL API endpoint and headers from DATABASE_URL."""
+    db_url = os.environ.get("NEON_DATABASE_URL") or os.environ.get("DATABASE_URL", "")
+    if not db_url:
+        raise ValueError("Set NEON_DATABASE_URL or DATABASE_URL")
+
+    # Extract pooler host from connection string
+    match = re.search(r"@([\w.-]+)", db_url)
+    if not match:
+        raise ValueError(f"Cannot extract host from: {db_url[:40]}...")
+    host = match.group(1)
+
+    url = f"https://{host}/sql"
+    headers = {
+        "Neon-Connection-String": db_url,
+        "Content-Type": "application/json",
+    }
+    return url, headers
+
+
+def ingest_to_neon_http(examples: list[dict], batch_size: int = 100) -> int:
+    """Ingest via Neon HTTP SQL API with multi-row INSERT batches.
+
+    Constructs multi-row VALUES clauses (batch_size rows per HTTP request).
+    53K rows at batch_size=100 = ~530 HTTP calls = ~2 minutes.
+    Idempotent via ON CONFLICT (id) DO NOTHING.
+    """
+    import httpx
+
+    url, headers = _get_neon_http_config()
+    count = 0
+    errors = 0
+
+    with Progress(console=console) as progress:
+        task = progress.add_task("Ingesting to Neon (HTTP)...", total=len(examples))
+
+        for i in range(0, len(examples), batch_size):
+            batch = examples[i : i + batch_size]
+
+            # Build multi-row VALUES with positional params ($1, $2, ...)
+            # 9 columns per row
+            values_clauses = []
+            params: list = []
+            for j, ex in enumerate(batch):
+                embedding = hash_embedding(ex["citing_prompt"])
+                vec_str = "[" + ",".join(str(v) for v in embedding) + "]"
+                offset = j * 9
+                values_clauses.append(
+                    f"(${offset+1}, ${offset+2}, ${offset+3}::jsonb, ${offset+4}, "
+                    f"${offset+5}, ${offset+6}, ${offset+7}::vector, ${offset+8}, "
+                    f"${offset+9}::jsonb)"
+                )
+                params.extend([
+                    ex["id"],
+                    ex["citing_prompt"],
+                    json.dumps(ex["holdings"]),
+                    ex["label"],
+                    ex["jurisdiction"],
+                    ex.get("court", ""),
+                    vec_str,
+                    ex["content_hash"],
+                    json.dumps({"split": ex.get("split", "test")}),
+                ])
+
+            query = (
+                "INSERT INTO casehold_examples "
+                "(id, citing_prompt, holdings, label, jurisdiction, court, "
+                "embedding, content_hash, metadata) VALUES "
+                + ", ".join(values_clauses)
+                + " ON CONFLICT (id) DO NOTHING"
+            )
+
+            body = json.dumps({"query": query, "params": params})
+            try:
+                resp = httpx.post(url, headers=headers, content=body, timeout=60)
+                if resp.status_code == 200:
+                    count += len(batch)
+                else:
+                    errors += 1
+                    if errors <= 3:
+                        err = json.loads(resp.text).get("message", resp.text[:100])
+                        console.print(f"  [red]Batch error: {err}[/red]")
+            except httpx.TimeoutException:
+                errors += 1
+                if errors <= 3:
+                    console.print(f"  [red]Batch timeout at row {i}[/red]")
+
+            progress.update(task, advance=len(batch))
+
+    console.print(
+        f"[green]Ingested {count} examples to Neon via HTTP "
+        f"({errors} batch errors)[/green]"
+    )
+    return count
+
+
 # ── LanceDB Ingestion ─────────────────────────────────────
 
 
@@ -252,6 +360,17 @@ def main() -> None:
         help="Skip Neon Postgres ingestion",
     )
     parser.add_argument(
+        "--http",
+        action="store_true",
+        help="Use Neon HTTP SQL API for batch ingestion (no direct Postgres needed)",
+    )
+    parser.add_argument(
+        "--http-batch-size",
+        type=int,
+        default=100,
+        help="Rows per HTTP request when using --http (default: 100)",
+    )
+    parser.add_argument(
         "--skip-lance",
         action="store_true",
         help="Skip LanceDB ingestion",
@@ -273,10 +392,16 @@ def main() -> None:
 
     # Ingest to backends
     if not args.skip_neon:
-        try:
-            asyncio.run(ingest_to_neon(examples))
-        except Exception as e:
-            console.print(f"[yellow]Neon ingestion skipped: {e}[/yellow]")
+        if args.http:
+            try:
+                ingest_to_neon_http(examples, batch_size=args.http_batch_size)
+            except Exception as e:
+                console.print(f"[yellow]Neon HTTP ingestion failed: {e}[/yellow]")
+        else:
+            try:
+                asyncio.run(ingest_to_neon(examples))
+            except Exception as e:
+                console.print(f"[yellow]Neon ingestion skipped: {e}[/yellow]")
 
     if not args.skip_lance:
         try:

@@ -218,33 +218,6 @@ def eval_promptfoo(
             subprocess.run(["npx", "promptfoo", "eval"], cwd=d)
 
 
-@eval_app.command("casehold")
-def eval_casehold(
-    jurisdiction: str = typer.Option("", help="Filter by jurisdiction (e.g., delaware, federal)"),
-    confidence_threshold: float = typer.Option(0.8, help="Flag answers below this confidence"),
-    citation_audit: bool = typer.Option(False, "--citation-audit", help="Verify citation grounding"),
-    samples: int = typer.Option(0, help="Number of samples (0 = all available)"),
-    model: str = typer.Option("claude-sonnet-4-6", help="Model to evaluate"),
-    full: bool = typer.Option(False, "--full", help="Use full dataset from Neon (requires ingest)"),
-    workers: int = typer.Option(4, help="Concurrent API workers"),
-) -> None:
-    """Run CaseHOLD legal holdings benchmark."""
-    cmd = [
-        sys.executable,
-        str(PROJECT_ROOT / "julia" / "evals" / "casehold" / "run_eval.py"),
-    ]
-    if jurisdiction:
-        cmd.extend(["--jurisdiction", jurisdiction])
-    cmd.extend(["--confidence-threshold", str(confidence_threshold)])
-    if citation_audit:
-        cmd.append("--citation-audit")
-    if samples:
-        cmd.extend(["--samples", str(samples)])
-    cmd.extend(["--model", model])
-    if full:
-        cmd.append("--full")
-    cmd.extend(["--workers", str(workers)])
-    subprocess.run(cmd, cwd=PROJECT_ROOT)
 
 
 # ── PDF ─────────────────────────────────────────────────────────
