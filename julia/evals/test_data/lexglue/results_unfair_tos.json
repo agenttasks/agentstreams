@@ -1,0 +1,18 @@
+{
+  "task": "unfair_tos",
+  "total": 10,
+  "correct": 10,
+  "exact_match_rate": 1.0,
+  "predictions": [
+    {"hf_index": 0, "gold": [], "predicted": [], "correct": true},
+    {"hf_index": 1, "gold": [], "predicted": [], "correct": true},
+    {"hf_index": 2, "gold": [], "predicted": [], "correct": true},
+    {"hf_index": 3, "gold": [], "predicted": [], "correct": true},
+    {"hf_index": 4, "gold": ["contract_by_using"], "predicted": ["contract_by_using"], "correct": true},
+    {"hf_index": 5, "gold": [], "predicted": [], "correct": true},
+    {"hf_index": 6, "gold": [], "predicted": [], "correct": true},
+    {"hf_index": 7, "gold": [], "predicted": [], "correct": true},
+    {"hf_index": 8, "gold": [], "predicted": [], "correct": true},
+    {"hf_index": 9, "gold": [], "predicted": [], "correct": true}
+  ]
+}

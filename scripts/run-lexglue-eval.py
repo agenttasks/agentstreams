@@ -595,7 +595,11 @@ def compute_task_metrics(task_type: str, results: list[LexGLUEResult]) -> dict:
     valid_results = [r for r in results if r.error is None]
 
     if not valid_results:
-        return {"metric": TASK_METRICS[task_type], "score": 0.0, "total": 0, "errors": len(results)}
+        return {
+            "metric": TASK_METRICS[task_type], "score": 0.0,
+            "exact_match_rate": 0.0, "total": 0, "errors": len(results),
+            "avg_latency_ms": 0, "avg_output_tokens": 0,
+        }
 
     metric_type = TASK_METRICS[task_type]
 

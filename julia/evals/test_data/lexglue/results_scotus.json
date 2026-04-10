@@ -1,0 +1,68 @@
+{
+  "task": "scotus",
+  "total": 10,
+  "correct": 10,
+  "accuracy_or_f1": 1.0,
+  "predictions": [
+    {
+      "hf_index": 0,
+      "gold": "Criminal Procedure",
+      "predicted": "Criminal Procedure",
+      "correct": true
+    },
+    {
+      "hf_index": 1,
+      "gold": "Due Process",
+      "predicted": "Due Process",
+      "correct": true
+    },
+    {
+      "hf_index": 2,
+      "gold": "Civil Rights",
+      "predicted": "Civil Rights",
+      "correct": true
+    },
+    {
+      "hf_index": 3,
+      "gold": "Judicial Power",
+      "predicted": "Judicial Power",
+      "correct": true
+    },
+    {
+      "hf_index": 4,
+      "gold": "Civil Rights",
+      "predicted": "Civil Rights",
+      "correct": true
+    },
+    {
+      "hf_index": 5,
+      "gold": "Unions",
+      "predicted": "Unions",
+      "correct": true
+    },
+    {
+      "hf_index": 6,
+      "gold": "Federal Taxation",
+      "predicted": "Federal Taxation",
+      "correct": true
+    },
+    {
+      "hf_index": 7,
+      "gold": "Criminal Procedure",
+      "predicted": "Criminal Procedure",
+      "correct": true
+    },
+    {
+      "hf_index": 8,
+      "gold": "Economic Activity",
+      "predicted": "Economic Activity",
+      "correct": true
+    },
+    {
+      "hf_index": 9,
+      "gold": "Economic Activity",
+      "predicted": "Economic Activity",
+      "correct": true
+    }
+  ]
+}
