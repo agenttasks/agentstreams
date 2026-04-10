@@ -124,9 +124,7 @@ def trace_span(
                         _log_prompts or _log_tool_details or _log_tool_content
                     ):
                         continue
-                    span.set_attribute(
-                        k, str(v) if not isinstance(v, (int, float, bool)) else v
-                    )
+                    span.set_attribute(k, str(v) if not isinstance(v, (int, float, bool)) else v)
             try:
                 yield span_ctx
             except Exception as e:
