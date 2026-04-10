@@ -60,8 +60,14 @@ TEMPERATURE = 0
 API_CONCURRENCY = 4
 
 ALL_TASKS = [
-    "ledgar", "unfair_tos", "scotus", "ecthr_a", "ecthr_b",
-    "eurlex", "contract_nli", "casehold",
+    "ledgar",
+    "unfair_tos",
+    "scotus",
+    "ecthr_a",
+    "ecthr_b",
+    "eurlex",
+    "contract_nli",
+    "casehold",
 ]
 
 DATA_DIR = PROJECT_ROOT / "julia" / "evals" / "test_data" / "lexglue"
@@ -160,7 +166,9 @@ def _build_few_shot(task_type: str, n: int) -> str:
             lines.append(f'Example {i}: "{ex["text"]}" -> "{ex["label"]}"')
         elif task_type == "unfair_tos":
             labels_str = ", ".join(ex.get("labels", [])) or "none"
-            lines.append(f'Example {i}: "{ex["text"]}" -> unfair: {ex["is_unfair"]}, types: [{labels_str}]')
+            lines.append(
+                f'Example {i}: "{ex["text"]}" -> unfair: {ex["is_unfair"]}, types: [{labels_str}]'
+            )
         elif task_type == "contract_nli":
             lines.append(
                 f'Example {i}: Premise: "{ex["premise"]}" | '
@@ -175,7 +183,9 @@ def _build_few_shot(task_type: str, n: int) -> str:
             concepts = ", ".join(ex.get("labels", []))
             lines.append(f'Example {i}: "{ex["text"][:100]}..." -> concepts: [{concepts}]')
         elif task_type == "casehold":
-            lines.append(f'Example {i}: Context: "{ex["context"][:100]}..." -> answer index: {ex["label"]}')
+            lines.append(
+                f'Example {i}: Context: "{ex["context"][:100]}..." -> answer index: {ex["label"]}'
+            )
     lines.append("")
     return "\n".join(lines)
 
@@ -422,7 +432,7 @@ def load_from_neon(task: str, samples: int) -> list[LexGLUETask]:
                             ORDER BY hf_index""",
                         (task,),
                     )
-            ).fetchall()
+                ).fetchall()
 
             tasks = []
             for row in rows:
@@ -611,9 +621,13 @@ def compute_task_metrics(task_type: str, results: list[LexGLUEResult]) -> dict:
 
     if not valid_results:
         return {
-            "metric": TASK_METRICS[task_type], "score": 0.0,
-            "exact_match_rate": 0.0, "total": 0, "errors": len(results),
-            "avg_latency_ms": 0, "avg_output_tokens": 0,
+            "metric": TASK_METRICS[task_type],
+            "score": 0.0,
+            "exact_match_rate": 0.0,
+            "total": 0,
+            "errors": len(results),
+            "avg_latency_ms": 0,
+            "avg_output_tokens": 0,
         }
 
     metric_type = TASK_METRICS[task_type]

@@ -137,7 +137,10 @@ def eval_codegen(
 
 @eval_app.command("lexglue")
 def eval_lexglue(
-    task: str = typer.Option("", help="Task: ledgar, unfair-tos, scotus, ecthr-a, ecthr-b, eurlex, contract-nli, casehold"),
+    task: str = typer.Option(
+        "",
+        help="Task: ledgar, unfair-tos, scotus, ecthr-a, ecthr-b, eurlex, contract-nli, casehold",
+    ),
     few_shot: int = typer.Option(3, help="Number of few-shot examples"),
     samples: int = typer.Option(0, help="Limit samples per task (0=all)"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Show tasks without running"),

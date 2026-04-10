@@ -121,13 +121,19 @@ def multilabel_macro_f1(
     f1_scores = []
     for label in labels:
         tp = sum(
-            1 for ts, ps in zip(y_true_sets, y_pred_sets, strict=True) if label in ts and label in ps
+            1
+            for ts, ps in zip(y_true_sets, y_pred_sets, strict=True)
+            if label in ts and label in ps
         )
         fp = sum(
-            1 for ts, ps in zip(y_true_sets, y_pred_sets, strict=True) if label not in ts and label in ps
+            1
+            for ts, ps in zip(y_true_sets, y_pred_sets, strict=True)
+            if label not in ts and label in ps
         )
         fn = sum(
-            1 for ts, ps in zip(y_true_sets, y_pred_sets, strict=True) if label in ts and label not in ps
+            1
+            for ts, ps in zip(y_true_sets, y_pred_sets, strict=True)
+            if label in ts and label not in ps
         )
         _, _, f1 = _precision_recall_f1(tp, fp, fn)
         f1_scores.append(f1)

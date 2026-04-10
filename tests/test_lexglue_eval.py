@@ -205,7 +205,9 @@ class TestResponseParsing:
             label="Termination",
             label_set=["Termination", "Governing Law"],
         )
-        result = parse(task, '{"provision_type": "Termination", "confidence": 0.9, "reasoning": "x"}')
+        result = parse(
+            task, '{"provision_type": "Termination", "confidence": 0.9, "reasoning": "x"}'
+        )
         assert result.predicted_label == "Termination"
         assert result.is_correct is True
 
@@ -218,7 +220,9 @@ class TestResponseParsing:
             label="Termination",
             label_set=["Termination", "Governing Law"],
         )
-        result = parse(task, '{"provision_type": "Governing Law", "confidence": 0.5, "reasoning": "x"}')
+        result = parse(
+            task, '{"provision_type": "Governing Law", "confidence": 0.5, "reasoning": "x"}'
+        )
         assert result.predicted_label == "Governing Law"
         assert result.is_correct is False
 
@@ -244,7 +248,9 @@ class TestResponseParsing:
             label="Criminal Procedure",
             label_set=["Criminal Procedure", "Civil Rights", "First Amendment"],
         )
-        result = parse(task, '{"issue_area": "Criminal Procedure", "confidence": 0.9, "reasoning": "x"}')
+        result = parse(
+            task, '{"issue_area": "Criminal Procedure", "confidence": 0.9, "reasoning": "x"}'
+        )
         assert result.predicted_label == "Criminal Procedure"
         assert result.is_correct is True
 
@@ -329,7 +335,9 @@ class TestResponseParsing:
             label="Termination",
             label_set=["Termination", "Governing Law"],
         )
-        result = parse(task, '{"provision_type": "Imaginary Category", "confidence": 0.5, "reasoning": "x"}')
+        result = parse(
+            task, '{"provision_type": "Imaginary Category", "confidence": 0.5, "reasoning": "x"}'
+        )
         assert result.error is not None
         assert "Hallucinated" in result.error
 
@@ -496,9 +504,27 @@ class TestTaskMetrics:
     def test_ledgar_metrics(self):
         Result, compute = self._import_compute()
         results = [
-            Result(task_id="0", task_type="ledgar", gold_label="A", predicted_label="A", is_correct=True),
-            Result(task_id="1", task_type="ledgar", gold_label="B", predicted_label="B", is_correct=True),
-            Result(task_id="2", task_type="ledgar", gold_label="C", predicted_label="A", is_correct=False),
+            Result(
+                task_id="0",
+                task_type="ledgar",
+                gold_label="A",
+                predicted_label="A",
+                is_correct=True,
+            ),
+            Result(
+                task_id="1",
+                task_type="ledgar",
+                gold_label="B",
+                predicted_label="B",
+                is_correct=True,
+            ),
+            Result(
+                task_id="2",
+                task_type="ledgar",
+                gold_label="C",
+                predicted_label="A",
+                is_correct=False,
+            ),
         ]
         metrics = compute("ledgar", results)
         assert metrics["metric"] == "micro_f1"
@@ -508,10 +534,20 @@ class TestTaskMetrics:
     def test_scotus_metrics(self):
         Result, compute = self._import_compute()
         results = [
-            Result(task_id="0", task_type="scotus", gold_label="Criminal Procedure",
-                   predicted_label="Criminal Procedure", is_correct=True),
-            Result(task_id="1", task_type="scotus", gold_label="Civil Rights",
-                   predicted_label="First Amendment", is_correct=False),
+            Result(
+                task_id="0",
+                task_type="scotus",
+                gold_label="Criminal Procedure",
+                predicted_label="Criminal Procedure",
+                is_correct=True,
+            ),
+            Result(
+                task_id="1",
+                task_type="scotus",
+                gold_label="Civil Rights",
+                predicted_label="First Amendment",
+                is_correct=False,
+            ),
         ]
         metrics = compute("scotus", results)
         assert metrics["metric"] == "micro_f1"
@@ -520,10 +556,20 @@ class TestTaskMetrics:
     def test_contract_nli_metrics(self):
         Result, compute = self._import_compute()
         results = [
-            Result(task_id="0", task_type="contract_nli", gold_label="entailment",
-                   predicted_label="entailment", is_correct=True),
-            Result(task_id="1", task_type="contract_nli", gold_label="contradiction",
-                   predicted_label="neutral", is_correct=False),
+            Result(
+                task_id="0",
+                task_type="contract_nli",
+                gold_label="entailment",
+                predicted_label="entailment",
+                is_correct=True,
+            ),
+            Result(
+                task_id="1",
+                task_type="contract_nli",
+                gold_label="contradiction",
+                predicted_label="neutral",
+                is_correct=False,
+            ),
         ]
         metrics = compute("contract_nli", results)
         assert metrics["metric"] == "accuracy"
@@ -532,12 +578,20 @@ class TestTaskMetrics:
     def test_eurlex_metrics(self):
         Result, compute = self._import_compute()
         results = [
-            Result(task_id="0", task_type="eurlex",
-                   gold_labels=["100163", "100199"],
-                   predicted_labels=["100163", "100199"], is_correct=True),
-            Result(task_id="1", task_type="eurlex",
-                   gold_labels=["100168"],
-                   predicted_labels=["100168", "100199"], is_correct=False),
+            Result(
+                task_id="0",
+                task_type="eurlex",
+                gold_labels=["100163", "100199"],
+                predicted_labels=["100163", "100199"],
+                is_correct=True,
+            ),
+            Result(
+                task_id="1",
+                task_type="eurlex",
+                gold_labels=["100168"],
+                predicted_labels=["100168", "100199"],
+                is_correct=False,
+            ),
         ]
         metrics = compute("eurlex", results)
         assert metrics["metric"] == "micro_f1"
@@ -547,12 +601,20 @@ class TestTaskMetrics:
     def test_ecthr_b_metrics(self):
         Result, compute = self._import_compute()
         results = [
-            Result(task_id="0", task_type="ecthr_b",
-                   gold_labels=["3", "5"],
-                   predicted_labels=["3", "5"], is_correct=True),
-            Result(task_id="1", task_type="ecthr_b",
-                   gold_labels=["8"],
-                   predicted_labels=["8", "10"], is_correct=False),
+            Result(
+                task_id="0",
+                task_type="ecthr_b",
+                gold_labels=["3", "5"],
+                predicted_labels=["3", "5"],
+                is_correct=True,
+            ),
+            Result(
+                task_id="1",
+                task_type="ecthr_b",
+                gold_labels=["8"],
+                predicted_labels=["8", "10"],
+                is_correct=False,
+            ),
         ]
         metrics = compute("ecthr_b", results)
         assert metrics["metric"] == "micro_f1"
@@ -573,8 +635,13 @@ class TestTaskMetrics:
     def test_errors_excluded(self):
         Result, compute = self._import_compute()
         results = [
-            Result(task_id="0", task_type="ledgar", gold_label="A", predicted_label="A",
-                   is_correct=True),
+            Result(
+                task_id="0",
+                task_type="ledgar",
+                gold_label="A",
+                predicted_label="A",
+                is_correct=True,
+            ),
             Result(task_id="1", task_type="ledgar", error="API error"),
         ]
         metrics = compute("ledgar", results)
@@ -638,8 +705,10 @@ class TestLabelValidation:
     def test_valid_single_label_passes(self):
         Task, parse, _ = self._import_parser()
         task = Task(
-            task_id="val_0", task_type="scotus",
-            text="test case", label="Civil Rights",
+            task_id="val_0",
+            task_type="scotus",
+            text="test case",
+            label="Civil Rights",
             label_set=["Criminal Procedure", "Civil Rights", "First Amendment"],
         )
         result = parse(task, '{"issue_area": "Civil Rights", "confidence": 0.9, "reasoning": "x"}')
@@ -649,8 +718,10 @@ class TestLabelValidation:
     def test_valid_multi_label_passes(self):
         Task, parse, _ = self._import_parser()
         task = Task(
-            task_id="val_1", task_type="ecthr_b",
-            text="case text", labels=["3", "5"],
+            task_id="val_1",
+            task_type="ecthr_b",
+            text="case text",
+            labels=["3", "5"],
             label_set=["2", "3", "5", "6", "8"],
         )
         result = parse(task, '{"violated_articles": ["3", "5"], "reasoning": "x"}')
@@ -659,8 +730,11 @@ class TestLabelValidation:
     def test_empty_label_set_skips_validation(self):
         Task, parse, _ = self._import_parser()
         task = Task(
-            task_id="val_2", task_type="ledgar",
-            text="test", label="X", label_set=[],
+            task_id="val_2",
+            task_type="ledgar",
+            text="test",
+            label="X",
+            label_set=[],
         )
         result = parse(task, '{"provision_type": "Anything", "confidence": 0.5, "reasoning": "x"}')
         assert result.error is None
