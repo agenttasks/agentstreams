@@ -67,6 +67,51 @@
       "labels": ["P1-1"]
     }
   ],
+  "contract_nli": [
+    {
+      "premise": "The Receiving Party shall not disclose any Confidential Information to any third party without the prior written consent of the Disclosing Party.",
+      "hypothesis": "The Receiving Party can share confidential information with anyone.",
+      "label": "contradiction"
+    },
+    {
+      "premise": "This Agreement shall remain in effect for a period of two (2) years from the Effective Date.",
+      "hypothesis": "The agreement has a defined duration.",
+      "label": "entailment"
+    },
+    {
+      "premise": "The Company shall provide health insurance benefits to all full-time employees.",
+      "hypothesis": "The Company offers dental insurance.",
+      "label": "neutral"
+    }
+  ],
+  "ecthr_b": [
+    {
+      "text": "The applicant was held in detention for over two years without trial, in conditions amounting to inhuman treatment.",
+      "labels": ["3", "5"]
+    },
+    {
+      "text": "The applicant's home was searched by police without a warrant, and private correspondence was seized.",
+      "labels": ["8"]
+    },
+    {
+      "text": "The applicant was denied access to a court to challenge the lawfulness of his detention.",
+      "labels": ["5", "6"]
+    }
+  ],
+  "eurlex": [
+    {
+      "text": "Council Directive establishing minimum safety and health requirements for the workplace, covering ventilation, temperature, lighting, and emergency routes.",
+      "labels": ["100179", "100185"]
+    },
+    {
+      "text": "Regulation on the common organization of the market in fishery products, setting marketing standards and price mechanisms.",
+      "labels": ["100214", "100215"]
+    },
+    {
+      "text": "Decision on the conclusion of the Agreement between the European Community and the Swiss Confederation on mutual recognition in relation to conformity assessment.",
+      "labels": ["100163", "100199"]
+    }
+  ],
   "casehold": [
     {
       "context": "In this case, the court considered whether the employer's policy of mandatory overtime violated the Fair Labor Standards Act. The plaintiff argued that the policy effectively reduced their hourly wage below minimum wage when accounting for the additional hours. The court noted that <HOLDING>.",

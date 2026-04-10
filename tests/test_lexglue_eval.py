@@ -275,11 +275,76 @@ class TestResponseParsing:
         assert result.predicted_labels == ["5", "6"]
         assert result.is_correct is True
 
+    def test_parse_contract_nli(self):
+        Task, parse, _ = self._import_parser()
+        task = Task(
+            task_id="nli_0",
+            task_type="contract_nli",
+            text="Premise: X\nHypothesis: Y",
+            label="entailment",
+            label_set=["contradiction", "entailment", "neutral"],
+        )
+        result = parse(task, '{"label": "entailment", "confidence": 0.9, "reasoning": "x"}')
+        assert result.predicted_label == "entailment"
+        assert result.is_correct is True
+
+    def test_parse_ecthr_b(self):
+        Task, parse, _ = self._import_parser()
+        task = Task(
+            task_id="ecthr_b_0",
+            task_type="ecthr_b",
+            text="detention case",
+            labels=["3", "5"],
+            label_set=["2", "3", "5", "6", "8", "9", "10", "11", "14", "P1-1"],
+        )
+        result = parse(task, '{"violated_articles": ["3", "5"], "reasoning": "x"}')
+        assert result.predicted_labels == ["3", "5"]
+        assert result.is_correct is True
+
+    def test_parse_eurlex(self):
+        Task, parse, _ = self._import_parser()
+        task = Task(
+            task_id="eurlex_0",
+            task_type="eurlex",
+            text="EU regulation text",
+            labels=["100163", "100199"],
+            label_set=["100163", "100168", "100199"],
+        )
+        result = parse(task, '{"concepts": ["100163", "100199"], "reasoning": "x"}')
+        assert result.predicted_labels == ["100163", "100199"]
+        assert result.is_correct is True
+
     def test_parse_error(self):
         Task, parse, _ = self._import_parser()
         task = Task(task_id="err_0", task_type="ledgar", text="test", label="X")
         result = parse(task, "Not valid JSON output")
         assert result.error is not None
+
+    def test_label_validation_rejects_hallucinated_label(self):
+        Task, parse, _ = self._import_parser()
+        task = Task(
+            task_id="val_0",
+            task_type="ledgar",
+            text="test provision",
+            label="Termination",
+            label_set=["Termination", "Governing Law"],
+        )
+        result = parse(task, '{"provision_type": "Imaginary Category", "confidence": 0.5, "reasoning": "x"}')
+        assert result.error is not None
+        assert "Hallucinated" in result.error
+
+    def test_label_validation_rejects_hallucinated_multi_label(self):
+        Task, parse, _ = self._import_parser()
+        task = Task(
+            task_id="val_1",
+            task_type="ecthr_a",
+            text="case text",
+            labels=["5"],
+            label_set=["2", "3", "5", "6", "8"],
+        )
+        result = parse(task, '{"violated_articles": ["5", "99"], "reasoning": "x"}')
+        assert result.error is not None
+        assert "Hallucinated" in result.error
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -296,6 +361,9 @@ class TestPromptBuilding:
             "unfair_tos": _mod.build_unfair_tos_prompt,
             "scotus": _mod.build_scotus_prompt,
             "ecthr_a": _mod.build_ecthr_a_prompt,
+            "ecthr_b": _mod.build_ecthr_b_prompt,
+            "eurlex": _mod.build_eurlex_prompt,
+            "contract_nli": _mod.build_contract_nli_prompt,
             "casehold": _mod.build_casehold_prompt,
         }
 
@@ -365,6 +433,42 @@ class TestPromptBuilding:
         assert "Article 2" in prompt
         assert "Article 8" in prompt
 
+    def test_contract_nli_prompt_has_labels(self):
+        Task, builders = self._import_builders()
+        task = Task(
+            task_id="test",
+            task_type="contract_nli",
+            text="Premise: X\nHypothesis: Y",
+        )
+        prompt = builders["contract_nli"](task, 0)
+        assert "entailment" in prompt
+        assert "contradiction" in prompt
+        assert "neutral" in prompt
+
+    def test_ecthr_b_prompt_has_articles(self):
+        Task, builders = self._import_builders()
+        task = Task(
+            task_id="test",
+            task_type="ecthr_b",
+            text="Case description about detention",
+            label_set=["2", "3", "5", "6", "8", "P1-1"],
+        )
+        prompt = builders["ecthr_b"](task, 0)
+        assert "Article 2" in prompt
+        assert "Article P1-1" in prompt
+
+    def test_eurlex_prompt_has_concepts(self):
+        Task, builders = self._import_builders()
+        task = Task(
+            task_id="test",
+            task_type="eurlex",
+            text="EU directive on environmental protection",
+            label_set=["100163", "100168", "100199"],
+        )
+        prompt = builders["eurlex"](task, 0)
+        assert "100163" in prompt
+        assert "EuroVoc" in prompt
+
     def test_prompts_use_document_tags(self):
         """All prompts should wrap document text in <document> tags for safety."""
         Task, builders = self._import_builders()
@@ -412,6 +516,33 @@ class TestTaskMetrics:
         metrics = compute("scotus", results)
         assert metrics["metric"] == "micro_f1"
         assert metrics["score"] == 50.0
+
+    def test_contract_nli_metrics(self):
+        Result, compute = self._import_compute()
+        results = [
+            Result(task_id="0", task_type="contract_nli", gold_label="entailment",
+                   predicted_label="entailment", is_correct=True),
+            Result(task_id="1", task_type="contract_nli", gold_label="contradiction",
+                   predicted_label="neutral", is_correct=False),
+        ]
+        metrics = compute("contract_nli", results)
+        assert metrics["metric"] == "accuracy"
+        assert metrics["score"] == 50.0
+
+    def test_eurlex_metrics(self):
+        Result, compute = self._import_compute()
+        results = [
+            Result(task_id="0", task_type="eurlex",
+                   gold_labels=["100163", "100199"],
+                   predicted_labels=["100163", "100199"], is_correct=True),
+            Result(task_id="1", task_type="eurlex",
+                   gold_labels=["100168"],
+                   predicted_labels=["100168", "100199"], is_correct=False),
+        ]
+        metrics = compute("eurlex", results)
+        assert metrics["metric"] == "micro_f1"
+        assert metrics["total"] == 2
+        assert metrics["score"] > 0
 
     def test_errors_excluded(self):
         Result, compute = self._import_compute()

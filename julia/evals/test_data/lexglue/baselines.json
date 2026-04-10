@@ -29,6 +29,27 @@
     "deberta": 72.3,
     "longformer": 72.0
   },
+  "ecthr_b": {
+    "metric": "micro-F1",
+    "bert_base": 74.7,
+    "legal_bert": 77.2,
+    "deberta": 78.8,
+    "longformer": 79.4
+  },
+  "eurlex": {
+    "metric": "micro-F1",
+    "bert_base": 71.4,
+    "legal_bert": 72.1,
+    "deberta": 72.6,
+    "longformer": 72.2
+  },
+  "contract_nli": {
+    "metric": "accuracy",
+    "bert_base": 62.9,
+    "legal_bert": 71.1,
+    "deberta": 72.8,
+    "longformer": 72.0
+  },
   "casehold": {
     "metric": "accuracy",
     "bert_base": 71.4,

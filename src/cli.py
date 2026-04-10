@@ -137,14 +137,14 @@ def eval_codegen(
 
 @eval_app.command("lexglue")
 def eval_lexglue(
-    task: str = typer.Option("", help="Task: ledgar, unfair-tos, scotus, ecthr-a, casehold"),
+    task: str = typer.Option("", help="Task: ledgar, unfair-tos, scotus, ecthr-a, ecthr-b, eurlex, contract-nli, casehold"),
     few_shot: int = typer.Option(3, help="Number of few-shot examples"),
     samples: int = typer.Option(0, help="Limit samples per task (0=all)"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Show tasks without running"),
     leaderboard: bool = typer.Option(False, help="Compare against published baselines"),
     from_neon: bool = typer.Option(False, "--from-neon", help="Load from Neon pgvector"),
 ) -> None:
-    """Run LexGLUE legal benchmark eval (LEDGAR, UNFAIR-ToS, SCOTUS, ECtHR-A, CaseHOLD)."""
+    """Run LexGLUE legal benchmark eval (8 tasks: LEDGAR, UNFAIR-ToS, SCOTUS, ECtHR-A/B, EUR-Lex, ContractNLI, CaseHOLD)."""
     cmd = [sys.executable, str(PROJECT_ROOT / "scripts" / "run-lexglue-eval.py")]
     if task:
         # Convert CLI-friendly names to internal task names

@@ -70,6 +70,23 @@ prompts:
       Output ONLY valid JSON:
       {"issue_area": "...", "confidence": 0.0-1.0, "reasoning": "..."}
 
+  # ── ContractNLI: Entailment ──────────────────────────────────
+  - id: contract-nli
+    raw: |
+      You are Julia, a legal analysis assistant. Never provide legal advice.
+
+      Determine the relationship between the premise and hypothesis:
+      - "entailment": the hypothesis is supported by the contract
+      - "contradiction": the hypothesis contradicts the contract
+      - "neutral": the hypothesis is neither supported nor contradicted
+
+      <document>
+      {{text}}
+      </document>
+
+      Output ONLY valid JSON:
+      {"label": "entailment"|"contradiction"|"neutral", "confidence": 0.0-1.0, "reasoning": "..."}
+
 tests:
   # ── LEDGAR Smoke Tests ───────────────────────────────────────
   - description: "LEDGAR: Reimbursement provision"
@@ -121,3 +138,38 @@ tests:
       - type: contains-json
       - type: javascript
         value: "JSON.parse(output).issue_area === 'First Amendment'"
+
+  # ── ContractNLI Smoke Tests ─────────────────────────────────
+  - description: "ContractNLI: Contradiction detection"
+    vars:
+      text: "Premise: The Receiving Party shall not disclose any Confidential Information to any third party without the prior written consent of the Disclosing Party.\nHypothesis: The Receiving Party can share confidential information with anyone."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).label === 'contradiction'"
+
+  - description: "ContractNLI: Entailment detection"
+    vars:
+      text: "Premise: This Agreement shall remain in effect for a period of two (2) years from the Effective Date.\nHypothesis: The agreement has a defined duration."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "JSON.parse(output).label === 'entailment'"
+
+  # ── ECtHR-B Smoke Test ──────────────────────────────────────
+  - description: "ECtHR-B: Article violation prediction"
+    vars:
+      text: "The applicant was held in pre-trial detention for over three years without access to legal counsel. The court found that the conditions of detention amounted to degrading treatment."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "Array.isArray(JSON.parse(output).violated_articles)"
+
+  # ── EUR-Lex Smoke Test ──────────────────────────────────────
+  - description: "EUR-Lex: EU law concept classification"
+    vars:
+      text: "Council Regulation establishing common rules for direct support schemes under the common agricultural policy and establishing certain support schemes for farmers."
+    assert:
+      - type: contains-json
+      - type: javascript
+        value: "Array.isArray(JSON.parse(output).concepts)"

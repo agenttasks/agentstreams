@@ -21,7 +21,8 @@
 CREATE TABLE IF NOT EXISTS julia_lexglue_samples (
     id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
     task TEXT NOT NULL CHECK (task IN (
-        'ledgar', 'unfair_tos', 'scotus', 'ecthr_a', 'casehold'
+        'ledgar', 'unfair_tos', 'scotus', 'ecthr_a', 'ecthr_b',
+        'eurlex', 'contract_nli', 'casehold'
     )),
     hf_index INTEGER NOT NULL,           -- HuggingFace dataset index
     text TEXT NOT NULL,                   -- document/premise text
@@ -46,13 +47,13 @@ CREATE INDEX IF NOT EXISTS idx_lexglue_hash ON julia_lexglue_samples(content_has
 COMMENT ON TABLE julia_lexglue_samples IS
     'LexGLUE benchmark samples from HuggingFace lex_glue dataset';
 COMMENT ON COLUMN julia_lexglue_samples.task IS
-    'LexGLUE task: ledgar, unfair_tos, contract_nli, ecthr_a, casehold';
+    'LexGLUE task: ledgar, unfair_tos, scotus, ecthr_a, ecthr_b, eurlex, contract_nli, casehold';
 COMMENT ON COLUMN julia_lexglue_samples.hf_index IS
     'Original index in the HuggingFace dataset split';
 COMMENT ON COLUMN julia_lexglue_samples.holdings IS
     'CaseHOLD: 5 candidate holdings (JSON array of strings)';
 COMMENT ON COLUMN julia_lexglue_samples.label IS
-    'Ground truth for single-label tasks (LEDGAR provision type, ContractNLI class, CaseHOLD index)';
+    'Ground truth for single-label tasks (LEDGAR, SCOTUS, ContractNLI, CaseHOLD)';
 COMMENT ON COLUMN julia_lexglue_samples.labels IS
     'Ground truth for multi-label tasks (UNFAIR-ToS types, ECtHR-A articles)';
 COMMENT ON COLUMN julia_lexglue_samples.label_set IS
