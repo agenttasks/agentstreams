@@ -11,7 +11,7 @@ conventional-commits + release-please:
   - feat(sdk)!: breaking → major version
 
 Upstream dependencies tracked:
-  - claude-code-sdk (anthropic-ai/claude-agent-sdk-python) >= 0.1.53
+  - claude-code-sdk (anthropics/claude-code-sdk-python) >= 0.1.53
   - mcp (modelcontextprotocol/python-sdk) >= 1.26.0
   - anthropic (anthropic-sdk-python) >= 0.42.0
 

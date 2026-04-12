@@ -1,6 +1,6 @@
 ---
 name: neon-api
-description: "Start and query the AgentStreams FastAPI REST API over Neon Postgres. TRIGGER when: user asks to start the data API server, query metrics/tasks/agents via HTTP, or build integrations against the REST endpoints. Also triggers for curl testing API endpoints. DO NOT TRIGGER for: TUI dashboard (use neon-dashboard), raw SQL (use sql-queries), or team setup (use neon-team-setup)."
+description: "Start and query the AgentStreams FastAPI REST API over Neon Postgres. TRIGGER when: user asks to start the data API server, query metrics/tasks/agents via HTTP, or build integrations against the REST endpoints. Also triggers for curl testing API endpoints. DO NOT TRIGGER for: TUI dashboard (use neon-dashboard), raw SQL (use neon-dashboard SQL screen or `make sql`), or team setup (use neon-team-setup)."
 argument-hint: "[endpoint: health|metrics|tasks|agents|skills|models|pipelines|search]"
 ---
 
@@ -158,5 +158,5 @@ To add a new endpoint:
 
 - For terminal dashboard over the same data: use the `neon-dashboard` skill
 - For team branch setup: use the `neon-team-setup` skill
-- For SQL query patterns: use the `sql-queries` skill
+- For SQL query patterns: use `make sql` (Harlequin) or the neon-dashboard SQL screen
 - For data visualization: use the `build-dashboard` or `data-visualization` skill

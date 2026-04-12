@@ -1,6 +1,6 @@
 ---
 name: neon-dashboard
-description: "Launch and interact with the AgentStreams Neon Postgres TUI dashboard. TRIGGER when: user asks to view metrics, monitor tasks, browse agents, or run ad-hoc SQL queries via terminal UI. Also triggers for Textual dashboard launch. DO NOT TRIGGER for: API endpoints (use neon-api), team setup (use neon-team-setup), or one-off SQL queries (use sql-queries skill)."
+description: "Launch and interact with the AgentStreams Neon Postgres TUI dashboard. TRIGGER when: user asks to view metrics, monitor tasks, browse agents, or run ad-hoc SQL queries via terminal UI. Also triggers for Textual dashboard launch. DO NOT TRIGGER for: API endpoints (use neon-api), team setup (use neon-team-setup), or one-off SQL queries outside the TUI (use `make sql` for Harlequin)."
 argument-hint: "[screen: metrics|tasks|agents|sql]"
 ---
 
@@ -109,4 +109,4 @@ SELECT id, queue_name, type, status, skill_name, model_id, created_at
 - For REST API access to the same data: use the `neon-api` skill
 - For raw SQL IDE with full Postgres semantics: `make sql` (launches Harlequin)
 - For team branch setup: use the `neon-team-setup` skill
-- For general SQL query patterns: use the `sql-queries` skill
+- For general SQL query patterns: use `make sql` (Harlequin)

@@ -122,4 +122,4 @@ This enables multiple Claude Code agents to develop features in parallel without
 
 - For monitoring the database: use the `neon-dashboard` skill
 - For REST API access: use the `neon-api` skill
-- For SQL query patterns: use the `sql-queries` skill
+- For SQL query patterns: use `make sql` (Harlequin) or the neon-dashboard SQL screen

@@ -89,8 +89,8 @@ Model hierarchy (orchestrated pipeline agents only):
 - haiku: harmlessness-screen
 
 Standalone subagents (.claude/agents/, not in orchestrator pipelines):
-- opus: uda-thinker, uda-crawler
-- sonnet: graphql-typescript-agent
+- opus: uda-thinker, uda-crawler, data-optimizer
+- sonnet: graphql-typescript-agent, feature-developer
 - haiku: crawl-analyzer, memory-validator, explore
 
 Knowledge-work pipelines (3):
