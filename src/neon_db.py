@@ -444,17 +444,29 @@ async def metric_summary(
     rows = await (await conn.execute(query, params)).fetchall()
     if group_by_tag:
         return [
-            {"group_key": r[0], "count": r[1], "avg": float(r[2] or 0),
-             "min": float(r[3] or 0), "max": float(r[4] or 0),
-             "p50": float(r[5] or 0), "p99": float(r[6] or 0)}
+            {
+                "group_key": r[0],
+                "count": r[1],
+                "avg": float(r[2] or 0),
+                "min": float(r[3] or 0),
+                "max": float(r[4] or 0),
+                "p50": float(r[5] or 0),
+                "p99": float(r[6] or 0),
+            }
             for r in rows
         ]
     row = rows[0] if rows else None
     if not row:
         return []
     return [
-        {"count": row[0], "avg": float(row[1] or 0), "min": float(row[2] or 0),
-         "max": float(row[3] or 0), "p50": float(row[4] or 0), "p99": float(row[5] or 0)}
+        {
+            "count": row[0],
+            "avg": float(row[1] or 0),
+            "min": float(row[2] or 0),
+            "max": float(row[3] or 0),
+            "p50": float(row[4] or 0),
+            "p99": float(row[5] or 0),
+        }
     ]
 
 
@@ -495,8 +507,14 @@ async def list_tasks(
     ).fetchall()
     return [
         {
-            "id": r[0], "queue_name": r[1], "type": r[2], "status": r[3],
-            "priority": r[4], "skill_name": r[5], "model_id": r[6], "plugin": r[7],
+            "id": r[0],
+            "queue_name": r[1],
+            "type": r[2],
+            "status": r[3],
+            "priority": r[4],
+            "skill_name": r[5],
+            "model_id": r[6],
+            "plugin": r[7],
             "attempts": r[8],
             "created_at": r[9].isoformat() if r[9] else None,
             "started_at": r[10].isoformat() if r[10] else None,
@@ -521,8 +539,11 @@ async def task_stats(conn, *, hours: int = 24) -> list[dict]:
     ).fetchall()
     return [
         {
-            "status": r[0], "type": r[1], "queue_name": r[2],
-            "count": r[3], "avg_duration_s": float(r[4]) if r[4] else None,
+            "status": r[0],
+            "type": r[1],
+            "queue_name": r[2],
+            "count": r[3],
+            "avg_duration_s": float(r[4]) if r[4] else None,
         }
         for r in rows
     ]
@@ -539,8 +560,11 @@ async def list_agents(conn) -> list[dict]:
     ).fetchall()
     return [
         {
-            "name": r[0], "model_id": r[1], "allowed_tools": r[2],
-            "denied_tools": r[3], "description": r[4],
+            "name": r[0],
+            "model_id": r[1],
+            "allowed_tools": r[2],
+            "denied_tools": r[3],
+            "description": r[4],
         }
         for r in rows
     ]
@@ -558,17 +582,18 @@ async def get_agent(conn, name: str) -> dict | None:
     if not row:
         return None
     return {
-        "name": row[0], "model_id": row[1], "allowed_tools": row[2],
-        "denied_tools": row[3], "description": row[4],
+        "name": row[0],
+        "model_id": row[1],
+        "allowed_tools": row[2],
+        "denied_tools": row[3],
+        "description": row[4],
     }
 
 
 async def list_skills(conn) -> list[dict]:
     """List all registered skills."""
     rows = await (
-        await conn.execute(
-            "SELECT name, description, trigger_pattern FROM skills ORDER BY name"
-        )
+        await conn.execute("SELECT name, description, trigger_pattern FROM skills ORDER BY name")
     ).fetchall()
     return [{"name": r[0], "description": r[1], "trigger_pattern": r[2]} for r in rows]
 
@@ -584,8 +609,12 @@ async def list_models(conn) -> list[dict]:
     ).fetchall()
     return [
         {
-            "model_id": r[0], "family": r[1], "label": r[2],
-            "supports_thinking": r[3], "supports_tool_use": r[4], "supports_vision": r[5],
+            "model_id": r[0],
+            "family": r[1],
+            "label": r[2],
+            "supports_thinking": r[3],
+            "supports_tool_use": r[4],
+            "supports_vision": r[5],
         }
         for r in rows
     ]
@@ -601,7 +630,10 @@ async def list_pipelines(conn) -> list[dict]:
     ).fetchall()
     return [
         {
-            "id": r[0], "name": r[1], "skill_name": r[2], "model_id": r[3],
+            "id": r[0],
+            "name": r[1],
+            "skill_name": r[2],
+            "model_id": r[3],
             "config": json.loads(r[4]) if isinstance(r[4], str) else r[4],
             "status": r[5],
             "created_at": r[6].isoformat() if r[6] else None,

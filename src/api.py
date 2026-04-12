@@ -100,9 +100,7 @@ async def health():
         row = await (await conn.execute("SELECT version()")).fetchone()
         pg_version = row[0] if row else "unknown"
         branch_row = await (
-            await conn.execute(
-                "SELECT setting FROM pg_settings WHERE name = 'neon.branch_name'"
-            )
+            await conn.execute("SELECT setting FROM pg_settings WHERE name = 'neon.branch_name'")
         ).fetchone()
         neon_branch = branch_row[0] if branch_row else "unknown"
     return {

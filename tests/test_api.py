@@ -61,10 +61,20 @@ async def test_health(client):
 
 
 async def test_get_metrics(client, mock_pool):
-    with patch("src.api.list_metrics", AsyncMock(return_value=[
-        {"name": "test.metric", "type": "counter", "unit": "ops",
-         "dimensions": ["model"], "description": "Test metric"}
-    ])):
+    with patch(
+        "src.api.list_metrics",
+        AsyncMock(
+            return_value=[
+                {
+                    "name": "test.metric",
+                    "type": "counter",
+                    "unit": "ops",
+                    "dimensions": ["model"],
+                    "description": "Test metric",
+                }
+            ]
+        ),
+    ):
         resp = await client.get("/api/metrics")
         assert resp.status_code == 200
         data = resp.json()
@@ -73,12 +83,27 @@ async def test_get_metrics(client, mock_pool):
 
 
 async def test_get_tasks(client, mock_pool):
-    with patch("src.api.list_tasks", AsyncMock(return_value=[
-        {"id": 1, "queue_name": "crawl", "type": "knowledge_work", "status": "queued",
-         "priority": 0, "skill_name": None, "model_id": None, "plugin": None,
-         "attempts": 0, "created_at": "2026-01-01T00:00:00", "started_at": None,
-         "completed_at": None}
-    ])):
+    with patch(
+        "src.api.list_tasks",
+        AsyncMock(
+            return_value=[
+                {
+                    "id": 1,
+                    "queue_name": "crawl",
+                    "type": "knowledge_work",
+                    "status": "queued",
+                    "priority": 0,
+                    "skill_name": None,
+                    "model_id": None,
+                    "plugin": None,
+                    "attempts": 0,
+                    "created_at": "2026-01-01T00:00:00",
+                    "started_at": None,
+                    "completed_at": None,
+                }
+            ]
+        ),
+    ):
         resp = await client.get("/api/tasks")
         assert resp.status_code == 200
         data = resp.json()
@@ -94,30 +119,52 @@ async def test_get_tasks_with_filters(client, mock_pool):
 
 async def test_create_task(client, mock_pool):
     with patch("src.api.enqueue_task", AsyncMock(return_value=42)):
-        resp = await client.post("/api/tasks", json={
-            "queue_name": "test-queue",
-            "task_type": "code",
-            "priority": 1,
-        })
+        resp = await client.post(
+            "/api/tasks",
+            json={
+                "queue_name": "test-queue",
+                "task_type": "code",
+                "priority": 1,
+            },
+        )
         assert resp.status_code == 200
         assert resp.json()["id"] == 42
 
 
 async def test_get_task_stats(client, mock_pool):
-    with patch("src.api.task_stats", AsyncMock(return_value=[
-        {"status": "completed", "type": "code", "queue_name": "test",
-         "count": 5, "avg_duration_s": 1.5}
-    ])):
+    with patch(
+        "src.api.task_stats",
+        AsyncMock(
+            return_value=[
+                {
+                    "status": "completed",
+                    "type": "code",
+                    "queue_name": "test",
+                    "count": 5,
+                    "avg_duration_s": 1.5,
+                }
+            ]
+        ),
+    ):
         resp = await client.get("/api/tasks/stats")
         assert resp.status_code == 200
 
 
 async def test_get_agents(client, mock_pool):
-    with patch("src.api.list_agents", AsyncMock(return_value=[
-        {"name": "code-generator", "model_id": "claude-sonnet-4-6",
-         "allowed_tools": ["Read", "Write"], "denied_tools": None,
-         "description": "Code gen agent"}
-    ])):
+    with patch(
+        "src.api.list_agents",
+        AsyncMock(
+            return_value=[
+                {
+                    "name": "code-generator",
+                    "model_id": "claude-sonnet-4-6",
+                    "allowed_tools": ["Read", "Write"],
+                    "denied_tools": None,
+                    "description": "Code gen agent",
+                }
+            ]
+        ),
+    ):
         resp = await client.get("/api/agents")
         assert resp.status_code == 200
         data = resp.json()
@@ -131,18 +178,34 @@ async def test_get_agent_not_found(client, mock_pool):
 
 
 async def test_get_skills(client, mock_pool):
-    with patch("src.api.list_skills", AsyncMock(return_value=[
-        {"name": "commit", "description": "Create git commit", "trigger_pattern": "/commit"}
-    ])):
+    with patch(
+        "src.api.list_skills",
+        AsyncMock(
+            return_value=[
+                {"name": "commit", "description": "Create git commit", "trigger_pattern": "/commit"}
+            ]
+        ),
+    ):
         resp = await client.get("/api/skills")
         assert resp.status_code == 200
 
 
 async def test_get_models(client, mock_pool):
-    with patch("src.api.list_models", AsyncMock(return_value=[
-        {"model_id": "claude-opus-4-6", "family": "Claude 4.6", "label": "Opus",
-         "supports_thinking": True, "supports_tool_use": True, "supports_vision": True}
-    ])):
+    with patch(
+        "src.api.list_models",
+        AsyncMock(
+            return_value=[
+                {
+                    "model_id": "claude-opus-4-6",
+                    "family": "Claude 4.6",
+                    "label": "Opus",
+                    "supports_thinking": True,
+                    "supports_tool_use": True,
+                    "supports_vision": True,
+                }
+            ]
+        ),
+    ):
         resp = await client.get("/api/models")
         assert resp.status_code == 200
         data = resp.json()
@@ -156,9 +219,7 @@ async def test_get_pipelines(client, mock_pool):
 
 
 async def test_search_resources(client, mock_pool):
-    with patch("src.api.fuzzy_search", AsyncMock(return_value=[
-        {"label": "test", "sim": 0.8}
-    ])):
+    with patch("src.api.fuzzy_search", AsyncMock(return_value=[{"label": "test", "sim": 0.8}])):
         resp = await client.get("/api/resources/search?q=test")
         assert resp.status_code == 200
 

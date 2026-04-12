@@ -199,7 +199,11 @@ def check_agent_boundaries(file: Path, content: str) -> list[Finding]:
         "validate",
         "audit",
     ]
-    is_read_only_intent = any(signal in description for signal in read_only_signals)
+    write_signals = ["write", "create", "generat", "build", "develop", "optimiz", "migrat"]
+    has_write_intent = any(signal in description for signal in write_signals)
+    is_read_only_intent = (
+        any(signal in description for signal in read_only_signals) and not has_write_intent
+    )
 
     if is_read_only_intent:
         dangerous_found = tools & DANGEROUS_TOOLS

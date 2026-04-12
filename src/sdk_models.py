@@ -22,7 +22,7 @@ from __future__ import annotations
 
 import re
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Annotated, Any, Literal
 
 from pydantic import (
@@ -135,7 +135,7 @@ class SemverVersion(BaseModel):
 # ── Conventional Commits ──────────────────────────────────────
 
 
-class ConventionalCommitType(str, Enum):
+class ConventionalCommitType(StrEnum):
     """Conventional commit types mapped to semver bump rules."""
 
     FEAT = "feat"
@@ -151,7 +151,7 @@ class ConventionalCommitType(str, Enum):
     REVERT = "revert"
 
 
-class SemverBump(str, Enum):
+class SemverBump(StrEnum):
     """Semver bump level derived from conventional commit."""
 
     MAJOR = "major"
@@ -183,9 +183,7 @@ class ConventionalCommit(BaseModel):
         first_line = message.split("\n", 1)[0].strip()
         body = message.split("\n", 1)[1].strip() if "\n" in message else ""
 
-        match = re.match(
-            r"^(\w+)(?:\(([^)]*)\))?(!)?\s*:\s*(.+)$", first_line
-        )
+        match = re.match(r"^(\w+)(?:\(([^)]*)\))?(!)?\s*:\s*(.+)$", first_line)
         if not match:
             raise ValueError(f"Not a conventional commit: {first_line}")
 
@@ -255,7 +253,7 @@ class UpstreamDependency(BaseModel):
 # ── Claude Code CLI Models ────────────────────────────────────
 
 
-class PermissionMode(str, Enum):
+class PermissionMode(StrEnum):
     """Claude Code permission mode for tool execution."""
 
     DEFAULT = "default"
@@ -263,7 +261,7 @@ class PermissionMode(str, Enum):
     BYPASS_PERMISSIONS = "bypassPermissions"
 
 
-class OutputFormat(str, Enum):
+class OutputFormat(StrEnum):
     """Claude Code CLI output format."""
 
     TEXT = "text"
@@ -377,7 +375,7 @@ CLAUDE_ENV_VARS: list[ClaudeEnvVar] = [
 # ── Tools Reference ───────────────────────────────────────────
 
 
-class ToolCategory(str, Enum):
+class ToolCategory(StrEnum):
     """Tool categories from Claude Code tools reference."""
 
     FILE_SYSTEM = "file_system"
@@ -389,7 +387,7 @@ class ToolCategory(str, Enum):
     NOTEBOOK = "notebook"
 
 
-class ToolPermissionLevel(str, Enum):
+class ToolPermissionLevel(StrEnum):
     """Permission levels for tool execution."""
 
     ALLOW = "allow"
@@ -481,7 +479,7 @@ BUILTIN_TOOLS: list[ToolDefinition] = [
 # ── Hooks ─────────────────────────────────────────────────────
 
 
-class HookEvent(str, Enum):
+class HookEvent(StrEnum):
     """Hook event types from Claude Code hooks system.
 
     Maps to: code.claude.com/docs/en/hooks
@@ -495,7 +493,7 @@ class HookEvent(str, Enum):
     USER_PROMPT_SUBMIT = "UserPromptSubmit"
 
 
-class HookMatcherType(str, Enum):
+class HookMatcherType(StrEnum):
     """Matcher types for hook tool filtering."""
 
     TOOL_NAME = "tool_name"
@@ -582,7 +580,7 @@ class SkillFrontmatter(BaseModel):
 # ── Channels ──────────────────────────────────────────────────
 
 
-class ChannelType(str, Enum):
+class ChannelType(StrEnum):
     """Channel types for Claude Code communication.
 
     Maps to: code.claude.com/docs/en/channels-reference
@@ -607,7 +605,7 @@ class ChannelConfig(BaseModel):
 # Mirrors key types from claude-code-sdk (anthropic-ai/claude-agent-sdk-python)
 
 
-class AgentSDKModel(str, Enum):
+class AgentSDKModel(StrEnum):
     """Claude model identifiers (hyphen format, no dots or date suffixes)."""
 
     OPUS_4_6 = "claude-opus-4-6"
@@ -642,7 +640,7 @@ class AgentSDKSessionConfig(BaseModel):
         return v
 
 
-class AgentSDKMessageRole(str, Enum):
+class AgentSDKMessageRole(StrEnum):
     """Message roles in Agent SDK conversation."""
 
     USER = "user"
@@ -650,7 +648,7 @@ class AgentSDKMessageRole(str, Enum):
     SYSTEM = "system"
 
 
-class AgentSDKContentType(str, Enum):
+class AgentSDKContentType(StrEnum):
     """Content block types in Agent SDK messages."""
 
     TEXT = "text"
@@ -693,7 +691,7 @@ class AgentSDKEvent(BaseModel):
 # Mirrors key types from mcp (modelcontextprotocol/python-sdk)
 
 
-class MCPTransportType(str, Enum):
+class MCPTransportType(StrEnum):
     """MCP transport types."""
 
     STDIO = "stdio"
@@ -715,7 +713,7 @@ class MCPToolSchema(BaseModel):
     input_schema: dict[str, Any] = Field(default_factory=dict)
 
 
-class MCPResourceType(str, Enum):
+class MCPResourceType(StrEnum):
     """MCP resource types."""
 
     TEXT = "text"
