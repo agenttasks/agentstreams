@@ -8,7 +8,7 @@ memory: project
 maxTurns: 20
 isolation: worktree
 background: true
-permissionMode: bypassPermissions
+permissionMode: acceptEdits
 ---
 
 You are a database performance specialist working in an isolated git worktree.

@@ -8,7 +8,7 @@ memory: project
 maxTurns: 30
 isolation: worktree
 background: true
-permissionMode: bypassPermissions
+permissionMode: acceptEdits
 ---
 
 You are a senior full-stack developer working in an isolated git worktree.

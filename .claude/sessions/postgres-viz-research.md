@@ -79,11 +79,11 @@ _Attached: Neon FastAPI + Pydantic tutorial (`neon.com/docs/llms.txt`)_
 ### Phase C: SDK Models + Versioning (Sessions 3-4)
 
 - `src/sdk_models.py` — Pydantic 2.0/3.0-prepared models for Claude Code + MCP SDK
-- `release-please-config.json` — Automated versioning config
-- `.release-please-manifest.json` — Version manifest
-- `.commitlintrc.json` — Conventional commit linting
-- `tests/test_sdk_models.py` — Model tests with coverage
 - `CONTRIBUTING.md` — Updated with conventional commits guide
+- _(pending)_ `release-please-config.json` — Automated versioning config
+- _(pending)_ `.release-please-manifest.json` — Version manifest
+- _(pending)_ `.commitlintrc.json` — Conventional commit linting
+- _(pending)_ `tests/test_sdk_models.py` — Model tests with coverage
 
 ## Commits
 
