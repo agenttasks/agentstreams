@@ -143,3 +143,14 @@ class ResourceOut(BaseModel):
 class SearchResultOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     sim: float | None = None
+
+
+# ── Skill Registry ────────────────────────────────────────
+
+
+class SkillRegistryOut(BaseModel):
+    """Skill catalog entry with category routing metadata."""
+
+    name: str
+    category: str
+    agent: str

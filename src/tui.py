@@ -3,6 +3,10 @@
 Four-screen terminal UI for monitoring metrics, tasks, agents, and
 running ad-hoc SQL queries against Neon Postgres.
 
+Skill: neon-dashboard (registered in SKILL_CATALOG under DATA category)
+Connector: ~~data warehouse = Neon Postgres 18 (via NEON_DATABASE_URL)
+See: vendors/knowledge-work-plugins/data/CONNECTORS.md
+
 Launch: agentstreams tui  (or: make tui)
 """
 
@@ -258,9 +262,13 @@ SCREENS = {
 
 
 class AgentStreamsTUI(App):
-    """AgentStreams terminal dashboard."""
+    """AgentStreams terminal dashboard.
+
+    Skill: /neon-dashboard | Connector: ~~data warehouse = Neon Postgres 18
+    """
 
     TITLE = "AgentStreams"
+    SUB_TITLE = "Skill: neon-dashboard | Neon Postgres"
     CSS = """
     #screen-title { background: $accent; color: $text; padding: 0 1; }
     #task-stats { background: $surface; padding: 0 1; }

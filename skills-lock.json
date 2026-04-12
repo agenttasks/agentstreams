@@ -81,6 +81,16 @@
       "sourceType": "github",
       "computedHash": "bf5eff3c692372a798f1763f975ed2725794a55af4f0ba4de58492e7d83b8d75"
     },
+    "neon-api": {
+      "source": "local",
+      "sourceType": "local",
+      "computedHash": "94cfa7b9ce05e1239f47462e652a7fdacd2b4f8e7eef3e6d2ec64a831cc4c6df"
+    },
+    "neon-dashboard": {
+      "source": "local",
+      "sourceType": "local",
+      "computedHash": "713e27ddcc8809ce2735b775497bddf93e85c3a712390cea73f88b94899afbde"
+    },
     "neon-postgres": {
       "source": "neondatabase/agent-skills",
       "sourceType": "github",
@@ -90,6 +100,11 @@
       "source": "neondatabase/agent-skills",
       "sourceType": "github",
       "computedHash": "425d23502e6f2ab24a8de852f95e37969720cb287368a1294d46aabb1f9408f8"
+    },
+    "neon-team-setup": {
+      "source": "local",
+      "sourceType": "local",
+      "computedHash": "d4c89de269c04a603f6868d244f6a55cc639120c61965a5602d4070fb6e22ef2"
     },
     "transformers-js": {
       "source": "huggingface/skills",

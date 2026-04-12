@@ -4,6 +4,12 @@ Thin REST layer over src/neon_db.py async functions. Uses the existing
 psycopg 3.2+ connection pattern — one connection per request via
 connection_pool(). No SQLAlchemy.
 
+Refactored to follow Anthropic skills standard (SKILL.md format) and
+cookbook patterns (SRE Incident Response Agent: enriched health, OpenAPI tags).
+
+Skills: neon-api, neon-dashboard, neon-team-setup (registered in SKILL_CATALOG)
+Cookbooks: platform.claude.com/cookbooks/sre-incident-response-agent
+
 Run: uvicorn src.api:app --reload --port 8000
 """
 
@@ -14,6 +20,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 
+from src.knowledge_agents import CATEGORY_AGENTS, SKILL_CATALOG
 from src.models import (
     AgentManifestOut,
     MetricOut,
@@ -22,6 +29,7 @@ from src.models import (
     ModelOut,
     PipelineOut,
     SkillOut,
+    SkillRegistryOut,
     TaskCreateIn,
     TaskOut,
     TaskStatsOut,
@@ -42,6 +50,19 @@ from src.neon_db import (
     task_stats,
 )
 
+# ── OpenAPI Tags (SRE cookbook pattern) ────────────────────
+
+tags_metadata = [
+    {"name": "health", "description": "System health and diagnostics"},
+    {"name": "metrics", "description": "Metric catalog and time-series data"},
+    {"name": "tasks", "description": "Task queue management"},
+    {"name": "agents", "description": "Agent manifest registry"},
+    {"name": "skills", "description": "Skill catalog and registry"},
+    {"name": "models", "description": "Claude model registry"},
+    {"name": "pipelines", "description": "Pipeline definitions"},
+    {"name": "resources", "description": "Resource search via pg_trgm"},
+]
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -53,9 +74,11 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="AgentStreams",
-    version="0.3.0",
-    description="REST API for AgentStreams multi-agent orchestration data",
+    version="0.4.0",
+    description="REST API for AgentStreams multi-agent orchestration data. "
+    "Skills: neon-api, neon-dashboard, neon-team-setup.",
     lifespan=lifespan,
+    openapi_tags=tags_metadata,
 )
 
 app.add_middleware(
@@ -70,25 +93,37 @@ app.add_middleware(
 # ── Health ─────────────────────────────────────────────────
 
 
-@app.get("/api/health")
+@app.get("/api/health", tags=["health"])
 async def health():
-    """Health check — verifies database connectivity."""
+    """Health check with Neon diagnostics (SRE cookbook pattern)."""
     async with connection_pool() as conn:
-        await conn.execute("SELECT 1")
-    return {"status": "ok"}
+        row = await (await conn.execute("SELECT version()")).fetchone()
+        pg_version = row[0] if row else "unknown"
+        branch_row = await (
+            await conn.execute(
+                "SELECT setting FROM pg_settings WHERE name = 'neon.branch_name'"
+            )
+        ).fetchone()
+        neon_branch = branch_row[0] if branch_row else "unknown"
+    return {
+        "status": "ok",
+        "pg_version": pg_version,
+        "neon_branch": neon_branch,
+        "skill_count": len(SKILL_CATALOG),
+    }
 
 
 # ── Metrics ────────────────────────────────────────────────
 
 
-@app.get("/api/metrics", response_model=list[MetricOut])
+@app.get("/api/metrics", response_model=list[MetricOut], tags=["metrics"])
 async def get_metrics():
     """List all metric definitions."""
     async with connection_pool() as conn:
         return await list_metrics(conn)
 
 
-@app.get("/api/metrics/{name}/values", response_model=list[MetricValueOut])
+@app.get("/api/metrics/{name}/values", response_model=list[MetricValueOut], tags=["metrics"])
 async def get_metric_values(
     name: str,
     hours: int = Query(24, ge=1, le=8760),
@@ -99,7 +134,7 @@ async def get_metric_values(
         return await query_metric_values(conn, metric_name=name, hours=hours, limit=limit)
 
 
-@app.get("/api/metrics/{name}/summary", response_model=list[MetricSummaryOut])
+@app.get("/api/metrics/{name}/summary", response_model=list[MetricSummaryOut], tags=["metrics"])
 async def get_metric_summary(
     name: str,
     hours: int = Query(168, ge=1, le=8760),
@@ -113,7 +148,7 @@ async def get_metric_summary(
 # ── Tasks ──────────────────────────────────────────────────
 
 
-@app.get("/api/tasks", response_model=list[TaskOut])
+@app.get("/api/tasks", response_model=list[TaskOut], tags=["tasks"])
 async def get_tasks(
     status: str | None = Query(None),
     type: str | None = Query(None),
@@ -125,7 +160,7 @@ async def get_tasks(
         return await list_tasks(conn, status=status, task_type=type, queue_name=queue, limit=limit)
 
 
-@app.post("/api/tasks", response_model=dict)
+@app.post("/api/tasks", response_model=dict, tags=["tasks"])
 async def create_task(task: TaskCreateIn):
     """Create a new task in the queue."""
     async with connection_pool() as conn:
@@ -144,7 +179,7 @@ async def create_task(task: TaskCreateIn):
     return {"id": task_id, "status": "queued"}
 
 
-@app.get("/api/tasks/stats", response_model=list[TaskStatsOut])
+@app.get("/api/tasks/stats", response_model=list[TaskStatsOut], tags=["tasks"])
 async def get_task_stats(hours: int = Query(24, ge=1, le=8760)):
     """Task queue statistics by status, type, and queue."""
     async with connection_pool() as conn:
@@ -154,14 +189,14 @@ async def get_task_stats(hours: int = Query(24, ge=1, le=8760)):
 # ── Agents ─────────────────────────────────────────────────
 
 
-@app.get("/api/agents", response_model=list[AgentManifestOut])
+@app.get("/api/agents", response_model=list[AgentManifestOut], tags=["agents"])
 async def get_agents():
     """List all agent manifests."""
     async with connection_pool() as conn:
         return await list_agents(conn)
 
 
-@app.get("/api/agents/{name}", response_model=AgentManifestOut)
+@app.get("/api/agents/{name}", response_model=AgentManifestOut, tags=["agents"])
 async def get_agent_by_name(name: str):
     """Get a single agent manifest by name."""
     async with connection_pool() as conn:
@@ -174,17 +209,34 @@ async def get_agent_by_name(name: str):
 # ── Skills ─────────────────────────────────────────────────
 
 
-@app.get("/api/skills", response_model=list[SkillOut])
+@app.get("/api/skills", response_model=list[SkillOut], tags=["skills"])
 async def get_skills():
-    """List all registered skills."""
+    """List all registered skills from the database."""
     async with connection_pool() as conn:
         return await list_skills(conn)
+
+
+@app.get("/api/skills/registry", response_model=list[SkillRegistryOut], tags=["skills"])
+async def get_skill_registry():
+    """Skill catalog with category and agent routing metadata.
+
+    Returns all skills from SKILL_CATALOG (knowledge-work-plugins +
+    local skills) with their category and the agent that handles them.
+    """
+    return [
+        SkillRegistryOut(
+            name=meta.name,
+            category=meta.category.value,
+            agent=CATEGORY_AGENTS[meta.category],
+        )
+        for meta in sorted(SKILL_CATALOG.values(), key=lambda m: m.name)
+    ]
 
 
 # ── Models ─────────────────────────────────────────────────
 
 
-@app.get("/api/models", response_model=list[ModelOut])
+@app.get("/api/models", response_model=list[ModelOut], tags=["models"])
 async def get_models():
     """List Claude models with capabilities."""
     async with connection_pool() as conn:
@@ -194,7 +246,7 @@ async def get_models():
 # ── Pipelines ──────────────────────────────────────────────
 
 
-@app.get("/api/pipelines", response_model=list[PipelineOut])
+@app.get("/api/pipelines", response_model=list[PipelineOut], tags=["pipelines"])
 async def get_pipelines():
     """List all pipelines."""
     async with connection_pool() as conn:
@@ -204,7 +256,7 @@ async def get_pipelines():
 # ── Resources ──────────────────────────────────────────────
 
 
-@app.get("/api/resources/search")
+@app.get("/api/resources/search", tags=["resources"])
 async def search_resources(
     q: str = Query(..., min_length=1),
     table: str = Query("resources"),
