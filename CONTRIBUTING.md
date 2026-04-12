@@ -76,6 +76,71 @@ make security-audit   # Security audit script
 - ATX headings (`#`, `##`, not underlines)
 - Fenced code blocks with language tags
 
+## Conventional Commits
+
+All commit messages must follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
+
+```
+<type>[optional scope][!]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Commit types
+
+| Type | Semver bump | Description |
+|------|-------------|-------------|
+| `feat` | minor | A new feature |
+| `fix` | patch | A bug fix |
+| `perf` | patch | Performance improvement |
+| `docs` | none | Documentation only |
+| `style` | none | Formatting, whitespace |
+| `refactor` | none | Code restructuring (no behavior change) |
+| `test` | none | Adding or fixing tests |
+| `build` | none | Build system or dependency changes |
+| `ci` | none | CI/CD pipeline changes |
+| `chore` | none | Maintenance tasks |
+| `revert` | patch | Revert a previous commit |
+
+### Breaking changes
+
+Append `!` after the type/scope or add a `BREAKING CHANGE:` footer:
+
+```bash
+feat(sdk)!: redesign hook event types    # major bump
+feat(api): add search endpoint           # minor bump
+fix(tui): handle empty metric rows       # patch bump
+```
+
+### Scopes
+
+Common scopes: `sdk`, `api`, `tui`, `mcp`, `hooks`, `skills`, `agents`, `ci`
+
+## Version Management (release-please)
+
+This project uses [release-please](https://github.com/googleapis/release-please) for automated versioning:
+
+- Conventional commits are analyzed to determine the next semver version
+- `CHANGELOG.md` is auto-generated from commit messages
+- Version bumps are applied to `pyproject.toml` and `src/sdk_models.py`
+- Upstream SDK dependencies (claude-code-sdk, mcp, anthropic) are tracked in `src/sdk_models.py`
+
+When an upstream dependency releases a new version:
+1. Update the version in `default_manifest()` in `src/sdk_models.py`
+2. Use `feat(sdk): bump <package> to <version>` for new features
+3. Use `fix(sdk): bump <package> to <version>` for bug fixes
+4. Use `feat(sdk)!: bump <package> to <version>` for breaking changes
+
+## Session Logs
+
+Session transcripts are logged in `.claude/sessions/`. Each file documents:
+- Session IDs and context continuations
+- All user prompts (verbatim)
+- Deliverables produced
+- Commit history
+
 ## Auth rules
 
 - **Never use `ANTHROPIC_API_KEY`** — all auth flows through `CLAUDE_CODE_OAUTH_TOKEN`

@@ -466,9 +466,9 @@ database. This provides full schema + data isolation.
 **Recommended naming convention:**
 
 ```
-dev/alice
-dev/bob
-dev/carol
+dev/sebastian
+dev/alex
+dev/jake
 ```
 
 **Branch creation via CLI:**
@@ -478,9 +478,9 @@ dev/carol
 npm i -g neonctl
 
 # Create a branch for each developer
-neonctl branches create --name dev/alice --project-id calm-paper-82059121
-neonctl branches create --name dev/bob --project-id calm-paper-82059121
-neonctl branches create --name dev/carol --project-id calm-paper-82059121
+neonctl branches create --name dev/sebastian --project-id calm-paper-82059121
+neonctl branches create --name dev/alex --project-id calm-paper-82059121
+neonctl branches create --name dev/jake --project-id calm-paper-82059121
 ```
 
 **Benefits:**
@@ -511,22 +511,22 @@ Create individual Postgres roles with scoped permissions.
 
 ```sql
 -- Create roles for each team member
-CREATE ROLE alice WITH LOGIN PASSWORD 'alice_password';
-CREATE ROLE bob WITH LOGIN PASSWORD 'bob_password';
-CREATE ROLE carol WITH LOGIN PASSWORD 'carol_password';
+CREATE ROLE sebastian WITH LOGIN PASSWORD 'sebastian_password';
+CREATE ROLE alex WITH LOGIN PASSWORD 'alex_password';
+CREATE ROLE jake WITH LOGIN PASSWORD 'jake_password';
 
 -- Grant appropriate permissions
-GRANT USAGE ON SCHEMA public TO alice, bob, carol;
-GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO alice, bob;
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO carol;  -- read-only
+GRANT USAGE ON SCHEMA public TO sebastian, alex, jake;
+GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO sebastian, alex;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO jake;  -- read-only
 ```
 
 **Via Neon CLI:**
 
 ```bash
-neonctl roles create --name alice --project-id calm-paper-82059121
-neonctl roles create --name bob --project-id calm-paper-82059121
-neonctl roles create --name carol --project-id calm-paper-82059121
+neonctl roles create --name sebastian --project-id calm-paper-82059121
+neonctl roles create --name alex --project-id calm-paper-82059121
+neonctl roles create --name jake --project-id calm-paper-82059121
 ```
 
 ---
@@ -598,14 +598,14 @@ neonctl auth
 # (or use project collaboration in Neon Console)
 
 # 4. Create per-developer branches
-neonctl branches create --name dev/alice --project-id calm-paper-82059121
-neonctl branches create --name dev/bob --project-id calm-paper-82059121
-neonctl branches create --name dev/carol --project-id calm-paper-82059121
+neonctl branches create --name dev/sebastian --project-id calm-paper-82059121
+neonctl branches create --name dev/alex --project-id calm-paper-82059121
+neonctl branches create --name dev/jake --project-id calm-paper-82059121
 
 # 5. Get connection strings
-neonctl connection-string --branch dev/alice --project-id calm-paper-82059121
-neonctl connection-string --branch dev/bob --project-id calm-paper-82059121
-neonctl connection-string --branch dev/carol --project-id calm-paper-82059121
+neonctl connection-string --branch dev/sebastian --project-id calm-paper-82059121
+neonctl connection-string --branch dev/alex --project-id calm-paper-82059121
+neonctl connection-string --branch dev/jake --project-id calm-paper-82059121
 ```
 
 ---

@@ -58,11 +58,11 @@ This sends a lightweight `SELECT 1` over the connection every 60 seconds, which 
 
 ## Multiple Developer Branches
 
-Neon creates a separate compute endpoint for each branch. To work against `dev/alice`, `dev/bob`, and `dev/carol` simultaneously, save a separate DBeaver connection for each:
+Neon creates a separate compute endpoint for each branch. To work against `dev/sebastian`, `dev/alex`, and `dev/jake` simultaneously, save a separate DBeaver connection for each:
 
 1. Go to **Database > New Database Connection** and create a connection for each branch.
 2. Use the endpoint hostname shown in the Neon Console for that branch — each branch has a distinct `ep-XXXX` prefix.
-3. Name each connection clearly, e.g. `neon-dev-alice`, `neon-dev-bob`, `neon-dev-carol`.
+3. Name each connection clearly, e.g. `neon-dev-sebastian`, `neon-dev-alex`, `neon-dev-jake`.
 4. Branch connections share the same port (5432), database name (`neondb`), and SSL settings. Only the **Host** differs.
 
 ## Testing the Connection

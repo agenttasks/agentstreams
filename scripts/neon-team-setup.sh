@@ -4,7 +4,7 @@ set -euo pipefail
 # neon-team-setup.sh — Provision per-developer Neon branches for 3-person team.
 #
 # For each developer in DEVELOPERS:
-#   1. Create a Neon branch dev/{name}
+#   1. Create a Neon branch dev-{name}
 #   2. Create a database role dev_{name} on that branch
 #   3. Fetch the connection string
 #   4. Apply ontology/schema.sql
@@ -21,13 +21,13 @@ PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 # Default to the project's known Neon project ID; override via env.
 NEON_PROJECT_ID="${NEON_PROJECT_ID:-calm-paper-82059121}"
 
-DEVELOPERS=(alice bob carol)
+DEVELOPERS=(sebastian alex jake)
 
 echo "=== Neon team setup for project: $NEON_PROJECT_ID ==="
 echo ""
 
 for dev in "${DEVELOPERS[@]}"; do
-    branch_name="dev/$dev"
+    branch_name="dev-$dev"
     role_name="dev_$dev"
 
     echo "--- Developer: $dev ---"

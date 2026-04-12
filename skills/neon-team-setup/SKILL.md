@@ -1,7 +1,7 @@
 ---
 name: neon-team-setup
 description: "Configure multi-developer Neon Postgres branching and collaboration. TRIGGER when: user asks to set up team branches, create developer database roles, configure git hooks for auto-branching, or connect DBeaver to Neon branches. DO NOT TRIGGER for: API or dashboard usage."
-argument-hint: "[developers: alice,bob,carol]"
+argument-hint: "[developers: sebastian,alex,jake]"
 ---
 
 # /neon-team-setup - Multi-Developer Neon Branching
@@ -42,7 +42,7 @@ Install the Neon CLI: `npm install -g neonctl`
 
 The `scripts/neon-team-setup.sh` script (uses `set -euo pipefail` per project convention):
 
-For each developer (default: alice, bob, carol):
+For each developer (default: sebastian, alex, jake):
 
 1. **Create Neon branch** `dev/{name}` from main via `neonctl branches create`
 2. **Create database role** `dev_{name}` via `neonctl roles create`
@@ -90,10 +90,10 @@ This means every `git checkout -b feature/my-feature` automatically provisions a
 | Git Branch | Neon Branch | Role |
 |-----------|-------------|------|
 | `main` | `main` | Shared production schema |
-| `dev/alice` | `dev/alice` | `dev_alice` |
-| `dev/bob` | `dev/bob` | `dev_bob` |
-| `dev/carol` | `dev/carol` | `dev_carol` |
-| `feature/my-feat` | `feature/my-feat` | (auto-created by hook) |
+| `dev/sebastian` | `dev-sebastian` | `dev_sebastian` |
+| `dev/alex` | `dev-alex` | `dev_alex` |
+| `dev/jake` | `dev-jake` | `dev_jake` |
+| `feature/my-feat` | `feature-my-feat` | (auto-created by hook) |
 
 ## Parallel Subagent Integration
 
