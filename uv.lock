@@ -15,7 +15,7 @@ resolution-markers = [
 
 [[package]]
 name = "agentstreams"
-version = "0.3.0"
+version = "0.4.0"
 source = { editable = "." }
 dependencies = [
     { name = "aiodns" },
@@ -87,7 +87,7 @@ requires-dist = [
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "huggingface-hub", marker = "extra == 'casehold'", specifier = ">=0.20" },
     { name = "lancedb", marker = "extra == 'vector'", specifier = ">=0.6" },
-    { name = "mcp", specifier = ">=1.0" },
+    { name = "mcp", specifier = ">=1.26.0" },
     { name = "opentelemetry-api", marker = "extra == 'otel'", specifier = ">=1.29" },
     { name = "opentelemetry-exporter-otlp", marker = "extra == 'otel'", specifier = ">=1.29" },
     { name = "opentelemetry-sdk", marker = "extra == 'otel'", specifier = ">=1.29" },
