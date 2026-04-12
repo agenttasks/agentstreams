@@ -76,7 +76,7 @@ Memory sync (cloud-safe — all memory is in checked-in files):
 
 25 agents (8 safety/codegen + 17 knowledge-work), 8 pipelines, 4 model tiers. Defined in:
 - `src/orchestrator.py` — Python dataclasses + agent configs
-- `src/knowledge_agents.py` — Knowledge-work plugin catalog (164 skills, 22 categories)
+- `src/knowledge_agents.py` — Knowledge-work plugin catalog (167 skills, 22 categories)
 - `src/knowledge_subagents.py` — Claude Code CLI subagent generator
 - `src/plugin_bridge.py` — Cowork plugin → ManagedAgentConfig bridge
 - `.claude/agents/*.md` — Agent frontmatter (tools, model, color)
@@ -89,8 +89,8 @@ Model hierarchy (orchestrated pipeline agents only):
 - haiku: harmlessness-screen
 
 Standalone subagents (.claude/agents/, not in orchestrator pipelines):
-- opus: uda-thinker, uda-crawler
-- sonnet: graphql-typescript-agent
+- opus: uda-thinker, uda-crawler, data-optimizer
+- sonnet: graphql-typescript-agent, feature-developer
 - haiku: crawl-analyzer, memory-validator, explore
 
 Knowledge-work pipelines (3):

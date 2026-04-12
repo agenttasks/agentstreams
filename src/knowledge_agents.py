@@ -187,7 +187,7 @@ for _n in [
 ]:
     _register(_n, PluginCategory.CUSTOMER_SUPPORT)
 
-# data (10 skills)
+# data (10 skills from knowledge-work-plugins)
 for _n in [
     "analyze",
     "build-dashboard",
@@ -199,6 +199,14 @@ for _n in [
     "statistical-analysis",
     "validate-data",
     "write-query",
+]:
+    _register(_n, PluginCategory.DATA)
+
+# neon-specific data skills (3 local skills in skills/)
+for _n in [
+    "neon-api",
+    "neon-dashboard",
+    "neon-team-setup",
 ]:
     _register(_n, PluginCategory.DATA)
 

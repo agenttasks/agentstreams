@@ -8,6 +8,7 @@
        eval-legalbench-dry eval-legalbench-verify \
        ingest-legalbench ingest-legalbench-contract \
        install-managed-agents build-managed-agents check-managed-agents \
+       dev-api tui sql team-setup \
        clean ci ci-py ci-webapp
 
 # ── Help ─────────────────────────────────────────────────────
@@ -45,6 +46,20 @@ cli-help: ## Show agentstreams CLI help tree
 	  echo ""; echo "  agentstreams $$cmd:"; \
 	  uv run agentstreams $$cmd --help 2>/dev/null | grep -E "^  [a-z]" || true; \
 	done
+
+dev-api: ## Start FastAPI dev server on :8000
+	uv run uvicorn src.api:app --reload --port 8000
+
+tui: ## Launch Textual TUI dashboard
+	uv run agentstreams tui
+
+sql: ## Launch Harlequin SQL IDE with Neon connection
+	uv tool run --from 'harlequin[postgres]' harlequin -a postgres "$$NEON_DATABASE_URL"
+
+team-setup: ## Create 3-person Neon branches + configure Git hooks
+	bash scripts/neon-team-setup.sh
+	git config core.hooksPath .githooks
+	@echo "Git hooks configured: .githooks/post-checkout"
 
 dev-webapp: ## Start Next.js dev server
 	cd webapp && npm run dev
