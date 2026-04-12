@@ -15,6 +15,7 @@ Run: uvicorn src.api:app --reload --port 8000
 
 from __future__ import annotations
 
+import importlib.metadata
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, Query
@@ -74,7 +75,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="AgentStreams",
-    version="0.4.0",
+    version=importlib.metadata.version("agentstreams"),
     description="REST API for AgentStreams multi-agent orchestration data. "
     "Skills: neon-api, neon-dashboard, neon-team-setup.",
     lifespan=lifespan,

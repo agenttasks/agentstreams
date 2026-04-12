@@ -124,7 +124,7 @@ This project uses [release-please](https://github.com/googleapis/release-please)
 
 - Conventional commits are analyzed to determine the next semver version
 - `CHANGELOG.md` is auto-generated from commit messages
-- Version bumps are applied to `pyproject.toml` and `src/sdk_models.py`
+- Version bumps are applied to `pyproject.toml` and `src/sdk_models.py` (`src/api.py` reads it dynamically via `importlib.metadata`)
 - Upstream SDK dependencies (claude-code-sdk, mcp, anthropic) are tracked in `src/sdk_models.py`
 
 When an upstream dependency releases a new version:
