@@ -610,7 +610,7 @@ class AgentSDKModel(StrEnum):
 
     OPUS_4_6 = "claude-opus-4-6"
     SONNET_4_6 = "claude-sonnet-4-6"
-    HAIKU_4_5 = "claude-haiku-4-5-20251001"
+    HAIKU_4_5 = "claude-haiku-4-5"
 
 
 class AgentSDKSessionConfig(BaseModel):
@@ -632,10 +632,10 @@ class AgentSDKSessionConfig(BaseModel):
     @classmethod
     def validate_model_format(cls, v: str) -> str:
         """Ensure model uses hyphen format per CLAUDE.md conventions."""
-        if "." in v and not v.startswith("claude-"):
+        if re.search(r"-\d{8}$", v) or ("." in v and not v.startswith("claude-")):
             raise ValueError(
                 f"Model '{v}' must use hyphen format: "
-                "claude-opus-4-6, claude-sonnet-4-6, claude-haiku-4-5-20251001"
+                "claude-opus-4-6, claude-sonnet-4-6, claude-haiku-4-5"
             )
         return v
 
