@@ -1,0 +1,153 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# post-checkout — Auto-create a Neon branch matching the current Git branch.
+#
+# Git passes three arguments to every post-checkout hook:
+#   $1  Previous HEAD (SHA)
+#   $2  New HEAD (SHA)
+#   $3  Checkout type: 1 = branch switch, 0 = file checkout
+#
+# The hook is a no-op when:
+#   - It is a file-level checkout ($3 != 1)
+#   - HEAD is detached (not on a named branch)
+#   - The checked-out branch is "main" or "master"
+#
+# On a new worktree (prev HEAD is all zeros) the hook searches peer worktrees
+# and the repo root for an existing .env, falling back to .env.example.
+#
+# Requires: neonctl, git
+
+PREV_HEAD="$1"
+NEW_HEAD="$2"   # unused but named for clarity
+CHECKOUT_TYPE="$3"
+
+# Skip file-level checkouts.
+if [ "$CHECKOUT_TYPE" != "1" ]; then
+    exit 0
+fi
+
+# Skip detached HEAD.
+GIT_BRANCH="$(git symbolic-ref --short HEAD 2>/dev/null || true)"
+if [ -z "$GIT_BRANCH" ]; then
+    echo "post-checkout: detached HEAD — skipping Neon branch creation."
+    exit 0
+fi
+
+# Skip main/master.
+if [ "$GIT_BRANCH" = "main" ] || [ "$GIT_BRANCH" = "master" ]; then
+    exit 0
+fi
+
+# Locate the worktree root (the directory that contains .git or .git-file).
+WORKTREE_ROOT="$(git rev-parse --show-toplevel)"
+
+# ── Locate / bootstrap .env ──────────────────────────────────────────────────
+
+ENV_FILE="$WORKTREE_ROOT/.env"
+ALL_ZEROS="0000000000000000000000000000000000000000"
+
+if [ "$PREV_HEAD" = "$ALL_ZEROS" ] && [ ! -f "$ENV_FILE" ]; then
+    # New worktree: look for .env in peer worktrees registered with git.
+    FOUND_ENV=""
+    while IFS= read -r worktree_path; do
+        candidate="$worktree_path/.env"
+        if [ -f "$candidate" ] && [ "$worktree_path" != "$WORKTREE_ROOT" ]; then
+            FOUND_ENV="$candidate"
+            break
+        fi
+    done < <(git worktree list --porcelain | awk '/^worktree / { print $2 }')
+
+    if [ -n "$FOUND_ENV" ]; then
+        echo "post-checkout: copying .env from $FOUND_ENV"
+        cp "$FOUND_ENV" "$ENV_FILE"
+    elif [ -f "$WORKTREE_ROOT/.env.example" ]; then
+        echo "post-checkout: no peer .env found — copying .env.example"
+        cp "$WORKTREE_ROOT/.env.example" "$ENV_FILE"
+    else
+        echo "post-checkout: no .env or .env.example found — skipping Neon setup."
+        exit 0
+    fi
+fi
+
+if [ ! -f "$ENV_FILE" ]; then
+    echo "post-checkout: .env not found — skipping Neon setup."
+    exit 0
+fi
+
+# ── Parse .env without sourcing it (handles optional quotes) ─────────────────
+# Extracts the value for a given KEY from the .env file.
+# Strips optional surrounding single or double quotes.
+parse_env_value() {
+    local key="$1"
+    local raw
+    raw="$(grep -E "^${key}=" "$ENV_FILE" | tail -1 | cut -d= -f2-)"
+    # Remove surrounding quotes if present.
+    raw="${raw#\"}" ; raw="${raw%\"}"
+    raw="${raw#\'}" ; raw="${raw%\'}"
+    echo "$raw"
+}
+
+NEON_API_KEY="$(parse_env_value NEON_API_KEY)"
+NEON_PROJECT_ID="$(parse_env_value NEON_PROJECT_ID)"
+
+# Default project ID if not set in .env.
+NEON_PROJECT_ID="${NEON_PROJECT_ID:-calm-paper-82059121}"
+
+if [ -z "$NEON_API_KEY" ]; then
+    echo "post-checkout: NEON_API_KEY not set in .env — skipping Neon setup."
+    exit 0
+fi
+
+# ── Sanitize branch name for Neon ────────────────────────────────────────────
+# Neon branch names cannot contain slashes; replace with dashes.
+NEON_BRANCH="${GIT_BRANCH//\//-}"
+
+echo "post-checkout: setting up Neon branch '$NEON_BRANCH' for git branch '$GIT_BRANCH'..."
+
+# ── Create Neon branch (idempotent) ──────────────────────────────────────────
+if NEONCTL_OUTPUT="$(NEON_API_KEY="$NEON_API_KEY" \
+        neonctl branches create \
+        --name "$NEON_BRANCH" \
+        --project-id "$NEON_PROJECT_ID" 2>&1)"; then
+    echo "  Created Neon branch '$NEON_BRANCH'."
+else
+    # Treat "already exists" as success; surface any other error.
+    if echo "$NEONCTL_OUTPUT" | grep -qi "already exist"; then
+        echo "  Neon branch '$NEON_BRANCH' already exists — continuing."
+    else
+        echo "  Warning: neonctl branches create failed:"
+        echo "$NEONCTL_OUTPUT"
+        echo "  Attempting to continue with existing branch..."
+    fi
+fi
+
+# ── Fetch connection string ───────────────────────────────────────────────────
+CONN_STR="$(NEON_API_KEY="$NEON_API_KEY" \
+    neonctl connection-string "$NEON_BRANCH" \
+    --project-id "$NEON_PROJECT_ID")"
+
+if [ -z "$CONN_STR" ]; then
+    echo "post-checkout: could not retrieve connection string — .env not updated."
+    exit 0
+fi
+
+# ── Update DATABASE_URL and NEON_DATABASE_URL in .env ────────────────────────
+update_env_key() {
+    local key="$1"
+    local value="$2"
+    if grep -qE "^${key}=" "$ENV_FILE"; then
+        # Replace existing line in-place (compatible with both GNU and BSD sed).
+        sed -i.bak "s|^${key}=.*|${key}=${value}|" "$ENV_FILE" && rm -f "${ENV_FILE}.bak"
+    else
+        echo "${key}=${value}" >> "$ENV_FILE"
+    fi
+}
+
+update_env_key "DATABASE_URL"      "$CONN_STR"
+update_env_key "NEON_DATABASE_URL" "$CONN_STR"
+
+echo "  Updated DATABASE_URL and NEON_DATABASE_URL in .env."
+echo "  Neon branch : $NEON_BRANCH"
+echo "  Connection  : $CONN_STR"
+echo "post-checkout: done."

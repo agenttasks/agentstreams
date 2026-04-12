@@ -338,6 +338,282 @@ async def fuzzy_search(
 # ── Thinking trace operations ────────────────────────────
 
 
+# ── Read-only query functions (shared by API + TUI) ────────
+
+
+async def list_metrics(conn) -> list[dict]:
+    """List all metric definitions with type, unit, and dimensions."""
+    rows = await (
+        await conn.execute(
+            "SELECT name, type, unit, dimensions, description FROM metrics ORDER BY name"
+        )
+    ).fetchall()
+    return [
+        {
+            "name": r[0],
+            "type": r[1],
+            "unit": r[2],
+            "dimensions": r[3],
+            "description": r[4],
+        }
+        for r in rows
+    ]
+
+
+async def query_metric_values(
+    conn,
+    *,
+    metric_name: str,
+    hours: int = 24,
+    tags_filter: dict[str, str] | None = None,
+    limit: int = 1000,
+) -> list[dict]:
+    """Query raw time-series data for a specific metric."""
+    params: list[Any] = [metric_name, hours]
+    tag_clause = ""
+    if tags_filter:
+        tag_conditions = []
+        for key, value in tags_filter.items():
+            params.append(value)
+            tag_conditions.append(f"tags->>'{key}' = %s")
+        tag_clause = "AND " + " AND ".join(tag_conditions)
+
+    params.append(limit)
+    rows = await (
+        await conn.execute(
+            f"""SELECT recorded_at, value, tags
+                FROM metric_values
+                WHERE metric_name = %s
+                  AND recorded_at > now() - interval '1 hour' * %s
+                  {tag_clause}
+                ORDER BY recorded_at DESC
+                LIMIT %s""",
+            tuple(params),
+        )
+    ).fetchall()
+    return [
+        {
+            "recorded_at": r[0].isoformat() if r[0] else None,
+            "value": float(r[1]),
+            "tags": json.loads(r[2]) if isinstance(r[2], str) else r[2],
+        }
+        for r in rows
+    ]
+
+
+async def metric_summary(
+    conn,
+    *,
+    metric_name: str,
+    hours: int = 168,
+    group_by_tag: str | None = None,
+) -> list[dict]:
+    """Statistical summary (count, avg, min, max, p50, p99) for a metric."""
+    params: tuple = (metric_name, hours)
+
+    if group_by_tag:
+        query = f"""
+            SELECT
+                tags->>'{group_by_tag}' AS group_key,
+                COUNT(*) AS count,
+                ROUND(AVG(value)::numeric, 4) AS avg,
+                ROUND(MIN(value)::numeric, 4) AS min,
+                ROUND(MAX(value)::numeric, 4) AS max,
+                ROUND(PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY value)::numeric, 4) AS p50,
+                ROUND(PERCENTILE_CONT(0.99) WITHIN GROUP (ORDER BY value)::numeric, 4) AS p99
+            FROM metric_values
+            WHERE metric_name = %s
+              AND recorded_at > now() - interval '1 hour' * %s
+            GROUP BY group_key
+            ORDER BY avg DESC
+        """
+    else:
+        query = """
+            SELECT
+                COUNT(*) AS count,
+                ROUND(AVG(value)::numeric, 4) AS avg,
+                ROUND(MIN(value)::numeric, 4) AS min,
+                ROUND(MAX(value)::numeric, 4) AS max,
+                ROUND(PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY value)::numeric, 4) AS p50,
+                ROUND(PERCENTILE_CONT(0.99) WITHIN GROUP (ORDER BY value)::numeric, 4) AS p99
+            FROM metric_values
+            WHERE metric_name = %s
+              AND recorded_at > now() - interval '1 hour' * %s
+        """
+
+    rows = await (await conn.execute(query, params)).fetchall()
+    if group_by_tag:
+        return [
+            {"group_key": r[0], "count": r[1], "avg": float(r[2] or 0),
+             "min": float(r[3] or 0), "max": float(r[4] or 0),
+             "p50": float(r[5] or 0), "p99": float(r[6] or 0)}
+            for r in rows
+        ]
+    row = rows[0] if rows else None
+    if not row:
+        return []
+    return [
+        {"count": row[0], "avg": float(row[1] or 0), "min": float(row[2] or 0),
+         "max": float(row[3] or 0), "p50": float(row[4] or 0), "p99": float(row[5] or 0)}
+    ]
+
+
+async def list_tasks(
+    conn,
+    *,
+    status: str | None = None,
+    task_type: str | None = None,
+    queue_name: str | None = None,
+    limit: int = 20,
+) -> list[dict]:
+    """List tasks with optional filters."""
+    conditions: list[str] = []
+    params: list[Any] = []
+
+    if status:
+        params.append(status)
+        conditions.append("status = %s")
+    if task_type:
+        params.append(task_type)
+        conditions.append("type = %s")
+    if queue_name:
+        params.append(queue_name)
+        conditions.append("queue_name = %s")
+
+    where = f"WHERE {' AND '.join(conditions)}" if conditions else ""
+    params.append(limit)
+
+    rows = await (
+        await conn.execute(
+            f"""SELECT id, queue_name, type, status, priority, skill_name,
+                       model_id, plugin, attempts, created_at, started_at, completed_at
+                FROM tasks {where}
+                ORDER BY created_at DESC
+                LIMIT %s""",
+            tuple(params),
+        )
+    ).fetchall()
+    return [
+        {
+            "id": r[0], "queue_name": r[1], "type": r[2], "status": r[3],
+            "priority": r[4], "skill_name": r[5], "model_id": r[6], "plugin": r[7],
+            "attempts": r[8],
+            "created_at": r[9].isoformat() if r[9] else None,
+            "started_at": r[10].isoformat() if r[10] else None,
+            "completed_at": r[11].isoformat() if r[11] else None,
+        }
+        for r in rows
+    ]
+
+
+async def task_stats(conn, *, hours: int = 24) -> list[dict]:
+    """Task queue statistics — counts by status, type, and queue."""
+    rows = await (
+        await conn.execute(
+            """SELECT status, type, queue_name, COUNT(*) as count,
+                      ROUND(AVG(EXTRACT(EPOCH FROM (completed_at - started_at)))::numeric, 2) as avg_duration_s
+               FROM tasks
+               WHERE created_at > now() - interval '1 hour' * %s
+               GROUP BY status, type, queue_name
+               ORDER BY count DESC""",
+            (hours,),
+        )
+    ).fetchall()
+    return [
+        {
+            "status": r[0], "type": r[1], "queue_name": r[2],
+            "count": r[3], "avg_duration_s": float(r[4]) if r[4] else None,
+        }
+        for r in rows
+    ]
+
+
+async def list_agents(conn) -> list[dict]:
+    """List all agent manifests with tool grants and model assignments."""
+    rows = await (
+        await conn.execute(
+            """SELECT name, model_id, allowed_tools, denied_tools, description
+               FROM agent_manifests
+               ORDER BY name"""
+        )
+    ).fetchall()
+    return [
+        {
+            "name": r[0], "model_id": r[1], "allowed_tools": r[2],
+            "denied_tools": r[3], "description": r[4],
+        }
+        for r in rows
+    ]
+
+
+async def get_agent(conn, name: str) -> dict | None:
+    """Get a single agent manifest by name."""
+    row = await (
+        await conn.execute(
+            """SELECT name, model_id, allowed_tools, denied_tools, description
+               FROM agent_manifests WHERE name = %s""",
+            (name,),
+        )
+    ).fetchone()
+    if not row:
+        return None
+    return {
+        "name": row[0], "model_id": row[1], "allowed_tools": row[2],
+        "denied_tools": row[3], "description": row[4],
+    }
+
+
+async def list_skills(conn) -> list[dict]:
+    """List all registered skills."""
+    rows = await (
+        await conn.execute(
+            "SELECT name, description, trigger_pattern FROM skills ORDER BY name"
+        )
+    ).fetchall()
+    return [{"name": r[0], "description": r[1], "trigger_pattern": r[2]} for r in rows]
+
+
+async def list_models(conn) -> list[dict]:
+    """List Claude models with capabilities."""
+    rows = await (
+        await conn.execute(
+            """SELECT model_id, family, label, supports_thinking,
+                      supports_tool_use, supports_vision
+               FROM models ORDER BY family DESC, model_id"""
+        )
+    ).fetchall()
+    return [
+        {
+            "model_id": r[0], "family": r[1], "label": r[2],
+            "supports_thinking": r[3], "supports_tool_use": r[4], "supports_vision": r[5],
+        }
+        for r in rows
+    ]
+
+
+async def list_pipelines(conn) -> list[dict]:
+    """List all pipelines with config and status."""
+    rows = await (
+        await conn.execute(
+            """SELECT id, name, skill_name, model_id, config, status, created_at, updated_at
+               FROM pipelines ORDER BY name"""
+        )
+    ).fetchall()
+    return [
+        {
+            "id": r[0], "name": r[1], "skill_name": r[2], "model_id": r[3],
+            "config": json.loads(r[4]) if isinstance(r[4], str) else r[4],
+            "status": r[5],
+            "created_at": r[6].isoformat() if r[6] else None,
+            "updated_at": r[7].isoformat() if r[7] else None,
+        }
+        for r in rows
+    ]
+
+
+# ── Thinking trace operations ────────────────────────────
+
+
 async def record_thinking_trace(
     conn,
     *,

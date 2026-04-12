@@ -1193,6 +1193,47 @@ def status() -> None:
     console.print(table)
 
 
+# ── TUI + SQL commands ─────────────────────────────────────────
+
+
+@app.command("tui")
+def tui_cmd() -> None:
+    """Launch the AgentStreams Textual dashboard."""
+    from src.tui import AgentStreamsTUI
+
+    tui_app = AgentStreamsTUI()
+    tui_app.run()
+
+
+@app.command("sql")
+def sql_cmd() -> None:
+    """Launch Harlequin SQL IDE connected to Neon."""
+    import os
+
+    url = os.environ.get("NEON_DATABASE_URL", "")
+    if not url:
+        console.print("[red]NEON_DATABASE_URL not set. Run setup-env.sh or set it in .env[/red]")
+        raise typer.Exit(1)
+    try:
+        subprocess.run(["harlequin", "-a", "postgres", url], check=True)
+    except FileNotFoundError:
+        console.print(
+            "[yellow]Harlequin not found. Install with:[/yellow]\n"
+            "  uv tool install 'harlequin[postgres]'"
+        )
+        raise typer.Exit(1) from None
+
+
+# ── Trogon auto-TUI (form-based CLI explorer) ─────────────────
+
+try:
+    from trogon import Trogon
+
+    Trogon(app, app_name="agentstreams", command="tui-explore")
+except ImportError:
+    pass
+
+
 def main() -> None:
     app()
 
