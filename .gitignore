@@ -25,6 +25,9 @@ webapp/node_modules/
 webapp/.next/
 webapp/out/
 
+# Wrangler local state
+.wrangler/
+
 # Skills plugin cache
 .agents/
 src/knowledge-work-managed-agents/node_modules/
